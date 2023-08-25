@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" style="margin:0px; height:100%;">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+</head>
+
+<body class="bg-violet-500" style="margin:0px; height:100%;">
+    <nav class="flex items-center justify-between px-4 py-6 text-center bg-gradient-to-r from-cyan-500">
+        <a href="/" class="text-2xl text-white ">Your very own Todo List </a>
+    </nav>
+    <div class="w-4/5 my-6 mx-auto p-2 lg:p-10 bg-white rounded-xl">
+        Hello world!
+       <!-- {% block content %}
+        {% endblock %}
+        <div id="root">
+            <script src="{% static 'js/index-bundle.js' %}"></script>
+        </div>-->
+    </div>
+
+    {% block js_script %}
+    {% endblock %}
+</body>
+
+</html>
