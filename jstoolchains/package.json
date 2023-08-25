@@ -6,11 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "tailwind-watch": "tailwindcss -i ../input.css -o ../static/css/output.css --watch",
-    "tailwind-build": "tailwindcss -i ../input.css -o ../static/css/output.css --minify"
+    "tailwind-build": "tailwindcss -i ../input.css -o ../static/css/output.css --minify",
+    "dev": "webpack --mode development --watch"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "tailwindcss": "^3.3.3"
+    "tailwindcss": "^3.3.3",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
   }
 }
