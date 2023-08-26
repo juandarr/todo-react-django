@@ -1,7 +1,11 @@
-import React from '../jstoolchains/node_modules/react';
-import ReactDOM from "../jstoolchains/node_modules/react-dom";
+import React, {StrictMode} from "../jstoolchains/node_modules/react";
+import {createRoot} from "../jstoolchains/node_modules/react-dom/client";
 
-ReactDOM.render(
-  <h1>Hello, react!</h1>,
-  document.getElementById('root')
+import App from "./App.js";
+
+const container = createRoot(document.getElementById('root'));
+container.render(
+    <StrictMode>
+        <App />
+    </StrictMode>
 );
