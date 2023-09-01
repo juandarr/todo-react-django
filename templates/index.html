@@ -5,8 +5,8 @@
 {% endblock %}
 
 {% block content %}
-<div id="todoList">
-</div>
+    <div id="root" />
+    {{ priority_choices|json_script:'priority_choices' }}
 {% endblock %}
 
 {% block js_script %}
