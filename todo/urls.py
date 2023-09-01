@@ -3,10 +3,7 @@ from . import views
 from rest_framework import routers
 
 urlpatterns = [
-    path('', views.todo, name='todo')
+    path('', views.todo, name='main view'),
+    path('todos/api', views.TodoApiView.as_view()),
+    path('lists/api', views.ListApiView.as_view())
 ]
-
-router = routers.DefaultRouter()
-router.register('api/todos', views.TodoViewSet)
-router.register('api/list', views.ListViewSet)
-urlpatterns += router.urls

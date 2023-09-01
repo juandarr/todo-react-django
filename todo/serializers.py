@@ -16,4 +16,4 @@ class TodoSerializer(serializers.ModelSerializer):
 class ListSerializer(serializers.ModelSerializer):
     class Meta:
         model = List
-        fields = ('id','title','archived')
+        fields = ('id','title','archived','user')
