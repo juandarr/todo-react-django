@@ -1,0 +1,12 @@
+.openapi-generator-ignore
+apis/ListsApi.ts
+apis/TodosApi.ts
+apis/index.ts
+index.ts
+models/List.ts
+models/PatchedList.ts
+models/PatchedTodo.ts
+models/PriorityEnum.ts
+models/Todo.ts
+models/index.ts
+runtime.ts

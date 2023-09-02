@@ -40,9 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'todo',
-    'django_browser_reload'
+    'django_browser_reload',
+    'drf_spectacular'
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS':'drf_spectacular.openapi.AutoSchema',
+}
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

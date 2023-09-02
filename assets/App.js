@@ -1,4 +1,6 @@
 import React, { useState } from '../jstoolchains/node_modules/react';
+import { Configuration, BaseAPI } from '../todo-api-client/runtime';
+
 //{% csrf_token %}
 
 function TaskForm({ addTodo }) {
@@ -97,6 +99,13 @@ let all_todos = [
 let counter = 3;
 
 export default function App() {
+
+    const apiConfig = new Configuration({});
+    const client = new BaseAPI(apiConfig);
+
+    client.todosList().then((result) => {
+        console.log('Here are the todos: ', result.results);
+    });
     const [todos, setTodos] = useState(all_todos);
 
     const addTodo = (title) => {

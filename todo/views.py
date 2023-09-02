@@ -12,7 +12,7 @@ def todo(request):
     template = loader.get_template('index.html')
     return HttpResponse(template.render())
 
-        
+'''        
 class TodoApiView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     # 1. List all
@@ -56,7 +56,31 @@ class ListApiView(APIView):
             serializer.save()
             return Response(serializer.data, status = status.HTTP_201_CREATED)
         return Response(serializer.erros, status = status.HTTP_400_BAD_REQUEST)
+'''
 
+class TodoApiView(viewsets.ModelViewSet):
+    queryset = Todo.objects.all() 
+    serializer_class = TodoSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    '''
+    def get_queryset(self):
+        return self.request.user.todos.all()
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+    '''
+class ListApiView(viewsets.ModelViewSet):
+    queryset = List.objects.all() 
+    serializer_class = ListSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    '''
+    def get_queryset(self):
+        return self.request.user.lists.all()
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+    '''
 class TodoView(TemplateView):
     template_name = '../templates/index.html'
 

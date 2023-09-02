@@ -1,0 +1,421 @@
+openapi: 3.0.3
+info:
+  title: ''
+  version: 0.0.0
+paths:
+  /api/lists/:
+    get:
+      operationId: lists_list
+      tags:
+      - lists
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/List'
+          description: ''
+    post:
+      operationId: lists_create
+      tags:
+      - lists
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/List'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/List'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/List'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List'
+          description: ''
+  /api/lists/{id}/:
+    get:
+      operationId: lists_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this list.
+        required: true
+      tags:
+      - lists
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List'
+          description: ''
+    put:
+      operationId: lists_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this list.
+        required: true
+      tags:
+      - lists
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/List'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/List'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/List'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List'
+          description: ''
+    patch:
+      operationId: lists_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this list.
+        required: true
+      tags:
+      - lists
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedList'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedList'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedList'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List'
+          description: ''
+    delete:
+      operationId: lists_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this list.
+        required: true
+      tags:
+      - lists
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/todos/:
+    get:
+      operationId: todos_list
+      tags:
+      - todos
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Todo'
+          description: ''
+    post:
+      operationId: todos_create
+      tags:
+      - todos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Todo'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Todo'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Todo'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+          description: ''
+  /api/todos/{id}/:
+    get:
+      operationId: todos_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this todo.
+        required: true
+      tags:
+      - todos
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+          description: ''
+    put:
+      operationId: todos_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this todo.
+        required: true
+      tags:
+      - todos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Todo'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Todo'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Todo'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+          description: ''
+    patch:
+      operationId: todos_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this todo.
+        required: true
+      tags:
+      - todos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTodo'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTodo'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTodo'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+          description: ''
+    delete:
+      operationId: todos_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this todo.
+        required: true
+      tags:
+      - todos
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    List:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 75
+        archived:
+          type: boolean
+        user:
+          type: integer
+          readOnly: true
+      required:
+      - id
+      - title
+      - user
+    PatchedList:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 75
+        archived:
+          type: boolean
+        user:
+          type: integer
+          readOnly: true
+    PatchedTodo:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 75
+        description:
+          type: string
+          nullable: true
+          maxLength: 150
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        complete:
+          type: boolean
+        priority:
+          $ref: '#/components/schemas/PriorityEnum'
+        list:
+          type: integer
+        user:
+          type: integer
+          readOnly: true
+    PriorityEnum:
+      enum:
+      - l
+      - m
+      - h
+      type: string
+      description: |-
+        * `l` - Low
+        * `m` - Medium
+        * `h` - High
+    Todo:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 75
+        description:
+          type: string
+          nullable: true
+          maxLength: 150
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        complete:
+          type: boolean
+        priority:
+          $ref: '#/components/schemas/PriorityEnum'
+        list:
+          type: integer
+        user:
+          type: integer
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - priority
+      - title
+      - user
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid

@@ -4,6 +4,10 @@ from rest_framework import routers
 
 urlpatterns = [
     path('', views.todo, name='main view'),
-    path('todos/api', views.TodoApiView.as_view()),
-    path('lists/api', views.ListApiView.as_view())
 ]
+
+router = routers.DefaultRouter()
+router.register('api/todos', views.TodoApiView, basename='TodoApi')
+router.register('api/lists', views.ListApiView, basename='ListApi')
+
+urlpatterns += router.urls
