@@ -17,13 +17,13 @@ class Todo(models.Model):
     complete = models.BooleanField(default=False)
 
     PRIORITIES = (
-        ('l', 'Low'),
-        ('m', 'Medium'),
-        ('h', 'High')
+        (0, 'Low'),
+        (1, 'Medium'),
+        (2, 'High')
     )
-    priority = models.CharField(max_length=1,choices=PRIORITIES, help_text='Task priority', null=True, blank=True)
+    priority = models.IntegerField(choices=PRIORITIES, help_text='Task priority', blank=True, default=0)
     list = models.ForeignKey(List, on_delete=models.RESTRICT, default=1)
-    user = models.ForeignKey(User, on_delete= models.CASCADE, blank=True, null=True, related_name='todos')
+    user = models.ForeignKey(User, on_delete= models.CASCADE, blank=True, related_name='todos')
 
     class Meta:
         ordering = ['created_at']

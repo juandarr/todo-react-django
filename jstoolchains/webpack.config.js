@@ -5,17 +5,17 @@ module.exports = {
 module: {
   rules: [
     {
-      test: /\.(js|jsx)$/,
+      test: /\.(ts|tsx)$/,
       exclude: /node_modules/,
-      loader: "babel-loader",
-      options: { presets: ["@babel/preset-env", 
-      "@babel/preset-react"] }
-    },
+      use: "ts-loader",
+    }
   ]
 },
-  entry: '../assets/index.js',  // path to our input file
+resolve: {
+  extensions: ['.tsx','.ts','.js'],
+},
   output: {
     filename: 'index-bundle.js',  // output bundle file name
     path: path.resolve(__dirname, '../static/js'),  // path to our Django static directory
-  },
+  }
 };
