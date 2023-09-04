@@ -10,7 +10,7 @@ paths:
       - lists
       security:
       - cookieAuth: []
-      - basicAuth: []
+      - {}
       responses:
         '200':
           content:
@@ -38,7 +38,6 @@ paths:
         required: true
       security:
       - cookieAuth: []
-      - basicAuth: []
       responses:
         '201':
           content:
@@ -60,7 +59,7 @@ paths:
       - lists
       security:
       - cookieAuth: []
-      - basicAuth: []
+      - {}
       responses:
         '200':
           content:
@@ -93,7 +92,6 @@ paths:
         required: true
       security:
       - cookieAuth: []
-      - basicAuth: []
       responses:
         '200':
           content:
@@ -125,7 +123,6 @@ paths:
               $ref: '#/components/schemas/PatchedList'
       security:
       - cookieAuth: []
-      - basicAuth: []
       responses:
         '200':
           content:
@@ -146,7 +143,6 @@ paths:
       - lists
       security:
       - cookieAuth: []
-      - basicAuth: []
       responses:
         '204':
           description: No response body
@@ -302,7 +298,7 @@ paths:
       - todos
       security:
       - cookieAuth: []
-      - basicAuth: []
+      - {}
       responses:
         '200':
           content:
@@ -330,7 +326,6 @@ paths:
         required: true
       security:
       - cookieAuth: []
-      - basicAuth: []
       responses:
         '201':
           content:
@@ -352,7 +347,7 @@ paths:
       - todos
       security:
       - cookieAuth: []
-      - basicAuth: []
+      - {}
       responses:
         '200':
           content:
@@ -385,7 +380,6 @@ paths:
         required: true
       security:
       - cookieAuth: []
-      - basicAuth: []
       responses:
         '200':
           content:
@@ -417,7 +411,6 @@ paths:
               $ref: '#/components/schemas/PatchedTodo'
       security:
       - cookieAuth: []
-      - basicAuth: []
       responses:
         '200':
           content:
@@ -438,7 +431,6 @@ paths:
       - todos
       security:
       - cookieAuth: []
-      - basicAuth: []
       responses:
         '204':
           description: No response body
@@ -487,7 +479,6 @@ components:
           maxLength: 75
         description:
           type: string
-          nullable: true
           maxLength: 150
         created_at:
           type: string
@@ -496,22 +487,13 @@ components:
         complete:
           type: boolean
         priority:
-          $ref: '#/components/schemas/PriorityEnum'
+          type: integer
+          description: Task priority
         list:
           type: integer
         user:
           type: integer
           readOnly: true
-    PriorityEnum:
-      enum:
-      - 0
-      - 1
-      - 2
-      type: integer
-      description: |-
-        * `0` - Low
-        * `1` - Medium
-        * `2` - High
     Todo:
       type: object
       properties:
@@ -523,7 +505,6 @@ components:
           maxLength: 75
         description:
           type: string
-          nullable: true
           maxLength: 150
         created_at:
           type: string
@@ -532,7 +513,8 @@ components:
         complete:
           type: boolean
         priority:
-          $ref: '#/components/schemas/PriorityEnum'
+          type: integer
+          description: Task priority
         list:
           type: integer
         user:
@@ -541,7 +523,6 @@ components:
       required:
       - created_at
       - id
-      - priority
       - title
       - user
   securitySchemes:

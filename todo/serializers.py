@@ -2,9 +2,9 @@ from rest_framework import serializers
 from .models import Todo, List
 
 class TodoSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField( read_only=True,
+    user = serializers.PrimaryKeyRelatedField(read_only=True,
                                               default=serializers.CurrentUserDefault())
-    priority = serializers.ChoiceField(choices=Todo.PRIORITIES)
+    #priority = serializers.ChoiceField(choices=Todo.PRIORITIES)
 
     class Meta:
         model = Todo

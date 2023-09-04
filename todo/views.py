@@ -1,9 +1,10 @@
 from django.http import HttpResponse
 from django.template import loader
-from django.views.generic.base import TemplateView
-from rest_framework import permissions, viewsets
+from rest_framework import viewsets
 from .models import Todo, List
 from .serializers import TodoSerializer, ListSerializer
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 def todo(request):
     template = loader.get_template('index.html')
@@ -58,8 +59,11 @@ class ListApiView(APIView):
 class TodoApiView(viewsets.ModelViewSet):
     queryset = Todo.objects.all() 
     serializer_class = TodoSerializer
-    #permission_classes = [permissions.IsAuthenticated]
-    authentication_classes = []
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
     '''
     def get_queryset(self):
         return self.request.user.todos.all()
@@ -70,8 +74,12 @@ class TodoApiView(viewsets.ModelViewSet):
 class ListApiView(viewsets.ModelViewSet):
     queryset = List.objects.all() 
     serializer_class = ListSerializer
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     #permission_classes = [permissions.IsAuthenticated]
-    authentication_classes = []
+    #authentication_classes = []
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
     '''
     def get_queryset(self):
         return self.request.user.lists.all()

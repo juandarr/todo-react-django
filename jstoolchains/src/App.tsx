@@ -222,6 +222,20 @@ const PriorityEnum = {
   M: 1,
   H: 2,
 };
+function getCookie(name: string) {
+  var cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    var cookies = document.cookie.split(";");
+    for (var i = 0; i < cookies.length; i++) {
+      var cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === name + "=") {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
 
 export default function App() {
   const [isLoading, setIsloading] = useState(true);
@@ -229,6 +243,9 @@ export default function App() {
 
   const apiConfig = new Configuration({
     basePath: "http://127.0.0.1:8000",
+    headers: {
+      "X-CSRFToken": getCookie("csrftoken"),
+    },
   });
   const client = new TodosApi(apiConfig);
 
@@ -248,10 +265,6 @@ export default function App() {
   const addTodo = (title: string) => {
     let todo = {
       title: title,
-      description: "Something",
-      complete: false,
-      priority: 0,
-      list: 1,
     };
     client
       .todosCreate({ todo })
@@ -276,15 +289,26 @@ export default function App() {
   };
 
   const toggleTodo = (id: number, complete: boolean) => {
-    setTodos((prevTodos) => {
-      return prevTodos.map((todo) => {
-        if (todo.id == id) {
-          return { ...todo, complete };
-        } else {
-          return todo;
-        }
+    let todo = {
+      complete: complete,
+    };
+    client
+      .todosPartialUpdate({ id: id, patchedTodo: todo })
+      .then((result) => {
+        console.log('Todo was toggled!');
+        setTodos((prevTodos) => {
+          return prevTodos.map((todo) => {
+            if (todo.id == id) {
+              return { ...todo, complete };
+            } else {
+              return todo;
+            }
+          });
+        });
+      })
+      .catch((error) => {
+        console.log("There was an error toggling the todo");
       });
-    });
   };
 
   const deleteTodo = (id: number) => {
@@ -294,25 +318,37 @@ export default function App() {
         setTodos((prevTodos) => {
           return prevTodos.filter((todo) => todo.id !== id);
         });
-        console.log("Element was deleted");
+        console.log("Todo was deleted");
       })
       .catch((e) => {
-        console.log("Error deleting element");
+        console.log("Error deleting todo");
       });
   };
 
   const editTodo = (id: number, title: string, setEdit: ReactSetState) => {
     setEdit([false, 0]);
-    setTodos((prevTodos) => {
-      return prevTodos.map((todo) => {
-        if (todo.id == id) {
-          return { ...todo, title };
-        } else {
-          return todo;
-        }
+    let todo = {
+      title: title,
+    };
+    client
+      .todosPartialUpdate({ id: id, patchedTodo: todo })
+      .then((result) => {
+        console.log('Todo was patched!');
+        setTodos((prevTodos) => {
+          return prevTodos.map((todo) => {
+            if (todo.id == id) {
+              return { ...todo, title };
+            } else {
+              return todo;
+            }
+          });
+        });
+      })
+      .catch((error) => {
+        console.log("There was an error updating the field");
       });
-    });
   };
+
   return (
     <>
       <TaskForm addTodo={addTodo} />
