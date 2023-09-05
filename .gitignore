@@ -3,3 +3,4 @@ jstoolchains/node_modules
 todo/__pycache__
 todo/migrations/__pycache__
 todo-api-client/
+.vscode/

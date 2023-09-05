@@ -124,7 +124,7 @@ function TaskList({ todos, toggleTodo, deleteTodo, editTodo }: TaskListProps) {
           ) : (
             <input
               type="text"
-              className="font-small w-3/5 text-truncate bg-white text-gray-700 border-0"
+              className="w-3/5 py-2 text-truncate font-small bg-white text-gray-700 border-0"
               name="title"
               value={textEdit}
               onChange={(e) => setTextEdit(e.target.value)}
