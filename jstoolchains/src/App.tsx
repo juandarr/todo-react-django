@@ -193,10 +193,10 @@ function TaskList({
               className="border-2 border-black"
             />
           </div>
-          <div className="flex flex-1">
+          <div className="flex flex-1 truncate">
             {!show_edit ? (
               <div
-                className={`flex-1 truncate py-2 text-lg ${
+                className={`py-2 text-lg ${
                   todo.complete ? "text-gray-400" : "text-gray-700"
                 }`}
                 style={{ cursor: "pointer" }}
@@ -210,7 +210,7 @@ function TaskList({
             ) : (
               <input
                 type="text"
-                className="flex-1 truncate border-0 bg-white py-2 text-lg text-gray-700"
+                className="flex-1 border-0 bg-white py-2 text-lg text-gray-700"
                 name="title"
                 value={textEdit}
                 onChange={(e) => setTextEdit(e.target.value)}
