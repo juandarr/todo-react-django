@@ -10,14 +10,9 @@
     <link rel="stylesheet" href="{% static 'css/output.css' %}">
 </head>
 
-<body class="bg-violet-500" style="margin:0px; height:100%;">
-    <nav class="flex justify-center px-4 py-6 bg-gradient-to-r from-cyan-500">
-        <a href="/" class="text-2xl text-white ">Your very own Todo List </a>
-    </nav>
-    <div class="w-4/5 my-6 mx-auto p-2 lg:p-10 bg-white rounded-xl">
-        {% block content %}
-        {% endblock %}
-    </div>
+<body id="body" class="bg-sky-400">
+    {% block content %}
+    {% endblock %}
 
     <script src="{% static 'js/index-bundle.js' %}"></script>
     {% block js_script %}

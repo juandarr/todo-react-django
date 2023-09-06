@@ -1,5 +1,6 @@
 import React, { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { Checkbox } from "./components/checkbox";
 
 import App from "./App";
 

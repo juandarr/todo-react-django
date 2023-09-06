@@ -1,24 +1,28 @@
-import React, { useState, useEffect, FormEventHandler } from "react";
+import React, { useState, useEffect } from "react";
 import { TodosApi, ListsApi } from "../../todo-api-client/apis/index";
 import { Configuration } from "../../todo-api-client/runtime";
+import { Checkbox } from "./components/checkbox";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./components/tooltip";
+
+import { HambergerMenu, House, Notification, Add } from "iconsax-react";
+import confetti from "canvas-confetti";
 
 type ReactSetState = React.Dispatch<React.SetStateAction<[boolean, number]>>;
-
-type todosType = {
-  id: number;
-  title: string;
-  description: string;
-  complete: boolean;
-  createdAt: string;
-}[];
 
 type todoType = {
   id: number;
   title: string;
   description: string;
   complete: boolean;
-  createdAt: string;
+  createdAt: Date;
 };
+
+type todosType = todoType[];
 
 type addTodoType = (title: string) => void;
 
@@ -31,6 +35,66 @@ interface TaskListProps {
   toggleTodo: (id: number, complete: boolean) => void;
   deleteTodo: (id: number) => void;
   editTodo: (id: number, title: string, setEdit: ReactSetState) => void;
+  condition: boolean;
+}
+
+interface TaskListHeaderProps {
+  fieldDone: string;
+  fieldTask: string;
+  fieldActions: string;
+}
+function randomInRange(min: number, max: number) {
+  return Math.random() * (max - min) + min;
+}
+
+function NavBar() {
+  return (
+    <nav className="mx-6 mb-6 mt-12 flex w-5/6 justify-between rounded-lg border-2 border-black bg-white p-2">
+      <a
+        href="/"
+        className="flex w-1/12 justify-start pl-3 text-2xl  text-emerald-500"
+      >
+        <HambergerMenu size={"1.75rem"} />
+      </a>
+      <a
+        href="/api/lists"
+        className="flex w-1/12 justify-start pl-3 text-2xl text-rose-500"
+      >
+        <House size={"1.75rem"} />
+      </a>
+      <a
+        href="/api/todos"
+        className="flex w-8/12 justify-center pl-3 text-2xl text-violet-500"
+      >
+        <Add size={"1.75rem"} />
+      </a>
+      <a
+        href="/admin"
+        className="flex w-2/12 justify-end pl-3 pr-3 text-2xl text-cyan-500"
+      >
+        <Notification size={"1.75rem"} />
+      </a>
+    </nav>
+  );
+}
+
+function SideBar() {
+  return (
+    <div
+      className="my-6 flex w-3/12 flex-col  rounded-xl border-2 border-black bg-white p-10"
+      id="sidebar"
+    >
+      <div className="flex flex-col">
+        <div className="mb-2 text-xl font-bold">Tareas</div>
+        <div className="mb-1 text-lg">Inbox</div>
+      </div>
+      <div className="mt-4 flex flex-col">
+        <div className="mb-2 text-xl font-bold text-violet-600">Lists</div>
+        <div className="mb-1 text-lg">Study webdev</div>
+        <div className="text-lg">Create todoApp</div>
+      </div>
+    </div>
+  );
 }
 
 function TaskForm({ addTodo }: TaskFormProps) {
@@ -43,11 +107,15 @@ function TaskForm({ addTodo }: TaskFormProps) {
   };
 
   return (
-    <form id="myform" className="flex mb-6 space-x-4" onSubmit={handleSubmit}>
+    <form
+      id="myform"
+      className="mb-6 flex space-x-4 font-serif text-lg"
+      onSubmit={handleSubmit}
+    >
       <input
         type="text"
         name="title"
-        className="input input-bordered input-secondary flex-1 px-4 py-3 bg-gray-200 rounded-xl text-gray-700"
+        className="h-10 flex-1 rounded-xl bg-gray-300 px-4 py-3 text-gray-900 placeholder:text-gray-500"
         id="todoText"
         onChange={(e) => setNewTodo(e.target.value)}
         placeholder="Enter your todo here"
@@ -55,7 +123,7 @@ function TaskForm({ addTodo }: TaskFormProps) {
       />
       <button
         type="submit"
-        className="p-3 rounded-xl text-white bg-cyan-500 hover:bg-cyan-600"
+        className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-400 p-3 text-black hover:bg-cyan-500"
       >
         Add
       </button>
@@ -63,133 +131,169 @@ function TaskForm({ addTodo }: TaskFormProps) {
   );
 }
 
-function TaskListHeader() {
+function TaskListHeader({
+  fieldDone,
+  fieldTask,
+  fieldActions,
+}: TaskListHeaderProps) {
   return (
-    <div className="flex py-3 rounded-xl bg-gray-100">
-      <div className="w-1/5 text-center">
-        <p className="px-6 text-xs font-medium text-gray-500 uppercase">Done</p>
-      </div>
-      <div className="w-3/5">
-        <p className="px-6 text-xs font-medium text-gray-500 uppercase">Task</p>
-      </div>
-      <div className="hidden md:block w-1/5 px-6 text-center">
-        <p className="text-xs font-medium text-gray-500 uppercase">Actions</p>
-      </div>
+    <div className="text-md flex rounded-xl bg-gray-100 py-3 font-serif font-bold">
+      <p className="w-1/5 px-6 text-center font-bold text-gray-700">
+        {fieldDone}
+      </p>
+      <p className="flex-1 px-6 font-bold text-gray-700">{fieldTask}</p>
+      <p className="hidden w-1/5 px-6 text-center text-gray-700 md:block">
+        {fieldActions}
+      </p>
     </div>
   );
 }
 
-function TaskList({ todos, toggleTodo, deleteTodo, editTodo }: TaskListProps) {
+function TaskList({
+  todos,
+  toggleTodo,
+  deleteTodo,
+  editTodo,
+  condition,
+}: TaskListProps) {
   const [edit, setEdit] = useState([false, 0]);
   const [textEdit, setTextEdit] = useState("");
 
   const handleKeyPress = (
     event: React.FormEvent<HTMLFormElement>,
-    todo: todoType
+    todo: todoType,
   ) => {
     event.preventDefault();
     editTodo(todo.id, textEdit, setEdit);
   };
+  const filteredTodos = todos.filter((todo) => todo.complete == condition);
 
-  const taskList = todos.map((todo, idx: number) => {
-    const line = todo.complete ? "line-through" : "";
-    const class_created = "badge bg-primary text-wrap " + line;
-    const class_title =
-      "w-3/5 py-2 text-truncate text-gray-700 font-small " + line;
+  if (filteredTodos.length === 0) {
+    return (
+      <div className="text-md flex-1 px-6 py-6 font-bold text-violet-600">
+        No todos {condition == true ? "completed yet" : "at the moment"}
+      </div>
+    );
+  }
+  const taskList = filteredTodos.map((todo, idx: number) => {
     const show_edit = edit[0] && edit[1] == todo.id;
     return (
       <li key={todo.id}>
-        <form className="flex" onSubmit={(e) => handleKeyPress(e, todo)}>
-          <div className="w-1/5 py-2 text-center">
-            <input
-              className="checkbox checkbox-primary"
-              type="checkbox"
-              style={{ cursor: "pointer" }}
+        <form
+          className="flex justify-start font-sans"
+          onSubmit={(e) => handleKeyPress(e, todo)}
+        >
+          <div className="flex w-1/5 items-center justify-center">
+            <Checkbox
+              id={"checkbox-" + todo.id}
               checked={todo.complete}
-              onChange={(e) => toggleTodo(todo.id, e.target.checked)}
-              id={"checkbox-" + idx}
+              onCheckedChange={(checked) =>
+                toggleTodo(todo.id, checked as boolean)
+              }
+              className="border-2 border-black"
             />
           </div>
-          {!show_edit ? (
-            <div
-              className={class_title}
-              style={{ cursor: "pointer" }}
-              onClick={(e) => {
-                setEdit([true, todo.id]);
-                setTextEdit(todo.title);
-              }}
-            >
-              {todo.title}
-            </div>
-          ) : (
-            <input
-              type="text"
-              className="w-3/5 py-2 text-truncate font-small bg-white text-gray-700 border-0"
-              name="title"
-              value={textEdit}
-              onChange={(e) => setTextEdit(e.target.value)}
-              autoFocus
-            ></input>
-          )}
-          <div className="w-1/5 py-2 text-center">
-            {edit[0] && edit[1] == todo.id && (
-              <div className="tooltip tooltip-info" data-tip="Save">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="w-6 h-6 text-sky-500 hover:text-sky-600"
-                  style={{ cursor: "pointer", display: "inline" }}
-                  onClick={() => editTodo(todo.id, textEdit, setEdit)}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m8.25 3v6.75m0 0l-3-3m3 3l3-3M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"
-                  />
-                </svg>
-              </div>
-            )}
-            <div className="tooltip tooltip-info" data-tip="Delete">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                onClick={() => deleteTodo(todo.id)}
-                className="h-6 w-6 text-sky-500 hover:text-sky-600"
-                style={{ cursor: "pointer", display: "inline" }}
+          <div className="flex flex-1">
+            {!show_edit ? (
+              <div
+                className={`flex-1 truncate py-2 text-lg ${
+                  todo.complete ? "text-gray-400" : "text-gray-700"
+                }`}
+                style={{ cursor: "pointer" }}
+                onClick={(e) => {
+                  setEdit([true, todo.id]);
+                  setTextEdit(todo.title);
+                }}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            </div>
+                {todo.title}
+              </div>
+            ) : (
+              <input
+                type="text"
+                className="flex-1 truncate border-0 bg-white py-2 text-lg text-gray-700"
+                name="title"
+                value={textEdit}
+                onChange={(e) => setTextEdit(e.target.value)}
+                autoFocus
+              ></input>
+            )}
+
+            {edit[0] && edit[1] == todo.id && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger className="ml-2 self-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="2"
+                      stroke="currentColor"
+                      className="h-7 w-7 text-sky-500 hover:text-sky-600"
+                      style={{ cursor: "pointer", display: "inline" }}
+                      onClick={() => editTodo(todo.id, textEdit, setEdit)}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m8.25 3v6.75m0 0l-3-3m3 3l3-3M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"
+                      />
+                    </svg>
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-sky-500">
+                    <p className="font-bold text-white">Save</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+          </div>
+          <div className="flex w-1/5 justify-center py-2">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                    stroke="currentColor"
+                    onClick={() => deleteTodo(todo.id)}
+                    className="h-7 w-7 text-pink-400 hover:text-pink-500"
+                    style={{ cursor: "pointer", display: "inline" }}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                </TooltipTrigger>
+                <TooltipContent className="bg-pink-400">
+                  <p className="font-bold text-white">Delete</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </form>
-        <div className="flex pb-2 mt-0 pt-0">
-          <div className="w-3/5 text-center">
-            <div className={class_created}>{todo.createdAt.toString()}</div>
+        <div className="ml-6 mt-0 flex justify-start pb-2 pt-0 text-sm text-gray-400">
+          <div className="w-2/5 text-center">
+            <div
+              className={`underline ${
+                todo.complete
+                  ? "text-gray-400 decoration-green-500"
+                  : "text-gray-600 decoration-pink-500"
+              }`}
+            >
+              {todo.createdAt.toDateString() +
+                " " +
+                todo.createdAt.toLocaleTimeString()}
+            </div>
           </div>
         </div>
       </li>
     );
   });
 
-  if (todos.length !== 0) {
-    return <ul className="divide-y divide-gray-150">{taskList}</ul>;
-  } else {
-    return (
-      <div className="flex-1 px-6 py-6 text-l text-violet-600">
-        No todos yet!
-      </div>
-    );
-  }
+  return <ul className="divide-gray-150 divide-y">{taskList}</ul>;
 }
 /*
 let all_todos = [
@@ -218,10 +322,12 @@ let all_todos = [
 let counter = 3;
 */
 const PriorityEnum = {
-  L: 0,
-  M: 1,
-  H: 2,
+  none: 0,
+  low: 1,
+  medium: 2,
+  high: 3,
 };
+
 function getCookie(name: string) {
   var cookieValue = null;
   if (document.cookie && document.cookie !== "") {
@@ -236,6 +342,14 @@ function getCookie(name: string) {
   }
   return cookieValue;
 }
+function getPoint(t: string) {
+  let target = document.getElementById(t);
+  let [xTarget, yTarget] = [target.offsetLeft, target.offsetTop];
+
+  let [xDoc, yDoc] = [window.innerWidth, window.innerHeight];
+  console.log(xTarget, xDoc, yTarget, yDoc);
+  return [xTarget / xDoc, yTarget / yDoc];
+}
 
 export default function App() {
   const [isLoading, setIsloading] = useState(true);
@@ -248,7 +362,13 @@ export default function App() {
     },
   });
   const client = new TodosApi(apiConfig);
+  var myCanvas = document.createElement("canvas");
+  document.body.appendChild(myCanvas);
 
+  var myConfetti = confetti.create(myCanvas, {
+    resize: true,
+    useWorker: true,
+  });
   useEffect(() => {
     client
       .todosList()
@@ -292,10 +412,19 @@ export default function App() {
     let todo = {
       complete: complete,
     };
+    let [x, y] = getPoint("checkbox-" + id);
     client
       .todosPartialUpdate({ id: id, patchedTodo: todo })
       .then((result) => {
-        console.log('Todo was toggled!');
+        if (complete == true) {
+          confetti({
+            angle: randomInRange(55, 125),
+            spread: randomInRange(50, 70),
+            particleCount: randomInRange(50, 100),
+            origin: { x: x, y: y },
+          });
+        }
+        console.log("Todo was toggled!");
         setTodos((prevTodos) => {
           return prevTodos.map((todo) => {
             if (todo.id == id) {
@@ -333,7 +462,7 @@ export default function App() {
     client
       .todosPartialUpdate({ id: id, patchedTodo: todo })
       .then((result) => {
-        console.log('Todo was patched!');
+        console.log("Todo was patched!");
         setTodos((prevTodos) => {
           return prevTodos.map((todo) => {
             if (todo.id == id) {
@@ -351,14 +480,37 @@ export default function App() {
 
   return (
     <>
-      <TaskForm addTodo={addTodo} />
-      <TaskListHeader />
-      <TaskList
-        todos={todos}
-        toggleTodo={toggleTodo}
-        deleteTodo={deleteTodo}
-        editTodo={editTodo}
-      />
+      <NavBar />
+      <div className="mx-6 flex w-5/6 justify-between font-serif">
+        <SideBar />
+        <div className="my-6 w-8/12 rounded-xl border-2 border-black bg-white p-10">
+          <TaskForm addTodo={addTodo} />
+          <TaskListHeader
+            fieldDone={"Is done?"}
+            fieldTask={"Task"}
+            fieldActions={"Actions"}
+          />
+          <TaskList
+            todos={todos}
+            toggleTodo={toggleTodo}
+            deleteTodo={deleteTodo}
+            editTodo={editTodo}
+            condition={false}
+          />
+          <TaskListHeader
+            fieldDone={"Completed"}
+            fieldTask={""}
+            fieldActions={""}
+          />
+          <TaskList
+            todos={todos}
+            toggleTodo={toggleTodo}
+            deleteTodo={deleteTodo}
+            editTodo={editTodo}
+            condition={true}
+          />
+        </div>
+      </div>
     </>
   );
 }
