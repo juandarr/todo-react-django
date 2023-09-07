@@ -49,7 +49,7 @@ interface TaskListProps {
   deleteTodo: (id: number) => void;
   editTodo: (id: number, title: string, setEdit: ReactSetState) => void;
   condition: boolean;
-  currentList: number;
+  currentList: listType;
 }
 
 interface TaskListHeaderProps {
@@ -62,7 +62,7 @@ interface SideBarProps {
   lists: listsType;
   userSettings: userSettingsType;
   changeCurrentList: (oldList: number) => void;
-  currentList: number;
+  currentList: listType;
 }
 
 function randomInRange(min: number, max: number) {
@@ -86,7 +86,7 @@ function NavBar() {
       </a>
       <a
         href="/api/todos"
-        className="flex w-8/12 justify-center pl-3 text-2xl text-violet-500"
+        className="flex w-8/12 justify-center pl-3 text-2xl text-violet-600"
       >
         <Add size={"1.75rem"} />
       </a>
@@ -112,7 +112,7 @@ function SideBar({
       <div
         key={list.id}
         className={`cursor-pointer ${
-          currentList == list.id ? "rounded-md bg-cyan-200" : ""
+          currentList.id == list.id ? "rounded-md bg-cyan-200" : ""
         } rounded-xl p-1 pl-2 text-lg hover:underline hover:decoration-rose-500 hover:decoration-2`}
         onClick={() => changeCurrentList(list.id)}
       >
@@ -129,7 +129,7 @@ function SideBar({
         <div className="mb-2 text-xl font-bold">Tareas</div>
         <div
           className={`cursor-pointer ${
-            currentList == userSettings.homeListId
+            currentList.id == userSettings.homeListId
               ? "rounded-md bg-cyan-200"
               : ""
           } rounded-xl p-1 pl-2 text-lg hover:underline hover:decoration-rose-500 hover:decoration-2`}
@@ -216,7 +216,7 @@ function TaskList({
     event.preventDefault();
     editTodo(todo.id, textEdit, setEdit);
   };
-  const listTodos = todos.filter((todo) => todo.list == currentList);
+  const listTodos = todos.filter((todo) => todo.list == currentList.id);
   const filteredTodos = listTodos.filter((todo) => todo.complete == condition);
 
   if (filteredTodos.length === 0) {
@@ -383,11 +383,16 @@ var myCanvas = document.createElement("canvas");
 const userSettings = {
   homeListId: 1,
 };
+
 export default function App() {
   const [isLoading, setIsloading] = useState(true);
   const [todos, setTodos] = useState([]);
   const [lists, setLists] = useState([]);
-  const [currentList, setCurrentList] = useState(userSettings.homeListId);
+  const [currentList, setCurrentList] = useState({
+    id: 0,
+    title: "",
+    archived: false,
+  });
 
   const apiConfig = new Configuration({
     basePath: "http://127.0.0.1:8000",
@@ -422,21 +427,26 @@ export default function App() {
       .then((result) => {
         console.log("Here are the lists: ", result);
         setLists(result);
+        setCurrentList((oldList) => {
+          return result.filter(
+            (list) => list.id == userSettings.homeListId,
+          )[0] as listType;
+        });
       })
       .catch(() => {
         console.log("There was an error retrieving lists");
       });
   }, []);
 
-  const changeCurrentList = (newList: number) => {
+  const changeCurrentList = (newListId: number) => {
+    const newList = lists.filter((list) => list.id == newListId)[0];
     setCurrentList((oldList) => newList);
-    console.log("List changed to: " + newList);
   };
 
   const addTodo = (title: string) => {
     let todo = {
       title: title,
-      list: currentList,
+      list: currentList.id,
     };
     clientTodo
       .todosCreate({ todo })
@@ -529,7 +539,6 @@ export default function App() {
         console.log("There was an error updating the field");
       });
   };
-
   return (
     <>
       <NavBar />
@@ -540,7 +549,10 @@ export default function App() {
           changeCurrentList={changeCurrentList}
           currentList={currentList}
         />
-        <div className="my-6 w-8/12 rounded-xl border-2 border-black bg-white p-10">
+        <div className="relative my-6 w-8/12 rounded-xl border-2 border-black bg-white p-10">
+          <div className="absolute left-3 top-2 text-sm font-bold text-violet-600">
+            {currentList.title}
+          </div>
           <TaskForm addTodo={addTodo} />
           <TaskListHeader
             fieldDone={"Is done?"}
