@@ -1059,6 +1059,11 @@ body {
   background-color: rgb(165 243 252 / .25);
 }
 
+.bg-rose-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(251 113 133 / var(--tw-bg-opacity));
+}
+
 .p-10 {
   padding: 2.5rem;
 }
@@ -1276,6 +1281,16 @@ body {
   color: rgb(12 74 110 / var(--tw-text-opacity));
 }
 
+.text-emerald-600 {
+  --tw-text-opacity: 1;
+  color: rgb(5 150 105 / var(--tw-text-opacity));
+}
+
+.text-rose-400 {
+  --tw-text-opacity: 1;
+  color: rgb(251 113 133 / var(--tw-text-opacity));
+}
+
 .underline {
   text-decoration-line: underline;
 }
@@ -1286,6 +1301,10 @@ body {
 
 .decoration-pink-500 {
   text-decoration-color: #ec4899;
+}
+
+.decoration-rose-500 {
+  text-decoration-color: #f43f5e;
 }
 
 .opacity-20 {

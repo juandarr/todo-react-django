@@ -9,7 +9,14 @@ import {
   TooltipTrigger,
 } from "./components/tooltip";
 
-import { HambergerMenu, House, Notification, Add } from "iconsax-react";
+import {
+  HambergerMenu,
+  House,
+  Notification,
+  ArchiveAdd,
+  AddCircle,
+} from "iconsax-react";
+
 import confetti from "canvas-confetti";
 
 type ReactSetState = React.Dispatch<React.SetStateAction<[boolean, number]>>;
@@ -58,6 +65,10 @@ interface TaskListHeaderProps {
   fieldActions: string;
 }
 
+interface NavBarProps {
+  changeCurrentList: (oldList: number) => void;
+}
+
 interface SideBarProps {
   lists: listsType;
   userSettings: userSettingsType;
@@ -69,32 +80,34 @@ function randomInRange(min: number, max: number) {
   return Math.random() * (max - min) + min;
 }
 
-function NavBar() {
+const iconSize = "1.8rem";
+
+function NavBar({ changeCurrentList }: NavBarProps) {
   return (
     <nav className="mx-6 mb-6 mt-12 flex w-5/6 justify-between rounded-lg border-2 border-black bg-white p-2">
       <a
-        href="/"
-        className="flex w-1/12 justify-start pl-3 text-2xl  text-emerald-500"
+        href="/api/lists"
+        className="flex w-1/12 justify-start pl-3 text-2xl  text-violet-500"
       >
-        <HambergerMenu size={"1.75rem"} />
+        <HambergerMenu size={iconSize} />
       </a>
       <a
-        href="/api/lists"
-        className="flex w-1/12 justify-start pl-3 text-2xl text-rose-500"
+        className="flex w-1/12 cursor-pointer justify-start pl-3 text-2xl text-rose-400 hover:text-rose-500"
+        onClick={() => changeCurrentList(userSettings.homeListId)}
       >
-        <House size={"1.75rem"} />
+        <House size={iconSize} />
       </a>
       <a
         href="/api/todos"
-        className="flex w-8/12 justify-center pl-3 text-2xl text-violet-600"
+        className="flex w-8/12 justify-center pl-3 text-2xl text-emerald-500"
       >
-        <Add size={"1.75rem"} />
+        <AddCircle size={iconSize} />
       </a>
       <a
         href="/admin"
         className="flex w-2/12 justify-end pl-3 pr-3 text-2xl text-cyan-500"
       >
-        <Notification size={"1.75rem"} />
+        <Notification size={iconSize} />
       </a>
     </nav>
   );
@@ -139,7 +152,12 @@ function SideBar({
         </div>
       </div>
       <div className="mt-4 flex flex-col">
-        <div className="mb-2 text-xl font-bold text-violet-600">Lists</div>
+        <div className="flex justify-between">
+          <div className="mb-2 text-xl font-bold text-violet-600">Lists</div>
+          <a href="/" className="flex justify-center text-2xl text-violet-600">
+            <ArchiveAdd size={iconSize} />
+          </a>
+        </div>
         {otherLists}
       </div>
     </div>
@@ -308,7 +326,7 @@ function TaskList({
                     strokeWidth="2"
                     stroke="currentColor"
                     onClick={() => deleteTodo(todo.id)}
-                    className="h-7 w-7 text-pink-400 hover:text-pink-500"
+                    className="h-7 w-7 text-rose-400 hover:text-rose-500"
                     style={{ cursor: "pointer", display: "inline" }}
                   >
                     <path
@@ -318,7 +336,7 @@ function TaskList({
                     />
                   </svg>
                 </TooltipTrigger>
-                <TooltipContent className="bg-pink-400">
+                <TooltipContent className="bg-rose-400">
                   <p className="font-bold text-white">Delete</p>
                 </TooltipContent>
               </Tooltip>
@@ -331,7 +349,7 @@ function TaskList({
               className={`underline ${
                 todo.complete
                   ? "text-gray-400 decoration-green-500"
-                  : "text-gray-600 decoration-pink-500"
+                  : "text-gray-600 decoration-rose-500"
               }`}
             >
               {todo.createdAt.toDateString() +
@@ -541,7 +559,7 @@ export default function App() {
   };
   return (
     <>
-      <NavBar />
+      <NavBar changeCurrentList={changeCurrentList} />
       <div className="mx-6 flex w-5/6 justify-between font-serif">
         <SideBar
           lists={lists}
