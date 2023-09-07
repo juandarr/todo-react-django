@@ -35,10 +35,14 @@ function getCookie(name: string) {
 }
 
 function getPoint(t: string) {
-  let target = document.getElementById(t) as HTMLElement;
-  let [xTarget, yTarget] = [target.offsetLeft, target.offsetTop];
+  let target = document.getElementById(t);
+  let [xTarget, yTarget] = [
+    target.getBoundingClientRect().left,
+    target.getBoundingClientRect().top,
+  ];
 
   let [xDoc, yDoc] = [window.innerWidth, window.innerHeight];
+  console.log(xTarget, xDoc, yTarget, yDoc);
   return [xTarget / xDoc, yTarget / yDoc];
 }
 
@@ -281,7 +285,7 @@ function TaskItem({
   const show_edit = edit[0] && edit[1] == todo.id;
 
   return (
-    <li key={todo.id}>
+    <>
       <form
         className="flex justify-start font-sans"
         onSubmit={(event) => handleKeyPress(event, todo)}
@@ -392,7 +396,7 @@ function TaskItem({
           </div>
         </div>
       </div>
-    </li>
+    </>
   );
 }
 
@@ -426,17 +430,19 @@ function TaskList({
   }
   const taskList = filteredTodos.map((todo, idx: number) => {
     return (
-      <TaskItem
-        todo={todo}
-        toggleTodo={toggleTodo}
-        editTodo={editTodo}
-        deleteTodo={deleteTodo}
-        edit={edit}
-        setEdit={setEdit}
-        textEdit={textEdit}
-        setTextEdit={setTextEdit}
-        handleKeyPress={handleKeyPress}
-      />
+      <li key={todo.id}>
+        <TaskItem
+          todo={todo}
+          toggleTodo={toggleTodo}
+          editTodo={editTodo}
+          deleteTodo={deleteTodo}
+          edit={edit}
+          setEdit={setEdit}
+          textEdit={textEdit}
+          setTextEdit={setTextEdit}
+          handleKeyPress={handleKeyPress}
+        />
+      </li>
     );
   });
 
