@@ -20,6 +20,7 @@ type todoType = {
   description: string;
   complete: boolean;
   createdAt: Date;
+  list: number;
 };
 
 type todosType = todoType[];
@@ -48,6 +49,7 @@ interface TaskListProps {
   deleteTodo: (id: number) => void;
   editTodo: (id: number, title: string, setEdit: ReactSetState) => void;
   condition: boolean;
+  currentList: number;
 }
 
 interface TaskListHeaderProps {
@@ -59,6 +61,8 @@ interface TaskListHeaderProps {
 interface SideBarProps {
   lists: listsType;
   userSettings: userSettingsType;
+  changeCurrentList: (oldList: number) => void;
+  currentList: number;
 }
 
 function randomInRange(min: number, max: number) {
@@ -96,11 +100,22 @@ function NavBar() {
   );
 }
 
-function SideBar({ lists, userSettings }: SideBarProps) {
+function SideBar({
+  lists,
+  userSettings,
+  currentList,
+  changeCurrentList,
+}: SideBarProps) {
   const otherLists = lists
     .filter((list) => list.id !== userSettings.homeListId)
     .map((list) => (
-      <div key={list.id} className="text-lg">
+      <div
+        key={list.id}
+        className={`cursor-pointer ${
+          currentList == list.id ? "rounded-md bg-cyan-200" : ""
+        } rounded-xl p-1 pl-2 text-lg hover:underline hover:decoration-rose-500 hover:decoration-2`}
+        onClick={() => changeCurrentList(list.id)}
+      >
         {list.title}
       </div>
     ));
@@ -112,7 +127,16 @@ function SideBar({ lists, userSettings }: SideBarProps) {
     >
       <div className="mb-1 flex flex-col">
         <div className="mb-2 text-xl font-bold">Tareas</div>
-        <div className="text-lg">Inbox</div>
+        <div
+          className={`cursor-pointer ${
+            currentList == userSettings.homeListId
+              ? "rounded-md bg-cyan-200"
+              : ""
+          } rounded-xl p-1 pl-2 text-lg hover:underline hover:decoration-rose-500 hover:decoration-2`}
+          onClick={() => changeCurrentList(userSettings.homeListId)}
+        >
+          Inbox
+        </div>
       </div>
       <div className="mt-4 flex flex-col">
         <div className="mb-2 text-xl font-bold text-violet-600">Lists</div>
@@ -180,6 +204,7 @@ function TaskList({
   deleteTodo,
   editTodo,
   condition,
+  currentList,
 }: TaskListProps) {
   const [edit, setEdit] = useState([false, 0]);
   const [textEdit, setTextEdit] = useState("");
@@ -191,7 +216,8 @@ function TaskList({
     event.preventDefault();
     editTodo(todo.id, textEdit, setEdit);
   };
-  const filteredTodos = todos.filter((todo) => todo.complete == condition);
+  const listTodos = todos.filter((todo) => todo.list == currentList);
+  const filteredTodos = listTodos.filter((todo) => todo.complete == condition);
 
   if (filteredTodos.length === 0) {
     return (
@@ -351,14 +377,17 @@ function getPoint(t: string) {
   return [xTarget / xDoc, yTarget / yDoc];
 }
 
+var myCanvas = document.createElement("canvas");
+//document.body.appendChild(myCanvas);
+
+const userSettings = {
+  homeListId: 1,
+};
 export default function App() {
   const [isLoading, setIsloading] = useState(true);
   const [todos, setTodos] = useState([]);
   const [lists, setLists] = useState([]);
-
-  const userSettings = {
-    homeListId: 1,
-  };
+  const [currentList, setCurrentList] = useState(userSettings.homeListId);
 
   const apiConfig = new Configuration({
     basePath: "http://127.0.0.1:8000",
@@ -369,9 +398,6 @@ export default function App() {
 
   const clientTodo = new TodosApi(apiConfig);
   const clientList = new ListsApi(apiConfig);
-
-  var myCanvas = document.createElement("canvas");
-  document.body.appendChild(myCanvas);
 
   var myConfetti = confetti.create(myCanvas, {
     resize: true,
@@ -402,9 +428,15 @@ export default function App() {
       });
   }, []);
 
+  const changeCurrentList = (newList: number) => {
+    setCurrentList((oldList) => newList);
+    console.log("List changed to: " + newList);
+  };
+
   const addTodo = (title: string) => {
     let todo = {
       title: title,
+      list: currentList,
     };
     clientTodo
       .todosCreate({ todo })
@@ -502,7 +534,12 @@ export default function App() {
     <>
       <NavBar />
       <div className="mx-6 flex w-5/6 justify-between font-serif">
-        <SideBar lists={lists} userSettings={userSettings} />
+        <SideBar
+          lists={lists}
+          userSettings={userSettings}
+          changeCurrentList={changeCurrentList}
+          currentList={currentList}
+        />
         <div className="my-6 w-8/12 rounded-xl border-2 border-black bg-white p-10">
           <TaskForm addTodo={addTodo} />
           <TaskListHeader
@@ -516,6 +553,7 @@ export default function App() {
             deleteTodo={deleteTodo}
             editTodo={editTodo}
             condition={false}
+            currentList={currentList}
           />
           <TaskListHeader
             fieldDone={"Completed"}
@@ -528,6 +566,7 @@ export default function App() {
             deleteTodo={deleteTodo}
             editTodo={editTodo}
             condition={true}
+            currentList={currentList}
           />
         </div>
       </div>
