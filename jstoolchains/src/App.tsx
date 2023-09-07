@@ -24,6 +24,18 @@ type todoType = {
 
 type todosType = todoType[];
 
+type listType = {
+  id: number;
+  title: string;
+  archived: boolean;
+};
+
+type listsType = listType[];
+
+type userSettingsType = {
+  homeListId: number;
+};
+
 type addTodoType = (title: string) => void;
 
 interface TaskFormProps {
@@ -43,6 +55,12 @@ interface TaskListHeaderProps {
   fieldTask: string;
   fieldActions: string;
 }
+
+interface SideBarProps {
+  lists: listsType;
+  userSettings: userSettingsType;
+}
+
 function randomInRange(min: number, max: number) {
   return Math.random() * (max - min) + min;
 }
@@ -78,20 +96,27 @@ function NavBar() {
   );
 }
 
-function SideBar() {
+function SideBar({ lists, userSettings }: SideBarProps) {
+  const otherLists = lists
+    .filter((list) => list.id !== userSettings.homeListId)
+    .map((list) => (
+      <div key={list.id} className="text-lg">
+        {list.title}
+      </div>
+    ));
+
   return (
     <div
       className="my-6 flex w-3/12 flex-col  rounded-xl border-2 border-black bg-white p-10"
       id="sidebar"
     >
-      <div className="flex flex-col">
+      <div className="mb-1 flex flex-col">
         <div className="mb-2 text-xl font-bold">Tareas</div>
-        <div className="mb-1 text-lg">Inbox</div>
+        <div className="text-lg">Inbox</div>
       </div>
       <div className="mt-4 flex flex-col">
         <div className="mb-2 text-xl font-bold text-violet-600">Lists</div>
-        <div className="mb-1 text-lg">Study webdev</div>
-        <div className="text-lg">Create todoApp</div>
+        {otherLists}
       </div>
     </div>
   );
@@ -295,32 +320,7 @@ function TaskList({
 
   return <ul className="divide-gray-150 divide-y">{taskList}</ul>;
 }
-/*
-let all_todos = [
-  {
-    id: 1,
-    title: "Buy more food",
-    description: "Go to the grocery shop",
-    complete: false,
-    created_at: new Date(2020, 2, 11, 10, 20, 32).toDateString(),
-  },
-  {
-    id: 2,
-    title: "Finish the product",
-    description: "Keep working on it",
-    complete: false,
-    created_at: new Date(2020, 2, 11, 10, 20, 32).toDateString(),
-  },
-  {
-    id: 3,
-    title: "Add the pomodoro show to the party",
-    description: "Flying color and happines",
-    complete: false,
-    created_at: new Date(2020, 2, 11, 10, 20, 32).toDateString(),
-  },
-];
-let counter = 3;
-*/
+
 const PriorityEnum = {
   none: 0,
   low: 1,
@@ -342,18 +342,23 @@ function getCookie(name: string) {
   }
   return cookieValue;
 }
+
 function getPoint(t: string) {
   let target = document.getElementById(t);
   let [xTarget, yTarget] = [target.offsetLeft, target.offsetTop];
 
   let [xDoc, yDoc] = [window.innerWidth, window.innerHeight];
-  console.log(xTarget, xDoc, yTarget, yDoc);
   return [xTarget / xDoc, yTarget / yDoc];
 }
 
 export default function App() {
   const [isLoading, setIsloading] = useState(true);
   const [todos, setTodos] = useState([]);
+  const [lists, setLists] = useState([]);
+
+  const userSettings = {
+    homeListId: 1,
+  };
 
   const apiConfig = new Configuration({
     basePath: "http://127.0.0.1:8000",
@@ -361,7 +366,10 @@ export default function App() {
       "X-CSRFToken": getCookie("csrftoken"),
     },
   });
-  const client = new TodosApi(apiConfig);
+
+  const clientTodo = new TodosApi(apiConfig);
+  const clientList = new ListsApi(apiConfig);
+
   var myCanvas = document.createElement("canvas");
   document.body.appendChild(myCanvas);
 
@@ -369,16 +377,28 @@ export default function App() {
     resize: true,
     useWorker: true,
   });
+
   useEffect(() => {
-    client
+    clientTodo
       .todosList()
       .then((result) => {
         console.log("Here are the todos: ", result);
         setTodos(result);
-        setIsloading(false);
       })
       .catch(() => {
-        console.log("There was an error");
+        console.log("There was an error retrieving todos");
+      });
+
+    console.log("calling clientList now");
+
+    clientList
+      .listsList()
+      .then((result) => {
+        console.log("Here are the lists: ", result);
+        setLists(result);
+      })
+      .catch(() => {
+        console.log("There was an error retrieving lists");
       });
   }, []);
 
@@ -386,14 +406,14 @@ export default function App() {
     let todo = {
       title: title,
     };
-    client
+    clientTodo
       .todosCreate({ todo })
       .then((result) => {
         console.log("Todo was created!");
         const form = (
           document.getElementById("myform") as HTMLFormElement
         ).reset();
-        client
+        clientTodo
           .todosList()
           .then((result) => {
             console.log("Here are the todos: ", result);
@@ -413,7 +433,7 @@ export default function App() {
       complete: complete,
     };
     let [x, y] = getPoint("checkbox-" + id);
-    client
+    clientTodo
       .todosPartialUpdate({ id: id, patchedTodo: todo })
       .then((result) => {
         if (complete == true) {
@@ -441,7 +461,7 @@ export default function App() {
   };
 
   const deleteTodo = (id: number) => {
-    client
+    clientTodo
       .todosDestroy({ id })
       .then((result) => {
         setTodos((prevTodos) => {
@@ -459,7 +479,7 @@ export default function App() {
     let todo = {
       title: title,
     };
-    client
+    clientTodo
       .todosPartialUpdate({ id: id, patchedTodo: todo })
       .then((result) => {
         console.log("Todo was patched!");
@@ -482,7 +502,7 @@ export default function App() {
     <>
       <NavBar />
       <div className="mx-6 flex w-5/6 justify-between font-serif">
-        <SideBar />
+        <SideBar lists={lists} userSettings={userSettings} />
         <div className="my-6 w-8/12 rounded-xl border-2 border-black bg-white p-10">
           <TaskForm addTodo={addTodo} />
           <TaskListHeader

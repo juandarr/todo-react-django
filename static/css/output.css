@@ -830,14 +830,6 @@ body {
   white-space: nowrap;
 }
 
-.text-ellipsis {
-  text-overflow: ellipsis;
-}
-
-.text-clip {
-  text-overflow: clip;
-}
-
 .rounded-lg {
   border-radius: var(--radius);
 }
