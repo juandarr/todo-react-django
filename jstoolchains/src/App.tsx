@@ -19,6 +19,43 @@ import {
 
 import confetti from "canvas-confetti";
 
+function getCookie(name: string) {
+  var cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    var cookies = document.cookie.split(";");
+    for (var i = 0; i < cookies.length; i++) {
+      var cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === name + "=") {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
+function getPoint(t: string) {
+  let target = document.getElementById(t) as HTMLElement;
+  let [xTarget, yTarget] = [target.offsetLeft, target.offsetTop];
+
+  let [xDoc, yDoc] = [window.innerWidth, window.innerHeight];
+  return [xTarget / xDoc, yTarget / yDoc];
+}
+
+var myCanvas = document.createElement("canvas");
+//document.body.appendChild(myCanvas);
+
+const userSettings = {
+  homeListId: 1,
+};
+
+const PriorityEnum = {
+  none: 0,
+  low: 1,
+  medium: 2,
+  high: 3,
+};
+
 type ReactSetState = React.Dispatch<React.SetStateAction<[boolean, number]>>;
 
 type todoType = {
@@ -48,6 +85,20 @@ type addTodoType = (title: string) => void;
 
 interface TaskFormProps {
   addTodo: addTodoType;
+}
+interface TaskItemProps {
+  todo: todoType;
+  toggleTodo: (id: number, complete: boolean) => void;
+  editTodo: (id: number, title: string, setEdit: ReactSetState) => void;
+  deleteTodo: (id: number) => void;
+  edit: (number | boolean)[];
+  setEdit: React.Dispatch<React.SetStateAction<(number | boolean)[]>>;
+  textEdit: string;
+  setTextEdit: React.Dispatch<React.SetStateAction<string>>;
+  handleKeyPress: (
+    event: React.FormEvent<HTMLFormElement>,
+    todo: todoType,
+  ) => void;
 }
 
 interface TaskListProps {
@@ -216,6 +267,135 @@ function TaskListHeader({
   );
 }
 
+function TaskItem({
+  todo,
+  toggleTodo,
+  editTodo,
+  deleteTodo,
+  edit,
+  setEdit,
+  textEdit,
+  setTextEdit,
+  handleKeyPress,
+}: TaskItemProps) {
+  const show_edit = edit[0] && edit[1] == todo.id;
+
+  return (
+    <li key={todo.id}>
+      <form
+        className="flex justify-start font-sans"
+        onSubmit={(event) => handleKeyPress(event, todo)}
+      >
+        <div className="flex w-1/5 items-center justify-center">
+          <Checkbox
+            id={"checkbox-" + todo.id}
+            checked={todo.complete}
+            onCheckedChange={(checked) =>
+              toggleTodo(todo.id, checked as boolean)
+            }
+            className="border-2 border-black"
+          />
+        </div>
+        <div className="flex flex-1 truncate">
+          {!show_edit ? (
+            <div
+              className={`py-2 text-lg ${
+                todo.complete ? "text-gray-400" : "text-gray-700"
+              }`}
+              style={{ cursor: "pointer" }}
+              onClick={(e) => {
+                setEdit([true, todo.id]);
+                setTextEdit(todo.title);
+              }}
+            >
+              {todo.title}
+            </div>
+          ) : (
+            <input
+              type="text"
+              className="flex-1 border-0 bg-white py-2 text-lg text-gray-700"
+              name="title"
+              value={textEdit}
+              onChange={(event) => setTextEdit(event.target.value)}
+              autoFocus
+            ></input>
+          )}
+
+          {edit[0] && edit[1] == todo.id && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger className="ml-2 self-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                    stroke="currentColor"
+                    className="h-7 w-7 text-sky-500 hover:text-sky-600"
+                    style={{ cursor: "pointer", display: "inline" }}
+                    onClick={() => editTodo(todo.id, textEdit, setEdit)}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m8.25 3v6.75m0 0l-3-3m3 3l3-3M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"
+                    />
+                  </svg>
+                </TooltipTrigger>
+                <TooltipContent className="bg-sky-500">
+                  <p className="font-bold text-white">Save</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
+        </div>
+        <div className="flex w-1/5 justify-center py-2">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                  stroke="currentColor"
+                  onClick={() => deleteTodo(todo.id)}
+                  className="h-7 w-7 text-rose-400 hover:text-rose-500"
+                  style={{ cursor: "pointer", display: "inline" }}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </TooltipTrigger>
+              <TooltipContent className="bg-rose-400">
+                <p className="font-bold text-white">Delete</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      </form>
+      <div className="ml-6 mt-0 flex justify-start pb-2 pt-0 text-sm text-gray-400">
+        <div className="w-2/5 text-center">
+          <div
+            className={`underline ${
+              todo.complete
+                ? "text-gray-400 decoration-green-500"
+                : "text-gray-600 decoration-rose-500"
+            }`}
+          >
+            {todo.createdAt.toDateString() +
+              " " +
+              todo.createdAt.toLocaleTimeString()}
+          </div>
+        </div>
+      </div>
+    </li>
+  );
+}
+
 function TaskList({
   todos,
   toggleTodo,
@@ -245,162 +425,23 @@ function TaskList({
     );
   }
   const taskList = filteredTodos.map((todo, idx: number) => {
-    const show_edit = edit[0] && edit[1] == todo.id;
     return (
-      <li key={todo.id}>
-        <form
-          className="flex justify-start font-sans"
-          onSubmit={(e) => handleKeyPress(e, todo)}
-        >
-          <div className="flex w-1/5 items-center justify-center">
-            <Checkbox
-              id={"checkbox-" + todo.id}
-              checked={todo.complete}
-              onCheckedChange={(checked) =>
-                toggleTodo(todo.id, checked as boolean)
-              }
-              className="border-2 border-black"
-            />
-          </div>
-          <div className="flex flex-1 truncate">
-            {!show_edit ? (
-              <div
-                className={`py-2 text-lg ${
-                  todo.complete ? "text-gray-400" : "text-gray-700"
-                }`}
-                style={{ cursor: "pointer" }}
-                onClick={(e) => {
-                  setEdit([true, todo.id]);
-                  setTextEdit(todo.title);
-                }}
-              >
-                {todo.title}
-              </div>
-            ) : (
-              <input
-                type="text"
-                className="flex-1 border-0 bg-white py-2 text-lg text-gray-700"
-                name="title"
-                value={textEdit}
-                onChange={(e) => setTextEdit(e.target.value)}
-                autoFocus
-              ></input>
-            )}
-
-            {edit[0] && edit[1] == todo.id && (
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger className="ml-2 self-center">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="2"
-                      stroke="currentColor"
-                      className="h-7 w-7 text-sky-500 hover:text-sky-600"
-                      style={{ cursor: "pointer", display: "inline" }}
-                      onClick={() => editTodo(todo.id, textEdit, setEdit)}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m8.25 3v6.75m0 0l-3-3m3 3l3-3M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"
-                      />
-                    </svg>
-                  </TooltipTrigger>
-                  <TooltipContent className="bg-sky-500">
-                    <p className="font-bold text-white">Save</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            )}
-          </div>
-          <div className="flex w-1/5 justify-center py-2">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="2"
-                    stroke="currentColor"
-                    onClick={() => deleteTodo(todo.id)}
-                    className="h-7 w-7 text-rose-400 hover:text-rose-500"
-                    style={{ cursor: "pointer", display: "inline" }}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </TooltipTrigger>
-                <TooltipContent className="bg-rose-400">
-                  <p className="font-bold text-white">Delete</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
-        </form>
-        <div className="ml-6 mt-0 flex justify-start pb-2 pt-0 text-sm text-gray-400">
-          <div className="w-2/5 text-center">
-            <div
-              className={`underline ${
-                todo.complete
-                  ? "text-gray-400 decoration-green-500"
-                  : "text-gray-600 decoration-rose-500"
-              }`}
-            >
-              {todo.createdAt.toDateString() +
-                " " +
-                todo.createdAt.toLocaleTimeString()}
-            </div>
-          </div>
-        </div>
-      </li>
+      <TaskItem
+        todo={todo}
+        toggleTodo={toggleTodo}
+        editTodo={editTodo}
+        deleteTodo={deleteTodo}
+        edit={edit}
+        setEdit={setEdit}
+        textEdit={textEdit}
+        setTextEdit={setTextEdit}
+        handleKeyPress={handleKeyPress}
+      />
     );
   });
 
   return <ul className="divide-gray-150 divide-y">{taskList}</ul>;
 }
-
-const PriorityEnum = {
-  none: 0,
-  low: 1,
-  medium: 2,
-  high: 3,
-};
-
-function getCookie(name: string) {
-  var cookieValue = null;
-  if (document.cookie && document.cookie !== "") {
-    var cookies = document.cookie.split(";");
-    for (var i = 0; i < cookies.length; i++) {
-      var cookie = cookies[i].trim();
-      if (cookie.substring(0, name.length + 1) === name + "=") {
-        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-        break;
-      }
-    }
-  }
-  return cookieValue;
-}
-
-function getPoint(t: string) {
-  let target = document.getElementById(t);
-  let [xTarget, yTarget] = [target.offsetLeft, target.offsetTop];
-
-  let [xDoc, yDoc] = [window.innerWidth, window.innerHeight];
-  return [xTarget / xDoc, yTarget / yDoc];
-}
-
-var myCanvas = document.createElement("canvas");
-//document.body.appendChild(myCanvas);
-
-const userSettings = {
-  homeListId: 1,
-};
 
 export default function App() {
   const [isLoading, setIsloading] = useState(true);
