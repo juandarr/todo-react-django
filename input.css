@@ -80,3 +80,11 @@
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
+
+.parent .hidden-child {
+  visibility: hidden;
+}
+
+.parent:hover .hidden-child{
+  visibility: visible;
+}
