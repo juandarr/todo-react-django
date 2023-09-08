@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { TodosApi, ListsApi } from "../../todo-api-client/apis/index";
 import { Configuration } from "../../todo-api-client/runtime";
 import { Checkbox } from "./components/checkbox";
@@ -19,8 +19,16 @@ import {
 
 import confetti from "canvas-confetti";
 
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  PopoverArrow,
+  PopoverClose,
+} from "./components/popover";
+
 function getCookie(name: string) {
-  var cookieValue = null;
+  var cookieValue = name;
   if (document.cookie && document.cookie !== "") {
     var cookies = document.cookie.split(";");
     for (var i = 0; i < cookies.length; i++) {
@@ -120,6 +128,11 @@ interface TaskListHeaderProps {
   fieldActions: string;
 }
 
+interface ModalListProps {
+  modalType: string;
+  addList: (title: string) => void;
+}
+
 interface NavBarProps {
   changeCurrentList: (oldList: number) => void;
 }
@@ -129,6 +142,7 @@ interface SideBarProps {
   userSettings: userSettingsType;
   changeCurrentList: (oldList: number) => void;
   currentList: listType;
+  addList: (title: string) => void;
 }
 
 function randomInRange(min: number, max: number) {
@@ -168,11 +182,90 @@ function NavBar({ changeCurrentList }: NavBarProps) {
   );
 }
 
+function ModalList({ modalType, addList }: ModalListProps) {
+  {
+    /* <form
+    id="myform"
+    className="mb-6 flex space-x-4 font-serif text-lg"
+    onSubmit={handleSubmit}
+  >
+    <input
+      type="text"
+      name="title"
+      className="h-10 flex-1 rounded-xl bg-gray-300 px-4 py-3 text-gray-900 placeholder:text-gray-500"
+      id="todoText"
+      onChange={(e) => setNewTodo(e.target.value)}
+      placeholder="Enter your todo here"
+      required
+    />
+    <button
+      type="submit"
+      className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-400 p-3 text-black hover:bg-cyan-500"
+    >
+      Add
+    </button>
+  </form> */
+  }
+  const [newList, setNewList] = useState("");
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (newList == "") return;
+    addList(newList);
+  };
+
+  return (
+    <Popover modal={true}>
+      <PopoverTrigger asChild>
+        <a className="flex cursor-pointer justify-center text-2xl text-violet-600">
+          <ArchiveAdd size={iconSize} />
+        </a>
+      </PopoverTrigger>
+      <PopoverContent align={"center"}>
+        <form
+          id="listForm"
+          className="flex flex-col font-serif"
+          onSubmit={handleSubmit}
+        >
+          <input
+            id="listName"
+            name="title"
+            type="text"
+            defaultValue=""
+            placeholder="Name this list"
+            className="m-4 h-8 rounded-xl bg-gray-300 p-2 px-4 py-3 text-gray-900 placeholder:text-gray-500"
+            onChange={(event) => setNewList(event.target.value)}
+            required
+          />
+          <div className="mb-4 ml-4 mr-4 flex items-center justify-between">
+            <button
+              type="submit"
+              className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-400 p-3 text-lg text-black hover:bg-cyan-500"
+            >
+              {modalType}
+            </button>
+            <PopoverClose asChild>
+              <button
+                className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-rose-400 p-3 text-lg text-black hover:bg-rose-500"
+                onClick={() => document.getElementById("root").focus()}
+              >
+                Cancel
+              </button>
+            </PopoverClose>
+          </div>
+        </form>
+        <PopoverArrow className="fill-violet-600" />
+      </PopoverContent>
+    </Popover>
+  );
+}
+
 function SideBar({
   lists,
   userSettings,
   currentList,
   changeCurrentList,
+  addList,
 }: SideBarProps) {
   const otherLists = lists
     .filter((list) => list.id !== userSettings.homeListId)
@@ -207,11 +300,9 @@ function SideBar({
         </div>
       </div>
       <div className="mt-4 flex flex-col">
-        <div className="flex justify-between">
-          <div className="mb-2 text-xl font-bold text-violet-600">Lists</div>
-          <a href="/" className="flex justify-center text-2xl text-violet-600">
-            <ArchiveAdd size={iconSize} />
-          </a>
+        <div className="mb-2 flex justify-between">
+          <div className="text-xl font-bold text-violet-600">Lists</div>
+          <ModalList modalType={"Create"} addList={addList} />
         </div>
         {otherLists}
       </div>
@@ -508,6 +599,32 @@ export default function App() {
     setCurrentList((oldList) => newList);
   };
 
+  const addList = (title: string) => {
+    let list = {
+      title: title,
+    };
+    clientList
+      .listsCreate({ list })
+      .then((result) => {
+        console.log("List was created!");
+        const form = (
+          document.getElementById("listForm") as HTMLFormElement
+        ).reset();
+        clientList
+          .listsList()
+          .then((result) => {
+            console.log("Here are the lists: ", result);
+            setLists(result);
+          })
+          .catch(() => {
+            console.log("There was an error");
+          });
+      })
+      .catch((e) => {
+        console.log(e, "List creation failed");
+      });
+  };
+
   const addTodo = (title: string) => {
     let todo = {
       title: title,
@@ -613,6 +730,7 @@ export default function App() {
           userSettings={userSettings}
           changeCurrentList={changeCurrentList}
           currentList={currentList}
+          addList={addList}
         />
         <div className="relative my-6 w-8/12 rounded-xl border-2 border-black bg-white p-10">
           <div className="absolute left-3 top-2 text-sm font-bold text-violet-600">
