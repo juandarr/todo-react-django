@@ -12,6 +12,9 @@ module.exports = {
         "2xl": "1400px",
       },
     },
+    fontFamily: {
+      'OpenSans': ['"Open Sans"', 'sans-serif'],
+    },
     extend: {
       colors: {
         border: "hsl(var(--border))",
@@ -54,7 +57,7 @@ module.exports = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ["var(--font-sans)", ...fontFamily.sans],
+        sans: [...fontFamily.sans],
       },
       keyframes: {
         "accordion-down": {

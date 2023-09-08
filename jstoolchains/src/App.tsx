@@ -505,7 +505,7 @@ function TaskItem({
     <>
       <div className="flex justify-between">
         <form
-          className="flex flex-1 justify-start font-sans"
+          className="flex flex-1 justify-start font-serif"
           onSubmit={(event) => handleKeyPress(event, todo)}
         >
           <div className="flex w-1/5 items-center justify-center">
