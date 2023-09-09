@@ -1,4 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  JSXElementConstructor,
+} from "react";
 import { TodosApi, ListsApi } from "../../todo-api-client/apis/index";
 import { Configuration } from "../../todo-api-client/runtime";
 import { Checkbox } from "./components/checkbox";
@@ -148,6 +153,13 @@ interface EditModalListProps {
   setNewListEdit: React.Dispatch<React.SetStateAction<string>>;
 }
 
+interface DeleteModalProps {
+  deleteFunction: (id: number) => void;
+  triggerElement: React.JSX.Element;
+  tooltipColor: string;
+  id: number;
+}
+
 interface NavBarProps {
   changeCurrentList: (oldList: number) => void;
 }
@@ -246,7 +258,7 @@ function CreateModalList({
       >
         <form
           id="listform"
-          className="flex flex-col font-serif"
+          className="font-serif flex flex-col"
           onSubmit={createHandleSubmit}
         >
           <input
@@ -273,7 +285,7 @@ function CreateModalList({
             </PopoverClose>
           </div>
         </form>
-        <PopoverArrow className="fill-violet-600" />
+        <PopoverArrow className="fill-violet-500" />
       </PopoverContent>
     </Popover>
   );
@@ -330,7 +342,7 @@ function EditModalList({
       >
         <form
           id="listform"
-          className="flex flex-col font-serif"
+          className="font-serif flex flex-col"
           onSubmit={(e) => editHandleSubmit(e, data.id)}
         >
           <input
@@ -362,6 +374,75 @@ function EditModalList({
   );
 }
 
+function DeleteModal({
+  deleteFunction,
+  triggerElement,
+  tooltipColor,
+  id,
+}: DeleteModalProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    deleteFunction(id);
+    closePopover();
+  };
+
+  const closePopover = () => {
+    setIsOpen(false);
+  };
+  const openPopover = () => {
+    setIsOpen(true);
+  };
+  return (
+    <Popover
+      modal={true}
+      open={isOpen}
+      onOpenChange={(newOpenState) => setIsOpen(newOpenState)}
+    >
+      <TooltipProvider>
+        <Tooltip>
+          <PopoverTrigger asChild={true}>
+            <TooltipTrigger>{triggerElement}</TooltipTrigger>
+          </PopoverTrigger>
+
+          <TooltipContent className={`bg-${tooltipColor}-400`}>
+            <p className="font-bold text-white">Delete</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+      <PopoverContent
+        align={"center"}
+        onCloseAutoFocus={(event) => event.preventDefault()}
+      >
+        <form
+          id="listform"
+          className="font-serif flex flex-col"
+          onSubmit={handleSubmit}
+        >
+          <div className="m-4 h-8 rounded-xl p-2 px-4 py-3 text-gray-900">
+            Are you sure to delete?
+          </div>
+          <div className="mb-4 ml-4 mr-4 flex items-center justify-between">
+            <button
+              type="submit"
+              className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-400 p-3 text-lg text-black hover:bg-cyan-500"
+            >
+              Yes
+            </button>
+            <PopoverClose asChild={true}>
+              <button className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-rose-400 p-3 text-lg text-black hover:bg-rose-500">
+                Cancel
+              </button>
+            </PopoverClose>
+          </div>
+        </form>
+        <PopoverArrow className={`fill-${tooltipColor}-400`} />
+      </PopoverContent>
+    </Popover>
+  );
+}
+
 function SideBar({
   lists,
   userSettings,
@@ -375,6 +456,11 @@ function SideBar({
   newListEdit,
   setNewListEdit,
 }: SideBarProps) {
+  const deleteElement = (
+    <a className="flex cursor-pointer justify-end text-2xl text-cyan-500 hover:text-cyan-600">
+      <Trash size={"1.2rem"} />
+    </a>
+  );
   const otherLists = lists
     .filter((list) => list.id !== userSettings.homeListId)
     .map((list) => (
@@ -394,12 +480,12 @@ function SideBar({
             setNewListEdit={setNewListEdit}
             data={{ id: list.id, title: list.title }}
           />
-          <a
-            className="flex cursor-pointer justify-end text-2xl text-cyan-500 hover:text-cyan-600"
-            onClick={() => deleteList(list.id)}
-          >
-            <Trash size={"1.2rem"} />
-          </a>
+          <DeleteModal
+            deleteFunction={deleteList}
+            triggerElement={deleteElement}
+            tooltipColor="cyan"
+            id={list.id}
+          />
         </div>
       </div>
     ));
@@ -447,7 +533,7 @@ function TaskForm({ addTodo, newTodo, setNewTodo }: TaskFormProps) {
   return (
     <form
       id="myform"
-      className="mb-6 flex space-x-4 font-serif text-lg"
+      className="font-serif mb-6 flex space-x-4 text-lg"
       onSubmit={handleSubmit}
     >
       <input
@@ -476,7 +562,7 @@ function TaskListHeader({
   fieldActions,
 }: TaskListHeaderProps) {
   return (
-    <div className="text-md flex rounded-xl bg-gray-100 py-3 font-serif font-bold">
+    <div className="text-md font-serif flex rounded-xl bg-gray-100 py-3 font-bold">
       <p className="w-1/5 px-6 text-center font-bold text-gray-700">
         {fieldDone}
       </p>
@@ -501,11 +587,32 @@ function TaskItem({
 }: TaskItemProps) {
   const show_edit = edit[0] && edit[1] == todo.id;
 
+  const deleteElement = (
+    <a>
+      <svg
+        id="deleteTodo"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth="2"
+        stroke="currentColor"
+        className="h-7 w-7 text-rose-400 hover:text-rose-500"
+        style={{ cursor: "pointer", display: "inline" }}
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+      </svg>
+    </a>
+  );
+
   return (
     <>
       <div className="flex justify-between">
         <form
-          className="flex flex-1 justify-start font-serif"
+          className="font-serif flex flex-1 justify-start"
           onSubmit={(event) => handleKeyPress(event, todo)}
         >
           <div className="flex w-1/5 items-center justify-center">
@@ -573,31 +680,12 @@ function TaskItem({
           </div>
         </form>
         <div className="flex w-1/5 justify-center py-2">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="2"
-                  stroke="currentColor"
-                  onClick={() => deleteTodo(todo.id)}
-                  className="h-7 w-7 text-rose-400 hover:text-rose-500"
-                  style={{ cursor: "pointer", display: "inline" }}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </TooltipTrigger>
-              <TooltipContent className="bg-rose-400">
-                <p className="font-bold text-white">Delete</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <DeleteModal
+            deleteFunction={deleteTodo}
+            triggerElement={deleteElement}
+            tooltipColor={"rose"}
+            id={todo.id}
+          />
         </div>
       </div>
       <div className="ml-6 mt-0 flex justify-start pb-2 pt-0 text-sm text-gray-400">
@@ -821,6 +909,13 @@ export default function App() {
         setLists((prevLists) => {
           return prevLists.filter((list) => list.id !== id);
         });
+        if (id == currentList.id) {
+          setCurrentList((oldList) => {
+            return lists.filter(
+              (list) => list.id == userSettings.homeListId,
+            )[0] as listType;
+          });
+        }
         console.log("List was deleted");
       })
       .catch((event) => {
@@ -859,6 +954,10 @@ export default function App() {
             }
           });
         });
+        if (id === currentList.id) {
+          console.log("CUrrent id and current list match! ", title);
+          setCurrentList((oldCurrentList) => ({ ...oldCurrentList, title }));
+        }
       })
       .catch((error) => {
         console.log("There was an error updating the field");
@@ -891,7 +990,7 @@ export default function App() {
   return (
     <>
       <NavBar changeCurrentList={changeCurrentList} />
-      <div className="mx-6 flex w-5/6 justify-between font-serif">
+      <div className="font-serif mx-6 flex w-5/6 justify-between">
         <SideBar
           lists={lists}
           userSettings={userSettings}

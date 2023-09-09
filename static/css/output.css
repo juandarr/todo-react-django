@@ -989,6 +989,26 @@ body {
   fill: #7c3aed;
 }
 
+.fill-rose-500 {
+  fill: #f43f5e;
+}
+
+.fill-pink-500 {
+  fill: #ec4899;
+}
+
+.fill-rose-600 {
+  fill: #e11d48;
+}
+
+.fill-rose-400 {
+  fill: #fb7185;
+}
+
+.fill-violet-500 {
+  fill: #8b5cf6;
+}
+
 .p-1 {
   padding: 0.25rem;
 }
