@@ -985,20 +985,12 @@ body {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
-.fill-violet-500 {
-  fill: #8b5cf6;
-}
-
-.fill-rose-400 {
-  fill: #fb7185;
-}
-
 .fill-sky-500 {
   fill: #0ea5e9;
 }
 
-.fill-rose-500 {
-  fill: #f43f5e;
+.fill-violet-500 {
+  fill: #8b5cf6;
 }
 
 .p-1 {

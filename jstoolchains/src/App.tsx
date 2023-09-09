@@ -1,9 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  JSXElementConstructor,
-} from "react";
+import React, { useState, useEffect } from "react";
 import { TodosApi, ListsApi } from "../../todo-api-client/apis/index";
 import { Configuration } from "../../todo-api-client/runtime";
 import { Checkbox } from "./components/checkbox";
@@ -243,14 +238,23 @@ function CreateModalList({
       open={isOpen}
       onOpenChange={(newOpenState) => setIsOpen(newOpenState)}
     >
-      <PopoverTrigger asChild={true}>
-        <a
-          className="flex cursor-pointer justify-center text-2xl text-violet-500 hover:text-violet-600"
-          onClick={() => openPopover()}
-        >
-          <ArchiveAdd size={iconSize} />
-        </a>
-      </PopoverTrigger>
+      <TooltipProvider>
+        <Tooltip>
+          <PopoverTrigger asChild={true}>
+            <TooltipTrigger>
+              <a
+                className="flex cursor-pointer justify-center text-2xl text-violet-500 hover:text-violet-600"
+                onClick={() => openPopover()}
+              >
+                <ArchiveAdd size={iconSize} />
+              </a>
+            </TooltipTrigger>
+          </PopoverTrigger>
+          <TooltipContent className="bg-violet-500">
+            <p className="font-bold text-white">Add list</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
       <PopoverContent
         align={"center"}
         onCloseAutoFocus={() => {
@@ -324,14 +328,23 @@ function EditModalList({
       open={isOpen}
       onOpenChange={(newOpenState) => setIsOpen(newOpenState)}
     >
-      <PopoverTrigger asChild={true}>
-        <a
-          className="flex cursor-pointer justify-end pl-2 pr-2 text-2xl text-cyan-500 hover:text-cyan-600"
-          onClick={() => openPopover()}
-        >
-          <Edit size={"1.2rem"} />
-        </a>
-      </PopoverTrigger>
+      <TooltipProvider>
+        <Tooltip>
+          <PopoverTrigger asChild={true}>
+            <TooltipTrigger>
+              <a
+                className="flex cursor-pointer justify-end pl-2 pr-2 text-2xl text-cyan-500 hover:text-cyan-600"
+                onClick={() => openPopover()}
+              >
+                <Edit size={"1.2rem"} />
+              </a>
+            </TooltipTrigger>
+          </PopoverTrigger>
+          <TooltipContent className="bg-sky-500">
+            <p className="font-bold text-white">Edit</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
       <PopoverContent
         align={"center"}
         onOpenAutoFocus={() => {
@@ -397,10 +410,12 @@ function DeleteModal({
   const openPopover = () => {
     setIsOpen(true);
   };
-  const [bgColorClass, tooltipColorClass] = [
+
+  const [bgColorClass, arrowColorClass] = [
     `bg-${tooltipColor}-400`,
     `fill-${tooltipColor}-500`,
   ];
+
   return (
     <Popover
       modal={true}
@@ -452,7 +467,7 @@ function DeleteModal({
             </PopoverClose>
           </div>
         </form>
-        <PopoverArrow className={tooltipColorClass} />
+        <PopoverArrow className={arrowColorClass} />
       </PopoverContent>
     </Popover>
   );
