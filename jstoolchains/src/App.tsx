@@ -157,6 +157,7 @@ interface DeleteModalProps {
   deleteFunction: (id: number) => void;
   triggerElement: React.JSX.Element;
   tooltipColor: string;
+  parentId: string;
   id: number;
 }
 
@@ -369,6 +370,7 @@ function EditModalList({
             </PopoverClose>
           </div>
         </form>
+        <PopoverArrow className="fill-sky-500" />
       </PopoverContent>
     </Popover>
   );
@@ -378,6 +380,7 @@ function DeleteModal({
   deleteFunction,
   triggerElement,
   tooltipColor,
+  parentId,
   id,
 }: DeleteModalProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -394,6 +397,10 @@ function DeleteModal({
   const openPopover = () => {
     setIsOpen(true);
   };
+  const [bgColorClass, tooltipColorClass] = [
+    `bg-${tooltipColor}-400`,
+    `fill-${tooltipColor}-500`,
+  ];
   return (
     <Popover
       modal={true}
@@ -406,14 +413,22 @@ function DeleteModal({
             <TooltipTrigger>{triggerElement}</TooltipTrigger>
           </PopoverTrigger>
 
-          <TooltipContent className={`bg-${tooltipColor}-400`}>
+          <TooltipContent className={bgColorClass}>
             <p className="font-bold text-white">Delete</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
       <PopoverContent
         align={"center"}
-        onCloseAutoFocus={(event) => event.preventDefault()}
+        onOpenAutoFocus={(event) => {
+          const el = document.getElementById(parentId);
+          el.classList.remove("hidden-child");
+        }}
+        onCloseAutoFocus={(event) => {
+          event.preventDefault();
+          const el = document.getElementById(parentId);
+          el.classList.add("hidden-child");
+        }}
       >
         <form
           id="listform"
@@ -437,7 +452,7 @@ function DeleteModal({
             </PopoverClose>
           </div>
         </form>
-        <PopoverArrow className={`fill-${tooltipColor}-400`} />
+        <PopoverArrow className={tooltipColorClass} />
       </PopoverContent>
     </Popover>
   );
@@ -473,7 +488,10 @@ function SideBar({
         >
           {list.title}
         </div>
-        <div className="hidden-child flex items-center justify-end">
+        <div
+          id={`list-${list.id}`}
+          className="hidden-child flex items-center justify-end"
+        >
           <EditModalList
             editList={editList}
             newListEdit={newListEdit}
@@ -483,7 +501,8 @@ function SideBar({
           <DeleteModal
             deleteFunction={deleteList}
             triggerElement={deleteElement}
-            tooltipColor="cyan"
+            tooltipColor="sky"
+            parentId={`list-${list.id}`}
             id={list.id}
           />
         </div>
@@ -588,29 +607,27 @@ function TaskItem({
   const show_edit = edit[0] && edit[1] == todo.id;
 
   const deleteElement = (
-    <a>
-      <svg
-        id="deleteTodo"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth="2"
-        stroke="currentColor"
-        className="h-7 w-7 text-rose-400 hover:text-rose-500"
-        style={{ cursor: "pointer", display: "inline" }}
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
-    </a>
+    <svg
+      id="deleteTodo"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth="2"
+      stroke="currentColor"
+      className="h-7 w-7 text-rose-400 hover:text-rose-500"
+      style={{ cursor: "pointer", display: "inline" }}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    </svg>
   );
 
   return (
     <>
-      <div className="flex justify-between">
+      <div className="parent flex justify-between">
         <form
           className="font-serif flex flex-1 justify-start"
           onSubmit={(event) => handleKeyPress(event, todo)}
@@ -679,11 +696,15 @@ function TaskItem({
             )}
           </div>
         </form>
-        <div className="flex w-1/5 justify-center py-2">
+        <div
+          id={`todo-${todo.id}`}
+          className="hidden-child flex w-1/5 justify-center py-2"
+        >
           <DeleteModal
             deleteFunction={deleteTodo}
             triggerElement={deleteElement}
             tooltipColor={"rose"}
+            parentId={`todo-${todo.id}`}
             id={todo.id}
           />
         </div>
