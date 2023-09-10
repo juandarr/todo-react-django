@@ -993,6 +993,18 @@ body {
   fill: #8b5cf6;
 }
 
+.fill-rose-500 {
+  fill: #f43f5e;
+}
+
+.fill-red-500 {
+  fill: #ef4444;
+}
+
+.fill-orange-500 {
+  fill: #f97316;
+}
+
 .p-1 {
   padding: 0.25rem;
 }

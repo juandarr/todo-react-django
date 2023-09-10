@@ -424,6 +424,7 @@ function DeleteModal({
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    //FIXME: function to create, update, delete should return an exit message and upon success we can close the popover, it should include notification of success or failure
     deleteFunction(id);
     closePopover();
   };
@@ -439,7 +440,8 @@ function DeleteModal({
     const el = document.getElementById(parentId);
     el.classList.toggle("hidden-child");
   };
-  //FIXME: fix color definition. Different for modal item and list. Component is being called twice every time. On open and on close
+  //FIXME:Component is being called twice every time. On open and on close
+  //DONE:  fix color definition. Different for modal item and list.
   const [bgColorClass, arrowColorClass] = [
     "bg-" + tooltipColor + "-400",
     "fill-" + tooltipColor + "-500",
