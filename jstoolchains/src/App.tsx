@@ -180,21 +180,35 @@ function randomInRange(min: number, max: number) {
 
 const iconSize = "1.8rem";
 
+const toggleSidebar = function () {
+  const s = document.getElementById("sidebar");
+
+  if (s.style.display == "none") {
+    s.style.display = "block";
+  } else {
+    s.style.display = "none";
+  }
+};
+
 function NavBar({ changeCurrentList }: NavBarProps) {
   return (
     <nav className="mx-6 mb-6 mt-12 flex w-5/6 justify-between rounded-lg border-2 border-black bg-white p-2">
-      <a
-        href="/api/lists"
-        className="flex w-1/12 justify-start pl-3 text-2xl  text-violet-500"
+      <div
+        className="flex w-1/12 justify-start pl-3 text-2xl"
+        onClick={toggleSidebar}
       >
+        <button className="text-violet-500 hover:text-violet-600">
         <HambergerMenu size={iconSize} />
-      </a>
-      <a
-        className="flex w-1/12 cursor-pointer justify-start pl-3 text-2xl text-rose-400 hover:text-rose-500"
+</button>
+      </div>
+      <div
+        className="flex w-1/12 justify-start pl-3 text-2xl"
         onClick={() => changeCurrentList(userSettings.homeListId)}
       >
-        <House size={iconSize} />
-      </a>
+        <button className="text-rose-400 hover:text-rose-500">
+          <House size={iconSize} />
+        </button>
+      </div>
       <a
         href="/api/todos"
         className="flex w-8/12 justify-center pl-3 text-2xl text-emerald-500"
@@ -410,7 +424,7 @@ function DeleteModal({
   const openPopover = () => {
     setIsOpen(true);
   };
-
+  //FIXME: fix color definition. Different for modal item and list
   const [bgColorClass, arrowColorClass] = [
     `bg-${tooltipColor}-400`,
     `fill-${tooltipColor}-500`,

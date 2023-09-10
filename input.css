@@ -81,6 +81,7 @@
   }
 }
 
+/*Show child element when hovering on parent element */
 .parent .hidden-child {
   visibility: hidden;
 }

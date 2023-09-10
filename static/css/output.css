@@ -1245,6 +1245,8 @@ body {
   --tw-enter-scale: .95;
 }
 
+/*Show child element when hovering on parent element */
+
 .parent .hidden-child {
   visibility: hidden;
 }
