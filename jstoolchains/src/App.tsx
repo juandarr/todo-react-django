@@ -146,6 +146,7 @@ interface EditModalListProps {
   data: { id: number; title: string };
   newListEdit: string;
   setNewListEdit: React.Dispatch<React.SetStateAction<string>>;
+  parentId: string;
 }
 
 interface DeleteModalProps {
@@ -180,17 +181,16 @@ function randomInRange(min: number, max: number) {
 
 const iconSize = "1.8rem";
 
-const toggleSidebar = function () {
-  const s = document.getElementById("sidebar");
-
-  if (s.style.display == "none") {
-    s.style.display = "block";
-  } else {
-    s.style.display = "none";
-  }
-};
-
 function NavBar({ changeCurrentList }: NavBarProps) {
+  const toggleSidebar = function () {
+    const s = document.getElementById("sidebar");
+
+    if (s.style.display == "none") {
+      s.style.display = "block";
+    } else {
+      s.style.display = "none";
+    }
+  };
   return (
     <nav className="mx-6 mb-6 mt-12 flex w-5/6 justify-between rounded-lg border-2 border-black bg-white p-2">
       <div
@@ -198,8 +198,8 @@ function NavBar({ changeCurrentList }: NavBarProps) {
         onClick={toggleSidebar}
       >
         <button className="text-violet-500 hover:text-violet-600">
-        <HambergerMenu size={iconSize} />
-</button>
+          <HambergerMenu size={iconSize} />
+        </button>
       </div>
       <div
         className="flex w-1/12 justify-start pl-3 text-2xl"
@@ -271,7 +271,8 @@ function CreateModalList({
       </TooltipProvider>
       <PopoverContent
         align={"center"}
-        onCloseAutoFocus={() => {
+        onCloseAutoFocus={(event) => {
+          event.preventDefault();
           setNewList("");
         }}
       >
@@ -315,6 +316,7 @@ function EditModalList({
   data,
   newListEdit,
   setNewListEdit,
+  parentId,
 }: EditModalListProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -334,6 +336,11 @@ function EditModalList({
   };
   const openPopover = () => {
     setIsOpen(true);
+  };
+
+  const toggleHidden = () => {
+    const el = document.getElementById(parentId);
+    el.classList.toggle("hidden-child");
   };
 
   return (
@@ -362,9 +369,12 @@ function EditModalList({
       <PopoverContent
         align={"center"}
         onOpenAutoFocus={() => {
+          toggleHidden();
           setNewListEdit(data.title);
         }}
-        onCloseAutoFocus={() => {
+        onCloseAutoFocus={(event) => {
+          event.preventDefault();
+          toggleHidden();
           setNewListEdit("");
         }}
       >
@@ -424,11 +434,17 @@ function DeleteModal({
   const openPopover = () => {
     setIsOpen(true);
   };
-  //FIXME: fix color definition. Different for modal item and list
+
+  const toggleHidden = () => {
+    const el = document.getElementById(parentId);
+    el.classList.toggle("hidden-child");
+  };
+  //FIXME: fix color definition. Different for modal item and list. Component is being called twice every time. On open and on close
   const [bgColorClass, arrowColorClass] = [
-    `bg-${tooltipColor}-400`,
-    `fill-${tooltipColor}-500`,
+    "bg-" + tooltipColor + "-400",
+    "fill-" + tooltipColor + "-500",
   ];
+  //console.log(tooltipColor, bgColorClass, arrowColorClass, isOpen);
 
   return (
     <Popover
@@ -441,7 +457,6 @@ function DeleteModal({
           <PopoverTrigger asChild={true}>
             <TooltipTrigger>{triggerElement}</TooltipTrigger>
           </PopoverTrigger>
-
           <TooltipContent className={bgColorClass}>
             <p className="font-bold text-white">Delete</p>
           </TooltipContent>
@@ -449,14 +464,10 @@ function DeleteModal({
       </TooltipProvider>
       <PopoverContent
         align={"center"}
-        onOpenAutoFocus={(event) => {
-          const el = document.getElementById(parentId);
-          el.classList.remove("hidden-child");
-        }}
+        onOpenAutoFocus={(event) => toggleHidden()}
         onCloseAutoFocus={(event) => {
           event.preventDefault();
-          const el = document.getElementById(parentId);
-          el.classList.add("hidden-child");
+          toggleHidden();
         }}
       >
         <form
@@ -526,6 +537,7 @@ function SideBar({
             newListEdit={newListEdit}
             setNewListEdit={setNewListEdit}
             data={{ id: list.id, title: list.title }}
+            parentId={`list-${list.id}`}
           />
           <DeleteModal
             deleteFunction={deleteList}
