@@ -1,5 +1,4 @@
-const path = require('path');
-
+const path = require("path");
 
 module.exports = {
   module: {
@@ -8,15 +7,15 @@ module.exports = {
         test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
         use: "ts-loader",
-      }
-    ]
+      },
+    ],
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: [".tsx", ".ts", ".js"],
   },
   output: {
-    filename: 'index-bundle.js',  // output bundle file name
-    path: path.resolve(__dirname, '../static/js'),  // path to our Django static directory
+    filename: "index-bundle.js", // output bundle file name
+    path: path.resolve(__dirname, "../static/js"), // path to our Django static directory
   },
-  devtool: "eval-source-map"
+  devtool: "eval-source-map",
 };

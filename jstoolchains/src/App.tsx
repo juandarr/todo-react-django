@@ -97,6 +97,11 @@ type userSettingsType = {
 
 type addTodoType = (title: string) => void;
 
+interface cssTailVariant {
+  list: string;
+  todo: string;
+  [key: string]: string;
+}
 interface TaskFormProps {
   addTodo: addTodoType;
   newTodo: string;
@@ -152,7 +157,7 @@ interface EditModalListProps {
 interface DeleteModalProps {
   deleteFunction: (id: number) => void;
   triggerElement: React.JSX.Element;
-  tooltipColor: string;
+  deleteEntity: string;
   parentId: string;
   id: number;
 }
@@ -416,7 +421,7 @@ function EditModalList({
 function DeleteModal({
   deleteFunction,
   triggerElement,
-  tooltipColor,
+  deleteEntity,
   parentId,
   id,
 }: DeleteModalProps) {
@@ -440,13 +445,15 @@ function DeleteModal({
     const el = document.getElementById(parentId);
     el.classList.toggle("hidden-child");
   };
-  //FIXME:Component is being called twice every time. On open and on close
-  //DONE:  fix color definition. Different for modal item and list.
-  const [bgColorClass, arrowColorClass] = [
-    "bg-" + tooltipColor + "-400",
-    "fill-" + tooltipColor + "-500",
-  ];
-  //console.log(tooltipColor, bgColorClass, arrowColorClass, isOpen);
+
+  const fillColorVariants: cssTailVariant = {
+    list: "fill-sky-500",
+    todo: "fill-rose-500",
+  };
+  const bgColorVariants: cssTailVariant = {
+    list: "bg-sky-500",
+    todo: "bg-rose-500",
+  };
 
   return (
     <Popover
@@ -459,7 +466,7 @@ function DeleteModal({
           <PopoverTrigger asChild={true}>
             <TooltipTrigger>{triggerElement}</TooltipTrigger>
           </PopoverTrigger>
-          <TooltipContent className={bgColorClass}>
+          <TooltipContent className={`${bgColorVariants[deleteEntity]}`}>
             <p className="font-bold text-white">Delete</p>
           </TooltipContent>
         </Tooltip>
@@ -494,7 +501,7 @@ function DeleteModal({
             </PopoverClose>
           </div>
         </form>
-        <PopoverArrow className={arrowColorClass} />
+        <PopoverArrow className={`${fillColorVariants[deleteEntity]}`} />
       </PopoverContent>
     </Popover>
   );
@@ -544,7 +551,7 @@ function SideBar({
           <DeleteModal
             deleteFunction={deleteList}
             triggerElement={deleteElement}
-            tooltipColor="sky"
+            deleteEntity="list"
             parentId={`list-${list.id}`}
             id={list.id}
           />
@@ -746,7 +753,7 @@ function TaskItem({
           <DeleteModal
             deleteFunction={deleteTodo}
             triggerElement={deleteElement}
-            tooltipColor={"rose"}
+            deleteEntity={"todo"}
             parentId={`todo-${todo.id}`}
             id={todo.id}
           />

@@ -16,6 +16,7 @@
     "@babel/preset-env": "^7.22.10",
     "@babel/preset-react": "^7.22.5",
     "@babel/preset-typescript": "^7.22.11",
+    "@openapitools/openapi-generator-cli": "^2.7.0",
     "@types/canvas-confetti": "^1.6.1",
     "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",
