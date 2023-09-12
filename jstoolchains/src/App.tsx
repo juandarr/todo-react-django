@@ -29,6 +29,13 @@ import {
   PopoverArrow,
   PopoverClose,
 } from "./components/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./components/select";
 
 function getCookie(name: string) {
   var cookieValue = name;
@@ -140,6 +147,12 @@ interface TaskListHeaderProps {
   fieldActions: string;
 }
 
+interface CreateModalTodoProps {
+  addTodo: (title: string) => void;
+  newTodo: string;
+  setNewTodo: React.Dispatch<React.SetStateAction<string>>;
+}
+
 interface CreateModalListProps {
   addList: (title: string) => void;
   newList: string;
@@ -164,6 +177,9 @@ interface DeleteModalProps {
 
 interface NavBarProps {
   changeCurrentList: (oldList: number) => void;
+  addTodo: (title: string) => void;
+  newTodo: string;
+  setNewTodo: React.Dispatch<React.SetStateAction<string>>;
 }
 
 interface SideBarProps {
@@ -186,7 +202,12 @@ function randomInRange(min: number, max: number) {
 
 const iconSize = "1.8rem";
 
-function NavBar({ changeCurrentList }: NavBarProps) {
+function NavBar({
+  changeCurrentList,
+  addTodo,
+  newTodo,
+  setNewTodo,
+}: NavBarProps) {
   const toggleSidebar = function () {
     const s = document.getElementById("sidebar");
 
@@ -214,12 +235,11 @@ function NavBar({ changeCurrentList }: NavBarProps) {
           <House size={iconSize} />
         </button>
       </div>
-      <a
-        href="/api/todos"
-        className="flex w-8/12 justify-center pl-3 text-2xl text-emerald-500"
-      >
-        <AddCircle size={iconSize} />
-      </a>
+      <CreateModalTodo
+        addTodo={addTodo}
+        newTodo={newTodo}
+        setNewTodo={setNewTodo}
+      />
       <a
         href="/admin"
         className="flex w-2/12 justify-end pl-3 pr-3 text-2xl text-cyan-500"
@@ -227,6 +247,123 @@ function NavBar({ changeCurrentList }: NavBarProps) {
         <Notification size={iconSize} />
       </a>
     </nav>
+  );
+}
+
+function CreateModalTodo({
+  addTodo,
+  newTodo,
+  setNewTodo,
+}: CreateModalTodoProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const createHandleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (newTodo == "") return;
+    addTodo(newTodo);
+    closePopover();
+  };
+
+  const closePopover = () => {
+    setIsOpen(false);
+  };
+  const openPopover = () => {
+    setIsOpen(true);
+  };
+
+  return (
+    <Popover
+      modal={true}
+      open={isOpen}
+      onOpenChange={(newOpenState) => setIsOpen(newOpenState)}
+    >
+      <TooltipProvider>
+        <Tooltip>
+          <PopoverTrigger asChild={true}>
+            <TooltipTrigger asChild={true}>
+              <div
+                className="flex w-8/12 justify-center text-2xl"
+                onClick={() => openPopover()}
+              >
+                <button className="text-emerald-400 hover:text-emerald-500">
+                  <AddCircle size={iconSize} />
+                </button>
+              </div>
+            </TooltipTrigger>
+          </PopoverTrigger>
+          <TooltipContent className="bg-emerald-500">
+            <p className="font-bold text-white">Add todo</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+      <PopoverContent
+        align={"center"}
+        onCloseAutoFocus={(event) => {
+          event.preventDefault();
+          setNewTodo("");
+        }}
+      >
+        <form
+          id="listform"
+          className="font-serif flex flex-col"
+          onSubmit={createHandleSubmit}
+        >
+          <input
+            id="listName"
+            name="title"
+            type="text"
+            value={newTodo}
+            placeholder="Name this list"
+            className="text-md mb-2 ml-4 mr-4 mt-4 h-8 rounded-xl bg-gray-300 p-2 px-4 py-3 text-gray-900 placeholder:text-gray-500"
+            onChange={(event) => setNewTodo(event.target.value)}
+            required
+          />
+          <textarea
+            id="listDescription"
+            name="description"
+            value={""}
+            placeholder="Description"
+            className="text-md mb-1 ml-4 mr-4 mt-1 h-28 rounded-xl bg-gray-300 p-2 px-4 py-3 text-gray-900 placeholder:text-gray-500"
+          />
+          <div className="mb-2 ml-4 mr-4 mt-2 flex items-center justify-start">
+            <Select>
+              <SelectTrigger className="mr-3 w-5/12">
+                <SelectValue placeholder="Priority" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Low">Low</SelectItem>
+                <SelectItem value="Medium">Medium</SelectItem>
+                <SelectItem value="High">High</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select>
+              <SelectTrigger className="w-5/12">
+                <SelectValue placeholder="List" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Sleep well">Sleep well</SelectItem>
+                <SelectItem value="Webdev">Webdev</SelectItem>
+                <SelectItem value="Coffee maker">Coffee maker</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="mb-4 ml-4 mr-4 flex items-center justify-between">
+            <button
+              type="submit"
+              className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-400 p-3 text-lg text-black hover:bg-cyan-500"
+            >
+              Create
+            </button>
+            <PopoverClose asChild={true}>
+              <button className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-rose-400 p-3 text-lg text-black hover:bg-rose-500">
+                Cancel
+              </button>
+            </PopoverClose>
+          </div>
+        </form>
+        <PopoverArrow className="fill-emerald-500" />
+      </PopoverContent>
+    </Popover>
   );
 }
 
@@ -1060,7 +1197,12 @@ export default function App() {
   };
   return (
     <>
-      <NavBar changeCurrentList={changeCurrentList} />
+      <NavBar
+        changeCurrentList={changeCurrentList}
+        addTodo={addTodo}
+        newTodo={newTodo}
+        setNewTodo={setNewTodo}
+      />
       <div className="font-serif mx-6 flex w-5/6 justify-between">
         <SideBar
           lists={lists}
