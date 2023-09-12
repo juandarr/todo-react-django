@@ -314,7 +314,7 @@ function CreateModalTodo({
             type="text"
             value={newTodo}
             placeholder="Name this list"
-            className="text-md mb-2 ml-4 mr-4 mt-4 h-8 rounded-xl bg-gray-300 p-2 px-4 py-3 text-gray-900 placeholder:text-gray-500"
+            className="mb-2 ml-4 mr-4 mt-4 h-8 rounded-xl bg-gray-300 p-2 px-4 py-3 text-base text-gray-900 placeholder:text-gray-500"
             onChange={(event) => setNewTodo(event.target.value)}
             required
           />
@@ -323,11 +323,11 @@ function CreateModalTodo({
             name="description"
             value={""}
             placeholder="Description"
-            className="text-md mb-1 ml-4 mr-4 mt-1 h-28 rounded-xl bg-gray-300 p-2 px-4 py-3 text-gray-900 placeholder:text-gray-500"
+            className="mb-1 ml-4 mr-4 mt-1 h-28 rounded-xl bg-gray-300 p-2 px-4 py-3 text-base text-gray-900 placeholder:text-gray-500"
           />
-          <div className="mb-2 ml-4 mr-4 mt-2 flex items-center justify-start">
+          <div className="mb-3 ml-4 mr-4 mt-2 flex items-center justify-start">
             <Select>
-              <SelectTrigger className="mr-3 w-5/12">
+              <SelectTrigger className="mr-3 h-2 w-5/12 p-3 ">
                 <SelectValue placeholder="Priority" />
               </SelectTrigger>
               <SelectContent>
@@ -336,11 +336,12 @@ function CreateModalTodo({
                 <SelectItem value="High">High</SelectItem>
               </SelectContent>
             </Select>
-            <Select>
-              <SelectTrigger className="w-5/12">
+            <Select defaultValue="Inbox">
+              <SelectTrigger className="h-2 w-5/12 p-3">
                 <SelectValue placeholder="List" />
               </SelectTrigger>
               <SelectContent>
+                <SelectItem value="Inbox">Inbox</SelectItem>
                 <SelectItem value="Sleep well">Sleep well</SelectItem>
                 <SelectItem value="Webdev">Webdev</SelectItem>
                 <SelectItem value="Coffee maker">Coffee maker</SelectItem>

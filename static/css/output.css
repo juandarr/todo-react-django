@@ -725,6 +725,10 @@ body {
   margin-right: 0.75rem;
 }
 
+.mb-3 {
+  margin-bottom: 0.75rem;
+}
+
 .block {
   display: block;
 }
@@ -799,6 +803,10 @@ body {
 
 .h-px {
   height: 1px;
+}
+
+.h-2 {
+  height: 0.5rem;
 }
 
 .w-1\/12 {
@@ -1260,6 +1268,11 @@ body {
   line-height: 1.75rem;
 }
 
+.text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
 .font-bold {
   font-weight: 700;
 }
@@ -1439,6 +1452,16 @@ body {
 
 .placeholder\:text-muted-foreground::placeholder {
   color: hsl(var(--muted-foreground));
+}
+
+.placeholder\:text-gray-400::-moz-placeholder {
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity));
+}
+
+.placeholder\:text-gray-400::placeholder {
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity));
 }
 
 .hover\:bg-cyan-500:hover {
