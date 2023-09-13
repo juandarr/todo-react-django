@@ -29,6 +29,7 @@ import {
   PopoverArrow,
   PopoverClose,
 } from "./components/popover";
+
 import {
   Select,
   SelectContent,
@@ -60,7 +61,7 @@ function getPoint(t: string) {
   ];
 
   let [xDoc, yDoc] = [window.innerWidth, window.innerHeight];
-  console.log(xTarget, xDoc, yTarget, yDoc);
+  //console.log(xTarget, xDoc, yTarget, yDoc);
   return [xTarget / xDoc, yTarget / yDoc];
 }
 
@@ -72,19 +73,19 @@ const userSettings = {
 
 const PriorityEnum = {
   none: 0,
-  low: 1,
+  high: 1,
   medium: 2,
-  high: 3,
+  low: 3,
 };
 
 type ReactSetState = React.Dispatch<React.SetStateAction<[boolean, number]>>;
 
 type todoType = {
-  id: number;
+  id?: number;
   title: string;
-  description: string;
-  complete: boolean;
-  createdAt: Date;
+  description?: string;
+  complete?: boolean;
+  createdAt?: Date;
   list: number;
 };
 
@@ -111,8 +112,8 @@ interface cssTailVariant {
 }
 interface TaskFormProps {
   addTodo: addTodoType;
-  newTodo: string;
-  setNewTodo: React.Dispatch<React.SetStateAction<string>>;
+  newTodo: todoType;
+  setNewTodo: React.Dispatch<React.SetStateAction<todoType>>;
 }
 
 interface TaskItemProps {
@@ -122,8 +123,8 @@ interface TaskItemProps {
   deleteTodo: (id: number) => void;
   edit: (number | boolean)[];
   setEdit: React.Dispatch<React.SetStateAction<(number | boolean)[]>>;
-  newTodoEdit: string;
-  setNewTodoEdit: React.Dispatch<React.SetStateAction<string>>;
+  newTodoEdit: todoType;
+  setNewTodoEdit: React.Dispatch<React.SetStateAction<todoType>>;
   handleKeyPress: (
     event: React.FormEvent<HTMLFormElement>,
     todo: todoType,
@@ -137,8 +138,8 @@ interface TaskListProps {
   editTodo: (id: number, title: string, setEdit: ReactSetState) => void;
   condition: boolean;
   currentList: listType;
-  newTodoEdit: string;
-  setNewTodoEdit: React.Dispatch<React.SetStateAction<string>>;
+  newTodoEdit: todoType;
+  setNewTodoEdit: React.Dispatch<React.SetStateAction<todoType>>;
 }
 
 interface TaskListHeaderProps {
@@ -149,8 +150,8 @@ interface TaskListHeaderProps {
 
 interface CreateModalTodoProps {
   addTodo: (title: string) => void;
-  newTodo: string;
-  setNewTodo: React.Dispatch<React.SetStateAction<string>>;
+  newTodo: todoType;
+  setNewTodo: React.Dispatch<React.SetStateAction<todoType>>;
 }
 
 interface CreateModalListProps {
@@ -178,8 +179,8 @@ interface DeleteModalProps {
 interface NavBarProps {
   changeCurrentList: (oldList: number) => void;
   addTodo: (title: string) => void;
-  newTodo: string;
-  setNewTodo: React.Dispatch<React.SetStateAction<string>>;
+  newTodo: todoType;
+  setNewTodo: React.Dispatch<React.SetStateAction<todoType>>;
 }
 
 interface SideBarProps {
@@ -256,11 +257,13 @@ function CreateModalTodo({
   setNewTodo,
 }: CreateModalTodoProps) {
   const [isOpen, setIsOpen] = useState(false);
-
+  //TODO: redefine the way the todo object is retrieved and stored. Initially I was
+  //working with just the tittle, now we need in addition description, priority and
+  //list. Same model should also be useful for a edit button.
   const createHandleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (newTodo == "") return;
-    addTodo(newTodo);
+    if (newTodo.title == "") return;
+    addTodo(newTodo.title);
     closePopover();
   };
 
@@ -300,7 +303,7 @@ function CreateModalTodo({
         align={"center"}
         onCloseAutoFocus={(event) => {
           event.preventDefault();
-          setNewTodo("");
+          setNewTodo({ title: "", list: userSettings.homeListId });
         }}
       >
         <form
@@ -312,18 +315,23 @@ function CreateModalTodo({
             id="listName"
             name="title"
             type="text"
-            value={newTodo}
+            value={newTodo.title}
             placeholder="Name this list"
             className="mb-2 ml-4 mr-4 mt-4 h-8 rounded-xl bg-gray-300 p-2 px-4 py-3 text-base text-gray-900 placeholder:text-gray-500"
-            onChange={(event) => setNewTodo(event.target.value)}
+            onChange={(event) =>
+              setNewTodo((old) => ({ ...old, title: event.target.value }))
+            }
             required
           />
           <textarea
             id="listDescription"
             name="description"
-            value={""}
+            value={newTodo.description}
             placeholder="Description"
             className="mb-1 ml-4 mr-4 mt-1 h-28 rounded-xl bg-gray-300 p-2 px-4 py-3 text-base text-gray-900 placeholder:text-gray-500"
+            onChange={(event) =>
+              setNewTodo((old) => ({ ...old, description: event.target.value }))
+            }
           />
           <div className="mb-3 ml-4 mr-4 mt-2 flex items-center justify-start">
             <Select>
@@ -331,9 +339,9 @@ function CreateModalTodo({
                 <SelectValue placeholder="Priority" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Low">Low</SelectItem>
-                <SelectItem value="Medium">Medium</SelectItem>
-                <SelectItem value="High">High</SelectItem>
+                <SelectItem value="3">Low</SelectItem>
+                <SelectItem value="2">Medium</SelectItem>
+                <SelectItem value="1">High</SelectItem>
               </SelectContent>
             </Select>
             <Select defaultValue="Inbox">
@@ -733,8 +741,8 @@ function SideBar({
 function TaskForm({ addTodo, newTodo, setNewTodo }: TaskFormProps) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (newTodo == "") return;
-    addTodo(newTodo);
+    if (newTodo.title == "") return;
+    addTodo(newTodo.title);
   };
 
   return (
@@ -748,8 +756,10 @@ function TaskForm({ addTodo, newTodo, setNewTodo }: TaskFormProps) {
         name="title"
         className="h-10 flex-1 rounded-xl bg-gray-300 px-4 py-3 text-gray-900 placeholder:text-gray-500"
         id="todoText"
-        value={newTodo}
-        onChange={(e) => setNewTodo(e.target.value)}
+        value={newTodo.title}
+        onChange={(e) =>
+          setNewTodo((old) => ({ ...old, title: e.target.value }))
+        }
         placeholder="Enter your todo here"
         required
       />
@@ -839,7 +849,7 @@ function TaskItem({
                 style={{ cursor: "pointer" }}
                 onClick={(e) => {
                   setEdit([true, todo.id]);
-                  setNewTodoEdit(todo.title);
+                  setNewTodoEdit((old) => ({ ...old, title: todo.title }));
                 }}
               >
                 {todo.title}
@@ -849,8 +859,13 @@ function TaskItem({
                 type="text"
                 className="flex-1 border-0 bg-white py-2 text-lg text-gray-700"
                 name="title"
-                value={newTodoEdit}
-                onChange={(event) => setNewTodoEdit(event.target.value)}
+                value={newTodoEdit.title}
+                onChange={(event) =>
+                  setNewTodoEdit((old) => ({
+                    ...old,
+                    title: event.target.value,
+                  }))
+                }
                 autoFocus
               ></input>
             )}
@@ -867,7 +882,9 @@ function TaskItem({
                       stroke="currentColor"
                       className="h-7 w-7 text-sky-500 hover:text-sky-600"
                       style={{ cursor: "pointer", display: "inline" }}
-                      onClick={() => editTodo(todo.id, newTodoEdit, setEdit)}
+                      onClick={() =>
+                        editTodo(todo.id, newTodoEdit.title, setEdit)
+                      }
                     >
                       <path
                         strokeLinecap="round"
@@ -933,7 +950,7 @@ function TaskList({
     todo: todoType,
   ) => {
     event.preventDefault();
-    editTodo(todo.id, newTodoEdit, setEdit);
+    editTodo(todo.id, newTodoEdit.title, setEdit);
   };
 
   const listTodos = todos.filter((todo) => todo.list == currentList.id);
@@ -968,7 +985,6 @@ function TaskList({
 }
 
 export default function App() {
-  const [isLoading, setIsloading] = useState(true);
   const [todos, setTodos] = useState([]);
   const [lists, setLists] = useState([]);
   const [currentList, setCurrentList] = useState({
@@ -976,8 +992,12 @@ export default function App() {
     title: "",
     archived: false,
   });
-  const [newTodo, setNewTodo] = useState("");
-  const [newTodoEdit, setNewTodoEdit] = useState("");
+  const [newTodo, setNewTodo] = useState<todoType>({
+    title: "",
+    description: "",
+    list: userSettings.homeListId,
+  });
+  const [newTodoEdit, setNewTodoEdit] = useState<todoType | null>(null);
   const [newList, setNewList] = useState("");
   const [newListEdit, setNewListEdit] = useState("");
 
@@ -1063,7 +1083,7 @@ export default function App() {
       .todosCreate({ todo })
       .then((result) => {
         console.log("Todo was created!");
-        setNewTodo("");
+        setNewTodo({ title: "", list: userSettings.homeListId });
         clientTodo
           .todosList()
           .then((result) => {
