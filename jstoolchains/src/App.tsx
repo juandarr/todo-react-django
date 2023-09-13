@@ -115,6 +115,7 @@ interface TaskFormProps {
   addTodo: addTodoType;
   newTodo: todoType;
   setNewTodo: React.Dispatch<React.SetStateAction<todoType>>;
+  isTodoModalOpen: boolean;
 }
 
 interface TaskItemProps {
@@ -154,6 +155,7 @@ interface CreateModalTodoProps {
   addTodo: addTodoType;
   newTodo: todoType;
   setNewTodo: React.Dispatch<React.SetStateAction<todoType>>;
+  setIsTodoModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface CreateModalListProps {
@@ -184,6 +186,7 @@ interface NavBarProps {
   addTodo: addTodoType;
   newTodo: todoType;
   setNewTodo: React.Dispatch<React.SetStateAction<todoType>>;
+  setIsTodoModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface SideBarProps {
@@ -212,6 +215,7 @@ function NavBar({
   addTodo,
   newTodo,
   setNewTodo,
+  setIsTodoModalOpen,
 }: NavBarProps) {
   const toggleSidebar = function () {
     const s = document.getElementById("sidebar");
@@ -245,6 +249,7 @@ function NavBar({
         addTodo={addTodo}
         newTodo={newTodo}
         setNewTodo={setNewTodo}
+        setIsTodoModalOpen={setIsTodoModalOpen}
       />
       <a
         href="/admin"
@@ -261,11 +266,9 @@ function CreateModalTodo({
   addTodo,
   newTodo,
   setNewTodo,
+  setIsTodoModalOpen,
 }: CreateModalTodoProps) {
   const [isOpen, setIsOpen] = useState(false);
-  //TODO: redefine the way the todo object is retrieved and stored. Initially I was
-  //working with just the tittle, now we need in addition description, priority and
-  //list. Same model should also be useful for a edit button.
   const createHandleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (newTodo.title == "") return;
@@ -278,6 +281,7 @@ function CreateModalTodo({
   };
   const openPopover = () => {
     setIsOpen(true);
+    setIsTodoModalOpen(true);
     setNewTodo({ title: "", description: "" });
   };
 
@@ -311,6 +315,7 @@ function CreateModalTodo({
         onCloseAutoFocus={(event) => {
           event.preventDefault();
           setNewTodo({ title: "", description: "" });
+          setIsTodoModalOpen(false);
         }}
       >
         <form
@@ -760,7 +765,12 @@ function SideBar({
   );
 }
 
-function TaskForm({ addTodo, newTodo, setNewTodo }: TaskFormProps) {
+function TaskForm({
+  addTodo,
+  newTodo,
+  setNewTodo,
+  isTodoModalOpen,
+}: TaskFormProps) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (newTodo.title == "") return;
@@ -778,7 +788,7 @@ function TaskForm({ addTodo, newTodo, setNewTodo }: TaskFormProps) {
         name="title"
         className="h-10 flex-1 rounded-xl bg-gray-300 px-4 py-3 text-gray-900 placeholder:text-gray-500"
         id="todoText"
-        value={newTodo.title}
+        value={isTodoModalOpen ? "" : newTodo.title}
         onChange={(e) =>
           setNewTodo((old) => ({ ...old, title: e.target.value }))
         }
@@ -1020,6 +1030,7 @@ export default function App() {
     title: "",
     description: "",
   });
+  const [isTodoModalOpen, setIsTodoModalOpen] = useState(false);
   const [newTodoEdit, setNewTodoEdit] = useState<todoType | null>(null);
   const [newList, setNewList] = useState("");
   const [newListEdit, setNewListEdit] = useState("");
@@ -1252,6 +1263,7 @@ export default function App() {
         console.log("There was an error updating the field");
       });
   };
+  console.log(isTodoModalOpen);
   return (
     <>
       <NavBar
@@ -1260,6 +1272,7 @@ export default function App() {
         addTodo={addTodo}
         newTodo={newTodo}
         setNewTodo={setNewTodo}
+        setIsTodoModalOpen={setIsTodoModalOpen}
       />
       <div className="font-serif mx-6 flex w-5/6 justify-between">
         <SideBar
@@ -1283,6 +1296,7 @@ export default function App() {
             addTodo={addTodo}
             newTodo={newTodo}
             setNewTodo={setNewTodo}
+            isTodoModalOpen={isTodoModalOpen}
           />
           <TaskListHeader
             fieldDone={"Is done?"}
