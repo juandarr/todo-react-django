@@ -588,8 +588,8 @@ function DeleteModal({
   };
 
   const toggleHidden = () => {
-    const el = document.getElementById(parentId);
-    el.classList.toggle("hidden-child");
+    const el: HTMLElement = document.getElementById(parentId);
+    if (el !== null) el.classList.toggle("hidden-child");
   };
 
   const fillColorVariants: cssTailVariant = {
