@@ -72,10 +72,10 @@ const userSettings = {
 };
 
 const PriorityEnum = {
-  none: 0,
-  high: 1,
-  medium: 2,
-  low: 3,
+  None: "0",
+  Low: "1",
+  Medium: "2",
+  High: "3",
 };
 
 type ReactSetState = React.Dispatch<React.SetStateAction<[boolean, number]>>;
@@ -86,7 +86,8 @@ type todoType = {
   description?: string;
   complete?: boolean;
   createdAt?: Date;
-  list: number;
+  priority?: string;
+  list?: string;
 };
 
 type todosType = todoType[];
@@ -103,7 +104,7 @@ type userSettingsType = {
   homeListId: number;
 };
 
-type addTodoType = (title: string) => void;
+type addTodoType = (todo: todoType, origin: string) => void;
 
 interface cssTailVariant {
   list: string;
@@ -149,7 +150,8 @@ interface TaskListHeaderProps {
 }
 
 interface CreateModalTodoProps {
-  addTodo: (title: string) => void;
+  lists: listType[];
+  addTodo: addTodoType;
   newTodo: todoType;
   setNewTodo: React.Dispatch<React.SetStateAction<todoType>>;
 }
@@ -178,7 +180,8 @@ interface DeleteModalProps {
 
 interface NavBarProps {
   changeCurrentList: (oldList: number) => void;
-  addTodo: (title: string) => void;
+  lists: listType[];
+  addTodo: addTodoType;
   newTodo: todoType;
   setNewTodo: React.Dispatch<React.SetStateAction<todoType>>;
 }
@@ -205,6 +208,7 @@ const iconSize = "1.8rem";
 
 function NavBar({
   changeCurrentList,
+  lists,
   addTodo,
   newTodo,
   setNewTodo,
@@ -237,6 +241,7 @@ function NavBar({
         </button>
       </div>
       <CreateModalTodo
+        lists={lists}
         addTodo={addTodo}
         newTodo={newTodo}
         setNewTodo={setNewTodo}
@@ -252,6 +257,7 @@ function NavBar({
 }
 
 function CreateModalTodo({
+  lists,
   addTodo,
   newTodo,
   setNewTodo,
@@ -263,7 +269,7 @@ function CreateModalTodo({
   const createHandleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (newTodo.title == "") return;
-    addTodo(newTodo.title);
+    addTodo(newTodo, "NavBar");
     closePopover();
   };
 
@@ -272,6 +278,7 @@ function CreateModalTodo({
   };
   const openPopover = () => {
     setIsOpen(true);
+    setNewTodo({ title: "", description: "" });
   };
 
   return (
@@ -303,7 +310,7 @@ function CreateModalTodo({
         align={"center"}
         onCloseAutoFocus={(event) => {
           event.preventDefault();
-          setNewTodo({ title: "", list: userSettings.homeListId });
+          setNewTodo({ title: "", description: "" });
         }}
       >
         <form
@@ -334,25 +341,40 @@ function CreateModalTodo({
             }
           />
           <div className="mb-3 ml-4 mr-4 mt-2 flex items-center justify-start">
-            <Select>
+            <Select
+              value={newTodo.priority}
+              onValueChange={(value) =>
+                setNewTodo((old) => ({ ...old, priority: value }))
+              }
+            >
               <SelectTrigger className="mr-3 h-2 w-5/12 p-3 ">
                 <SelectValue placeholder="Priority" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="3">Low</SelectItem>
-                <SelectItem value="2">Medium</SelectItem>
-                <SelectItem value="1">High</SelectItem>
+                {Object.entries(PriorityEnum).map((item, idx) => {
+                  return (
+                    <SelectItem key={idx} value={item[1]}>
+                      {item[0]}
+                    </SelectItem>
+                  );
+                })}
               </SelectContent>
             </Select>
-            <Select defaultValue="Inbox">
+            <Select
+              value={newTodo.list}
+              onValueChange={(value) => {
+                setNewTodo((old) => ({ ...old, list: value }));
+              }}
+            >
               <SelectTrigger className="h-2 w-5/12 p-3">
                 <SelectValue placeholder="List" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Inbox">Inbox</SelectItem>
-                <SelectItem value="Sleep well">Sleep well</SelectItem>
-                <SelectItem value="Webdev">Webdev</SelectItem>
-                <SelectItem value="Coffee maker">Coffee maker</SelectItem>
+                {lists.map((list) => (
+                  <SelectItem key={list.id} value={list.id.toString()}>
+                    {list.title}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -742,7 +764,7 @@ function TaskForm({ addTodo, newTodo, setNewTodo }: TaskFormProps) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (newTodo.title == "") return;
-    addTodo(newTodo.title);
+    addTodo(newTodo, "taskList");
   };
 
   return (
@@ -953,7 +975,9 @@ function TaskList({
     editTodo(todo.id, newTodoEdit.title, setEdit);
   };
 
-  const listTodos = todos.filter((todo) => todo.list == currentList.id);
+  const listTodos = todos.filter(
+    (todo) => todo.list == currentList.id.toString(),
+  );
   const filteredTodos = listTodos.filter((todo) => todo.complete == condition);
 
   if (filteredTodos.length === 0) {
@@ -995,7 +1019,6 @@ export default function App() {
   const [newTodo, setNewTodo] = useState<todoType>({
     title: "",
     description: "",
-    list: userSettings.homeListId,
   });
   const [newTodoEdit, setNewTodoEdit] = useState<todoType | null>(null);
   const [newList, setNewList] = useState("");
@@ -1048,6 +1071,7 @@ export default function App() {
   const changeCurrentList = (newListId: number) => {
     const newList = lists.filter((list) => list.id == newListId)[0];
     setCurrentList((oldList) => newList);
+    setNewTodo({ title: "", description: "" });
   };
 
   const addList = (title: string) => {
@@ -1074,16 +1098,28 @@ export default function App() {
       });
   };
 
-  const addTodo = (title: string) => {
-    let todo = {
-      title: title,
-      list: currentList.id,
-    };
+  const addTodo = (todo: todoType, origin: string) => {
+    let todoFiltered: any = { ...todo };
+    if ("priority" in todo) {
+      todoFiltered.priority = parseInt(todoFiltered.priority);
+    }
+    if ("list" in todo) {
+      todoFiltered.list = parseInt(todoFiltered.list);
+    } else {
+      if (origin == "taskList") {
+        todoFiltered.list = currentList.id;
+      } else {
+        todoFiltered.list = userSettings.homeListId;
+      }
+    }
     clientTodo
-      .todosCreate({ todo })
+      .todosCreate({ todo: todoFiltered })
       .then((result) => {
         console.log("Todo was created!");
-        setNewTodo({ title: "", list: userSettings.homeListId });
+        setNewTodo({
+          title: "",
+          description: "",
+        });
         clientTodo
           .todosList()
           .then((result) => {
@@ -1220,6 +1256,7 @@ export default function App() {
     <>
       <NavBar
         changeCurrentList={changeCurrentList}
+        lists={lists}
         addTodo={addTodo}
         newTodo={newTodo}
         setNewTodo={setNewTodo}
