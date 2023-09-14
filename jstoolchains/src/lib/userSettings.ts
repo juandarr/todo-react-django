@@ -8,5 +8,3 @@ export const PriorityEnum = {
   Medium: "2",
   High: "3",
 };
-
-export const iconSize = "1.8rem";

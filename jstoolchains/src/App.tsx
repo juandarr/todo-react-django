@@ -3,7 +3,8 @@ import { TodosApi, ListsApi } from "../../todo-api-client/apis/index";
 import { Configuration } from "../../todo-api-client/runtime";
 import { getPoint, getCookie } from "./lib/utils";
 import NavBar from "./components/navbar/navbar";
-import { userSettings, iconSize } from "./lib/userSettings";
+import { CreateModalList } from "./components/modals/createModalList";
+import { userSettings } from "./lib/userSettings";
 import { Checkbox } from "./components/ui/checkbox";
 import {
   Tooltip,
@@ -12,7 +13,7 @@ import {
   TooltipTrigger,
 } from "./components/ui/tooltip";
 
-import { ArchiveAdd, Trash, Edit } from "iconsax-react";
+import { Trash, Edit } from "iconsax-react";
 
 import confetti from "canvas-confetti";
 
@@ -24,212 +25,24 @@ import {
   PopoverClose,
 } from "./components/ui/popover";
 
+import type {
+  EditModalListProps,
+  DeleteModalProps,
+  cssTailVariant,
+  SideBarProps,
+  TaskFormProps,
+  TaskItemProps,
+  TaskListHeaderProps,
+  todoType,
+  TaskListProps,
+  listType,
+  ReactSetState,
+} from "./lib/customTypes";
+
 var myCanvas = document.createElement("canvas");
-
-type ReactSetState = React.Dispatch<React.SetStateAction<[boolean, number]>>;
-
-type todoType = {
-  id?: number;
-  title: string;
-  description?: string;
-  complete?: boolean;
-  createdAt?: Date;
-  priority?: string;
-  list?: string;
-};
-
-type todosType = todoType[];
-
-type listType = {
-  id: number;
-  title: string;
-  archived: boolean;
-};
-
-type listsType = listType[];
-
-type userSettingsType = {
-  homeListId: number;
-};
-
-type addTodoType = (todo: todoType, origin: string) => void;
-
-interface cssTailVariant {
-  list: string;
-  todo: string;
-  [key: string]: string;
-}
-interface TaskFormProps {
-  addTodo: addTodoType;
-  newTodo: todoType;
-  setNewTodo: React.Dispatch<React.SetStateAction<todoType>>;
-  isTodoModalOpen: boolean;
-}
-
-interface TaskItemProps {
-  todo: todoType;
-  toggleTodo: (id: number, complete: boolean) => void;
-  editTodo: (id: number, title: string, setEdit: ReactSetState) => void;
-  deleteTodo: (id: number) => void;
-  edit: (number | boolean)[];
-  setEdit: React.Dispatch<React.SetStateAction<(number | boolean)[]>>;
-  newTodoEdit: todoType;
-  setNewTodoEdit: React.Dispatch<React.SetStateAction<todoType>>;
-  handleKeyPress: (
-    event: React.FormEvent<HTMLFormElement>,
-    todo: todoType,
-  ) => void;
-}
-
-interface TaskListProps {
-  todos: todosType;
-  toggleTodo: (id: number, complete: boolean) => void;
-  deleteTodo: (id: number) => void;
-  editTodo: (id: number, title: string, setEdit: ReactSetState) => void;
-  condition: boolean;
-  currentList: listType;
-  newTodoEdit: todoType;
-  setNewTodoEdit: React.Dispatch<React.SetStateAction<todoType>>;
-}
-
-interface TaskListHeaderProps {
-  fieldDone: string;
-  fieldTask: string;
-  fieldActions: string;
-}
-
-interface CreateModalTodoProps {
-  lists: listType[];
-  addTodo: addTodoType;
-  newTodo: todoType;
-  setNewTodo: React.Dispatch<React.SetStateAction<todoType>>;
-  setIsTodoModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-interface CreateModalListProps {
-  addList: (title: string) => void;
-  newList: string;
-  setNewList: React.Dispatch<React.SetStateAction<string>>;
-}
-
-interface EditModalListProps {
-  editList: (id: number, title: string) => void;
-  data: { id: number; title: string };
-  newListEdit: string;
-  setNewListEdit: React.Dispatch<React.SetStateAction<string>>;
-  parentId: string;
-}
-
-interface DeleteModalProps {
-  deleteFunction: (id: number) => void;
-  triggerElement: React.JSX.Element;
-  deleteEntity: string;
-  parentId: string;
-  id: number;
-}
-
-interface SideBarProps {
-  lists: listsType;
-  userSettings: userSettingsType;
-  changeCurrentList: (oldList: number) => void;
-  currentList: listType;
-  addList: (title: string) => void;
-  deleteList: (id: number) => void;
-  editList: (id: number, title: string) => void;
-  newList: string;
-  setNewList: React.Dispatch<React.SetStateAction<string>>;
-  newListEdit: string;
-  setNewListEdit: React.Dispatch<React.SetStateAction<string>>;
-}
 
 function randomInRange(min: number, max: number) {
   return Math.random() * (max - min) + min;
-}
-
-function CreateModalList({
-  addList,
-  newList,
-  setNewList,
-}: CreateModalListProps) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const createHandleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (newList == "") return;
-    addList(newList);
-    closePopover();
-  };
-
-  const closePopover = () => {
-    setIsOpen(false);
-  };
-  const openPopover = () => {
-    setIsOpen(true);
-  };
-
-  return (
-    <Popover
-      modal={true}
-      open={isOpen}
-      onOpenChange={(newOpenState) => setIsOpen(newOpenState)}
-    >
-      <TooltipProvider>
-        <Tooltip>
-          <PopoverTrigger asChild={true}>
-            <TooltipTrigger>
-              <a
-                className="flex cursor-pointer justify-center text-2xl text-violet-500 hover:text-violet-600"
-                onClick={() => openPopover()}
-              >
-                <ArchiveAdd size={iconSize} />
-              </a>
-            </TooltipTrigger>
-          </PopoverTrigger>
-          <TooltipContent className="bg-violet-500">
-            <p className="font-bold text-white">Add list</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
-      <PopoverContent
-        align={"center"}
-        onCloseAutoFocus={(event) => {
-          event.preventDefault();
-          setNewList("");
-        }}
-      >
-        <form
-          id="listform"
-          className="font-serif flex flex-col"
-          onSubmit={createHandleSubmit}
-        >
-          <input
-            id="listName"
-            name="title"
-            type="text"
-            value={newList}
-            placeholder="Name this list"
-            className="m-4 h-8 rounded-xl bg-gray-300 p-2 px-4 py-3 text-gray-900 placeholder:text-gray-500"
-            onChange={(event) => setNewList(event.target.value)}
-            required
-          />
-          <div className="mb-4 ml-4 mr-4 flex items-center justify-between">
-            <button
-              type="submit"
-              className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-400 p-3 text-lg text-black hover:bg-cyan-500"
-            >
-              Create
-            </button>
-            <PopoverClose asChild={true}>
-              <button className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-rose-400 p-3 text-lg text-black hover:bg-rose-500">
-                Cancel
-              </button>
-            </PopoverClose>
-          </div>
-        </form>
-        <PopoverArrow className="fill-violet-500" />
-      </PopoverContent>
-    </Popover>
-  );
 }
 
 function EditModalList({

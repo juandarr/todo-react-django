@@ -1,9 +1,9 @@
 import React from "react";
 import CreateModalTodo from "../modals/createModalTodo";
-import { HambergerMenu, House, Notification } from "iconsax-react";
+import { SidebarLeft, House, Notification } from "iconsax-react";
 
 import { todoType, listType, addTodoType } from "../../lib/customTypes";
-import { userSettings, iconSize } from "../../lib/userSettings";
+import { userSettings } from "../../lib/userSettings";
 
 interface NavBarProps {
   changeCurrentList: (oldList: number) => void;
@@ -38,7 +38,7 @@ export default function NavBar({
         onClick={toggleSidebar}
       >
         <button className="text-violet-500 hover:text-violet-600">
-          <HambergerMenu size={iconSize} />
+          <SidebarLeft size="1.8rem" />
         </button>
       </div>
       <div
@@ -46,7 +46,7 @@ export default function NavBar({
         onClick={() => changeCurrentList(userSettings.homeListId)}
       >
         <button className="text-rose-400 hover:text-rose-500">
-          <House size={iconSize} />
+          <House size="1.8rem" />
         </button>
       </div>
       <CreateModalTodo
@@ -60,7 +60,7 @@ export default function NavBar({
         href="/admin"
         className="flex w-2/12 justify-end pl-3 pr-3 text-2xl text-cyan-500"
       >
-        <Notification size={iconSize} />
+        <Notification size="1.8rem" />
       </a>
     </nav>
   );

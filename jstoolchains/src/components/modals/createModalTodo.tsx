@@ -25,7 +25,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { CreateModalTodoProps } from "../../lib/customTypes";
-import { iconSize, PriorityEnum } from "../../lib/userSettings";
+import { PriorityEnum } from "../../lib/userSettings";
 
 export default function CreateModalTodo({
   lists,
@@ -66,7 +66,7 @@ export default function CreateModalTodo({
                 onClick={() => openPopover()}
               >
                 <button className="text-emerald-400 hover:text-emerald-500">
-                  <AddCircle size={iconSize} />
+                  <AddCircle size="1.8rem" />
                 </button>
               </div>
             </TooltipTrigger>
