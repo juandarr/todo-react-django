@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { TodosApi, ListsApi } from "../../todo-api-client/apis/index";
 import { Configuration } from "../../todo-api-client/runtime";
-import { Checkbox } from "./components/checkbox";
+import { Checkbox } from "./components/ui/checkbox";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "./components/tooltip";
+} from "./components/ui/tooltip";
 
 import {
   HambergerMenu,
@@ -28,7 +28,7 @@ import {
   PopoverTrigger,
   PopoverArrow,
   PopoverClose,
-} from "./components/popover";
+} from "./components/ui/popover";
 
 import {
   Select,
@@ -36,7 +36,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./components/select";
+} from "./components/ui/select";
 
 function getCookie(name: string) {
   var cookieValue = name;
@@ -1263,7 +1263,6 @@ export default function App() {
         console.log("There was an error updating the field");
       });
   };
-  console.log(isTodoModalOpen);
   return (
     <>
       <NavBar

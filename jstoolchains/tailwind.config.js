@@ -3,7 +3,12 @@ const { fontFamily } = require("tailwindcss/defaultTheme");
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
-  content: ["../templates/*.html", "./src/*.{tsx,ts,js,jsx}", "./src/components/*.{tsx,ts}", "./src/lib/*.{tsx,ts}"],
+  content: [
+    "../templates/*.html",
+    "./src/*.{tsx,ts,js,jsx}",
+    "./src/components/ui/*.{tsx,ts}",
+    "./src/lib/*.{tsx,ts}",
+  ],
   theme: {
     container: {
       center: true,
@@ -13,7 +18,7 @@ module.exports = {
       },
     },
     fontFamily: {
-      'OpenSans': ['"Open Sans"', 'sans-serif'],
+      OpenSans: ['"Open Sans"', "sans-serif"],
     },
     extend: {
       colors: {
@@ -76,5 +81,4 @@ module.exports = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
-
+};
