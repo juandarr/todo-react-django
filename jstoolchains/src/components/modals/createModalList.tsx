@@ -18,7 +18,7 @@ import {
 } from "../ui/popover";
 import type { CreateModalListProps } from "../../lib/customTypes";
 
-export function CreateModalList({
+export default function CreateModalList({
   addList,
   newList,
   setNewList,
