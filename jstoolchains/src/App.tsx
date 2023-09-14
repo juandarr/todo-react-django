@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { TodosApi, ListsApi } from "../../todo-api-client/apis/index";
 import { Configuration } from "../../todo-api-client/runtime";
+import { getPoint, getCookie } from "./lib/utils";
+import NavBar from "./components/navbar/navbar";
+import { userSettings, iconSize } from "./lib/userSettings";
 import { Checkbox } from "./components/ui/checkbox";
 import {
   Tooltip,
@@ -9,16 +12,7 @@ import {
   TooltipTrigger,
 } from "./components/ui/tooltip";
 
-import {
-  HambergerMenu,
-  House,
-  Notification,
-  ArchiveAdd,
-  AddCircle,
-  Menu,
-  Trash,
-  Edit,
-} from "iconsax-react";
+import { ArchiveAdd, Trash, Edit } from "iconsax-react";
 
 import confetti from "canvas-confetti";
 
@@ -30,53 +24,7 @@ import {
   PopoverClose,
 } from "./components/ui/popover";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./components/ui/select";
-
-function getCookie(name: string) {
-  var cookieValue = name;
-  if (document.cookie && document.cookie !== "") {
-    var cookies = document.cookie.split(";");
-    for (var i = 0; i < cookies.length; i++) {
-      var cookie = cookies[i].trim();
-      if (cookie.substring(0, name.length + 1) === name + "=") {
-        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-        break;
-      }
-    }
-  }
-  return cookieValue;
-}
-
-function getPoint(t: string) {
-  let target = document.getElementById(t);
-  let [xTarget, yTarget] = [
-    target.getBoundingClientRect().left,
-    target.getBoundingClientRect().top,
-  ];
-
-  let [xDoc, yDoc] = [window.innerWidth, window.innerHeight];
-  //console.log(xTarget, xDoc, yTarget, yDoc);
-  return [xTarget / xDoc, yTarget / yDoc];
-}
-
 var myCanvas = document.createElement("canvas");
-
-const userSettings = {
-  homeListId: 1,
-};
-
-const PriorityEnum = {
-  None: "0",
-  Low: "1",
-  Medium: "2",
-  High: "3",
-};
 
 type ReactSetState = React.Dispatch<React.SetStateAction<[boolean, number]>>;
 
@@ -180,15 +128,6 @@ interface DeleteModalProps {
   id: number;
 }
 
-interface NavBarProps {
-  changeCurrentList: (oldList: number) => void;
-  lists: listType[];
-  addTodo: addTodoType;
-  newTodo: todoType;
-  setNewTodo: React.Dispatch<React.SetStateAction<todoType>>;
-  setIsTodoModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
 interface SideBarProps {
   lists: listsType;
   userSettings: userSettingsType;
@@ -205,202 +144,6 @@ interface SideBarProps {
 
 function randomInRange(min: number, max: number) {
   return Math.random() * (max - min) + min;
-}
-
-const iconSize = "1.8rem";
-
-function NavBar({
-  changeCurrentList,
-  lists,
-  addTodo,
-  newTodo,
-  setNewTodo,
-  setIsTodoModalOpen,
-}: NavBarProps) {
-  const toggleSidebar = function () {
-    const s = document.getElementById("sidebar");
-
-    if (s.style.display == "none") {
-      s.style.display = "block";
-    } else {
-      s.style.display = "none";
-    }
-  };
-  return (
-    <nav className="mx-6 mb-6 mt-12 flex w-5/6 justify-between rounded-lg border-2 border-black bg-white p-2">
-      <div
-        className="flex w-1/12 justify-start pl-3 text-2xl"
-        onClick={toggleSidebar}
-      >
-        <button className="text-violet-500 hover:text-violet-600">
-          <HambergerMenu size={iconSize} />
-        </button>
-      </div>
-      <div
-        className="flex w-1/12 justify-start pl-3 text-2xl"
-        onClick={() => changeCurrentList(userSettings.homeListId)}
-      >
-        <button className="text-rose-400 hover:text-rose-500">
-          <House size={iconSize} />
-        </button>
-      </div>
-      <CreateModalTodo
-        lists={lists}
-        addTodo={addTodo}
-        newTodo={newTodo}
-        setNewTodo={setNewTodo}
-        setIsTodoModalOpen={setIsTodoModalOpen}
-      />
-      <a
-        href="/admin"
-        className="flex w-2/12 justify-end pl-3 pr-3 text-2xl text-cyan-500"
-      >
-        <Notification size={iconSize} />
-      </a>
-    </nav>
-  );
-}
-
-function CreateModalTodo({
-  lists,
-  addTodo,
-  newTodo,
-  setNewTodo,
-  setIsTodoModalOpen,
-}: CreateModalTodoProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const createHandleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (newTodo.title == "") return;
-    addTodo(newTodo, "NavBar");
-    closePopover();
-  };
-
-  const closePopover = () => {
-    setIsOpen(false);
-  };
-  const openPopover = () => {
-    setIsOpen(true);
-    setIsTodoModalOpen(true);
-    setNewTodo({ title: "", description: "" });
-  };
-
-  return (
-    <Popover
-      modal={true}
-      open={isOpen}
-      onOpenChange={(newOpenState) => setIsOpen(newOpenState)}
-    >
-      <TooltipProvider>
-        <Tooltip>
-          <PopoverTrigger asChild={true}>
-            <TooltipTrigger asChild={true}>
-              <div
-                className="flex w-8/12 justify-center text-2xl"
-                onClick={() => openPopover()}
-              >
-                <button className="text-emerald-400 hover:text-emerald-500">
-                  <AddCircle size={iconSize} />
-                </button>
-              </div>
-            </TooltipTrigger>
-          </PopoverTrigger>
-          <TooltipContent className="bg-emerald-500">
-            <p className="font-bold text-white">Add todo</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
-      <PopoverContent
-        align={"center"}
-        onCloseAutoFocus={(event) => {
-          event.preventDefault();
-          setNewTodo({ title: "", description: "" });
-          setIsTodoModalOpen(false);
-        }}
-      >
-        <form
-          id="listform"
-          className="font-serif flex flex-col"
-          onSubmit={createHandleSubmit}
-        >
-          <input
-            id="listName"
-            name="title"
-            type="text"
-            value={newTodo.title}
-            placeholder="Name this list"
-            className="mb-2 ml-4 mr-4 mt-4 h-8 rounded-xl bg-gray-300 p-2 px-4 py-3 text-base text-gray-900 placeholder:text-gray-500"
-            onChange={(event) =>
-              setNewTodo((old) => ({ ...old, title: event.target.value }))
-            }
-            required
-          />
-          <textarea
-            id="listDescription"
-            name="description"
-            value={newTodo.description}
-            placeholder="Description"
-            className="mb-1 ml-4 mr-4 mt-1 h-28 rounded-xl bg-gray-300 p-2 px-4 py-3 text-base text-gray-900 placeholder:text-gray-500"
-            onChange={(event) =>
-              setNewTodo((old) => ({ ...old, description: event.target.value }))
-            }
-          />
-          <div className="mb-3 ml-4 mr-4 mt-2 flex items-center justify-start">
-            <Select
-              value={newTodo.priority}
-              onValueChange={(value) =>
-                setNewTodo((old) => ({ ...old, priority: value }))
-              }
-            >
-              <SelectTrigger className="mr-3 h-2 w-5/12 p-3 ">
-                <SelectValue placeholder="Priority" />
-              </SelectTrigger>
-              <SelectContent>
-                {Object.entries(PriorityEnum).map((item, idx) => {
-                  return (
-                    <SelectItem key={idx} value={item[1]}>
-                      {item[0]}
-                    </SelectItem>
-                  );
-                })}
-              </SelectContent>
-            </Select>
-            <Select
-              value={newTodo.list}
-              onValueChange={(value) => {
-                setNewTodo((old) => ({ ...old, list: value }));
-              }}
-            >
-              <SelectTrigger className="h-2 w-5/12 p-3">
-                <SelectValue placeholder="List" />
-              </SelectTrigger>
-              <SelectContent>
-                {lists.map((list) => (
-                  <SelectItem key={list.id} value={list.id.toString()}>
-                    {list.title}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="mb-4 ml-4 mr-4 flex items-center justify-between">
-            <button
-              type="submit"
-              className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-400 p-3 text-lg text-black hover:bg-cyan-500"
-            >
-              Create
-            </button>
-            <PopoverClose asChild={true}>
-              <button className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-rose-400 p-3 text-lg text-black hover:bg-rose-500">
-                Cancel
-              </button>
-            </PopoverClose>
-          </div>
-        </form>
-        <PopoverArrow className="fill-emerald-500" />
-      </PopoverContent>
-    </Popover>
-  );
 }
 
 function CreateModalList({
