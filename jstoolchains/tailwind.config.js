@@ -6,8 +6,7 @@ module.exports = {
   content: [
     "../templates/*.html",
     "./src/*.{tsx,ts,js,jsx}",
-    "./src/components/ui/*.{tsx,ts}",
-    "./src/lib/*.{tsx,ts}",
+    "./src/**/*.{tsx,ts}",
   ],
   theme: {
     container: {
