@@ -1517,6 +1517,11 @@ body {
   cursor: not-allowed;
 }
 
+.disabled\:bg-cyan-100:disabled {
+  --tw-bg-opacity: 1;
+  background-color: rgb(207 250 254 / var(--tw-bg-opacity));
+}
+
 .disabled\:opacity-50:disabled {
   opacity: 0.5;
 }

@@ -24,6 +24,8 @@ export default function CreateModalList({
   setNewList,
 }: CreateModalListProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [error, setError] = useState(null);
+  const [status, setStatus] = useState("typing");
 
   const createHandleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -35,10 +37,11 @@ export default function CreateModalList({
   const closePopover = () => {
     setIsOpen(false);
   };
+
   const openPopover = () => {
     setIsOpen(true);
   };
-
+  console.log(newList.length);
   return (
     <Popover
       modal={true}
@@ -82,12 +85,14 @@ export default function CreateModalList({
             placeholder="Name this list"
             className="m-4 h-8 rounded-xl bg-gray-300 p-2 px-4 py-3 text-gray-900 placeholder:text-gray-500"
             onChange={(event) => setNewList(event.target.value)}
+            disabled={status === "submiting" ? true : false}
             required
           />
           <div className="mb-4 ml-4 mr-4 flex items-center justify-between">
             <button
               type="submit"
-              className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-400 p-3 text-lg text-black hover:bg-cyan-500"
+              className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-400 p-3 text-lg text-black hover:bg-cyan-500 disabled:bg-cyan-100"
+              disabled={newList.length === 0 ? true : false}
             >
               Create
             </button>
