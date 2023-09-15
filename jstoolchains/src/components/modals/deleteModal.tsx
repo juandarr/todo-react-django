@@ -29,6 +29,16 @@ export default function DeleteModal({
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     //FIXME: function to create, update, delete should return an exit message and upon success we can close the popover, it should include notification of success or failure
+    /* Progress:
+    [x] create List
+    [x] create Todo modal
+    [x] create Todo taskView
+    [ ] Delete List
+    [ ] Delete Todo
+    [ ] Edit List
+    [ ] Edit todo
+    [ ] Toggle todo
+    */
     deleteFunction(id);
     closePopover();
   };

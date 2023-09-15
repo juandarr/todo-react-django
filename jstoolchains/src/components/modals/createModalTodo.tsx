@@ -35,16 +35,29 @@ export default function CreateModalTodo({
   setIsTodoModalOpen,
 }: CreateModalTodoProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const createHandleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const [status, setStatus] = useState("typing");
+  const [error, setError] = useState(null);
+
+  const createHandleSubmit = async (
+    event: React.FormEvent<HTMLFormElement>,
+  ) => {
     event.preventDefault();
     if (newTodo.title == "") return;
-    addTodo(newTodo, "NavBar");
-    closePopover();
+    setStatus("submitting");
+
+    try {
+      const result = await addTodo(newTodo, "NavBar");
+      closePopover();
+    } catch (error) {
+      setError(error);
+      setStatus("typing");
+    }
   };
 
   const closePopover = () => {
     setIsOpen(false);
   };
+
   const openPopover = () => {
     setIsOpen(true);
     setIsTodoModalOpen(true);
@@ -81,6 +94,8 @@ export default function CreateModalTodo({
         onCloseAutoFocus={(event) => {
           event.preventDefault();
           setNewTodo({ title: "", description: "" });
+          setStatus("typing");
+          setError(null);
           setIsTodoModalOpen(false);
         }}
       >
@@ -99,6 +114,7 @@ export default function CreateModalTodo({
             onChange={(event) =>
               setNewTodo((old) => ({ ...old, title: event.target.value }))
             }
+            disabled={status === "submitting" ? true : false}
             required
           />
           <textarea
@@ -110,6 +126,7 @@ export default function CreateModalTodo({
             onChange={(event) =>
               setNewTodo((old) => ({ ...old, description: event.target.value }))
             }
+            disabled={status === "submitting" ? true : false}
           />
           <div className="mb-3 ml-4 mr-4 mt-2 flex items-center justify-start">
             <Select
@@ -117,6 +134,7 @@ export default function CreateModalTodo({
               onValueChange={(value) =>
                 setNewTodo((old) => ({ ...old, priority: value }))
               }
+              disabled={status == "submitting" ? true : false}
             >
               <SelectTrigger className="mr-3 h-2 w-5/12 p-3 ">
                 <SelectValue placeholder="Priority" />
@@ -136,6 +154,7 @@ export default function CreateModalTodo({
               onValueChange={(value) => {
                 setNewTodo((old) => ({ ...old, list: value }));
               }}
+              disabled={status === "submitting" ? true : false}
             >
               <SelectTrigger className="h-2 w-5/12 p-3">
                 <SelectValue placeholder="List" />
@@ -152,16 +171,29 @@ export default function CreateModalTodo({
           <div className="mb-4 ml-4 mr-4 flex items-center justify-between">
             <button
               type="submit"
-              className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-400 p-3 text-lg text-black hover:bg-cyan-500"
+              className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 disabled:bg-cyan-100"
+              disabled={
+                status === "submitting" || newTodo.title.length === 0
+                  ? true
+                  : false
+              }
             >
               Create
             </button>
             <PopoverClose asChild={true}>
-              <button className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-rose-400 p-3 text-lg text-black hover:bg-rose-500">
+              <button
+                className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-600"
+                disabled={status === "submitting" ? true : false}
+              >
                 Cancel
               </button>
             </PopoverClose>
           </div>
+          {error != null && (
+            <div className="text-sm text-red-400">
+              There was an error creating task: {error}
+            </div>
+          )}
         </form>
         <PopoverArrow className="fill-emerald-500" />
       </PopoverContent>

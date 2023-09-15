@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { TaskFormProps } from "../../lib/customTypes";
 
@@ -8,10 +8,23 @@ export default function TaskForm({
   setNewTodo,
   isTodoModalOpen,
 }: TaskFormProps) {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const [status, setStatus] = useState("typing");
+  const [error, setError] = useState(null);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (newTodo.title == "") return;
-    addTodo(newTodo, "taskList");
+    setStatus("submitting");
+
+    try {
+      const result = await addTodo(newTodo, "taskList");
+      setNewTodo({ title: "", description: "" });
+      setStatus("typing");
+      setError(null);
+    } catch (error) {
+      setError(error);
+      setStatus("typing");
+    }
   };
 
   return (
@@ -30,14 +43,23 @@ export default function TaskForm({
           setNewTodo((old) => ({ ...old, title: e.target.value }))
         }
         placeholder="Enter your todo here"
+        disabled={status === "submitting" ? true : false}
         required
       />
       <button
         type="submit"
-        className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-400 p-3 text-black hover:bg-cyan-500"
+        className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-black hover:bg-cyan-600 disabled:bg-cyan-100"
+        disabled={
+          newTodo.title.length === 0 || status === "submitting" ? true : false
+        }
       >
         Add
       </button>
+      {error != null && (
+        <div className="absolute left-40 top-2 text-sm font-bold text-red-400">
+          There was an error creating task: {error}
+        </div>
+      )}
     </form>
   );
 }

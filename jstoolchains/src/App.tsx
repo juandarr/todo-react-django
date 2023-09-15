@@ -16,6 +16,7 @@ import { userSettings } from "./lib/userSettings";
 import confetti from "canvas-confetti";
 
 import type { todoType, listType, ReactSetState } from "./lib/customTypes";
+import type { Todo } from "../../todo-api-client/models";
 
 var myCanvas = document.createElement("canvas");
 
@@ -90,12 +91,11 @@ export default function App() {
     setNewTodo({ title: "", description: "" });
   };
 
-  async function addList(title: string) {
+  const addList = async (title: string) => {
+    let list = {
+      title: title,
+    };
     try {
-      let list = {
-        title: title,
-      };
-
       const listCreated = await clientList.listsCreate({ list });
       console.log("List was created!", listCreated);
       setLists((oldLists) => [...oldLists, listCreated]);
@@ -104,9 +104,9 @@ export default function App() {
       console.log("List creation failed with error: ", error);
       throw new Error(error);
     }
-  }
+  };
 
-  const addTodo = (todo: todoType, origin: string) => {
+  const addTodo = async (todo: todoType, origin: string) => {
     let todoFiltered: any = { ...todo };
     if ("priority" in todo) {
       todoFiltered.priority = parseInt(todoFiltered.priority);
@@ -120,27 +120,15 @@ export default function App() {
         todoFiltered.list = userSettings.homeListId;
       }
     }
-    clientTodo
-      .todosCreate({ todo: todoFiltered })
-      .then((result) => {
-        console.log("Todo was created!");
-        setNewTodo({
-          title: "",
-          description: "",
-        });
-        clientTodo
-          .todosList()
-          .then((result) => {
-            console.log("Here are the todos: ", result);
-            setTodos(result);
-          })
-          .catch(() => {
-            console.log("There was an error");
-          });
-      })
-      .catch((e) => {
-        console.log(e, "Todo creation failed");
-      });
+    try {
+      const todoCreated = await clientTodo.todosCreate({ todo: todoFiltered });
+      console.log("Todo was created!");
+      setTodos((oldTodos) => [...oldTodos, todoCreated]);
+      return todoCreated;
+    } catch (error) {
+      console.log("Todo creation failed with error: ", error);
+      throw new Error(error);
+    }
   };
 
   const toggleTodo = (id: number, complete: boolean) => {
@@ -175,6 +163,7 @@ export default function App() {
       });
   };
 
+  //FIXME: the goal is to be able to remove lists even when they have associated tasks.
   const deleteList = (id: number) => {
     clientList
       .listsDestroy({ id })

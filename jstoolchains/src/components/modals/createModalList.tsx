@@ -119,7 +119,7 @@ export default function CreateModalList({
           </div>
           {error != null && (
             <div className="text-sm text-red-400">
-              There was an error: {error}
+              There was an error creating list: {error}
             </div>
           )}
         </form>
