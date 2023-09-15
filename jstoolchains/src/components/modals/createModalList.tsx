@@ -27,11 +27,20 @@ export default function CreateModalList({
   const [error, setError] = useState(null);
   const [status, setStatus] = useState("typing");
 
-  const createHandleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const createHandleSubmit = async (
+    event: React.FormEvent<HTMLFormElement>,
+  ) => {
     event.preventDefault();
     if (newList == "") return;
-    addList(newList);
-    closePopover();
+    setStatus("submitting");
+
+    try {
+      const result = await addList(newList);
+      closePopover();
+    } catch (error) {
+      setError(error);
+      setStatus("typing");
+    }
   };
 
   const closePopover = () => {
@@ -41,7 +50,6 @@ export default function CreateModalList({
   const openPopover = () => {
     setIsOpen(true);
   };
-  console.log(newList.length);
   return (
     <Popover
       modal={true}
@@ -70,6 +78,8 @@ export default function CreateModalList({
         onCloseAutoFocus={(event) => {
           event.preventDefault();
           setNewList("");
+          setStatus("typing");
+          setError(null);
         }}
       >
         <form
@@ -85,23 +95,33 @@ export default function CreateModalList({
             placeholder="Name this list"
             className="m-4 h-8 rounded-xl bg-gray-300 p-2 px-4 py-3 text-gray-900 placeholder:text-gray-500"
             onChange={(event) => setNewList(event.target.value)}
-            disabled={status === "submiting" ? true : false}
+            disabled={status === "submitting" ? true : false}
             required
           />
           <div className="mb-4 ml-4 mr-4 flex items-center justify-between">
             <button
               type="submit"
-              className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-400 p-3 text-lg text-black hover:bg-cyan-500 disabled:bg-cyan-100"
-              disabled={newList.length === 0 ? true : false}
+              className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 disabled:bg-cyan-100"
+              disabled={
+                newList.length === 0 || status === "submitting" ? true : false
+              }
             >
               Create
             </button>
             <PopoverClose asChild={true}>
-              <button className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-rose-400 p-3 text-lg text-black hover:bg-rose-500">
+              <button
+                className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-600 disabled:bg-rose-100"
+                disabled={status === "submitting" ? true : false}
+              >
                 Cancel
               </button>
             </PopoverClose>
           </div>
+          {error != null && (
+            <div className="text-sm text-red-400">
+              There was an error: {error}
+            </div>
+          )}
         </form>
         <PopoverArrow className="fill-violet-500" />
       </PopoverContent>

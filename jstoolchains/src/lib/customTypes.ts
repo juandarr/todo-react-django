@@ -1,3 +1,5 @@
+import type { List } from "../../../todo-api-client/models";
+
 export type ReactSetState = React.Dispatch<
   React.SetStateAction<[boolean, number]>
 >;
@@ -81,7 +83,7 @@ export interface CreateModalTodoProps {
 }
 
 export interface CreateModalListProps {
-  addList: (title: string) => void;
+  addList: (title: string) => Promise<List>;
   newList: string;
   setNewList: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -107,7 +109,7 @@ export interface SideBarProps {
   userSettings: userSettingsType;
   changeCurrentList: (oldList: number) => void;
   currentList: listType;
-  addList: (title: string) => void;
+  addList: (title: string) => Promise<List>;
   deleteList: (id: number) => void;
   editList: (id: number, title: string) => void;
   newList: string;

@@ -90,29 +90,21 @@ export default function App() {
     setNewTodo({ title: "", description: "" });
   };
 
-  const addList = (title: string) => {
-    let list = {
-      title: title,
-    };
-    clientList
-      .listsCreate({ list })
-      .then((result) => {
-        console.log("List was created!");
-        setNewList("");
-        clientList
-          .listsList()
-          .then((result) => {
-            console.log("Here are the lists: ", result);
-            setLists(result);
-          })
-          .catch(() => {
-            console.log("There was an error");
-          });
-      })
-      .catch((e) => {
-        console.log(e, "List creation failed");
-      });
-  };
+  async function addList(title: string) {
+    try {
+      let list = {
+        title: title,
+      };
+
+      const listCreated = await clientList.listsCreate({ list });
+      console.log("List was created!", listCreated);
+      setLists((oldLists) => [...oldLists, listCreated]);
+      return listCreated;
+    } catch (error) {
+      console.log("List creation failed with error: ", error);
+      throw new Error(error);
+    }
+  }
 
   const addTodo = (todo: todoType, origin: string) => {
     let todoFiltered: any = { ...todo };
