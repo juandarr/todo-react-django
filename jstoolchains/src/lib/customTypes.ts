@@ -115,6 +115,5 @@ export interface NavBarProps {
   changeCurrentList: (oldList: number) => void;
   lists: listType[];
   addTodo: addTodoType;
-  showSidebar: boolean;
   setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
 }

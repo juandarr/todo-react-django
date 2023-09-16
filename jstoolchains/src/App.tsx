@@ -279,7 +279,6 @@ export default function App() {
         changeCurrentList={changeCurrentList}
         lists={lists}
         addTodo={addTodo}
-        showSidebar={showSidebar}
         setShowSidebar={setShowSidebar}
       />
       <div className="font-serif relative mx-6 flex w-5/6 justify-end">

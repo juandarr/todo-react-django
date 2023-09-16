@@ -809,6 +809,10 @@ body {
   height: 1px;
 }
 
+.h-1 {
+  height: 0.25rem;
+}
+
 .w-1\/12 {
   width: 8.333333%;
 }
@@ -879,6 +883,10 @@ body {
 
 .w-70\% {
   width: 70%;
+}
+
+.w-4\/5 {
+  width: 80%;
 }
 
 .min-w-\[8rem\] {

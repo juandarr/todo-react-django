@@ -1,4 +1,12 @@
 import React, { useState } from "react";
+
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
+
 import CreateModalTodo from "../modals/createModalTodo";
 import { SidebarLeft, SidebarRight, House, Notification } from "iconsax-react";
 
@@ -9,7 +17,6 @@ export default function NavBar({
   changeCurrentList,
   lists,
   addTodo,
-  showSidebar,
   setShowSidebar,
 }: NavBarProps) {
   return (
@@ -30,9 +37,18 @@ export default function NavBar({
         className="flex w-1/12 justify-start pl-3 text-2xl"
         onClick={() => changeCurrentList(userSettings.homeListId)}
       >
-        <button className="text-rose-400 hover:text-rose-500">
-          <House size="1.8rem" />
-        </button>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild={true}>
+              <button className="text-rose-400 hover:text-rose-500">
+                <House size="1.8rem" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent className="bg-rose-500">
+              <p className="font-bold text-white">Home</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
       <div className="flex w-8/12 justify-center text-2xl text-emerald-400 hover:text-emerald-500">
         <CreateModalTodo lists={lists} addTodo={addTodo} />
