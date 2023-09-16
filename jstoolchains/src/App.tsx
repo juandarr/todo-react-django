@@ -16,7 +16,6 @@ import { userSettings } from "./lib/userSettings";
 import confetti from "canvas-confetti";
 
 import type { todoType, listType, ReactSetState } from "./lib/customTypes";
-import type { Todo } from "../../todo-api-client/models";
 
 var myCanvas = document.createElement("canvas");
 
@@ -36,9 +35,7 @@ export default function App() {
     title: "",
     description: "",
   });
-  const [isTodoModalOpen, setIsTodoModalOpen] = useState(false);
   const [newTodoEdit, setNewTodoEdit] = useState<todoType | null>(null);
-  const [newList, setNewList] = useState("");
   const [newListEdit, setNewListEdit] = useState("");
 
   const apiConfig = new Configuration({
@@ -75,9 +72,9 @@ export default function App() {
         console.log("Here are the lists: ", result);
         setLists(result);
         setCurrentList((oldList) => {
-          return result.filter(
+          return result.find(
             (list) => list.id == userSettings.homeListId,
-          )[0] as listType;
+          ) as listType;
         });
       })
       .catch(() => {
@@ -86,7 +83,7 @@ export default function App() {
   }, []);
 
   const changeCurrentList = (newListId: number) => {
-    const newList = lists.filter((list) => list.id == newListId)[0];
+    const newList = lists.find((list) => list.id == newListId);
     setCurrentList((oldList) => newList);
     setNewTodo({ title: "", description: "" });
   };
@@ -98,10 +95,19 @@ export default function App() {
     [x] create Todo taskView
     [x] Delete List
     [x] Delete Todo
-    [ ] Edit List
+    [x] Edit List
     [ ] Edit todo
     [ ] Toggle todo
     */
+  // setTimeout(() => {
+  //   const value = Math.random();
+  //   if (value > 0.5) {
+  //     closePopover();
+  //   } else {
+  //     setError("Invented error");
+  //     setStatus("viewing");
+  //   }
+  // }, 2000);
   const addList = async (title: string) => {
     let list = {
       title: title,
@@ -155,85 +161,56 @@ export default function App() {
     }
   };
 
-  const toggleTodo = (id: number, complete: boolean) => {
-    let todo = {
-      complete: complete,
-    };
-    let [x, y] = getPoint("checkbox-" + id);
-    clientTodo
-      .todosPartialUpdate({ id: id, patchedTodo: todo })
-      .then((result) => {
-        if (complete == true) {
-          confetti({
-            angle: randomInRange(55, 125),
-            spread: randomInRange(50, 70),
-            particleCount: randomInRange(50, 100),
-            origin: { x: x, y: y },
-          });
-        }
-        console.log("Todo was toggled!");
-        setTodos((prevTodos) => {
-          return prevTodos.map((todo) => {
-            if (todo.id == id) {
-              return { ...todo, complete };
-            } else {
-              return todo;
-            }
-          });
-        });
-      })
-      .catch((error) => {
-        console.log("There was an error toggling the todo");
-      });
-  };
-
   //FIXME: the goal is to be able to remove lists even when they have associated tasks.
-  const deleteList = (id: number) => {
-    clientList
-      .listsDestroy({ id })
-      .then((result) => {
-        setLists((prevLists) => {
-          return prevLists.filter((list) => list.id !== id);
-        });
-        if (id == currentList.id) {
-          setCurrentList((oldList) => {
-            return lists.filter(
-              (list) => list.id == userSettings.homeListId,
-            )[0] as listType;
-          });
-        }
-        console.log("List was deleted");
-      })
-      .catch((event) => {
-        console.log("Error deleting list");
+  const deleteList = async (id: number) => {
+    try {
+      await clientList.listsDestroy({ id });
+      setLists((prevLists) => {
+        return prevLists.filter((list) => list.id !== id);
       });
+      if (id == currentList.id) {
+        setCurrentList((oldList) => {
+          return lists.find((list) => list.id == userSettings.homeListId);
+        });
+      }
+      console.log("List was deleted");
+    } catch (error) {
+      console.log("Error deleting list");
+      throw new Error(error);
+    }
   };
 
-  const editList = (id: number, title: string) => {
+  const editList = async (id: number, title: string) => {
     let list = {
       title: title,
     };
-    clientList
-      .listsPartialUpdate({ id: id, patchedList: list })
-      .then((result) => {
-        console.log("List was patched!");
-        setLists((prevLists) => {
-          return prevLists.map((list) => {
-            if (list.id == id) {
-              return { ...list, title };
-            } else {
-              return list;
-            }
-          });
-        });
-        if (id === currentList.id) {
-          console.log("CUrrent id and current list match! ", title);
-          setCurrentList((oldCurrentList) => ({ ...oldCurrentList, title }));
-        }
-      })
-      .catch((error) => {
-        console.log("There was an error updating the field");
+
+    try {
+      const updatedList = await clientList.listsPartialUpdate({
+        id: id,
+        patchedList: list,
       });
+      console.log("List was patched!");
+
+      setLists((prevLists) => {
+        return prevLists.map((list) => {
+          if (list.id == id) {
+            return { ...list, title };
+          } else {
+            return list;
+          }
+        });
+      });
+
+      if (id === currentList.id) {
+        console.log("Patched list and current list match! ", title);
+        setCurrentList((oldCurrentList) => ({ ...oldCurrentList, title }));
+      }
+      return updatedList;
+    } catch (error) {
+      console.log("There was an error updating the field");
+      throw new Error(error);
+    }
   };
 
   const editTodo = (id: number, title: string, setEdit: ReactSetState) => {
@@ -259,15 +236,49 @@ export default function App() {
         console.log("There was an error updating the field");
       });
   };
+
+  const toggleTodo = async (id: number, complete: boolean) => {
+    let todo = {
+      complete: complete,
+    };
+
+    let [x, y] = getPoint("checkbox-" + id);
+    try {
+      const updatedTodo = await clientTodo.todosPartialUpdate({
+        id: id,
+        patchedTodo: todo,
+      });
+      if (complete == true) {
+        confetti({
+          angle: randomInRange(55, 125),
+          spread: randomInRange(50, 70),
+          particleCount: randomInRange(50, 100),
+          origin: { x: x, y: y },
+        });
+      }
+      console.log("Todo was toggled!");
+      setTodos((prevTodos) => {
+        return prevTodos.map((todo) => {
+          if (todo.id == id) {
+            return { ...todo, complete };
+          } else {
+            return todo;
+          }
+        });
+      });
+      return updatedTodo;
+    } catch (error) {
+      console.log("There was an error toggling the todo");
+      throw new Error(error);
+    }
+  };
+
   return (
     <>
       <NavBar
         changeCurrentList={changeCurrentList}
         lists={lists}
         addTodo={addTodo}
-        newTodo={newTodo}
-        setNewTodo={setNewTodo}
-        setIsTodoModalOpen={setIsTodoModalOpen}
       />
       <div className="font-serif mx-6 flex w-5/6 justify-between">
         <SideBar
@@ -278,8 +289,6 @@ export default function App() {
           addList={addList}
           deleteList={deleteList}
           editList={editList}
-          newList={newList}
-          setNewList={setNewList}
           newListEdit={newListEdit}
           setNewListEdit={setNewListEdit}
         />
@@ -291,7 +300,6 @@ export default function App() {
             addTodo={addTodo}
             newTodo={newTodo}
             setNewTodo={setNewTodo}
-            isTodoModalOpen={isTodoModalOpen}
           />
           <TaskListHeader
             fieldDone={"Is done?"}

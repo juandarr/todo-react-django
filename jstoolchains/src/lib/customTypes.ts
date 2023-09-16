@@ -40,12 +40,11 @@ export interface TaskFormProps {
   addTodo: addTodoType;
   newTodo: todoType;
   setNewTodo: React.Dispatch<React.SetStateAction<todoType>>;
-  isTodoModalOpen: boolean;
 }
 
 export interface TaskItemProps {
   todo: todoType;
-  toggleTodo: (id: number, complete: boolean) => void;
+  toggleTodo: (id: number, complete: boolean) => Promise<Todo>;
   editTodo: (id: number, title: string, setEdit: ReactSetState) => void;
   deleteTodo: (id: number) => Promise<void>;
   edit: (number | boolean)[];
@@ -60,7 +59,7 @@ export interface TaskItemProps {
 
 export interface TaskListProps {
   todos: todosType;
-  toggleTodo: (id: number, complete: boolean) => void;
+  toggleTodo: (id: number, complete: boolean) => Promise<Todo>;
   deleteTodo: (id: number) => Promise<void>;
   editTodo: (id: number, title: string, setEdit: ReactSetState) => void;
   condition: boolean;
@@ -78,22 +77,15 @@ export interface TaskListHeaderProps {
 export interface CreateModalTodoProps {
   lists: listType[];
   addTodo: addTodoType;
-  newTodo: todoType;
-  setNewTodo: React.Dispatch<React.SetStateAction<todoType>>;
-  setIsTodoModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface CreateModalListProps {
   addList: addListType;
-  newList: string;
-  setNewList: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export interface EditModalListProps {
-  editList: (id: number, title: string) => void;
-  data: { id: number; title: string };
-  newListEdit: string;
-  setNewListEdit: React.Dispatch<React.SetStateAction<string>>;
+  editList: (id: number, title: string) => Promise<List>;
+  listData: { id: number; title: string };
   parentId: string;
 }
 
@@ -111,10 +103,14 @@ export interface SideBarProps {
   changeCurrentList: (oldList: number) => void;
   currentList: listType;
   addList: addListType;
-  deleteList: (id: number) => void;
-  editList: (id: number, title: string) => void;
-  newList: string;
-  setNewList: React.Dispatch<React.SetStateAction<string>>;
+  deleteList: (id: number) => Promise<void>;
+  editList: (id: number, title: string) => Promise<List>;
   newListEdit: string;
   setNewListEdit: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export interface NavBarProps {
+  changeCurrentList: (oldList: number) => void;
+  lists: listType[];
+  addTodo: addTodoType;
 }

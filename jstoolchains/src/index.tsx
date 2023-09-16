@@ -17,7 +17,7 @@ const AppFlex = function () {
 
 const AppGrid = function () {
   return (
-    <div className="grid grid-cols-6 grid-rows-6 font-mono font-bold text-gray-800">
+    <div className="font-mono grid grid-cols-6 grid-rows-6 font-bold text-gray-800">
       <div className="z-10 col-span-3 row-span-2 m-1 flex items-center justify-center bg-green-500 p-6 text-xl">
         Box 1
       </div>
@@ -39,7 +39,7 @@ const AppGrid = function () {
 
 const container = createRoot(document.getElementById("root"));
 container.render(
-  <StrictMode>
+  <React.StrictMode>
     <App />
-  </StrictMode>,
+  </React.StrictMode>,
 );

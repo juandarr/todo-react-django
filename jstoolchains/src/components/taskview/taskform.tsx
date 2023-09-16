@@ -6,7 +6,6 @@ export default function TaskForm({
   addTodo,
   newTodo,
   setNewTodo,
-  isTodoModalOpen,
 }: TaskFormProps) {
   const [status, setStatus] = useState("typing");
   const [error, setError] = useState(null);
@@ -38,7 +37,7 @@ export default function TaskForm({
         name="title"
         className="h-10 flex-1 rounded-xl bg-gray-300 px-4 py-3 text-gray-900 placeholder:text-gray-500"
         id="todoText"
-        value={isTodoModalOpen ? "" : newTodo.title}
+        value={newTodo.title}
         onChange={(e) =>
           setNewTodo((old) => ({ ...old, title: e.target.value }))
         }
@@ -56,7 +55,7 @@ export default function TaskForm({
         Add
       </button>
       {error != null && (
-        <div className="absolute left-40 top-2 text-sm font-bold text-red-400">
+        <div className="absolute left-40 top-2 text-sm font-bold text-red-500">
           There was an error creating task: {error}
         </div>
       )}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, CSSProperties } from "react";
 
 import {
   Tooltip,
@@ -24,17 +24,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { CreateModalTodoProps } from "../../lib/customTypes";
+
+import Spinner from "react-spinners/DotLoader";
+
+const override: CSSProperties = {
+  display: "block",
+  position: "absolute",
+  justifyContent: "center",
+  alignSelf: "center",
+};
+
+import { CreateModalTodoProps, todoType } from "../../lib/customTypes";
 import { PriorityEnum } from "../../lib/userSettings";
 
 export default function CreateModalTodo({
   lists,
   addTodo,
-  newTodo,
-  setNewTodo,
-  setIsTodoModalOpen,
 }: CreateModalTodoProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [newTodo, setNewTodo] = useState<todoType>({
+    title: "",
+    description: "",
+  });
   const [status, setStatus] = useState("typing");
   const [error, setError] = useState(null);
 
@@ -59,29 +70,23 @@ export default function CreateModalTodo({
   };
 
   const openPopover = () => {
-    setIsOpen(true);
-    setIsTodoModalOpen(true);
     setNewTodo({ title: "", description: "" });
+    setStatus("typing");
+    setError(null);
+    setIsOpen(true);
   };
-
+  console.log("Modal todo creation opened");
   return (
-    <Popover
-      modal={true}
-      open={isOpen}
-      onOpenChange={(newOpenState) => setIsOpen(newOpenState)}
-    >
+    <Popover modal={true} open={isOpen} onOpenChange={setIsOpen}>
       <TooltipProvider>
         <Tooltip>
           <PopoverTrigger asChild={true}>
             <TooltipTrigger asChild={true}>
-              <div
-                className="flex w-8/12 justify-center text-2xl"
+              <AddCircle
+                size="1.8rem"
+                className="cursor-pointer"
                 onClick={() => openPopover()}
-              >
-                <button className="text-emerald-400 hover:text-emerald-500">
-                  <AddCircle size="1.8rem" />
-                </button>
-              </div>
+              />
             </TooltipTrigger>
           </PopoverTrigger>
           <TooltipContent className="bg-emerald-500">
@@ -93,10 +98,6 @@ export default function CreateModalTodo({
         align={"center"}
         onCloseAutoFocus={(event) => {
           event.preventDefault();
-          setNewTodo({ title: "", description: "" });
-          setStatus("typing");
-          setError(null);
-          setIsTodoModalOpen(false);
         }}
       >
         <form
@@ -171,18 +172,28 @@ export default function CreateModalTodo({
           <div className="mb-4 ml-4 mr-4 flex items-center justify-between">
             <button
               type="submit"
-              className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 disabled:bg-cyan-100"
+              className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 disabled:bg-cyan-200"
               disabled={
                 status === "submitting" || newTodo.title.length === 0
                   ? true
                   : false
               }
             >
-              Create
+              <Spinner
+                color="rgb(8 145 178)"
+                loading={status === "submitting"}
+                cssOverride={override}
+                size={20}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+              />
+              <span className={status === "submitting" ? "invisible" : "block"}>
+                Create
+              </span>
             </button>
             <PopoverClose asChild={true}>
               <button
-                className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-600"
+                className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-600 disabled:bg-rose-200"
                 disabled={status === "submitting" ? true : false}
               >
                 Cancel
@@ -190,7 +201,7 @@ export default function CreateModalTodo({
             </PopoverClose>
           </div>
           {error != null && (
-            <div className="text-sm text-red-400">
+            <div className="text-sm font-bold text-red-500">
               There was an error creating task: {error}
             </div>
           )}

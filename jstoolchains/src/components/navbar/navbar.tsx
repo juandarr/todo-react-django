@@ -2,25 +2,13 @@ import React from "react";
 import CreateModalTodo from "../modals/createModalTodo";
 import { SidebarLeft, House, Notification } from "iconsax-react";
 
-import { todoType, listType, addTodoType } from "../../lib/customTypes";
+import { NavBarProps } from "../../lib/customTypes";
 import { userSettings } from "../../lib/userSettings";
-
-interface NavBarProps {
-  changeCurrentList: (oldList: number) => void;
-  lists: listType[];
-  addTodo: addTodoType;
-  newTodo: todoType;
-  setNewTodo: React.Dispatch<React.SetStateAction<todoType>>;
-  setIsTodoModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
 
 export default function NavBar({
   changeCurrentList,
   lists,
   addTodo,
-  newTodo,
-  setNewTodo,
-  setIsTodoModalOpen,
 }: NavBarProps) {
   const toggleSidebar = function () {
     const s = document.getElementById("sidebar");
@@ -49,13 +37,9 @@ export default function NavBar({
           <House size="1.8rem" />
         </button>
       </div>
-      <CreateModalTodo
-        lists={lists}
-        addTodo={addTodo}
-        newTodo={newTodo}
-        setNewTodo={setNewTodo}
-        setIsTodoModalOpen={setIsTodoModalOpen}
-      />
+      <div className="flex w-8/12 justify-center text-2xl text-emerald-400 hover:text-emerald-500">
+        <CreateModalTodo lists={lists} addTodo={addTodo} />
+      </div>
       <a
         href="/admin"
         className="flex w-2/12 justify-end pl-3 pr-3 text-2xl text-cyan-500"

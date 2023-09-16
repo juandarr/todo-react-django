@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, CSSProperties } from "react";
 
 import { DeleteModalProps, cssTailVariant } from "../../lib/customTypes";
 
@@ -17,6 +17,14 @@ import {
   PopoverClose,
 } from "../ui/popover";
 
+import Spinner from "react-spinners/DotLoader";
+
+const override: CSSProperties = {
+  display: "block",
+  position: "absolute",
+  justifyContent: "center",
+  alignSelf: "center",
+};
 export default function DeleteModal({
   deleteFunction,
   triggerElement,
@@ -45,6 +53,8 @@ export default function DeleteModal({
     setIsOpen(false);
   };
   const openPopover = () => {
+    setStatus("viewing");
+    setError(null);
     setIsOpen(true);
   };
 
@@ -61,16 +71,12 @@ export default function DeleteModal({
     list: "bg-sky-500",
     todo: "bg-rose-500",
   };
-
+  console.log("Delete modal is rendered");
   return (
-    <Popover
-      modal={true}
-      open={isOpen}
-      onOpenChange={(newOpenState) => setIsOpen(newOpenState)}
-    >
+    <Popover modal={true} open={isOpen} onOpenChange={setIsOpen}>
       <TooltipProvider>
         <Tooltip>
-          <PopoverTrigger asChild={true}>
+          <PopoverTrigger asChild={true} onClick={() => openPopover()}>
             <TooltipTrigger>{triggerElement}</TooltipTrigger>
           </PopoverTrigger>
           <TooltipContent className={`${bgColorVariants[deleteEntity]}`}>
@@ -84,8 +90,6 @@ export default function DeleteModal({
         onCloseAutoFocus={(event) => {
           event.preventDefault();
           toggleHidden();
-          setStatus("viewing");
-          setError(null);
         }}
       >
         <form
@@ -102,7 +106,17 @@ export default function DeleteModal({
               className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 disabled:bg-cyan-100"
               disabled={status === "submitting" ? true : false}
             >
-              Yes
+              <Spinner
+                color="rgb(8 145 178)"
+                loading={status === "submitting"}
+                cssOverride={override}
+                size={20}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+              />
+              <span className={status === "submitting" ? "invisible" : "block"}>
+                Yes
+              </span>
             </button>
             <PopoverClose asChild={true}>
               <button
@@ -114,7 +128,7 @@ export default function DeleteModal({
             </PopoverClose>
           </div>
           {error != null && (
-            <div className="text-sm text-red-400">
+            <div className="text-sm font-bold text-red-500">
               There was an error in {deleteEntity} deletion: {error}
             </div>
           )}

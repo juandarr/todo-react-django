@@ -15,10 +15,6 @@ export default function SideBar({
   addList,
   deleteList,
   editList,
-  newList,
-  setNewList,
-  newListEdit,
-  setNewListEdit,
 }: SideBarProps) {
   const deleteElement = (
     <a className="flex cursor-pointer justify-end text-2xl text-cyan-500 hover:text-cyan-600">
@@ -43,9 +39,7 @@ export default function SideBar({
         >
           <EditModalList
             editList={editList}
-            newListEdit={newListEdit}
-            setNewListEdit={setNewListEdit}
-            data={{ id: list.id, title: list.title }}
+            listData={{ id: list.id, title: list.title }}
             parentId={`list-${list.id}`}
           />
           <DeleteModal
@@ -80,11 +74,7 @@ export default function SideBar({
       <div className="mt-4 flex flex-col">
         <div className="mb-2 flex justify-between">
           <div className="text-xl font-bold text-violet-600">Lists</div>
-          <CreateModalList
-            addList={addList}
-            newList={newList}
-            setNewList={setNewList}
-          />
+          <CreateModalList addList={addList} />
         </div>
         {otherLists}
       </div>

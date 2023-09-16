@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { TaskItemProps } from "../../lib/customTypes";
 
@@ -23,7 +23,18 @@ export default function TaskItem({
   setNewTodoEdit,
   handleKeyPress,
 }: TaskItemProps) {
+  const [error, setError] = useState(null);
+
   const show_edit = edit[0] && edit[1] == todo.id;
+
+  async function toggleHandler(checked: boolean) {
+    console.log("toggled");
+    try {
+      const updatedTodo = await toggleTodo(todo.id, checked);
+    } catch (error) {
+      setError(error);
+    }
+  }
 
   const deleteElement = (
     <svg
@@ -55,9 +66,7 @@ export default function TaskItem({
             <Checkbox
               id={"checkbox-" + todo.id}
               checked={todo.complete}
-              onCheckedChange={(checked) =>
-                toggleTodo(todo.id, checked as boolean)
-              }
+              onCheckedChange={(checked) => toggleHandler(checked as boolean)}
               className="border-2 border-black"
             />
           </div>
@@ -150,6 +159,12 @@ export default function TaskItem({
           </div>
         </div>
       </div>
+
+      {error != null && (
+        <div className="ml-12 text-sm font-bold text-red-500">
+          There was an error during toggle: {error}
+        </div>
+      )}
     </>
   );
 }
