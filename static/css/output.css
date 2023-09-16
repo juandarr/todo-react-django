@@ -597,6 +597,10 @@ body {
   position: relative;
 }
 
+.left-0 {
+  left: 0px;
+}
+
 .left-2 {
   left: 0.5rem;
 }
@@ -607,6 +611,10 @@ body {
 
 .left-40 {
   left: 10rem;
+}
+
+.top-0 {
+  top: 0px;
 }
 
 .top-2 {
@@ -817,8 +825,8 @@ body {
   width: 16.666667%;
 }
 
-.w-2\/5 {
-  width: 40%;
+.w-25\% {
+  width: 25%;
 }
 
 .w-3 {
@@ -829,8 +837,8 @@ body {
   width: 0.875rem;
 }
 
-.w-3\/12 {
-  width: 25%;
+.w-3\/5 {
+  width: 60%;
 }
 
 .w-4 {
@@ -857,6 +865,10 @@ body {
   width: 18rem;
 }
 
+.w-75\% {
+  width: 75%;
+}
+
 .w-8\/12 {
   width: 66.666667%;
 }
@@ -865,8 +877,8 @@ body {
   width: 100%;
 }
 
-.w-1 {
-  width: 0.25rem;
+.w-70\% {
+  width: 70%;
 }
 
 .min-w-\[8rem\] {
@@ -894,28 +906,12 @@ body {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
-.animate-\[sidebar-content-hide_1000ms\] {
-  animation: sidebar-content-hide 1000ms;
+.animate-\[sidebar-content-hide_300ms\] {
+  animation: sidebar-content-hide 300ms;
 }
 
-.animate-\[sidebar-content-show_1000ms\] {
-  animation: sidebar-content-show 1000ms;
-}
-
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(-25%);
-    animation-timing-function: cubic-bezier(0.8,0,1,1);
-  }
-
-  50% {
-    transform: none;
-    animation-timing-function: cubic-bezier(0,0,0.2,1);
-  }
-}
-
-.animate-bounce {
-  animation: bounce 1s infinite;
+.animate-\[sidebar-content-show_300ms\] {
+  animation: sidebar-content-show 300ms;
 }
 
 .cursor-default {
@@ -1395,6 +1391,14 @@ body {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
+.duration-300 {
+  transition-duration: 300ms;
+}
+
+.ease-in-out {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 @keyframes enter {
   from {
     opacity: var(--tw-enter-opacity, 1);
@@ -1427,8 +1431,12 @@ body {
   --tw-enter-scale: .95;
 }
 
-.fill-mode-forwards {
-  animation-fill-mode: forwards;
+.duration-300 {
+  animation-duration: 300ms;
+}
+
+.ease-in-out {
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /*Show child element when hovering on parent element */

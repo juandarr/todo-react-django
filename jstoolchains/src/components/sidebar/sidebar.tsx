@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Trash } from "iconsax-react";
 
 import { SideBarProps } from "../../lib/customTypes";
@@ -57,7 +57,11 @@ export default function SideBar({
 
   return (
     <div
-      className="my-6 flex w-3/12 flex-col  rounded-xl border-2 border-black bg-white p-10"
+      className={`w-25% absolute left-0 top-0 my-6 flex flex-col  rounded-xl border-2 border-black bg-white p-10 ${
+        showSidebar
+          ? "animate-[sidebar-content-show_300ms]"
+          : "animate-[sidebar-content-hide_300ms]"
+      }`}
       id="sidebar"
     >
       <div className="mb-1 flex flex-col">

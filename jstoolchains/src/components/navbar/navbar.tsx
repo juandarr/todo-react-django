@@ -12,37 +12,19 @@ export default function NavBar({
   showSidebar,
   setShowSidebar,
 }: NavBarProps) {
-  const toggleSidebar = function () {
-    const s = document.getElementById("sidebar");
-
-    if (s.style.display == "none") {
-      //s.classList.toggle("animate-bounce");
-      s.style.display = "block";
-    } else {
-      s.style.display = "none";
-      //s.classList.toggle("animate-bounce");
-    }
-  };
   return (
     <nav className="mx-6 mb-6 mt-12 flex w-5/6 justify-between rounded-lg border-2 border-black bg-white p-2">
       <div
         className="flex w-1/12 justify-start pl-3 text-2xl"
         onClick={() =>
           setShowSidebar((old) => {
-            toggleSidebar();
             return !old;
           })
         }
       >
-        {showSidebar ? (
-          <button className="text-violet-500 hover:text-violet-600">
-            <SidebarLeft size="1.8rem" />
-          </button>
-        ) : (
-          <button className="text-violet-500 hover:text-violet-600">
-            <SidebarRight size="1.8rem" />
-          </button>
-        )}
+        <button className="text-violet-500 hover:text-violet-600">
+          <SidebarLeft size="1.8rem" />
+        </button>
       </div>
       <div
         className="flex w-1/12 justify-start pl-3 text-2xl"

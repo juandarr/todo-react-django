@@ -20,6 +20,14 @@ module.exports = {
       OpenSans: ['"Open Sans"', "sans-serif"],
     },
     extend: {
+      spacing: {
+        '75%': '75%',
+
+        '70%': '70%',
+        '35%': '35%',
+
+        '25%': '25%'
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

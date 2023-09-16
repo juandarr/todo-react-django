@@ -282,7 +282,7 @@ export default function App() {
         showSidebar={showSidebar}
         setShowSidebar={setShowSidebar}
       />
-      <div className="font-serif mx-6 flex w-5/6 justify-between">
+      <div className="font-serif relative mx-6 flex w-5/6 justify-end">
         <SideBar
           lists={lists}
           userSettings={userSettings}
@@ -297,8 +297,8 @@ export default function App() {
           setShowSidebar={setShowSidebar}
         />
         <div
-          className={`relative my-6 ${
-            showSidebar ? "w-8/12" : "w-full"
+          className={`relative my-6 duration-300 ease-in-out ${
+            showSidebar ? "w-70%" : "w-full"
           } rounded-xl border-2 border-black bg-white p-10`}
         >
           <div className="absolute left-3 top-2 text-sm font-bold text-violet-600">
@@ -310,7 +310,7 @@ export default function App() {
             setNewTodo={setNewTodo}
           />
           <TaskListHeader
-            fieldDone={"Is done?"}
+            fieldDone={"Done?"}
             fieldTask={"Task"}
             fieldActions={"Actions"}
           />
