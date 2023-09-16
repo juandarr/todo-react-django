@@ -14,9 +14,11 @@ export default function NavBar({
     const s = document.getElementById("sidebar");
 
     if (s.style.display == "none") {
-      s.style.display = "block";
-    } else {
+      s.classList.toggle("animate-[popover-content-show_1000ms]");
       s.style.display = "none";
+    } else {
+      //s.style.display = "none";
+      s.classList.toggle("animate-[popover-content-show_1000ms]");
     }
   };
   return (

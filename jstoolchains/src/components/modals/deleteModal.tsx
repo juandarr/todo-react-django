@@ -91,6 +91,7 @@ export default function DeleteModal({
           event.preventDefault();
           toggleHidden();
         }}
+        className="data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]"
       >
         <form
           id="listform"
