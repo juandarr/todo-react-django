@@ -1,4 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, CSSProperties } from "react";
+
+import Spinner from "react-spinners/DotLoader";
+
+const override: CSSProperties = {
+  display: "block",
+  position: "absolute",
+  justifyContent: "center",
+  alignSelf: "center",
+};
 
 import { TaskFormProps } from "../../lib/customTypes";
 
@@ -52,7 +61,17 @@ export default function TaskForm({
           newTodo.title.length === 0 || status === "submitting" ? true : false
         }
       >
-        Add
+        <Spinner
+          color="rgb(8 145 178)"
+          loading={status === "submitting"}
+          cssOverride={override}
+          size={20}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+        <span className={status === "submitting" ? "invisible" : "block"}>
+          Add
+        </span>
       </button>
       {error != null && (
         <div className="absolute left-40 top-2 text-sm font-bold text-red-500">
