@@ -9,9 +9,9 @@ export default function NavBar({
   changeCurrentList,
   lists,
   addTodo,
+  showSidebar,
+  setShowSidebar,
 }: NavBarProps) {
-  const [showSidebar, setShowSidebar] = useState(true);
-
   const toggleSidebar = function () {
     const s = document.getElementById("sidebar");
 

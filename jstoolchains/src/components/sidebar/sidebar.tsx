@@ -15,6 +15,8 @@ export default function SideBar({
   addList,
   deleteList,
   editList,
+  showSidebar,
+  setShowSidebar,
 }: SideBarProps) {
   const deleteElement = (
     <a className="flex cursor-pointer justify-end text-2xl text-cyan-500 hover:text-cyan-600">

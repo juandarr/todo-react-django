@@ -107,10 +107,14 @@ export interface SideBarProps {
   editList: (id: number, title: string) => Promise<List>;
   newListEdit: string;
   setNewListEdit: React.Dispatch<React.SetStateAction<string>>;
+  showSidebar: boolean;
+  setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface NavBarProps {
   changeCurrentList: (oldList: number) => void;
   lists: listType[];
   addTodo: addTodoType;
+  showSidebar: boolean;
+  setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
 }

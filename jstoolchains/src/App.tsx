@@ -37,7 +37,7 @@ export default function App() {
   });
   const [newTodoEdit, setNewTodoEdit] = useState<todoType | null>(null);
   const [newListEdit, setNewListEdit] = useState("");
-
+  const [showSidebar, setShowSidebar] = useState(true);
   const apiConfig = new Configuration({
     basePath: "http://127.0.0.1:8000",
     headers: {
@@ -279,6 +279,8 @@ export default function App() {
         changeCurrentList={changeCurrentList}
         lists={lists}
         addTodo={addTodo}
+        showSidebar={showSidebar}
+        setShowSidebar={setShowSidebar}
       />
       <div className="font-serif mx-6 flex w-5/6 justify-between">
         <SideBar
@@ -291,8 +293,14 @@ export default function App() {
           editList={editList}
           newListEdit={newListEdit}
           setNewListEdit={setNewListEdit}
+          showSidebar={showSidebar}
+          setShowSidebar={setShowSidebar}
         />
-        <div className="relative my-6 w-8/12 rounded-xl border-2 border-black bg-white p-10">
+        <div
+          className={`relative my-6 ${
+            showSidebar ? "w-8/12" : "w-full"
+          } rounded-xl border-2 border-black bg-white p-10`}
+        >
           <div className="absolute left-3 top-2 text-sm font-bold text-violet-600">
             {currentList.title}
           </div>
