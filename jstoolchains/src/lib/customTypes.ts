@@ -47,7 +47,7 @@ export interface TaskItemProps {
   todo: todoType;
   toggleTodo: (id: number, complete: boolean) => void;
   editTodo: (id: number, title: string, setEdit: ReactSetState) => void;
-  deleteTodo: (id: number) => void;
+  deleteTodo: (id: number) => Promise<void>;
   edit: (number | boolean)[];
   setEdit: React.Dispatch<React.SetStateAction<(number | boolean)[]>>;
   newTodoEdit: todoType;
@@ -61,7 +61,7 @@ export interface TaskItemProps {
 export interface TaskListProps {
   todos: todosType;
   toggleTodo: (id: number, complete: boolean) => void;
-  deleteTodo: (id: number) => void;
+  deleteTodo: (id: number) => Promise<void>;
   editTodo: (id: number, title: string, setEdit: ReactSetState) => void;
   condition: boolean;
   currentList: listType;
@@ -98,7 +98,7 @@ export interface EditModalListProps {
 }
 
 export interface DeleteModalProps {
-  deleteFunction: (id: number) => void;
+  deleteFunction: (id: number) => Promise<void>;
   triggerElement: React.JSX.Element;
   deleteEntity: string;
   parentId: string;

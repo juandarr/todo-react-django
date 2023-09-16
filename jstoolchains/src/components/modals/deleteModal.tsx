@@ -25,22 +25,20 @@ export default function DeleteModal({
   id,
 }: DeleteModalProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [status, setStatus] = useState("viewing");
+  const [error, setError] = useState(null);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    //FIXME: function to create, update, delete should return an exit message and upon success we can close the popover, it should include notification of success or failure
-    /* Progress:
-    [x] create List
-    [x] create Todo modal
-    [x] create Todo taskView
-    [ ] Delete List
-    [ ] Delete Todo
-    [ ] Edit List
-    [ ] Edit todo
-    [ ] Toggle todo
-    */
-    deleteFunction(id);
-    closePopover();
+    setStatus("submitting");
+
+    try {
+      await deleteFunction(id);
+      closePopover();
+    } catch (error) {
+      setError(error);
+      setStatus("viewing");
+    }
   };
 
   const closePopover = () => {
@@ -86,6 +84,8 @@ export default function DeleteModal({
         onCloseAutoFocus={(event) => {
           event.preventDefault();
           toggleHidden();
+          setStatus("viewing");
+          setError(null);
         }}
       >
         <form
@@ -99,16 +99,25 @@ export default function DeleteModal({
           <div className="mb-4 ml-4 mr-4 flex items-center justify-between">
             <button
               type="submit"
-              className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-400 p-3 text-lg text-black hover:bg-cyan-500"
+              className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 disabled:bg-cyan-100"
+              disabled={status === "submitting" ? true : false}
             >
               Yes
             </button>
             <PopoverClose asChild={true}>
-              <button className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-rose-400 p-3 text-lg text-black hover:bg-rose-500">
+              <button
+                className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-500 disabled:bg-rose-100"
+                disabled={status === "submitting" ? true : false}
+              >
                 Cancel
               </button>
             </PopoverClose>
           </div>
+          {error != null && (
+            <div className="text-sm text-red-400">
+              There was an error in {deleteEntity} deletion: {error}
+            </div>
+          )}
         </form>
         <PopoverArrow className={`${fillColorVariants[deleteEntity]}`} />
       </PopoverContent>

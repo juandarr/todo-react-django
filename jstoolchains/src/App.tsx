@@ -91,6 +91,17 @@ export default function App() {
     setNewTodo({ title: "", description: "" });
   };
 
+  //FIXME: function to create, update, delete should return an exit message and upon success we can close the popover, it should include notification of success or failure
+  /* Progress:
+    [x] create List
+    [x] create Todo modal
+    [x] create Todo taskView
+    [x] Delete List
+    [x] Delete Todo
+    [ ] Edit List
+    [ ] Edit todo
+    [ ] Toggle todo
+    */
   const addList = async (title: string) => {
     let list = {
       title: title,
@@ -127,6 +138,19 @@ export default function App() {
       return todoCreated;
     } catch (error) {
       console.log("Todo creation failed with error: ", error);
+      throw new Error(error);
+    }
+  };
+
+  const deleteTodo = async (id: number) => {
+    try {
+      await clientTodo.todosDestroy({ id });
+      setTodos((prevTodos) => {
+        return prevTodos.filter((todo) => todo.id !== id);
+      });
+      console.log("Todo was deleted");
+    } catch (error) {
+      console.log("Error deleting todo");
       throw new Error(error);
     }
   };
@@ -182,20 +206,6 @@ export default function App() {
       })
       .catch((event) => {
         console.log("Error deleting list");
-      });
-  };
-
-  const deleteTodo = (id: number) => {
-    clientTodo
-      .todosDestroy({ id })
-      .then((result) => {
-        setTodos((prevTodos) => {
-          return prevTodos.filter((todo) => todo.id !== id);
-        });
-        console.log("Todo was deleted");
-      })
-      .catch((e) => {
-        console.log("Error deleting todo");
       });
   };
 
