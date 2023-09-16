@@ -29,9 +29,18 @@ export default function NavBar({
           })
         }
       >
-        <button className="text-violet-500 hover:text-violet-600">
-          <SidebarLeft size="1.8rem" />
-        </button>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild={true}>
+              <button className="text-violet-500 hover:text-violet-600">
+                <SidebarLeft size="1.8rem" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent className="bg-violet-500">
+              <p className="font-bold text-white">Sidebar</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
       <div
         className="flex w-1/12 justify-start pl-3 text-2xl"

@@ -98,13 +98,13 @@ export default function DeleteModal({
           className="font-serif flex flex-col"
           onSubmit={handleSubmit}
         >
-          <div className="m-4 h-8 rounded-xl p-2 px-4 py-3 text-gray-900">
+          <div className="m-4 flex h-8 items-center justify-center rounded-xl p-2 px-4 py-3 text-gray-900">
             Are you sure to delete?
           </div>
           <div className="mb-4 ml-4 mr-4 flex items-center justify-between">
             <button
               type="submit"
-              className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 disabled:bg-cyan-100"
+              className="flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 disabled:bg-cyan-100"
               disabled={status === "submitting" ? true : false}
             >
               <Spinner
@@ -121,7 +121,7 @@ export default function DeleteModal({
             </button>
             <PopoverClose asChild={true}>
               <button
-                className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-500 disabled:bg-rose-100"
+                className="flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-500 disabled:bg-rose-100"
                 disabled={status === "submitting" ? true : false}
               >
                 Cancel
