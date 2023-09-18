@@ -107,7 +107,7 @@ export default function CreateModalList({ addList }: CreateModalListProps) {
           <div className="mb-4 ml-4 mr-4 flex items-center justify-between">
             <button
               type="submit"
-              className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 disabled:bg-cyan-200"
+              className="flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 disabled:bg-cyan-200"
               disabled={
                 newList.length === 0 || status === "submitting" ? true : false
               }
@@ -126,7 +126,7 @@ export default function CreateModalList({ addList }: CreateModalListProps) {
             </button>
             <PopoverClose asChild={true}>
               <button
-                className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-600 disabled:bg-rose-200"
+                className="flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-600 disabled:bg-rose-200"
                 disabled={status === "submitting" ? true : false}
               >
                 Cancel

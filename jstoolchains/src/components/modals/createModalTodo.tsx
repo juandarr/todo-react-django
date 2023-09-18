@@ -158,7 +158,7 @@ export default function CreateModalTodo({
               }}
               disabled={status === "submitting" ? true : false}
             >
-              <SelectTrigger className="h-2 w-5/12 p-3">
+              <SelectTrigger className="h-2 w-full p-3">
                 <SelectValue placeholder="List" />
               </SelectTrigger>
               <SelectContent>
@@ -173,7 +173,7 @@ export default function CreateModalTodo({
           <div className="mb-4 ml-4 mr-4 flex items-center justify-between">
             <button
               type="submit"
-              className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 disabled:bg-cyan-200"
+              className="flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 disabled:bg-cyan-200"
               disabled={
                 status === "submitting" || newTodo.title.length === 0
                   ? true
@@ -194,7 +194,7 @@ export default function CreateModalTodo({
             </button>
             <PopoverClose asChild={true}>
               <button
-                className="flex h-10 items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-600 disabled:bg-rose-200"
+                className="flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-600 disabled:bg-rose-200"
                 disabled={status === "submitting" ? true : false}
               >
                 Cancel
