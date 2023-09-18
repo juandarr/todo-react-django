@@ -53,7 +53,7 @@ export interface TaskItemProps {
   setNewTodoEdit: React.Dispatch<React.SetStateAction<todoType>>
   handleKeyPress: (
     event: React.FormEvent<HTMLFormElement>,
-    todo: todoType,
+    todo: Todo,
   ) => void
 }
 

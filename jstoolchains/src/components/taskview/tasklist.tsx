@@ -21,7 +21,7 @@ export default function TaskList ({
     todo: Todo
   ): void => {
     event.preventDefault()
-    editTodo(todo.id, newTodoEdit.title, setEdit)
+    editTodo(todo.id as number, newTodoEdit.title, setEdit)
   }
 
   const listTodos = todos.filter(
