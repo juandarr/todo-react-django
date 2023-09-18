@@ -15,5 +15,5 @@
     "plugins": [
         "react"
     ],
-    "rules": {}
+    "rules": {"react/prop-types": [2, { "ignore": ["className", "align", "sideOffset", "position"] }]}
 }

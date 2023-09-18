@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "tailwind-watch": "tailwindcss -i ../input.css -o ../static/css/output.css --watch",
     "tailwind-build": "tailwindcss -i ../input.css -o ../static/css/output.css --minify",
-    "dev": "webpack --mode development --watch"
+    "dev": "webpack --mode development --watch",
+    "format": "prettier --write ."
   },
   "author": "",
   "license": "ISC",
