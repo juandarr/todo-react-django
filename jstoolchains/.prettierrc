@@ -1,6 +1,6 @@
 {
-    "useTabs": true,
-    "singleQuote": true,
-    "jsxSingleQuote": true,
-    "bracketSameLine": true
+	"useTabs": true,
+	"singleQuote": true,
+	"jsxSingleQuote": true,
+	"bracketSameLine": true
 }
