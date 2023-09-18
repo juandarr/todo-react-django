@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 
-import { TaskListProps, todoType } from "../../lib/customTypes";
+import type { TaskListProps } from '../../lib/customTypes'
+import type { Todo } from '../../../../todo-api-client/models'
+import TaskItem from './taskitem'
 
-import TaskItem from "./taskitem";
-
-export default function TaskList({
+export default function TaskList ({
   todos,
   toggleTodo,
   deleteTodo,
@@ -12,29 +12,29 @@ export default function TaskList({
   condition,
   currentList,
   newTodoEdit,
-  setNewTodoEdit,
-}: TaskListProps) {
-  const [edit, setEdit] = useState([false, 0]);
+  setNewTodoEdit
+}: TaskListProps): React.JSX.Element {
+  const [edit, setEdit] = useState([false, 0])
 
   const handleKeyPress = (
     event: React.FormEvent<HTMLFormElement>,
-    todo: todoType,
-  ) => {
-    event.preventDefault();
-    editTodo(todo.id, newTodoEdit.title, setEdit);
-  };
+    todo: Todo
+  ): void => {
+    event.preventDefault()
+    editTodo(todo.id, newTodoEdit.title, setEdit)
+  }
 
   const listTodos = todos.filter(
-    (todo) => todo.list == currentList.id.toString(),
-  );
-  const filteredTodos = listTodos.filter((todo) => todo.complete == condition);
+    (todo) => (todo.list === currentList.id)
+  )
+  const filteredTodos = listTodos.filter((todo) => todo.complete === condition)
 
   if (filteredTodos.length === 0) {
     return (
       <div className="text-md flex-1 px-6 py-6 font-bold text-violet-600">
-        No todos {condition == true ? "completed yet" : "at the moment"}
+        No todos {condition ? 'completed yet' : 'at the moment'}
       </div>
-    );
+    )
   }
   const taskList = filteredTodos.map((todo, idx: number) => {
     return (
@@ -51,8 +51,8 @@ export default function TaskList({
           handleKeyPress={handleKeyPress}
         />
       </li>
-    );
-  });
+    )
+  })
 
-  return <ul className="divide-gray-150 divide-y">{taskList}</ul>;
+  return <ul className="divide-gray-150 divide-y">{taskList}</ul>
 }
