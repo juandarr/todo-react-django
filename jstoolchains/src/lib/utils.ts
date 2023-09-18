@@ -1,33 +1,31 @@
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+export function cn(...inputs: ClassValue[]): string {
+	return twMerge(clsx(inputs));
 }
 
-export function getCookie(name: string) {
-  var cookieValue = name;
-  if (document.cookie && document.cookie !== "") {
-    var cookies = document.cookie.split(";");
-    for (var i = 0; i < cookies.length; i++) {
-      var cookie = cookies[i].trim();
-      if (cookie.substring(0, name.length + 1) === name + "=") {
-        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-        break;
-      }
-    }
-  }
-  return cookieValue;
+export function getCookie(name: string): string {
+	let cookieValue: string = name;
+	if (document.cookie != null && document.cookie !== '') {
+		const cookies = document.cookie.split(';');
+		for (let i = 0; i < cookies.length; i++) {
+			const cookie = cookies[i].trim();
+			if (cookie.substring(0, name.length + 1) === name + '=') {
+				cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+				break;
+			}
+		}
+	}
+	return cookieValue;
 }
 
-export function getPoint(t: string) {
-  let target = document.getElementById(t);
-  let [xTarget, yTarget] = [
-    target.getBoundingClientRect().left,
-    target.getBoundingClientRect().top,
-  ];
-
-  let [xDoc, yDoc] = [window.innerWidth, window.innerHeight];
-  //console.log(xTarget, xDoc, yTarget, yDoc);
-  return [xTarget / xDoc, yTarget / yDoc];
+export function getPoint(t: string): number[] {
+	const target = document.getElementById(t) as HTMLElement;
+	const [xTarget, yTarget] = [
+		target.getBoundingClientRect().left,
+		target.getBoundingClientRect().top,
+	];
+	const [xDoc, yDoc] = [window.innerWidth, window.innerHeight];
+	return [xTarget / xDoc, yTarget / yDoc];
 }
