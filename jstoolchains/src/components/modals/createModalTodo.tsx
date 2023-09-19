@@ -114,11 +114,11 @@ export default function CreateModalTodo({
 							.catch(() => {});
 					}}>
 					<input
-						id='listName'
+						id='todoTitle'
 						name='title'
 						type='text'
 						value={newTodo.title}
-						placeholder='Name this list'
+						placeholder='Name this todo'
 						className='mb-2 ml-4 mr-4 mt-4 h-8 rounded-xl bg-gray-300 p-2 px-4 py-3 text-base text-gray-900 placeholder:text-gray-500'
 						onChange={(event) => {
 							setNewTodo((old) => ({ ...old, title: event.target.value }));
@@ -127,7 +127,7 @@ export default function CreateModalTodo({
 						required
 					/>
 					<textarea
-						id='listDescription'
+						id='todoDescription'
 						name='description'
 						value={newTodo.description}
 						placeholder='Description'
