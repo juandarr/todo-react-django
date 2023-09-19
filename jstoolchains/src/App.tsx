@@ -293,7 +293,6 @@ export default function App(): React.JSX.Element {
 					newListEdit={newListEdit}
 					setNewListEdit={setNewListEdit}
 					showSidebar={showSidebar}
-					setShowSidebar={setShowSidebar}
 				/>
 				<div
 					className={`relative my-6 duration-300 ease-in-out ${

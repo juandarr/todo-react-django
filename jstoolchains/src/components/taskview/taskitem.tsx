@@ -11,6 +11,7 @@ import {
 } from '../ui/tooltip';
 
 import DeleteModal from '../modals/deleteModal';
+import { Icon, Trash } from 'iconsax-react';
 
 export default function TaskItem({
 	todo,
@@ -37,21 +38,12 @@ export default function TaskItem({
 	}
 
 	const deleteElement = (
-		<svg
+		<a
 			id='deleteTodo'
-			xmlns='http://www.w3.org/2000/svg'
-			fill='none'
-			viewBox='0 0 24 24'
-			strokeWidth='2'
-			stroke='currentColor'
 			className='h-7 w-7 text-rose-400 hover:text-rose-500'
 			style={{ cursor: 'pointer', display: 'inline' }}>
-			<path
-				strokeLinecap='round'
-				strokeLinejoin='round'
-				d='M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
-			/>
-		</svg>
+			<Trash size={'1.8rem'} />
+		</a>
 	);
 
 	return (

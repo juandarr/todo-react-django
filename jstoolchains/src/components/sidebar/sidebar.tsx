@@ -16,7 +16,6 @@ export default function SideBar({
 	deleteList,
 	editList,
 	showSidebar,
-	setShowSidebar,
 }: SideBarProps): React.JSX.Element {
 	const deleteElement = (
 		<a className='flex cursor-pointer justify-end text-2xl text-cyan-500 hover:text-cyan-600'>

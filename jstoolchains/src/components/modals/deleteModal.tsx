@@ -1,9 +1,6 @@
 import React, { useState, type CSSProperties } from 'react';
 
-import {
-	type DeleteModalProps,
-	type cssTailVariant,
-} from '../../lib/customTypes';
+import type { DeleteModalProps, cssTailVariant } from '../../lib/customTypes';
 
 import {
 	Tooltip,

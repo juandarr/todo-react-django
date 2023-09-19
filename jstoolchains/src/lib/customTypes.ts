@@ -106,7 +106,6 @@ export interface SideBarProps {
 	newListEdit: string;
 	setNewListEdit: React.Dispatch<React.SetStateAction<string>>;
 	showSidebar: boolean;
-	setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface NavBarProps {
