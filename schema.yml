@@ -486,6 +486,10 @@ components:
           readOnly: true
         complete:
           type: boolean
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
         priority:
           type: integer
           description: Task priority
@@ -512,6 +516,10 @@ components:
           readOnly: true
         complete:
           type: boolean
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
         priority:
           type: integer
           description: Task priority

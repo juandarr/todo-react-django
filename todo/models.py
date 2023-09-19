@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils.timezone import now
 from django.contrib.auth.models import User
-from django.conf import settings
 
 class List(models.Model):
     id = models.BigAutoField(primary_key=True,unique=True, blank=True)
@@ -18,13 +17,13 @@ class Todo(models.Model):
     description = models.CharField(max_length=150, blank=True, default="")
     created_at = models.DateTimeField(editable=False, blank=True, default=now)
     complete = models.BooleanField(blank=True, default=False)
-
+    completed_at = models.DateTimeField(blank=True, null=True)
     priority = models.IntegerField(help_text='Task priority', blank=True,default=0)
     PRIORITIES = (
         (0, 'None'),
-        (1, 'Low'),
+        (1, 'High'),
         (2, 'Medium'),
-        (3, 'High')
+        (3, 'Low')
     )
 
     list = models.ForeignKey(List, on_delete=models.RESTRICT, blank=True, default=1)
@@ -32,6 +31,15 @@ class Todo(models.Model):
 
     class Meta:
         ordering = ['created_at']
+
+    def __init__(self, *args, **kwargs):
+        super(Todo, self).__init__(*args, **kwargs)
+        self._complete = self.complete
+
+    def save(self, *args, **kwargs):
+        if not self._complete and self.complete:
+            self.completed_at = now()
+        super(Todo, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title

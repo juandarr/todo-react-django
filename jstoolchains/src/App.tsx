@@ -261,7 +261,7 @@ export default function App(): React.JSX.Element {
 			setTodos((prevTodos) => {
 				return prevTodos.map((todo) => {
 					if (todo.id === id) {
-						return { ...todo, complete };
+						return updatedTodo;
 					} else {
 						return todo;
 					}

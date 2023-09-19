@@ -25,8 +25,14 @@ export default function TaskList({
 	};
 
 	const listTodos = todos.filter((todo) => todo.list === currentList.id);
-	const filteredTodos = listTodos.filter((todo) => todo.complete === condition);
 
+	let filteredTodos = listTodos.filter((todo) => todo.complete === condition);
+	if (condition) {
+		filteredTodos = filteredTodos.sort(
+			(a, b) => new Date(b.completedAt) - new Date(a.completedAt),
+		);
+		console.log(filteredTodos);
+	}
 	if (filteredTodos.length === 0) {
 		return (
 			<div className='text-md flex-1 px-6 py-6 font-bold text-violet-600'>
