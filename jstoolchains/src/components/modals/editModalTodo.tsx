@@ -106,12 +106,12 @@ export default function EditModalTodo({
 							openPopover();
 						}}>
 						<TooltipTrigger asChild={true}>
-							<a className='flex cursor-pointer justify-end text-2xl text-cyan-500 hover:text-cyan-600 mr-2'>
+							<a className='flex cursor-pointer justify-end text-2xl text-sky-500 hover:text-sky-600 mr-2'>
 								<Edit size={'1.8rem'} />
 							</a>
 						</TooltipTrigger>
 					</PopoverTrigger>
-					<TooltipContent className='bg-cyan-500'>
+					<TooltipContent className='bg-sky-500'>
 						<p className='font-bold text-white'>Edit todo</p>
 					</TooltipContent>
 				</Tooltip>
@@ -234,7 +234,7 @@ export default function EditModalTodo({
 						</div>
 					)}
 				</form>
-				<PopoverArrow className='fill-cyan-500' />
+				<PopoverArrow className='fill-sky-500' />
 			</PopoverContent>
 		</Popover>
 	);

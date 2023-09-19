@@ -889,6 +889,10 @@ body {
   width: 100%;
 }
 
+.w-auto {
+  width: auto;
+}
+
 .min-w-\[8rem\] {
   min-width: 8rem;
 }
@@ -1551,6 +1555,11 @@ body {
   background-color: rgb(225 29 72 / var(--tw-bg-opacity));
 }
 
+.hover\:bg-sky-600:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(2 132 199 / var(--tw-bg-opacity));
+}
+
 .hover\:text-cyan-600:hover {
   --tw-text-opacity: 1;
   color: rgb(8 145 178 / var(--tw-text-opacity));
@@ -1661,6 +1670,11 @@ body {
 .disabled\:bg-rose-200:disabled {
   --tw-bg-opacity: 1;
   background-color: rgb(254 205 211 / var(--tw-bg-opacity));
+}
+
+.disabled\:bg-sky-200:disabled {
+  --tw-bg-opacity: 1;
+  background-color: rgb(186 230 253 / var(--tw-bg-opacity));
 }
 
 .disabled\:opacity-50:disabled {

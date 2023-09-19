@@ -11,7 +11,7 @@ import {
 } from '../ui/tooltip';
 
 import DeleteModal from '../modals/deleteModal';
-import { Trash } from 'iconsax-react';
+import { Trash, Edit2 } from 'iconsax-react';
 import EditModalTodo from '../modals/editModalTodo';
 
 export default function TaskItem({
@@ -84,7 +84,7 @@ export default function TaskItem({
 					) : (
 						<input
 							type='text'
-							className='flex-1 border-0 bg-white py-2 text-lg text-gray-700'
+							className='flex-1 border-0 bg-white py-2 text-lg text-gray-700 mr-2'
 							name='title'
 							value={newTodoEdit.title}
 							onChange={(event) => {
@@ -100,24 +100,14 @@ export default function TaskItem({
 						<TooltipProvider>
 							<Tooltip>
 								<TooltipTrigger className=''>
-									<svg
-										xmlns='http://www.w3.org/2000/svg'
-										fill='none'
-										viewBox='0 0 24 24'
-										strokeWidth='2'
-										stroke='currentColor'
-										className='ml-2 h-7 w-7 self-center text-sky-500 hover:text-sky-600'
+									<a
+										className='flex text-sky-500 hover:text-sky-600 justify-center items-center'
 										style={{ cursor: 'pointer', display: 'inline' }}
 										onClick={() => {
-											console.log('Now trying to patch something?Looollzzz');
 											editTodo(todo.id as number, newTodoEdit.title, setEdit);
 										}}>
-										<path
-											strokeLinecap='round'
-											strokeLinejoin='round'
-											d='M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m8.25 3v6.75m0 0l-3-3m3 3l3-3M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z'
-										/>
-									</svg>
+										<Edit2 size={'1.4rem'} />
+									</a>
 								</TooltipTrigger>
 								<TooltipContent className='bg-sky-500'>
 									<p className='font-bold text-white'>Save</p>
