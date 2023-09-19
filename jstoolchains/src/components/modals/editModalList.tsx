@@ -83,7 +83,7 @@ export default function EditModalList({
 							openPopover();
 						}}>
 						<TooltipTrigger>
-							<Edit size={'1.2rem'} />
+							<Edit size={'1.4rem'} />
 						</TooltipTrigger>
 					</PopoverTrigger>
 					<TooltipContent className='bg-sky-500'>

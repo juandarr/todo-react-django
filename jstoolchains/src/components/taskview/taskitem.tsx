@@ -11,7 +11,7 @@ import {
 } from '../ui/tooltip';
 
 import DeleteModal from '../modals/deleteModal';
-import { Icon, Trash } from 'iconsax-react';
+import { Edit, Trash } from 'iconsax-react';
 
 export default function TaskItem({
 	todo,
@@ -126,6 +126,9 @@ export default function TaskItem({
 				<div
 					id={`todo-${todo.id}`}
 					className='hidden-child flex w-1/5 justify-center py-2'>
+					<a className='flex cursor-pointer justify-end text-2xl text-cyan-500 hover:text-cyan-600 mr-2'>
+						<Edit size={'1.8rem'} />
+					</a>
 					<DeleteModal
 						deleteFunction={deleteTodo}
 						triggerElement={deleteElement}

@@ -66,14 +66,6 @@ export default function DeleteModal({
 		if (el !== null) el.classList.toggle('hidden-child');
 	};
 
-	const fillColorVariants: cssTailVariant = {
-		list: 'fill-sky-500',
-		todo: 'fill-rose-500',
-	};
-	const bgColorVariants: cssTailVariant = {
-		list: 'bg-sky-500',
-		todo: 'bg-rose-500',
-	};
 	console.log('Delete modal is rendered');
 	return (
 		<Popover modal={true} open={isOpen} onOpenChange={setIsOpen}>
@@ -86,7 +78,7 @@ export default function DeleteModal({
 						}}>
 						<TooltipTrigger>{triggerElement}</TooltipTrigger>
 					</PopoverTrigger>
-					<TooltipContent className={`${bgColorVariants[deleteEntity]}`}>
+					<TooltipContent className='bg-rose-500'>
 						<p className='font-bold text-white'>Delete</p>
 					</TooltipContent>
 				</Tooltip>
@@ -143,7 +135,7 @@ export default function DeleteModal({
 						</div>
 					)}
 				</form>
-				<PopoverArrow className={`${fillColorVariants[deleteEntity]}`} />
+				<PopoverArrow className='fill-rose-500' />
 			</PopoverContent>
 		</Popover>
 	);

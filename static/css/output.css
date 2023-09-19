@@ -741,6 +741,10 @@ body {
   margin-top: 1rem;
 }
 
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
 .block {
   display: block;
 }
@@ -1241,6 +1245,10 @@ body {
   padding-top: 0px;
 }
 
+.pl-4 {
+  padding-left: 1rem;
+}
+
 .text-center {
   text-align: center;
 }
@@ -1354,6 +1362,11 @@ body {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.text-rose-500 {
+  --tw-text-opacity: 1;
+  color: rgb(244 63 94 / var(--tw-text-opacity));
 }
 
 .underline {
@@ -1557,6 +1570,11 @@ body {
 .hover\:text-violet-600:hover {
   --tw-text-opacity: 1;
   color: rgb(124 58 237 / var(--tw-text-opacity));
+}
+
+.hover\:text-rose-600:hover {
+  --tw-text-opacity: 1;
+  color: rgb(225 29 72 / var(--tw-text-opacity));
 }
 
 .hover\:underline:hover {

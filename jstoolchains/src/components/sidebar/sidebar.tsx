@@ -18,8 +18,8 @@ export default function SideBar({
 	showSidebar,
 }: SideBarProps): React.JSX.Element {
 	const deleteElement = (
-		<a className='flex cursor-pointer justify-end text-2xl text-cyan-500 hover:text-cyan-600'>
-			<Trash size={'1.2rem'} />
+		<a className='flex cursor-pointer justify-end text-2xl text-rose-500 hover:text-rose-600'>
+			<Trash size={'1.4rem'} />
 		</a>
 	);
 	const otherLists = lists
