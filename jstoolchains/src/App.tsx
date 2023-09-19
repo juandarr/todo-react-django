@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { TodosApi, ListsApi } from '../../todo-api-client/apis/index';
 import { Configuration } from '../../todo-api-client/runtime';
 
-import { getPoint, getCookie } from './lib/utils';
+import { getPoint, getCookie, isDescendantOf } from './lib/utils';
 
 import NavBar from './components/navbar/navbar';
 import SideBar from './components/sidebar/sidebar';
@@ -15,7 +15,7 @@ import { userSettings } from './lib/userSettings';
 
 import confetti from 'canvas-confetti';
 
-import type { todoType, listType, ReactSetState } from './lib/customTypes';
+import type { todoType, listType, EditionSetState } from './lib/customTypes';
 import type { Todo, List } from '../../todo-api-client/models';
 
 function randomInRange(min: number, max: number): number {
@@ -37,6 +37,23 @@ export default function App(): React.JSX.Element {
 	const [newTodoEdit, setNewTodoEdit] = useState<Todo>({ title: '' });
 	const [newListEdit, setNewListEdit] = useState('');
 	const [showSidebar, setShowSidebar] = useState(true);
+
+	const call1 = (event: any): void => {
+		if (!isDescendantOf(event.target, 'form')) {
+			if (event.key === 's') {
+				event.preventDefault();
+				setShowSidebar((old) => !old);
+			}
+		}
+	};
+
+	useEffect(() => {
+		document.addEventListener('keydown', call1);
+		return () => {
+			document.removeEventListener('keydown', call1);
+		};
+	}, [call1]);
+
 	const apiConfig = new Configuration({
 		basePath: 'http://127.0.0.1:8000',
 		headers: {
@@ -91,7 +108,7 @@ export default function App(): React.JSX.Element {
     [x] Delete Todo
     [x] Edit List
     [x] Edit todo
-    [ ] Toggle todo
+    [x] Toggle todo
     */
 	// setTimeout(() => {
 	//   const value = Math.random();
@@ -273,33 +290,32 @@ export default function App(): React.JSX.Element {
 		}
 	};
 
-	const editTodo = (
+	const editTodo = async (
 		id: number,
 		title: string,
-		setEdit: ReactSetState,
-	): void => {
+		setEdit: EditionSetState,
+	): Promise<void> => {
 		setEdit([false, 0]);
 		const todo = {
 			title,
 		};
-		clientTodo
-			.todosPartialUpdate({ id, patchedTodo: todo })
-			.then((result) => {
-				console.log('Todo was patched!');
-				setTodos((prevTodos) => {
-					return prevTodos.map((todo) => {
-						if (todo.id === id) {
-							return { ...todo, title };
-						} else {
-							return todo;
-						}
-					});
+
+		try {
+			await clientTodo.todosPartialUpdate({ id, patchedTodo: todo });
+			console.log('Todo was patched!');
+			setTodos((prevTodos) => {
+				return prevTodos.map((todo) => {
+					if (todo.id === id) {
+						return { ...todo, title };
+					} else {
+						return todo;
+					}
 				});
-			})
-			.catch((error) => {
-				console.log('There was an error updating the field in Todo');
-				throw new Error(error);
 			});
+		} catch (error) {
+			console.log('There was an error updating the field in Todo');
+			throw new Error(error);
+		}
 	};
 
 	return (

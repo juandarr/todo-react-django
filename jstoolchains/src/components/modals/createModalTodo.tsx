@@ -1,4 +1,4 @@
-import React, { useState, type CSSProperties } from 'react';
+import React, { useState, type CSSProperties, useEffect } from 'react';
 
 import {
 	Tooltip,
@@ -29,6 +29,7 @@ import Spinner from 'react-spinners/DotLoader';
 
 import type { CreateModalTodoProps, todoType } from '../../lib/customTypes';
 import { PriorityEnum } from '../../lib/userSettings';
+import { isDescendantOf } from '../../lib/utils';
 
 const override: CSSProperties = {
 	display: 'block',
@@ -48,6 +49,23 @@ export default function CreateModalTodo({
 	});
 	const [status, setStatus] = useState('typing');
 	const [error, setError] = useState(null);
+
+	const call = (event: any): void => {
+		console.log(event.target.parentNode.nodeName);
+		if (!isDescendantOf(event.target, 'form')) {
+			if (event.key === 'q' && !isOpen) {
+				event.preventDefault();
+				openPopover();
+			}
+		}
+	};
+
+	useEffect(() => {
+		document.addEventListener('keydown', call);
+		return () => {
+			document.removeEventListener('keydown', call);
+		};
+	}, [call]);
 
 	const createHandleSubmit = async (
 		event: React.FormEvent<HTMLFormElement>,

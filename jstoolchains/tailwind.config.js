@@ -5,7 +5,7 @@ export const darkMode = ['class'];
 export const content = [
 	'../templates/*.html',
 	'./src/*.{tsx,ts,js,jsx}',
-	'./src/**/*.{tsx,ts}',
+	'./src/**/*.{tsx,ts,js,jsx}',
 ];
 export const theme = {
 	container: {

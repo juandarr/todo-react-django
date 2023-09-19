@@ -104,7 +104,9 @@ export default function TaskItem({
 										className='flex text-sky-500 hover:text-sky-600 justify-center items-center'
 										style={{ cursor: 'pointer', display: 'inline' }}
 										onClick={() => {
-											editTodo(todo.id as number, newTodoEdit.title, setEdit);
+											editTodo(todo.id as number, newTodoEdit.title, setEdit)
+												.then(() => {})
+												.catch(() => {});
 										}}>
 										<Edit2 size={'1.4rem'} />
 									</a>

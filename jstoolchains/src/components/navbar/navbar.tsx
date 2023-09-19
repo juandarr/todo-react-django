@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import {
 	Tooltip,
@@ -8,10 +8,17 @@ import {
 } from '../ui/tooltip';
 
 import CreateModalTodo from '../modals/createModalTodo';
-import { SidebarLeft, House, Notification } from 'iconsax-react';
+import {
+	SidebarLeft,
+	House,
+	Notification,
+	StatusUp,
+	Setting2,
+} from 'iconsax-react';
 
-import { type NavBarProps } from '../../lib/customTypes';
+import type { NavBarProps } from '../../lib/customTypes';
 import { userSettings } from '../../lib/userSettings';
+import { isDescendantOf } from '../../lib/utils';
 
 export default function NavBar({
 	changeCurrentList,
@@ -19,6 +26,21 @@ export default function NavBar({
 	addTodo,
 	setShowSidebar,
 }: NavBarProps): React.JSX.Element {
+	const call = (event: any): void => {
+		if (!isDescendantOf(event.target, 'form')) {
+			if (event.key === 'h') {
+				event.preventDefault();
+				changeCurrentList(userSettings.homeListId);
+			}
+		}
+	};
+
+	useEffect(() => {
+		document.addEventListener('keydown', call);
+		return () => {
+			document.removeEventListener('keydown', call);
+		};
+	}, [call]);
 	return (
 		<nav className='mx-6 mb-6 mt-12 flex w-5/6 justify-between rounded-lg border-2 border-black bg-white p-2'>
 			<div
@@ -64,8 +86,13 @@ export default function NavBar({
 			</div>
 			<a
 				href='/admin'
-				className='flex w-2/12 justify-end pl-3 pr-3 text-2xl text-cyan-500'>
-				<Notification size='1.8rem' />
+				className='flex w-1/12 justify-end pl-3 pr-3 text-2xl text-fuchsia-500'>
+				<StatusUp size='1.8rem' />
+			</a>
+			<a
+				href='/admin'
+				className='flex w-1/12 justify-end pl-3 pr-3 text-2xl text-cyan-500'>
+				<Setting2 size='1.8rem' />
 			</a>
 		</nav>
 	);

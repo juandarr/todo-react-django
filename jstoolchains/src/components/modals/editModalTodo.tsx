@@ -58,22 +58,13 @@ export default function EditModalTodo({
 		if (newEditTodo.title === '') return;
 		setStatus('submitting');
 
-		setTimeout(() => {
-			const value = Math.random();
-			if (value > 0.5) {
-				closePopover();
-			} else {
-				setError('Invented error');
-				setStatus('viewing');
-			}
-		}, 2000);
-		// try {
-		// 	await editTodoFull(newEditTodo);
-		// 	closePopover();
-		// } catch (error) {
-		// 	setError(error);
-		// 	setStatus('typing');
-		// }
+		try {
+			await editTodoFull(newEditTodo);
+			closePopover();
+		} catch (error) {
+			setError(error);
+			setStatus('typing');
+		}
 	};
 
 	const closePopover = (): void => {

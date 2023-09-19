@@ -29,3 +29,15 @@ export function getPoint(t: string): number[] {
 	const [xDoc, yDoc] = [window.innerWidth, window.innerHeight];
 	return [xTarget / xDoc, yTarget / yDoc];
 }
+export function isDescendantOf(
+	element: HTMLElement | null,
+	parentTag: string,
+): boolean {
+	while (element !== null) {
+		if (element.nodeName.toLowerCase() === parentTag) {
+			return true;
+		}
+		element = element.parentElement;
+	}
+	return false;
+}

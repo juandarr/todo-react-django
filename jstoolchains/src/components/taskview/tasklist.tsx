@@ -23,7 +23,11 @@ export default function TaskList({
 		todo: Todo,
 	): void => {
 		event.preventDefault();
-		editTodo(todo.id as number, newTodoEdit.title, setEdit);
+		editTodo(todo.id as number, newTodoEdit.title, setEdit)
+			.then(() => {})
+			.catch((error) => {
+				console.log('There was an error: ', error);
+			});
 	};
 
 	const listTodos = todos.filter((todo) => todo.list === currentList.id);

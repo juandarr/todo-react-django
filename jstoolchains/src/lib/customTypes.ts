@@ -1,6 +1,6 @@
 import type { List, Todo } from '../../../todo-api-client/models';
 
-export type ReactSetState = React.Dispatch<
+export type EditionSetState = React.Dispatch<
 	React.SetStateAction<[boolean, number]>
 >;
 
@@ -47,7 +47,11 @@ export interface TaskItemProps {
 	todo: Todo;
 	lists: List[];
 	toggleTodo: (id: number, complete: boolean) => Promise<Todo>;
-	editTodo: (id: number, title: string, setEdit: ReactSetState) => void;
+	editTodo: (
+		id: number,
+		title: string,
+		setEdit: EditionSetState,
+	) => Promise<void>;
 	editTodoFull: (todo: todoType) => Promise<Todo>;
 	deleteTodo: (id: number) => Promise<void>;
 	edit: Array<number | boolean>;
@@ -62,7 +66,11 @@ export interface TaskListProps {
 	lists: List[];
 	toggleTodo: (id: number, complete: boolean) => Promise<Todo>;
 	deleteTodo: (id: number) => Promise<void>;
-	editTodo: (id: number, title: string, setEdit: ReactSetState) => void;
+	editTodo: (
+		id: number,
+		title: string,
+		setEdit: EditionSetState,
+	) => Promise<void>;
 	editTodoFull: (todo: todoType) => Promise<Todo>;
 	condition: boolean;
 	currentList: List;
