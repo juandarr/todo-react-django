@@ -27,10 +27,7 @@ import {
 
 import Spinner from 'react-spinners/DotLoader';
 
-import {
-	type CreateModalTodoProps,
-	type todoType,
-} from '../../lib/customTypes';
+import type { CreateModalTodoProps, todoType } from '../../lib/customTypes';
 import { PriorityEnum } from '../../lib/userSettings';
 
 const override: CSSProperties = {

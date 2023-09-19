@@ -9,6 +9,7 @@ export interface todoType {
 	title: string;
 	description?: string;
 	complete?: boolean;
+	completeAt?: Date;
 	createdAt?: Date;
 	priority?: string;
 	list?: string;
