@@ -6,9 +6,11 @@ import TaskItem from './taskitem';
 
 export default function TaskList({
 	todos,
+	lists,
 	toggleTodo,
 	deleteTodo,
 	editTodo,
+	editTodoFull,
 	condition,
 	currentList,
 	newTodoEdit,
@@ -47,8 +49,10 @@ export default function TaskList({
 			<li key={todo.id}>
 				<TaskItem
 					todo={todo}
+					lists={lists}
 					toggleTodo={toggleTodo}
 					editTodo={editTodo}
+					editTodoFull={editTodoFull}
 					deleteTodo={deleteTodo}
 					edit={edit}
 					setEdit={setEdit}

@@ -207,35 +207,6 @@ export default function App(): React.JSX.Element {
 		}
 	};
 
-	const editTodo = (
-		id: number,
-		title: string,
-		setEdit: ReactSetState,
-	): void => {
-		setEdit([false, 0]);
-		const todo = {
-			title,
-		};
-		clientTodo
-			.todosPartialUpdate({ id, patchedTodo: todo })
-			.then((result) => {
-				console.log('Todo was patched!');
-				setTodos((prevTodos) => {
-					return prevTodos.map((todo) => {
-						if (todo.id === id) {
-							return { ...todo, title };
-						} else {
-							return todo;
-						}
-					});
-				});
-			})
-			.catch((error) => {
-				console.log('There was an error updating the field in Todo');
-				throw new Error(error);
-			});
-	};
-
 	const toggleTodo = async (id: number, complete: boolean): Promise<Todo> => {
 		const todo = {
 			complete,
@@ -273,6 +244,64 @@ export default function App(): React.JSX.Element {
 			throw new Error(error);
 		}
 	};
+
+	const editTodoFull = async (todo: todoType): Promise<Todo> => {
+		const tmpTodo: Todo = {
+			...todo,
+			list: parseInt(todo.list as string),
+			priority: parseInt(todo.priority as string),
+		};
+		try {
+			const todoUpdated = await clientTodo.todosPartialUpdate({
+				id: todo.id as number,
+				patchedTodo: tmpTodo,
+			});
+			console.log('Todo was patched!');
+			setTodos((prevTodos) => {
+				return prevTodos.map((prevTodo) => {
+					if (prevTodo.id === todo.id) {
+						return todoUpdated;
+					} else {
+						return prevTodo;
+					}
+				});
+			});
+			return todoUpdated;
+		} catch (error) {
+			console.log('There was an error updating the field in Todo');
+			throw new Error(error);
+		}
+	};
+
+	const editTodo = (
+		id: number,
+		title: string,
+		setEdit: ReactSetState,
+	): void => {
+		setEdit([false, 0]);
+		const todo = {
+			title,
+		};
+		clientTodo
+			.todosPartialUpdate({ id, patchedTodo: todo })
+			.then((result) => {
+				console.log('Todo was patched!');
+				setTodos((prevTodos) => {
+					return prevTodos.map((todo) => {
+						if (todo.id === id) {
+							return { ...todo, title };
+						} else {
+							return todo;
+						}
+					});
+				});
+			})
+			.catch((error) => {
+				console.log('There was an error updating the field in Todo');
+				throw new Error(error);
+			});
+	};
+
 	return (
 		<>
 			<NavBar
@@ -313,9 +342,11 @@ export default function App(): React.JSX.Element {
 					/>
 					<TaskList
 						todos={todos}
+						lists={lists}
 						toggleTodo={toggleTodo}
 						deleteTodo={deleteTodo}
 						editTodo={editTodo}
+						editTodoFull={editTodoFull}
 						condition={false}
 						currentList={currentList}
 						newTodoEdit={newTodoEdit}
@@ -328,9 +359,11 @@ export default function App(): React.JSX.Element {
 					/>
 					<TaskList
 						todos={todos}
+						lists={lists}
 						toggleTodo={toggleTodo}
 						deleteTodo={deleteTodo}
 						editTodo={editTodo}
+						editTodoFull={editTodoFull}
 						condition={true}
 						currentList={currentList}
 						newTodoEdit={newTodoEdit}

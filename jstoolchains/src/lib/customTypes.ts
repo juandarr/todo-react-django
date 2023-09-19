@@ -29,14 +29,14 @@ export interface userSettingsType {
 	homeListId: number;
 }
 
-export type addTodoType = (todo: todoType, origin: string) => Promise<Todo>;
-export type addListType = (title: string) => Promise<List>;
-
 export interface cssTailVariant {
 	list: string;
 	todo: string;
 	[key: string]: string;
 }
+export type addTodoType = (todo: todoType, origin: string) => Promise<Todo>;
+export type addListType = (title: string) => Promise<List>;
+
 export interface TaskFormProps {
 	addTodo: addTodoType;
 	newTodo: todoType;
@@ -45,8 +45,10 @@ export interface TaskFormProps {
 
 export interface TaskItemProps {
 	todo: Todo;
+	lists: List[];
 	toggleTodo: (id: number, complete: boolean) => Promise<Todo>;
 	editTodo: (id: number, title: string, setEdit: ReactSetState) => void;
+	editTodoFull: (todo: todoType) => Promise<Todo>;
 	deleteTodo: (id: number) => Promise<void>;
 	edit: Array<number | boolean>;
 	setEdit: React.Dispatch<React.SetStateAction<Array<number | boolean>>>;
@@ -57,9 +59,11 @@ export interface TaskItemProps {
 
 export interface TaskListProps {
 	todos: Todo[];
+	lists: List[];
 	toggleTodo: (id: number, complete: boolean) => Promise<Todo>;
 	deleteTodo: (id: number) => Promise<void>;
 	editTodo: (id: number, title: string, setEdit: ReactSetState) => void;
+	editTodoFull: (todo: todoType) => Promise<Todo>;
 	condition: boolean;
 	currentList: List;
 	newTodoEdit: Todo;
@@ -87,6 +91,12 @@ export interface EditModalListProps {
 	parentId: string;
 }
 
+export interface EditModalTodoProps {
+	editTodoFull: (todo: todoType) => Promise<Todo>;
+	todo: Todo;
+	lists: List[];
+	parentId: string;
+}
 export interface DeleteModalProps {
 	deleteFunction: (id: number) => Promise<void>;
 	triggerElement: React.JSX.Element;
