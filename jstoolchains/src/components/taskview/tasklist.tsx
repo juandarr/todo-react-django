@@ -29,7 +29,9 @@ export default function TaskList({
 	let filteredTodos = listTodos.filter((todo) => todo.complete === condition);
 	if (condition) {
 		filteredTodos = filteredTodos.sort(
-			(a, b) => new Date(b.completedAt) - new Date(a.completedAt),
+			(a, b) =>
+				new Date(b.completedAt as Date).valueOf() -
+				new Date(a.completedAt as Date).valueOf(),
 		);
 		console.log(filteredTodos);
 	}
