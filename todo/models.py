@@ -18,15 +18,15 @@ class Todo(models.Model):
     created_at = models.DateTimeField(editable=False, blank=True, default=now)
     complete = models.BooleanField(blank=True, default=False)
     completed_at = models.DateTimeField(blank=True, null=True)
-    priority = models.IntegerField(help_text='Task priority', blank=True,default=0)
+    priority = models.IntegerField(help_text='Task priority', blank=True,default=4)
     PRIORITIES = (
-        (0, 'None'),
         (1, 'High'),
         (2, 'Medium'),
-        (3, 'Low')
+        (3, 'Low'),
+        (4, 'None'),
     )
 
-    list = models.ForeignKey(List, on_delete=models.RESTRICT, blank=True, default=1)
+    list = models.ForeignKey(List, on_delete=models.CASCADE, blank=True, default=1)
     user = models.ForeignKey(User, on_delete= models.CASCADE, blank=True, related_name='todos')
 
     class Meta:

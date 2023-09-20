@@ -3,8 +3,8 @@ export const userSettings = {
 };
 
 export const PriorityEnum = {
-	None: '0',
-	Low: '1',
+	High: '1',
 	Medium: '2',
-	High: '3',
+	Low: '3',
+	None: '4',
 };

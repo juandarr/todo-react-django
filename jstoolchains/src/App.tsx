@@ -47,6 +47,8 @@ export default function App(): React.JSX.Element {
 		}
 	};
 
+	// TODO: Reset forms using keys instead of hardcode it every time (specially for forms)
+	// https://react.dev/learn/preserving-and-resetting-state#resetting-a-form-with-a-key
 	useEffect(() => {
 		document.addEventListener('keydown', call1);
 		return () => {
@@ -99,17 +101,7 @@ export default function App(): React.JSX.Element {
 		setNewTodo({ title: '', description: '' });
 	};
 
-	// FIXME: function to create, update, delete should return an exit message and upon success we can close the popover, it should include notification of success or failure
-	/* Progress:
-    [x] create List
-    [x] create Todo modal
-    [x] create Todo taskView
-    [x] Delete List
-    [x] Delete Todo
-    [x] Edit List
-    [x] Edit todo
-    [x] Toggle todo
-    */
+	/* Use the following portion of code to test every async api function */
 	// setTimeout(() => {
 	//   const value = Math.random();
 	//   if (value > 0.5) {
@@ -172,7 +164,6 @@ export default function App(): React.JSX.Element {
 		}
 	};
 
-	// FIXME: the goal is to be able to remove lists even when they have associated tasks.
 	const deleteList = async (id: number): Promise<void> => {
 		try {
 			await clientList.listsDestroy({ id });
