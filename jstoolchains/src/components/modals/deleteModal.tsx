@@ -107,7 +107,7 @@ export default function DeleteModal({
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-between'>
 						<button
 							type='submit'
-							className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 disabled:bg-cyan-100 focus:ring-2 focus:ring-cyan-300 focus:ring-offset-1 focus-visible:ring-2 focus-visible:ring-cyan-300'
+							className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 disabled:bg-cyan-100  focus-visible:ring focus-visible:ring-cyan-300'
 							disabled={status === 'submitting'}>
 							<Spinner
 								color='rgb(8 145 178)'

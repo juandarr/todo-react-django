@@ -55,7 +55,7 @@ export default function App(): React.JSX.Element {
 			document.removeEventListener('keydown', call1);
 		};
 	}, [call1]);
-
+	// 127.0.0.1
 	const apiConfig = new Configuration({
 		basePath: 'http://127.0.0.1:8000',
 		headers: {
