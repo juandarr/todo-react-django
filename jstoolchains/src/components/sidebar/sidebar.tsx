@@ -26,15 +26,17 @@ export default function SideBar({
 		.filter((list) => list.id !== userSettings.homeListId)
 		.map((list) => (
 			<div key={list.id} className='parent flex items-center justify-between'>
-				<div
-					className={`flex-1 cursor-pointer ${
-						currentList.id === list.id ? 'rounded-md bg-cyan-200' : ''
+				<button
+					className={`flex-1 flex justify-start cursor-pointer ${
+						currentList.id === list.id
+							? 'rounded-md bg-cyan-200 font-semibold'
+							: ''
 					} truncate rounded-xl p-1 pl-2 text-lg hover:underline hover:decoration-rose-500 hover:decoration-2`}
 					onClick={() => {
 						changeCurrentList(list.id as number);
 					}}>
 					{list.title}
-				</div>
+				</button>
 				<div
 					id={`list-${list.id}`}
 					className='hidden-child flex items-center justify-end'>
@@ -64,17 +66,17 @@ export default function SideBar({
 			id='sidebar'>
 			<div className='mb-1 flex flex-col'>
 				<div className='mb-2 text-xl font-bold'>Tareas</div>
-				<div
-					className={`cursor-pointer ${
+				<button
+					className={`flex justify-start cursor-pointer ${
 						currentList.id === userSettings.homeListId
-							? 'rounded-md bg-cyan-200'
+							? 'rounded-md bg-cyan-200 font-semibold'
 							: ''
 					} rounded-xl p-1 pl-2 text-lg hover:underline hover:decoration-rose-500 hover:decoration-2`}
 					onClick={() => {
 						changeCurrentList(userSettings.homeListId);
 					}}>
 					Inbox
-				</div>
+				</button>
 			</div>
 			<div className='mt-4 flex flex-col'>
 				<div className='mb-2 flex justify-between'>

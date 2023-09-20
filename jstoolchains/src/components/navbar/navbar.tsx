@@ -8,13 +8,7 @@ import {
 } from '../ui/tooltip';
 
 import CreateModalTodo from '../modals/createModalTodo';
-import {
-	SidebarLeft,
-	House,
-	Notification,
-	StatusUp,
-	Setting2,
-} from 'iconsax-react';
+import { SidebarLeft, House, StatusUp, Setting2 } from 'iconsax-react';
 
 import type { NavBarProps } from '../../lib/customTypes';
 import { userSettings } from '../../lib/userSettings';
@@ -81,19 +75,37 @@ export default function NavBar({
 					</Tooltip>
 				</TooltipProvider>
 			</div>
-			<div className='flex w-8/12 justify-center text-2xl text-emerald-400 hover:text-emerald-500'>
+			<div className='flex w-8/12 justify-center text-2xl'>
 				<CreateModalTodo lists={lists} addTodo={addTodo} />
 			</div>
-			<a
-				href='/admin'
-				className='flex w-1/12 justify-end pl-3 pr-3 text-2xl text-fuchsia-500'>
-				<StatusUp size='1.8rem' />
-			</a>
-			<a
-				href='/admin'
-				className='flex w-1/12 justify-end pl-3 pr-3 text-2xl text-cyan-500'>
-				<Setting2 size='1.8rem' />
-			</a>
+			<div className='flex w-1/12 justify-end pl-3 pr-3 text-2xl '>
+				<TooltipProvider>
+					<Tooltip>
+						<TooltipTrigger asChild={true}>
+							<button className='text-fuchsia-500 hover:text-fuchsia-600'>
+								<StatusUp size='1.8rem' />
+							</button>
+						</TooltipTrigger>
+						<TooltipContent className='bg-fuchsia-500'>
+							<p className='font-bold text-white'>Progress</p>
+						</TooltipContent>
+					</Tooltip>
+				</TooltipProvider>
+			</div>
+			<div className='flex w-1/12 justify-end pl-3 pr-3 text-2xl '>
+				<TooltipProvider>
+					<Tooltip>
+						<TooltipTrigger asChild={true}>
+							<a href='/admin' className='text-cyan-500 hover:text-cyan-600'>
+								<Setting2 size='1.8rem' />
+							</a>
+						</TooltipTrigger>
+						<TooltipContent className='bg-cyan-500'>
+							<p className='font-bold text-white'>Settings</p>
+						</TooltipContent>
+					</Tooltip>
+				</TooltipProvider>
+			</div>
 		</nav>
 	);
 }

@@ -58,6 +58,7 @@ export default function EditModalList({
 		setIsOpen(false);
 	};
 	const openPopover = (): void => {
+		toggleHidden();
 		setListEdit(listData.title);
 		setStatus('typing');
 		setError(null);
@@ -70,8 +71,6 @@ export default function EditModalList({
 		);
 	};
 	console.log('Modal edit list rendered', isOpen, listEdit, status, error);
-	// FIXME: input is highlighted when todo list is open to edit. Cursor should
-	// start at the end of text. No highlight expected
 	return (
 		<Popover modal={true} open={isOpen} onOpenChange={setIsOpen}>
 			<TooltipProvider>
@@ -93,9 +92,7 @@ export default function EditModalList({
 			</TooltipProvider>
 			<PopoverContent
 				align={'center'}
-				onOpenAutoFocus={(event) => {
-					toggleHidden();
-				}}
+				onOpenAutoFocus={(event) => {}}
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
 					toggleHidden();
@@ -120,12 +117,13 @@ export default function EditModalList({
 							setListEdit(event.target.value);
 						}}
 						disabled={status === 'submitting'}
+						autoFocus
 						required
 					/>
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-between'>
 						<button
 							type='submit'
-							className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 disabled:bg-cyan-200'
+							className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 disabled:bg-cyan-200 focus-visible:ring focus-visible:ring-cyan-300'
 							disabled={!!(status === 'submitting' || listEdit.length === 0)}>
 							<Spinner
 								color='rgb(147 51 234)'
@@ -141,7 +139,7 @@ export default function EditModalList({
 						</button>
 						<PopoverClose asChild={true}>
 							<button
-								className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-600 disabled:bg-rose-200'
+								className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-600 disabled:bg-rose-200 focus-visible:ring focus-visible:ring-rose-300'
 								disabled={status === 'submitting'}>
 								Cancel
 							</button>

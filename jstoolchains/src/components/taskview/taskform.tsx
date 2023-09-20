@@ -60,7 +60,7 @@ export default function TaskForm({
 			/>
 			<button
 				type='submit'
-				className='flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-black hover:bg-cyan-600 disabled:bg-cyan-100'
+				className='flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-black hover:bg-cyan-600 disabled:bg-cyan-100 focus-visible:ring focus-visible:ring-cyan-300'
 				disabled={!!(newTodo.title.length === 0 || status === 'submitting')}>
 				<Spinner
 					color='rgb(8 145 178)'
