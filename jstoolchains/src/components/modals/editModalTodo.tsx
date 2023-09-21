@@ -1,4 +1,4 @@
-import React, { useState, type CSSProperties } from 'react';
+import React, { useState, useRef, type CSSProperties, useEffect } from 'react';
 
 import {
 	Tooltip,
@@ -30,6 +30,8 @@ import Spinner from 'react-spinners/DotLoader';
 import type { EditModalTodoProps, todoType } from '../../lib/customTypes';
 import { PriorityEnum } from '../../lib/userSettings';
 
+import { waitForElementToExist } from '../../lib/utils';
+
 const override: CSSProperties = {
 	display: 'block',
 	position: 'absolute',
@@ -50,6 +52,32 @@ export default function EditModalTodo({
 	});
 	const [status, setStatus] = useState('typing');
 	const [error, setError] = useState<any>(null);
+
+	const textAreaRefTitle = useRef<HTMLTextAreaElement>(null);
+	const textAreaRefDescription = useRef<HTMLTextAreaElement>(null);
+
+	const resizeTextArea = (textArea: HTMLElement): void => {
+		if (textArea !== null) {
+			textArea.style.height = 'auto';
+			textArea.style.height = `${textArea.scrollHeight}px`;
+		}
+	};
+	function adjustHeight(): void {
+		resizeTextArea(textAreaRefTitle.current as HTMLElement);
+		resizeTextArea(textAreaRefDescription.current as HTMLElement);
+	}
+
+	useEffect(() => {
+		// Apply adjust to height only when opening the popover
+		if (isOpen) {
+			// When element appears in the DOM, adjust height of textarea elements
+			waitForElementToExist('#todoEditTitle')
+				.then((element) => {
+					adjustHeight();
+				})
+				.catch(() => {});
+		}
+	}, [isOpen]);
 
 	const editHandleSubmit = async (
 		event: React.FormEvent<HTMLFormElement>,
@@ -83,6 +111,7 @@ export default function EditModalTodo({
 		setError(null);
 		setIsOpen(true);
 	};
+
 	const toggleHidden = (): void => {
 		const el: HTMLElement = document.getElementById(parentId) as HTMLElement;
 		if (el !== null) el.classList.toggle('hidden-child');
@@ -110,7 +139,7 @@ export default function EditModalTodo({
 			</TooltipProvider>
 			<PopoverContent
 				align={'center'}
-				onOpenAutoFocus={() => {}}
+				onOpenAutoFocus={(event) => {}}
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
 					toggleHidden();
@@ -124,33 +153,50 @@ export default function EditModalTodo({
 							.then(() => {})
 							.catch(() => {});
 					}}>
-					<input
-						id='todoTitle'
+					<textarea
+						id='todoEditTitle'
 						name='title'
-						type='text'
 						value={newEditTodo.title}
 						placeholder='Name this todo'
-						className='mb-2 ml-4 mr-4 mt-4 h-8 rounded-xl bg-gray-300 p-2 px-4 py-3 text-base text-gray-900 placeholder:text-gray-500'
+						className='ml-4 mr-4 mb-3 mt-4 rounded-lg bg-gray-300 text-base py-3 px-4 text-gray-900 placeholder:text-gray-500 overflow-y-hidden'
 						onChange={(event) => {
+							adjustHeight();
 							setNewEditTodo((old) => ({ ...old, title: event.target.value }));
 						}}
+						onFocus={(e) => {
+							e.target.setSelectionRange(
+								e.target.value.length,
+								e.target.value.length,
+							);
+						}}
 						disabled={status === 'submitting'}
+						ref={textAreaRefTitle}
 						autoFocus
 						required
 					/>
 					<textarea
-						id='todoDescription'
+						id='todoEditDescription'
 						name='description'
 						value={newEditTodo.description}
 						placeholder='Description'
-						className='mb-1 ml-4 mr-4 mt-1 h-28 rounded-xl bg-gray-300 p-2 px-4 py-3 text-base text-gray-900 placeholder:text-gray-500'
+						className='mb-1 ml-4 mr-4 rounded-xl bg-gray-300 px-4 py-3 text-base text-gray-900 placeholder:text-gray-500 overflow-y-hidden'
 						onChange={(event) => {
-							setNewEditTodo((old) => ({
-								...old,
-								description: event.target.value,
-							}));
+							adjustHeight();
+							setNewEditTodo((old) => {
+								return {
+									...old,
+									description: event.target.value,
+								};
+							});
+						}}
+						onFocus={(e) => {
+							e.target.setSelectionRange(
+								e.target.value.length,
+								e.target.value.length,
+							);
 						}}
 						disabled={status === 'submitting'}
+						ref={textAreaRefDescription}
 					/>
 					<div className='mb-3 ml-4 mr-4 mt-2 flex items-center justify-start'>
 						<Select

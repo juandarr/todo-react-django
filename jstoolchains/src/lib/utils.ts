@@ -41,3 +41,23 @@ export function isDescendantOf(
 	}
 	return false;
 }
+export async function waitForElementToExist(selector: string): Promise<any> {
+	return await new Promise((resolve) => {
+		if (document.querySelector(selector) !== null) {
+			resolve(document.querySelector(selector));
+			return;
+		}
+
+		const observer = new MutationObserver(() => {
+			if (document.querySelector(selector) !== null) {
+				resolve(document.querySelector(selector));
+				observer.disconnect();
+			}
+		});
+
+		observer.observe(document.body, {
+			subtree: true,
+			childList: true,
+		});
+	});
+}

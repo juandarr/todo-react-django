@@ -126,6 +126,7 @@ export default function TaskItem({
 						todo={todo}
 						lists={lists}
 						parentId={`todo-${todo.id}`}
+						key={`edit-${todo.id}`}
 					/>
 					<DeleteModal
 						deleteFunction={deleteTodo}
@@ -133,6 +134,7 @@ export default function TaskItem({
 						deleteEntity={'todo'}
 						parentId={`todo-${todo.id}`}
 						id={todo.id as number}
+						key={`del-${todo.id}`}
 					/>
 				</div>
 			</div>
