@@ -20,10 +20,10 @@ class Todo(models.Model):
     completed_at = models.DateTimeField(blank=True, null=True)
     priority = models.IntegerField(help_text='Task priority', blank=True,default=4)
     PRIORITIES = (
-        (1, 'High'),
-        (2, 'Medium'),
-        (3, 'Low'),
         (4, 'None'),
+        (3, 'Low'),
+        (2, 'Medium'),
+        (1, 'High')
     )
 
     list = models.ForeignKey(List, on_delete=models.CASCADE, blank=True, default=1)
