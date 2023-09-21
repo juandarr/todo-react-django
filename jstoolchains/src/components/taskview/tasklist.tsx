@@ -39,7 +39,10 @@ export default function TaskList({
 				new Date(b.completedAt as Date).valueOf() -
 				new Date(a.completedAt as Date).valueOf(),
 		);
-		console.log(filteredTodos);
+	} else {
+		filteredTodos = filteredTodos.sort(
+			(a, b) => (a.priority as number) - (b.priority as number),
+		);
 	}
 	if (filteredTodos.length === 0) {
 		return (
