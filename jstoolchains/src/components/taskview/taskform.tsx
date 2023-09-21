@@ -1,4 +1,4 @@
-import React, { useState, type CSSProperties } from 'react';
+import React, { useState, useRef, type CSSProperties, useEffect } from 'react';
 
 import Spinner from 'react-spinners/DotLoader';
 
@@ -17,6 +17,17 @@ export default function TaskForm({
 }: TaskFormProps): React.JSX.Element {
 	const [status, setStatus] = useState('typing');
 	const [error, setError] = useState(null);
+	const inputRef = useRef<HTMLInputElement>(null);
+	const previousStatus = useRef<string>('');
+
+	useEffect(() => {
+		if (status === 'typing' && previousStatus.current === 'submitting') {
+			if (inputRef.current !== null) {
+				inputRef.current.focus();
+			}
+		}
+		previousStatus.current = status;
+	}, [status]);
 
 	const handleSubmit = async (
 		event: React.FormEvent<HTMLFormElement>,
@@ -33,6 +44,15 @@ export default function TaskForm({
 		} catch (error) {
 			setError(error);
 			setStatus('typing');
+		}
+	};
+
+	const handleKeyDown = (e: React.FormEvent<HTMLFormElement>): void => {
+		if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+			// Submit the form when Ctrl (Windows/Linux) or Command (Mac) + Enter is pressed
+			handleSubmit(e)
+				.then(() => {})
+				.catch(() => {});
 		}
 	};
 
@@ -54,13 +74,20 @@ export default function TaskForm({
 				onChange={(e) => {
 					setNewTodo((old) => ({ ...old, title: e.target.value }));
 				}}
+				onFocus={(e) => {
+					e.target.setSelectionRange(
+						e.target.value.length,
+						e.target.value.length,
+					);
+				}}
 				placeholder='Enter your todo here'
+				ref={inputRef}
 				disabled={status === 'submitting'}
 				required
 			/>
 			<button
 				type='submit'
-				className='flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-black hover:bg-cyan-600 disabled:bg-cyan-100 focus-visible:ring focus-visible:ring-cyan-300'
+				className='flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-100'
 				disabled={!!(newTodo.title.length === 0 || status === 'submitting')}>
 				<Spinner
 					color='rgb(8 145 178)'

@@ -47,6 +47,7 @@ export default function CreateModalTodo({
 	const [newTodo, setNewTodo] = useState<todoType>({
 		title: '',
 		description: '',
+		priority: '4',
 	});
 	const [status, setStatus] = useState('typing');
 	const [error, setError] = useState(null);
@@ -77,25 +78,49 @@ export default function CreateModalTodo({
 		};
 	}, [call]);
 
-	const createHandleSubmit = async (
-		event: React.FormEvent<HTMLFormElement>,
-	): Promise<void> => {
-		event.preventDefault();
+	useEffect(() => {
+		if (status === 'typing') {
+			// waitForElementToExist('#todoTitle')
+			// 	.then((element) => {
+			// 		const el = document.getElementById('todoTitle');
+			// 		el?.focus();
+			// 		console.log('Now focues on field');
+			// 	})
+			// 	.catch(() => {});
+			if (textAreaTitle.current !== null) {
+				textAreaTitle.current.focus();
+			}
+		}
+	}, [status]);
+
+	const createHandleSubmit = async (): Promise<void> => {
 		if (newTodo.title === '') return;
 		setStatus('submitting');
 
 		try {
 			await addTodo(newTodo, 'NavBar');
-			closePopover();
+			setNewTodo({ title: '', description: '', priority: '4' });
+			setStatus('typing');
+			setError(null);
+			// closePopover();
 		} catch (error) {
 			setError(error);
 			setStatus('typing');
 		}
 	};
 
-	const closePopover = (): void => {
-		setIsOpen(false);
+	const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
+		if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+			// Submit the form when Ctrl (Windows/Linux) or Command (Mac) + Enter is pressed
+			createHandleSubmit()
+				.then(() => {})
+				.catch(() => {});
+		}
 	};
+
+	// const closePopover = (): void => {
+	// 	setIsOpen(false);
+	// };
 
 	const openPopover = (): void => {
 		setNewTodo({ title: '', description: '' });
@@ -136,7 +161,8 @@ export default function CreateModalTodo({
 					id='listform'
 					className='font-serif flex flex-col'
 					onSubmit={(e) => {
-						createHandleSubmit(e)
+						e.preventDefault();
+						createHandleSubmit()
 							.then(() => {})
 							.catch(() => {});
 					}}>
@@ -155,6 +181,9 @@ export default function CreateModalTodo({
 								e.target.value.length,
 								e.target.value.length,
 							);
+						}}
+						onKeyDown={(e) => {
+							handleKeyDown(e);
 						}}
 						disabled={status === 'submitting'}
 						rows={1}
@@ -178,6 +207,9 @@ export default function CreateModalTodo({
 								e.target.value.length,
 								e.target.value.length,
 							);
+						}}
+						onKeyDown={(e) => {
+							handleKeyDown(e);
 						}}
 						rows={1}
 						disabled={status === 'submitting'}

@@ -79,10 +79,7 @@ export default function EditModalTodo({
 		}
 	}, [isOpen]);
 
-	const editHandleSubmit = async (
-		event: React.FormEvent<HTMLFormElement>,
-	): Promise<void> => {
-		event.preventDefault();
+	const editHandleSubmit = async (): Promise<void> => {
 		if (newEditTodo.title === '') return;
 		setStatus('submitting');
 
@@ -92,6 +89,15 @@ export default function EditModalTodo({
 		} catch (error) {
 			setError(error);
 			setStatus('typing');
+		}
+	};
+
+	const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
+		if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+			// Submit the form when Ctrl (Windows/Linux) or Command (Mac) + Enter is pressed
+			editHandleSubmit()
+				.then(() => {})
+				.catch(() => {});
 		}
 	};
 
@@ -149,7 +155,8 @@ export default function EditModalTodo({
 					id='listform'
 					className='font-serif flex flex-col'
 					onSubmit={(e) => {
-						editHandleSubmit(e)
+						e.preventDefault();
+						editHandleSubmit()
 							.then(() => {})
 							.catch(() => {});
 					}}>
@@ -169,6 +176,7 @@ export default function EditModalTodo({
 								e.target.value.length,
 							);
 						}}
+						onKeyDown={handleKeyDown}
 						disabled={status === 'submitting'}
 						ref={textAreaRefTitle}
 						rows={1}
@@ -196,6 +204,7 @@ export default function EditModalTodo({
 								e.target.value.length,
 							);
 						}}
+						onKeyDown={handleKeyDown}
 						disabled={status === 'submitting'}
 						ref={textAreaRefDescription}
 						rows={1}
