@@ -1,4 +1,4 @@
-import React, { useState, type CSSProperties, useEffect } from 'react';
+import React, { useState, useRef, type CSSProperties, useEffect } from 'react';
 
 import {
 	Tooltip,
@@ -30,6 +30,7 @@ import Spinner from 'react-spinners/DotLoader';
 import type { CreateModalTodoProps, todoType } from '../../lib/customTypes';
 import { PriorityEnum } from '../../lib/userSettings';
 import { isDescendantOf } from '../../lib/utils';
+import useAutosizeTextArea from '../../lib/useAutosizeTextArea';
 
 const override: CSSProperties = {
 	display: 'block',
@@ -49,6 +50,15 @@ export default function CreateModalTodo({
 	});
 	const [status, setStatus] = useState('typing');
 	const [error, setError] = useState(null);
+
+	const textAreaTitle = useRef<HTMLTextAreaElement>(null);
+	const textAreaDescription = useRef<HTMLTextAreaElement>(null);
+
+	useAutosizeTextArea(textAreaTitle.current, newTodo.title);
+	useAutosizeTextArea(
+		textAreaDescription.current,
+		newTodo.description as string,
+	);
 
 	const call = (event: any): void => {
 		console.log(event.target.parentNode.nodeName);
@@ -130,41 +140,65 @@ export default function CreateModalTodo({
 							.then(() => {})
 							.catch(() => {});
 					}}>
-					<input
+					<textarea
 						id='todoTitle'
 						name='title'
-						type='text'
 						value={newTodo.title}
+						ref={textAreaTitle}
 						placeholder='Name this todo'
-						className='mb-2 ml-4 mr-4 mt-4 h-8 rounded-xl bg-gray-300 p-2 px-4 py-3 text-base text-gray-900 placeholder:text-gray-500'
+						className='mb-2 ml-4 mr-4 mt-4 rounded-lg bg-gray-300 px-4 py-3 text-base text-gray-900 placeholder:text-gray-500'
 						onChange={(event) => {
 							setNewTodo((old) => ({ ...old, title: event.target.value }));
 						}}
+						onFocus={(e) => {
+							e.target.setSelectionRange(
+								e.target.value.length,
+								e.target.value.length,
+							);
+						}}
 						disabled={status === 'submitting'}
+						rows={1}
 						required
 					/>
 					<textarea
 						id='todoDescription'
 						name='description'
 						value={newTodo.description}
+						ref={textAreaDescription}
 						placeholder='Description'
-						className='mb-1 ml-4 mr-4 mt-1 h-28 rounded-xl bg-gray-300 p-2 px-4 py-3 text-base text-gray-900 placeholder:text-gray-500'
+						className='mb-1 ml-4 mr-4 mt-1 rounded-lg bg-gray-300 px-4 py-3 text-base text-gray-900 placeholder:text-gray-500'
 						onChange={(event) => {
 							setNewTodo((old) => ({
 								...old,
 								description: event.target.value,
 							}));
 						}}
+						onFocus={(e) => {
+							e.target.setSelectionRange(
+								e.target.value.length,
+								e.target.value.length,
+							);
+						}}
+						rows={1}
 						disabled={status === 'submitting'}
 					/>
-					<div className='mb-3 ml-4 mr-4 mt-2 flex items-center justify-start'>
+					<div className='mb-3 ml-4 mr-4 mt-2 flex items-center justify-between'>
 						<Select
 							value={newTodo.priority}
 							onValueChange={(value) => {
 								setNewTodo((old) => ({ ...old, priority: value }));
 							}}
 							disabled={status === 'submitting'}>
-							<SelectTrigger className='mr-3 h-2 w-5/12 p-3 '>
+							<SelectTrigger
+								className={`mr-3 h-2 w-6/12 p-3 ${
+									newTodo.priority === '1'
+										? 'bg-rose-200'
+										: newTodo.priority === '2'
+										? 'bg-amber-200'
+										: newTodo.priority === '3'
+										? 'bg-sky-200'
+										: 'bg-white'
+								} `}>
 								<SelectValue placeholder='Priority' />
 							</SelectTrigger>
 							<SelectContent>
@@ -183,7 +217,7 @@ export default function CreateModalTodo({
 								setNewTodo((old) => ({ ...old, list: value }));
 							}}
 							disabled={status === 'submitting'}>
-							<SelectTrigger className='h-2 w-full p-3'>
+							<SelectTrigger className='h-2 w-6/12 p-3'>
 								<SelectValue placeholder='List' />
 							</SelectTrigger>
 							<SelectContent>
@@ -200,7 +234,7 @@ export default function CreateModalTodo({
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-between'>
 						<button
 							type='submit'
-							className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 disabled:bg-cyan-200 focus-visible:ring focus-visible:ring-cyan-300'
+							className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'
 							disabled={
 								!!(status === 'submitting' || newTodo.title.length === 0)
 							}>
@@ -218,7 +252,7 @@ export default function CreateModalTodo({
 						</button>
 						<PopoverClose asChild={true}>
 							<button
-								className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-600 disabled:bg-rose-200 focus-visible:ring focus-visible:ring-rose-300'
+								className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-600 focus-visible:ring focus-visible:ring-rose-300 disabled:bg-rose-200'
 								disabled={status === 'submitting'}>
 								Cancel
 							</button>

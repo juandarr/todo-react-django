@@ -127,7 +127,7 @@ export default function EditModalTodo({
 							openPopover();
 						}}>
 						<TooltipTrigger asChild={true}>
-							<a className='flex cursor-pointer justify-end text-2xl text-sky-500 hover:text-sky-600 mr-2'>
+							<a className='mr-2 flex cursor-pointer justify-end text-2xl text-sky-500 hover:text-sky-600'>
 								<Edit size={'1.8rem'} />
 							</a>
 						</TooltipTrigger>
@@ -158,7 +158,7 @@ export default function EditModalTodo({
 						name='title'
 						value={newEditTodo.title}
 						placeholder='Name this todo'
-						className='ml-4 mr-4 mb-3 mt-4 rounded-lg bg-gray-300 text-base py-3 px-4 text-gray-900 placeholder:text-gray-500 overflow-y-hidden'
+						className='mb-3 ml-4 mr-4 mt-4 overflow-y-hidden rounded-lg bg-gray-300 px-4 py-3 text-base text-gray-900 placeholder:text-gray-500'
 						onChange={(event) => {
 							adjustHeight();
 							setNewEditTodo((old) => ({ ...old, title: event.target.value }));
@@ -171,6 +171,7 @@ export default function EditModalTodo({
 						}}
 						disabled={status === 'submitting'}
 						ref={textAreaRefTitle}
+						rows={1}
 						autoFocus
 						required
 					/>
@@ -179,7 +180,7 @@ export default function EditModalTodo({
 						name='description'
 						value={newEditTodo.description}
 						placeholder='Description'
-						className='mb-1 ml-4 mr-4 rounded-xl bg-gray-300 px-4 py-3 text-base text-gray-900 placeholder:text-gray-500 overflow-y-hidden'
+						className='mb-1 ml-4 mr-4 overflow-y-hidden rounded-lg bg-gray-300 px-4 py-3 text-base text-gray-900 placeholder:text-gray-500'
 						onChange={(event) => {
 							adjustHeight();
 							setNewEditTodo((old) => {
@@ -197,15 +198,25 @@ export default function EditModalTodo({
 						}}
 						disabled={status === 'submitting'}
 						ref={textAreaRefDescription}
+						rows={1}
 					/>
-					<div className='mb-3 ml-4 mr-4 mt-2 flex items-center justify-start'>
+					<div className='mb-3 ml-4 mr-4 mt-2 flex items-center justify-between'>
 						<Select
 							value={newEditTodo.priority}
 							onValueChange={(value) => {
 								setNewEditTodo((old) => ({ ...old, priority: value }));
 							}}
 							disabled={status === 'submitting'}>
-							<SelectTrigger className='mr-3 h-2 w-5/12 p-3 '>
+							<SelectTrigger
+								className={`mr-3 h-2 w-6/12 p-3 ${
+									newEditTodo.priority === '1'
+										? 'bg-rose-200'
+										: newEditTodo.priority === '2'
+										? 'bg-amber-200'
+										: newEditTodo.priority === '3'
+										? 'bg-sky-200'
+										: 'bg-white'
+								} `}>
 								<SelectValue placeholder='Priority' />
 							</SelectTrigger>
 							<SelectContent>
@@ -224,7 +235,7 @@ export default function EditModalTodo({
 								setNewEditTodo((old) => ({ ...old, list: value }));
 							}}
 							disabled={status === 'submitting'}>
-							<SelectTrigger className='h-2 w-full p-3'>
+							<SelectTrigger className='h-2 w-6/12 p-3'>
 								<SelectValue placeholder='List' />
 							</SelectTrigger>
 							<SelectContent>
@@ -241,7 +252,7 @@ export default function EditModalTodo({
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-between'>
 						<button
 							type='submit'
-							className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 disabled:bg-cyan-200 focus-visible:ring focus-visible:ring-cyan-300'
+							className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'
 							disabled={
 								!!(status === 'submitting' || newEditTodo.title.length === 0)
 							}>
@@ -259,7 +270,7 @@ export default function EditModalTodo({
 						</button>
 						<PopoverClose asChild={true}>
 							<button
-								className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-600 disabled:bg-rose-200 focus-visible:ring focus-visible:ring-rose-300'
+								className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-600 focus-visible:ring focus-visible:ring-rose-300 disabled:bg-rose-200'
 								disabled={status === 'submitting'}>
 								Cancel
 							</button>

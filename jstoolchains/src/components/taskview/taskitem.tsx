@@ -9,7 +9,8 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from '../ui/tooltip';
-
+import { Badge } from '../ui/badge';
+import { PriorityEnumRev } from '../../lib/userSettings';
 import DeleteModal from '../modals/deleteModal';
 import { Trash, Edit2 } from 'iconsax-react';
 import EditModalTodo from '../modals/editModalTodo';
@@ -84,7 +85,7 @@ export default function TaskItem({
 					) : (
 						<input
 							type='text'
-							className='flex-1 border-0 bg-white py-2 text-lg text-gray-700 mr-2'
+							className='mr-2 flex-1 border-0 bg-white py-2 text-lg text-gray-700'
 							name='title'
 							value={newTodoEdit.title}
 							onChange={(event) => {
@@ -101,7 +102,7 @@ export default function TaskItem({
 							<Tooltip>
 								<TooltipTrigger className=''>
 									<a
-										className='flex text-sky-500 hover:text-sky-600 justify-center items-center'
+										className='flex items-center justify-center text-sky-500 hover:text-sky-600'
 										style={{ cursor: 'pointer', display: 'inline' }}
 										onClick={() => {
 											editTodo(todo.id as number, newTodoEdit.title, setEdit)
@@ -138,7 +139,23 @@ export default function TaskItem({
 					/>
 				</div>
 			</div>
-			<div className='ml-6 mt-0 flex justify-start pb-2 pt-0 text-sm text-gray-400'>
+			<div className='mt-0 flex justify-start pb-2 pt-0 text-sm text-gray-400'>
+				<div className='w-1/5'></div>
+				<div className='flex w-1/5 items-center justify-start'>
+					<Badge
+						variant='outline'
+						className={`mr-3 h-2 w-6/12 p-3 ${
+							todo.priority === 1
+								? 'bg-rose-200'
+								: todo.priority === 2
+								? 'bg-amber-200'
+								: todo.priority === 3
+								? 'bg-sky-200'
+								: 'bg-white'
+						} `}>
+						{PriorityEnumRev[todo.priority as number]}
+					</Badge>
+				</div>
 				<div className='w-3/5 text-center'>
 					<div
 						className={`underline ${
@@ -146,9 +163,15 @@ export default function TaskItem({
 								? 'text-gray-400 decoration-green-500'
 								: 'text-gray-600 decoration-rose-500'
 						}`}>
-						{(todo.createdAt as Date).toDateString() +
-							' ' +
-							(todo.createdAt as Date).toLocaleTimeString()}
+						{(todo.complete as boolean)
+							? 'Completion: ' +
+							  (todo.completedAt as Date).toDateString() +
+							  ' ' +
+							  (todo.completedAt as Date).toLocaleTimeString()
+							: 'Creation: ' +
+							  (todo.createdAt as Date).toDateString() +
+							  ' ' +
+							  (todo.createdAt as Date).toLocaleTimeString()}
 					</div>
 				</div>
 			</div>
