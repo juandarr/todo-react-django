@@ -28,7 +28,7 @@ import {
 import Spinner from 'react-spinners/DotLoader';
 
 import type { CreateModalTodoProps, todoType } from '../../lib/customTypes';
-import { PriorityEnum } from '../../lib/userSettings';
+import { PriorityEnum, userSettings } from '../../lib/userSettings';
 import { isDescendantOf } from '../../lib/utils';
 import useAutosizeTextArea from '../../lib/useAutosizeTextArea';
 
@@ -48,6 +48,7 @@ export default function CreateModalTodo({
 		title: '',
 		description: '',
 		priority: '4',
+		list: userSettings.homeListId.toString(),
 	});
 	const [status, setStatus] = useState('typing');
 	const [error, setError] = useState(null);
@@ -99,7 +100,12 @@ export default function CreateModalTodo({
 
 		try {
 			await addTodo(newTodo, 'NavBar');
-			setNewTodo({ title: '', description: '', priority: '4' });
+			setNewTodo({
+				title: '',
+				description: '',
+				priority: '4',
+				list: userSettings.homeListId.toString(),
+			});
 			setStatus('typing');
 			setError(null);
 			// closePopover();
@@ -123,7 +129,12 @@ export default function CreateModalTodo({
 	// };
 
 	const openPopover = (): void => {
-		setNewTodo({ title: '', description: '' });
+		setNewTodo({
+			title: '',
+			description: '',
+			priority: '4',
+			list: userSettings.homeListId.toString(),
+		});
 		setStatus('typing');
 		setError(null);
 		setIsOpen(true);

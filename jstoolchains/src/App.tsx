@@ -127,19 +127,20 @@ export default function App(): React.JSX.Element {
 	};
 
 	const addTodo = async (todo: todoType, origin: string): Promise<Todo> => {
-		const todoFiltered: any = { ...todo };
+		const tmp: { priority: number; list: number } = { priority: 4, list: 0 };
 		if ('priority' in todo) {
-			todoFiltered.priority = parseInt(todoFiltered.priority);
+			tmp.priority = parseInt(todo.priority as string);
 		}
 		if ('list' in todo) {
-			todoFiltered.list = parseInt(todoFiltered.list);
+			tmp.list = parseInt(todo.list as string);
 		} else {
 			if (origin === 'taskList') {
-				todoFiltered.list = currentList.id;
+				tmp.list = currentList.id as number;
 			} else {
-				todoFiltered.list = userSettings.homeListId;
+				tmp.list = userSettings.homeListId;
 			}
 		}
+		const todoFiltered: Todo = { ...todo, ...tmp };
 		try {
 			const todoCreated = await clientTodo.todosCreate({ todo: todoFiltered });
 			console.log('Todo was created!');
