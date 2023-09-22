@@ -38,8 +38,8 @@ export default function App(): React.JSX.Element {
 	const [newListEdit, setNewListEdit] = useState('');
 	const [showSidebar, setShowSidebar] = useState(true);
 
-	const call1 = (event: any): void => {
-		if (!isDescendantOf(event.target, 'form')) {
+	const sidebarCallback = (event: KeyboardEvent): void => {
+		if (!isDescendantOf(event.target as HTMLElement, 'form')) {
 			if (event.key === 's') {
 				event.preventDefault();
 				setShowSidebar((old) => !old);
@@ -50,11 +50,11 @@ export default function App(): React.JSX.Element {
 	// TODO: Reset forms using keys instead of hardcode it every time (specially for forms)
 	// https://react.dev/learn/preserving-and-resetting-state#resetting-a-form-with-a-key
 	useEffect(() => {
-		document.addEventListener('keydown', call1);
+		document.addEventListener('keydown', sidebarCallback);
 		return () => {
-			document.removeEventListener('keydown', call1);
+			document.removeEventListener('keydown', sidebarCallback);
 		};
-	}, [call1]);
+	}, [sidebarCallback]);
 	// 127.0.0.1
 	const apiConfig = new Configuration({
 		basePath: 'http://127.0.0.1:8000',

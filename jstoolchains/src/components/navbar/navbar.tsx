@@ -20,8 +20,8 @@ export default function NavBar({
 	addTodo,
 	setShowSidebar,
 }: NavBarProps): React.JSX.Element {
-	const call = (event: any): void => {
-		if (!isDescendantOf(event.target, 'form')) {
+	const call = (event: KeyboardEvent): void => {
+		if (!isDescendantOf(event.target as HTMLElement, 'form')) {
 			if (event.key === 'h') {
 				event.preventDefault();
 				changeCurrentList(userSettings.homeListId);

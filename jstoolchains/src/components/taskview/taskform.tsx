@@ -47,15 +47,6 @@ export default function TaskForm({
 		}
 	};
 
-	const handleKeyDown = (e: React.FormEvent<HTMLFormElement>): void => {
-		if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-			// Submit the form when Ctrl (Windows/Linux) or Command (Mac) + Enter is pressed
-			handleSubmit(e)
-				.then(() => {})
-				.catch(() => {});
-		}
-	};
-
 	return (
 		<form
 			id='myform'
