@@ -51,7 +51,7 @@ export default function EditModalTodo({
 		description: '',
 	});
 	const [status, setStatus] = useState('typing');
-	const [error, setError] = useState<any>(null);
+	const [error, setError] = useState(null);
 
 	const textAreaRefTitle = useRef<HTMLTextAreaElement>(null);
 	const textAreaRefDescription = useRef<HTMLTextAreaElement>(null);

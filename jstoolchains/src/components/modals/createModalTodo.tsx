@@ -62,9 +62,8 @@ export default function CreateModalTodo({
 		newTodo.description as string,
 	);
 
-	const call = (event: any): void => {
-		console.log(event.target.parentNode.nodeName);
-		if (!isDescendantOf(event.target, 'form')) {
+	const call = (event: KeyboardEvent): void => {
+		if (!isDescendantOf(event.target as HTMLElement, 'form')) {
 			if (event.key === 'q' && !isOpen) {
 				event.preventDefault();
 				openPopover();
