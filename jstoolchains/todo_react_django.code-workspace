@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "../"
+		}
+	],
+	"settings": {
+		"vim.enableNeovim": true,
+		"vim.useCtrlKeys": false
+	}
+}

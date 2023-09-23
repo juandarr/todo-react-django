@@ -122,7 +122,7 @@ export default function App(): React.JSX.Element {
 			return listCreated;
 		} catch (error) {
 			console.log('List creation failed with error: ', error);
-			throw new Error(error);
+			throw error;
 		}
 	};
 
@@ -148,7 +148,7 @@ export default function App(): React.JSX.Element {
 			return todoCreated;
 		} catch (error) {
 			console.log('Todo creation failed with error: ', error);
-			throw new Error(error);
+			throw error;
 		}
 	};
 
@@ -161,7 +161,7 @@ export default function App(): React.JSX.Element {
 			console.log('Todo was deleted');
 		} catch (error) {
 			console.log('Error deleting todo');
-			throw new Error(error);
+			throw error;
 		}
 	};
 
@@ -179,7 +179,7 @@ export default function App(): React.JSX.Element {
 			console.log('List was deleted');
 		} catch (error) {
 			console.log('Error deleting list');
-			throw new Error(error);
+			throw error;
 		}
 	};
 
@@ -212,7 +212,7 @@ export default function App(): React.JSX.Element {
 			return updatedList;
 		} catch (error) {
 			console.log('There was an error updating the field in List');
-			throw new Error(error);
+			throw error;
 		}
 	};
 
@@ -250,7 +250,7 @@ export default function App(): React.JSX.Element {
 			return updatedTodo;
 		} catch (error) {
 			console.log('There was an error toggling the todo');
-			throw new Error(error);
+			throw error;
 		}
 	};
 
@@ -278,7 +278,7 @@ export default function App(): React.JSX.Element {
 			return todoUpdated;
 		} catch (error) {
 			console.log('There was an error updating the field in Todo');
-			throw new Error(error);
+			throw error;
 		}
 	};
 
@@ -306,7 +306,7 @@ export default function App(): React.JSX.Element {
 			});
 		} catch (error) {
 			console.log('There was an error updating the field in Todo');
-			throw new Error(error);
+			throw error;
 		}
 	};
 
