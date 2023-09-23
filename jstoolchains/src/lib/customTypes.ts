@@ -55,7 +55,7 @@ export interface TaskItemProps {
 	editTodoFull: (todo: todoType) => Promise<Todo>;
 	deleteTodo: (id: number) => Promise<void>;
 	edit: Array<number | boolean>;
-	setEdit: React.Dispatch<React.SetStateAction<Array<number | boolean>>>;
+	setEdit: EditionSetState;
 	newTodoEdit: Todo;
 	setNewTodoEdit: React.Dispatch<React.SetStateAction<Todo>>;
 	handleKeyPress: (event: React.FormEvent<HTMLFormElement>, todo: Todo) => void;

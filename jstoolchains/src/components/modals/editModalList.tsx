@@ -35,7 +35,7 @@ export default function EditModalList({
 	const [isOpen, setIsOpen] = useState(false);
 	const [listEdit, setListEdit] = useState('');
 	const [status, setStatus] = useState('typing');
-	const [error, setError] = useState(null);
+	const [error, setError] = useState<string | null>(null);
 
 	const editHandleSubmit = async (
 		event: React.FormEvent<HTMLFormElement>,
@@ -49,8 +49,10 @@ export default function EditModalList({
 			console.log('Patched list: ', updatedList);
 			closePopover();
 		} catch (error) {
+			if (error instanceof Error) {
+				setError(error.message);
+			}
 			setStatus('typing');
-			setError(error);
 		}
 	};
 
@@ -123,7 +125,7 @@ export default function EditModalList({
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-between'>
 						<button
 							type='submit'
-							className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 disabled:bg-cyan-200 focus-visible:ring focus-visible:ring-cyan-300'
+							className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'
 							disabled={!!(status === 'submitting' || listEdit.length === 0)}>
 							<Spinner
 								color='rgb(147 51 234)'
@@ -139,7 +141,7 @@ export default function EditModalList({
 						</button>
 						<PopoverClose asChild={true}>
 							<button
-								className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-600 disabled:bg-rose-200 focus-visible:ring focus-visible:ring-rose-300'
+								className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-600 focus-visible:ring focus-visible:ring-rose-300 disabled:bg-rose-200'
 								disabled={status === 'submitting'}>
 								Cancel
 							</button>

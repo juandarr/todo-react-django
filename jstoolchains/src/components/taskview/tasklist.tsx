@@ -16,7 +16,7 @@ export default function TaskList({
 	newTodoEdit,
 	setNewTodoEdit,
 }: TaskListProps): React.JSX.Element {
-	const [edit, setEdit] = useState([false, 0]);
+	const [edit, setEdit] = useState<[boolean, number]>([false, 0]);
 
 	const handleKeyPress = (
 		event: React.FormEvent<HTMLFormElement>,

@@ -51,7 +51,7 @@ export default function CreateModalTodo({
 		list: userSettings.homeListId.toString(),
 	});
 	const [status, setStatus] = useState('typing');
-	const [error, setError] = useState(null);
+	const [error, setError] = useState<string | null>(null);
 
 	const textAreaTitle = useRef<HTMLTextAreaElement>(null);
 	const textAreaDescription = useRef<HTMLTextAreaElement>(null);
@@ -80,13 +80,6 @@ export default function CreateModalTodo({
 
 	useEffect(() => {
 		if (status === 'typing') {
-			// waitForElementToExist('#todoTitle')
-			// 	.then((element) => {
-			// 		const el = document.getElementById('todoTitle');
-			// 		el?.focus();
-			// 		console.log('Now focues on field');
-			// 	})
-			// 	.catch(() => {});
 			if (textAreaTitle.current !== null) {
 				textAreaTitle.current.focus();
 			}
@@ -109,7 +102,9 @@ export default function CreateModalTodo({
 			setError(null);
 			// closePopover();
 		} catch (error) {
-			setError(error);
+			if (error instanceof Error) {
+				setError(error.message);
+			}
 			setStatus('typing');
 		}
 	};

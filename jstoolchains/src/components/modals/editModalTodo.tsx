@@ -51,7 +51,7 @@ export default function EditModalTodo({
 		description: '',
 	});
 	const [status, setStatus] = useState('typing');
-	const [error, setError] = useState(null);
+	const [error, setError] = useState<string | null>(null);
 
 	const textAreaRefTitle = useRef<HTMLTextAreaElement>(null);
 	const textAreaRefDescription = useRef<HTMLTextAreaElement>(null);
@@ -87,7 +87,9 @@ export default function EditModalTodo({
 			await editTodoFull(newEditTodo);
 			closePopover();
 		} catch (error) {
-			setError(error);
+			if (error instanceof Error) {
+				setError(error.message);
+			}
 			setStatus('typing');
 		}
 	};

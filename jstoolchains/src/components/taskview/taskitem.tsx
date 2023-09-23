@@ -28,7 +28,7 @@ export default function TaskItem({
 	setNewTodoEdit,
 	handleKeyPress,
 }: TaskItemProps): React.JSX.Element {
-	const [error, setError] = useState(null);
+	const [error, setError] = useState<string | null>(null);
 
 	const showEdit = (edit[0] as boolean) && edit[1] === todo.id;
 
@@ -37,7 +37,9 @@ export default function TaskItem({
 		try {
 			await toggleTodo(todo.id as number, checked);
 		} catch (error) {
-			setError(error);
+			if (error instanceof Error) {
+				setError(error.message);
+			}
 		}
 	}
 

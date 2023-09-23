@@ -16,7 +16,7 @@ export default function TaskForm({
 	setNewTodo,
 }: TaskFormProps): React.JSX.Element {
 	const [status, setStatus] = useState('typing');
-	const [error, setError] = useState(null);
+	const [error, setError] = useState<string | null>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
 	const previousStatus = useRef<string>('');
 
@@ -42,7 +42,9 @@ export default function TaskForm({
 			setStatus('typing');
 			setError(null);
 		} catch (error) {
-			setError(error);
+			if (error instanceof Error) {
+				setError(error.message);
+			}
 			setStatus('typing');
 		}
 	};

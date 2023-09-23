@@ -35,7 +35,7 @@ export default function DeleteModal({
 }: DeleteModalProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
 	const [status, setStatus] = useState('viewing');
-	const [error, setError] = useState(null);
+	const [error, setError] = useState<string | null>(null);
 
 	const handleSubmit = async (
 		event: React.FormEvent<HTMLFormElement>,
@@ -47,7 +47,9 @@ export default function DeleteModal({
 			await deleteFunction(id);
 			closePopover();
 		} catch (error) {
-			setError(error);
+			if (error instanceof Error) {
+				setError(error.message);
+			}
 			setStatus('viewing');
 		}
 	};
@@ -107,7 +109,7 @@ export default function DeleteModal({
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-between'>
 						<button
 							type='submit'
-							className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 disabled:bg-cyan-100  focus-visible:ring focus-visible:ring-cyan-300'
+							className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring  focus-visible:ring-cyan-300 disabled:bg-cyan-100'
 							disabled={status === 'submitting'}>
 							<Spinner
 								color='rgb(8 145 178)'
@@ -123,7 +125,7 @@ export default function DeleteModal({
 						</button>
 						<PopoverClose asChild={true}>
 							<button
-								className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-500 disabled:bg-rose-100 focus-visible:ring focus-visible:ring-rose-300'
+								className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-500 focus-visible:ring focus-visible:ring-rose-300 disabled:bg-rose-100'
 								disabled={status === 'submitting'}>
 								Cancel
 							</button>

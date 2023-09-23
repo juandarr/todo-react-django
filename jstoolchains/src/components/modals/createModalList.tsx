@@ -34,7 +34,7 @@ export default function CreateModalList({
 	const [isOpen, setIsOpen] = useState(false);
 
 	const [newList, setNewList] = useState('');
-	const [error, setError] = useState(null);
+	const [error, setError] = useState<string | null>(null);
 	const [status, setStatus] = useState('typing');
 
 	const createHandleSubmit = async (
@@ -43,11 +43,22 @@ export default function CreateModalList({
 		event.preventDefault();
 		if (newList === '') return;
 		setStatus('submitting');
+		// setTimeout(() => {
+		// 	const value = Math.random();
+		// 	if (value > 0.5) {
+		// 		closePopover();
+		// 	} else {
+		// 		setError('Invented error');
+		// 		setStatus('viewing');
+		// 	}
+		// }, 2000);
 		try {
 			await addList(newList);
 			closePopover();
 		} catch (error) {
-			setError(error);
+			if (error instanceof Error) {
+				setError(error.message);
+			}
 			setStatus('typing');
 		}
 	};
@@ -113,7 +124,7 @@ export default function CreateModalList({
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-between'>
 						<button
 							type='submit'
-							className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 disabled:bg-cyan-200 focus-visible:ring focus-visible:ring-cyan-300'
+							className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'
 							disabled={!!(newList.length === 0 || status === 'submitting')}>
 							<Spinner
 								color='rgb(8 145 178)'
@@ -129,7 +140,7 @@ export default function CreateModalList({
 						</button>
 						<PopoverClose asChild={true}>
 							<button
-								className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-600 disabled:bg-rose-200 focus-visible:ring focus-visible:ring-rose-300'
+								className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-600 focus-visible:ring focus-visible:ring-rose-300 disabled:bg-rose-200'
 								disabled={status === 'submitting'}>
 								Cancel
 							</button>
