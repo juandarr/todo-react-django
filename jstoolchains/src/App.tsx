@@ -23,6 +23,7 @@ function randomInRange(min: number, max: number): number {
 }
 
 export default function App(): React.JSX.Element {
+	// TODO : review exposure modifications to the DOM done without refs in the codebase. Are any changes being done to the DOM
 	const [todos, setTodos] = useState<Todo[]>([]);
 	const [lists, setLists] = useState<List[]>([]);
 	const [currentList, setCurrentList] = useState<List>({
@@ -55,7 +56,7 @@ export default function App(): React.JSX.Element {
 			document.removeEventListener('keydown', sidebarCallback);
 		};
 	}, [sidebarCallback]);
-	// 127.0.0.1
+
 	const apiConfig = new Configuration({
 		basePath: 'http://127.0.0.1:8000',
 		headers: {

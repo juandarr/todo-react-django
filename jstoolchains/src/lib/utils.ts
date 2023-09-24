@@ -29,6 +29,7 @@ export function getPoint(t: string): number[] {
 	const [xDoc, yDoc] = [window.innerWidth, window.innerHeight];
 	return [xTarget / xDoc, yTarget / yDoc];
 }
+
 export function isDescendantOf(
 	element: HTMLElement | null,
 	parentTag: string,
@@ -41,6 +42,7 @@ export function isDescendantOf(
 	}
 	return false;
 }
+
 export async function waitForElementToExist(selector: string): Promise<void> {
 	await new Promise((resolve) => {
 		if (document.querySelector(selector) !== null) {
