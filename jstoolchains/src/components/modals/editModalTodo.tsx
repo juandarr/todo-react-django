@@ -25,6 +25,8 @@ import {
 	SelectValue,
 } from '../ui/select';
 
+import { useToast } from '../ui/toast/use-toast';
+
 import Spinner from 'react-spinners/DotLoader';
 
 import type { EditModalTodoProps, todoType } from '../../lib/customTypes';
@@ -51,7 +53,7 @@ export default function EditModalTodo({
 		description: '',
 	});
 	const [status, setStatus] = useState('typing');
-	const [error, setError] = useState<string | null>(null);
+	const { toast } = useToast();
 
 	const textAreaRefTitle = useRef<HTMLTextAreaElement>(null);
 	const textAreaRefDescription = useRef<HTMLTextAreaElement>(null);
@@ -68,6 +70,14 @@ export default function EditModalTodo({
 	}
 
 	useEffect(() => {
+		if (status === 'typing') {
+			if (textAreaRefTitle.current !== null) {
+				textAreaRefTitle.current.focus();
+			}
+		}
+	}, [status]);
+
+	useEffect(() => {
 		// Apply adjust to height only when opening the popover
 		if (isOpen) {
 			// When element appears in the DOM, adjust height of textarea elements
@@ -78,7 +88,8 @@ export default function EditModalTodo({
 				.catch(() => {});
 		}
 	}, [isOpen]);
-
+	// TODO: find a way to get better error messages and guide
+	// the user to find a solution. Current error is quite vague and useless
 	const editHandleSubmit = async (): Promise<void> => {
 		if (newEditTodo.title === '') return;
 		setStatus('submitting');
@@ -86,9 +97,17 @@ export default function EditModalTodo({
 		try {
 			await editTodoFull(newEditTodo);
 			closePopover();
+			toast({
+				title: 'Task was updated!',
+				description: '',
+			});
 		} catch (error) {
 			if (error instanceof Error) {
-				setError(error.message);
+				toast({
+					variant: 'destructive',
+					title: 'There was an error updating the task: ',
+					description: error.toString(),
+				});
 			}
 			setStatus('typing');
 		}
@@ -116,7 +135,6 @@ export default function EditModalTodo({
 		};
 		setNewEditTodo(tmpTodo);
 		setStatus('typing');
-		setError(null);
 		setIsOpen(true);
 	};
 
@@ -287,11 +305,6 @@ export default function EditModalTodo({
 							</button>
 						</PopoverClose>
 					</div>
-					{error != null && (
-						<div className='text-sm font-bold text-red-500'>
-							There was an error updating task: {error}
-						</div>
-					)}
 				</form>
 				<PopoverArrow className='fill-sky-500' />
 			</PopoverContent>
