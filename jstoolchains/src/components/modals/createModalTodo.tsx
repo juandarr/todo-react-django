@@ -24,6 +24,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '../ui/select';
+import { useToast } from '../ui/toast/use-toast';
 
 import Spinner from 'react-spinners/DotLoader';
 
@@ -52,6 +53,7 @@ export default function CreateModalTodo({
 	});
 	const [status, setStatus] = useState('typing');
 	const [error, setError] = useState<string | null>(null);
+	const { toast } = useToast();
 
 	const textAreaTitle = useRef<HTMLTextAreaElement>(null);
 	const textAreaDescription = useRef<HTMLTextAreaElement>(null);
@@ -62,7 +64,7 @@ export default function CreateModalTodo({
 		newTodo.description as string,
 	);
 
-	const call = (event: KeyboardEvent): void => {
+	const openModalCallback = (event: KeyboardEvent): void => {
 		if (!isDescendantOf(event.target as HTMLElement, 'form')) {
 			if (event.key === 'q' && !isOpen) {
 				event.preventDefault();
@@ -72,11 +74,11 @@ export default function CreateModalTodo({
 	};
 
 	useEffect(() => {
-		document.addEventListener('keydown', call);
+		document.addEventListener('keydown', openModalCallback);
 		return () => {
-			document.removeEventListener('keydown', call);
+			document.removeEventListener('keydown', openModalCallback);
 		};
-	}, [call]);
+	}, [openModalCallback]);
 
 	useEffect(() => {
 		if (status === 'typing') {
@@ -95,12 +97,15 @@ export default function CreateModalTodo({
 			setNewTodo({
 				title: '',
 				description: '',
-				priority: '4',
+				priority: PriorityEnum.None,
 				list: userSettings.homeListId.toString(),
 			});
 			setStatus('typing');
 			setError(null);
-			// closePopover();
+			toast({
+				title: 'Task was created!',
+				description: 'Good job!',
+			});
 		} catch (error) {
 			if (error instanceof Error) {
 				setError(error.message);
@@ -118,15 +123,11 @@ export default function CreateModalTodo({
 		}
 	};
 
-	// const closePopover = (): void => {
-	// 	setIsOpen(false);
-	// };
-
 	const openPopover = (): void => {
 		setNewTodo({
 			title: '',
 			description: '',
-			priority: '4',
+			priority: PriorityEnum.None,
 			list: userSettings.homeListId.toString(),
 		});
 		setStatus('typing');
@@ -158,6 +159,7 @@ export default function CreateModalTodo({
 			</TooltipProvider>
 			<PopoverContent
 				align={'center'}
+				onOpenAutoFocus={() => {}}
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
 				}}

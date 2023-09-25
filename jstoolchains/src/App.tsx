@@ -14,6 +14,7 @@ import TaskList from './components/taskview/tasklist';
 import { userSettings } from './lib/userSettings';
 
 import confetti from 'canvas-confetti';
+import { Toaster } from './components/ui/toast/toaster';
 
 import type { todoType, listType, EditionSetState } from './lib/customTypes';
 import type { Todo, List } from '../../todo-api-client/models';
@@ -39,7 +40,7 @@ export default function App(): React.JSX.Element {
 	const [newListEdit, setNewListEdit] = useState('');
 	const [showSidebar, setShowSidebar] = useState(true);
 
-	const sidebarCallback = (event: KeyboardEvent): void => {
+	const toggleSidebarCallback = (event: KeyboardEvent): void => {
 		if (!isDescendantOf(event.target as HTMLElement, 'form')) {
 			if (event.key === 's') {
 				event.preventDefault();
@@ -51,11 +52,11 @@ export default function App(): React.JSX.Element {
 	// TODO: Reset forms using keys instead of hardcode it every time (specially for forms)
 	// https://react.dev/learn/preserving-and-resetting-state#resetting-a-form-with-a-key
 	useEffect(() => {
-		document.addEventListener('keydown', sidebarCallback);
+		document.addEventListener('keydown', toggleSidebarCallback);
 		return () => {
-			document.removeEventListener('keydown', sidebarCallback);
+			document.removeEventListener('keydown', toggleSidebarCallback);
 		};
-	}, [sidebarCallback]);
+	}, [toggleSidebarCallback]);
 
 	const apiConfig = new Configuration({
 		basePath: 'http://127.0.0.1:8000',
@@ -380,6 +381,7 @@ export default function App(): React.JSX.Element {
 					/>
 				</div>
 			</div>
+			<Toaster />
 		</>
 	);
 }
