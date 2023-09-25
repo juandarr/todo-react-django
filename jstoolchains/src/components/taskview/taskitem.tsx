@@ -11,6 +11,8 @@ import {
 } from '../ui/tooltip';
 import { useToast } from '../ui/toast/use-toast';
 
+import { type Todo } from '../../../../todo-api-client/models';
+
 import { Badge } from '../ui/badge';
 import { PriorityEnumRev } from '../../lib/userSettings';
 import DeleteModal from '../modals/deleteModal';
@@ -28,23 +30,44 @@ export default function TaskItem({
 	setEdit,
 	newTodoEdit,
 	setNewTodoEdit,
-	handleKeyPress,
 }: TaskItemProps): React.JSX.Element {
 	const { toast } = useToast();
 	const showEdit = (edit[0] as boolean) && edit[1] === todo.id;
 
-	async function toggleHandler(checked: boolean): Promise<void> {
-		try {
-			await toggleTodo(todo.id as number, checked);
-		} catch (error) {
-			if (error instanceof Error) {
+	const handleSubmit = (
+		event: React.FormEvent<HTMLFormElement>,
+		todo: Todo,
+	): void => {
+		event.preventDefault();
+		editTodo(todo.id as number, newTodoEdit.title, setEdit)
+			.then(() => {
+				toast({
+					title: 'Task title was updated!',
+					description: '',
+				});
+			})
+			.catch((error) => {
+				console.log('There was an error updating task title: ', error);
 				toast({
 					variant: 'destructive',
-					title: 'There was an error updating task: ',
+					title: 'There was an error updating task title: ',
 					description: error.message,
 				});
-			}
-		}
+			});
+	};
+
+	function toggleHandler(checked: boolean): void {
+		toggleTodo(todo.id as number, checked)
+			.then((result) => {})
+			.catch((error) => {
+				if (error instanceof Error) {
+					toast({
+						variant: 'destructive',
+						title: 'There was an error updating task: ',
+						description: error.message,
+					});
+				}
+			});
 	}
 
 	const deleteElement = (
@@ -64,9 +87,7 @@ export default function TaskItem({
 						id={'checkbox-' + todo.id}
 						checked={todo.complete}
 						onCheckedChange={(checked) => {
-							toggleHandler(checked as boolean).catch((error) => {
-								console.log('Error found while toggling task: ', error);
-							});
+							toggleHandler(checked as boolean);
 						}}
 						className='border-2 border-black'
 					/>
@@ -74,7 +95,7 @@ export default function TaskItem({
 				<form
 					className='font-serif relative flex w-3/5 justify-start'
 					onSubmit={(event) => {
-						handleKeyPress(event, todo);
+						handleSubmit(event, todo);
 					}}>
 					{!showEdit ? (
 						<div
@@ -107,17 +128,14 @@ export default function TaskItem({
 						<TooltipProvider>
 							<Tooltip>
 								<TooltipTrigger className=''>
-									<a
+									<button
 										className='flex items-center justify-center text-sky-500 hover:text-sky-600'
-										style={{ cursor: 'pointer', display: 'inline' }}
-										onClick={() => {
-											editTodo(todo.id as number, newTodoEdit.title, setEdit)
-												.then(() => {})
-												.catch(() => {});
-										}}>
+										type='submit'
+										style={{ cursor: 'pointer', display: 'inline' }}>
 										<Edit2 size={'1.4rem'} />
-									</a>
+									</button>
 								</TooltipTrigger>
+								,
 								<TooltipContent className='bg-sky-500'>
 									<p className='font-bold text-white'>Save</p>
 								</TooltipContent>

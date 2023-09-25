@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import type { TaskListProps } from '../../lib/customTypes';
-import type { Todo } from '../../../../todo-api-client/models';
 import TaskItem from './taskitem';
 
 export default function TaskList({
@@ -17,18 +16,6 @@ export default function TaskList({
 	setNewTodoEdit,
 }: TaskListProps): React.JSX.Element {
 	const [edit, setEdit] = useState<[boolean, number]>([false, 0]);
-
-	const handleKeyPress = (
-		event: React.FormEvent<HTMLFormElement>,
-		todo: Todo,
-	): void => {
-		event.preventDefault();
-		editTodo(todo.id as number, newTodoEdit.title, setEdit)
-			.then(() => {})
-			.catch((error) => {
-				console.log('There was an error: ', error);
-			});
-	};
 
 	const listTodos = todos.filter((todo) => todo.list === currentList.id);
 
@@ -65,7 +52,6 @@ export default function TaskList({
 					setEdit={setEdit}
 					newTodoEdit={newTodoEdit}
 					setNewTodoEdit={setNewTodoEdit}
-					handleKeyPress={handleKeyPress}
 				/>
 			</li>
 		);

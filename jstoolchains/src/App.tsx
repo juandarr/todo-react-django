@@ -289,7 +289,6 @@ export default function App(): React.JSX.Element {
 		title: string,
 		setEdit: EditionSetState,
 	): Promise<void> => {
-		setEdit([false, 0]);
 		const todo = {
 			title,
 		};
@@ -306,6 +305,7 @@ export default function App(): React.JSX.Element {
 					}
 				});
 			});
+			setEdit([false, 0]);
 		} catch (error) {
 			console.log('There was an error updating the field in Todo');
 			throw error;
