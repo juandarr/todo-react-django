@@ -104,12 +104,12 @@ export default function CreateModalTodo({
 				title: 'Task was created!',
 				description: '',
 			});
-		} catch (e) {
-			if (e instanceof Error) {
+		} catch (error) {
+			if (error instanceof Error) {
 				toast({
 					variant: 'destructive',
 					title: 'There was an error creating the task: ',
-					description: e.message,
+					description: error.message,
 				});
 			}
 			setStatus('typing');

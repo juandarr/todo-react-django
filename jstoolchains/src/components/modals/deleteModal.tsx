@@ -17,6 +17,8 @@ import {
 	PopoverClose,
 } from '../ui/popover';
 
+import { useToast } from '../ui/toast/use-toast';
+
 import Spinner from 'react-spinners/DotLoader';
 
 const override: CSSProperties = {
@@ -35,7 +37,7 @@ export default function DeleteModal({
 }: DeleteModalProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
 	const [status, setStatus] = useState('viewing');
-	const [error, setError] = useState<string | null>(null);
+	const { toast } = useToast();
 
 	const handleSubmit = async (
 		event: React.FormEvent<HTMLFormElement>,
@@ -45,10 +47,20 @@ export default function DeleteModal({
 
 		try {
 			await deleteFunction(id);
+			toast({
+				title: `${
+					deleteEntity.charAt(0).toUpperCase() + deleteEntity.slice(1)
+				} was deleted!`,
+				description: '',
+			});
 			closePopover();
 		} catch (error) {
 			if (error instanceof Error) {
-				setError(error.message);
+				toast({
+					variant: 'destructive',
+					title: `There was an error creating ${deleteEntity}: `,
+					description: error.message,
+				});
 			}
 			setStatus('viewing');
 		}
@@ -59,7 +71,6 @@ export default function DeleteModal({
 	};
 	const openPopover = (): void => {
 		setStatus('viewing');
-		setError(null);
 		setIsOpen(true);
 	};
 
@@ -131,11 +142,6 @@ export default function DeleteModal({
 							</button>
 						</PopoverClose>
 					</div>
-					{error != null && (
-						<div className='text-sm font-bold text-red-500'>
-							There was an error in {deleteEntity} deletion: {error}
-						</div>
-					)}
 				</form>
 				<PopoverArrow className='fill-rose-500' />
 			</PopoverContent>
