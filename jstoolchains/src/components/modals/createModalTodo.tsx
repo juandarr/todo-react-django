@@ -52,7 +52,6 @@ export default function CreateModalTodo({
 		list: userSettings.homeListId.toString(),
 	});
 	const [status, setStatus] = useState('typing');
-	const [error, setError] = useState<string | null>(null);
 	const { toast } = useToast();
 
 	const textAreaTitle = useRef<HTMLTextAreaElement>(null);
@@ -101,14 +100,17 @@ export default function CreateModalTodo({
 				list: userSettings.homeListId.toString(),
 			});
 			setStatus('typing');
-			setError(null);
 			toast({
 				title: 'Task was created!',
-				description: 'Good job!',
+				description: '',
 			});
-		} catch (error) {
-			if (error instanceof Error) {
-				setError(error.message);
+		} catch (e) {
+			if (e instanceof Error) {
+				toast({
+					variant: 'destructive',
+					title: 'There was an error creating the task: ',
+					description: e.message,
+				});
 			}
 			setStatus('typing');
 		}
@@ -131,9 +133,12 @@ export default function CreateModalTodo({
 			list: userSettings.homeListId.toString(),
 		});
 		setStatus('typing');
-		setError(null);
 		setIsOpen(true);
 	};
+
+	// const closePopover = (): void => {
+	// 	setIsOpen(false);
+	// };
 	console.log('Modal todo creation opened');
 	return (
 		<Popover modal={true} open={isOpen} onOpenChange={setIsOpen}>
@@ -297,11 +302,6 @@ export default function CreateModalTodo({
 							</button>
 						</PopoverClose>
 					</div>
-					{error != null && (
-						<div className='text-sm font-bold text-red-500'>
-							There was an error creating task: {error}
-						</div>
-					)}
 				</form>
 				<PopoverArrow className='fill-emerald-500' />
 			</PopoverContent>

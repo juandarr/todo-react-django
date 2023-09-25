@@ -35,6 +35,7 @@ export default function NavBar({
 			document.removeEventListener('keydown', call);
 		};
 	}, [call]);
+
 	return (
 		<nav className='mx-6 mb-6 mt-12 flex w-5/6 justify-between rounded-lg border-2 border-black bg-white p-2'>
 			<div
