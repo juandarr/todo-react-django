@@ -1,5 +1,7 @@
 import React, { useState, useRef, type CSSProperties, useEffect } from 'react';
 
+import { useToast } from '../ui/toast/use-toast';
+
 import Spinner from 'react-spinners/DotLoader';
 
 import type { TaskFormProps } from '../../lib/customTypes';
@@ -16,9 +18,9 @@ export default function TaskForm({
 	setNewTodo,
 }: TaskFormProps): React.JSX.Element {
 	const [status, setStatus] = useState('typing');
-	const [error, setError] = useState<string | null>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
 	const previousStatus = useRef<string>('');
+	const { toast } = useToast();
 
 	useEffect(() => {
 		if (status === 'typing' && previousStatus.current === 'submitting') {
@@ -40,10 +42,17 @@ export default function TaskForm({
 			await addTodo(newTodo, 'taskList');
 			setNewTodo({ title: '', description: '' });
 			setStatus('typing');
-			setError(null);
+			toast({
+				title: 'Task was created!',
+				description: '',
+			});
 		} catch (error) {
 			if (error instanceof Error) {
-				setError(error.message);
+				toast({
+					variant: 'destructive',
+					title: 'There was an error creating the task: ',
+					description: error.message,
+				});
 			}
 			setStatus('typing');
 		}
@@ -94,11 +103,6 @@ export default function TaskForm({
 					Add
 				</span>
 			</button>
-			{error != null && (
-				<div className='absolute left-40 top-2 text-sm font-bold text-red-500'>
-					There was an error creating task: {error}
-				</div>
-			)}
 		</form>
 	);
 }
