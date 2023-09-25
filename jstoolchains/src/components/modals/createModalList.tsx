@@ -16,6 +16,7 @@ import {
 	PopoverArrow,
 	PopoverClose,
 } from '../ui/popover';
+import { useToast } from '../ui/toast/use-toast';
 
 import Spinner from 'react-spinners/DotLoader';
 
@@ -34,8 +35,8 @@ export default function CreateModalList({
 	const [isOpen, setIsOpen] = useState(false);
 
 	const [newList, setNewList] = useState('');
-	const [error, setError] = useState<string | null>(null);
 	const [status, setStatus] = useState('typing');
+	const { toast } = useToast();
 
 	const createHandleSubmit = async (
 		event: React.FormEvent<HTMLFormElement>,
@@ -43,21 +44,21 @@ export default function CreateModalList({
 		event.preventDefault();
 		if (newList === '') return;
 		setStatus('submitting');
-		// setTimeout(() => {
-		// 	const value = Math.random();
-		// 	if (value > 0.5) {
-		// 		closePopover();
-		// 	} else {
-		// 		setError('Invented error');
-		// 		setStatus('viewing');
-		// 	}
-		// }, 2000);
+
 		try {
 			await addList(newList);
+			toast({
+				title: 'List was created!',
+				description: '',
+			});
 			closePopover();
 		} catch (error) {
 			if (error instanceof Error) {
-				setError(error.message);
+				toast({
+					variant: 'destructive',
+					title: 'There was an error creating list: ',
+					description: error.message,
+				});
 			}
 			setStatus('typing');
 		}
@@ -66,7 +67,6 @@ export default function CreateModalList({
 	function openPopover(): void {
 		setNewList('');
 		setStatus('typing');
-		setError(null);
 		setIsOpen(true);
 	}
 
@@ -74,7 +74,6 @@ export default function CreateModalList({
 		setIsOpen(false);
 	}
 
-	console.log('Modal create list rendered', isOpen, newList, error, status);
 	return (
 		<Popover modal={true} open={isOpen} onOpenChange={setIsOpen}>
 			<TooltipProvider>
@@ -146,11 +145,6 @@ export default function CreateModalList({
 							</button>
 						</PopoverClose>
 					</div>
-					{error != null && (
-						<div className='text-sm font-bold  text-red-500'>
-							There was an error creating list: {error}
-						</div>
-					)}
 				</form>
 				<PopoverArrow className='fill-violet-500' />
 			</PopoverContent>
