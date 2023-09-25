@@ -1,4 +1,4 @@
-import React, { useState, type CSSProperties } from 'react';
+import React, { useState, useRef, useEffect, type CSSProperties } from 'react';
 
 import { type EditModalListProps } from '../../lib/customTypes';
 import { Edit } from 'iconsax-react';
@@ -18,6 +18,8 @@ import {
 	PopoverClose,
 } from '../ui/popover';
 
+import { useToast } from '../ui/toast/use-toast';
+
 import Spinner from 'react-spinners/DotLoader';
 
 const override: CSSProperties = {
@@ -35,7 +37,16 @@ export default function EditModalList({
 	const [isOpen, setIsOpen] = useState(false);
 	const [listEdit, setListEdit] = useState('');
 	const [status, setStatus] = useState('typing');
-	const [error, setError] = useState<string | null>(null);
+	const inputTitle = useRef<HTMLInputElement>(null);
+	const { toast } = useToast();
+
+	useEffect(() => {
+		if (status === 'typing') {
+			if (inputTitle.current !== null) {
+				inputTitle.current.focus();
+			}
+		}
+	}, [status]);
 
 	const editHandleSubmit = async (
 		event: React.FormEvent<HTMLFormElement>,
@@ -44,13 +55,22 @@ export default function EditModalList({
 		event.preventDefault();
 		if (listEdit === '') return;
 		setStatus('submitting');
+
 		try {
 			const updatedList = await editList(id, listEdit);
-			console.log('Patched list: ', updatedList);
+			console.log('Updated list: ', updatedList);
+			toast({
+				title: 'List was updated!',
+				description: '',
+			});
 			closePopover();
 		} catch (error) {
 			if (error instanceof Error) {
-				setError(error.message);
+				toast({
+					variant: 'destructive',
+					title: 'There was an error updating the list: ',
+					description: error.message,
+				});
 			}
 			setStatus('typing');
 		}
@@ -63,7 +83,6 @@ export default function EditModalList({
 		toggleHidden();
 		setListEdit(listData.title);
 		setStatus('typing');
-		setError(null);
 		setIsOpen(true);
 	};
 
@@ -72,7 +91,6 @@ export default function EditModalList({
 			'hidden-child',
 		);
 	};
-	console.log('Modal edit list rendered', isOpen, listEdit, status, error);
 	return (
 		<Popover modal={true} open={isOpen} onOpenChange={setIsOpen}>
 			<TooltipProvider>
@@ -112,6 +130,7 @@ export default function EditModalList({
 						id='listName'
 						name='title'
 						type='text'
+						ref={inputTitle}
 						value={listEdit}
 						placeholder='Name this list'
 						className='m-4 h-8 rounded-xl bg-gray-300 p-2 px-4 py-3 text-gray-900 placeholder:text-gray-500'
@@ -147,11 +166,6 @@ export default function EditModalList({
 							</button>
 						</PopoverClose>
 					</div>
-					{error != null && (
-						<div className='text-sm font-bold text-red-500'>
-							There was an error editing list: {error}
-						</div>
-					)}
 				</form>
 				<PopoverArrow className='fill-sky-500' />
 			</PopoverContent>
