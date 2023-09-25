@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import type { TaskItemProps } from '../../lib/customTypes';
 
@@ -9,6 +9,8 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from '../ui/tooltip';
+import { useToast } from '../ui/toast/use-toast';
+
 import { Badge } from '../ui/badge';
 import { PriorityEnumRev } from '../../lib/userSettings';
 import DeleteModal from '../modals/deleteModal';
@@ -28,17 +30,19 @@ export default function TaskItem({
 	setNewTodoEdit,
 	handleKeyPress,
 }: TaskItemProps): React.JSX.Element {
-	const [error, setError] = useState<string | null>(null);
-
+	const { toast } = useToast();
 	const showEdit = (edit[0] as boolean) && edit[1] === todo.id;
 
 	async function toggleHandler(checked: boolean): Promise<void> {
-		console.log('toggled');
 		try {
 			await toggleTodo(todo.id as number, checked);
 		} catch (error) {
 			if (error instanceof Error) {
-				setError(error.message);
+				toast({
+					variant: 'destructive',
+					title: 'There was an error updating task: ',
+					description: error.message,
+				});
 			}
 		}
 	}
@@ -143,6 +147,7 @@ export default function TaskItem({
 			</div>
 			<div className='mt-0 flex justify-start pb-2 pt-0 text-sm text-gray-400'>
 				<div className='w-1/5'></div>
+
 				<div className='flex w-1/5 items-center justify-start'>
 					<Badge
 						variant='outline'
@@ -177,12 +182,6 @@ export default function TaskItem({
 					</div>
 				</div>
 			</div>
-
-			{error != null && (
-				<div className='ml-12 text-sm font-bold text-red-500'>
-					There was an error during toggle: {error}
-				</div>
-			)}
 		</>
 	);
 }
