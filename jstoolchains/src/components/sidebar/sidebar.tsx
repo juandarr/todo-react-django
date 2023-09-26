@@ -27,7 +27,7 @@ export default function SideBar({
 		.map((list) => (
 			<div key={list.id} className='parent flex items-center justify-between'>
 				<button
-					className={`flex-1 flex justify-start cursor-pointer ${
+					className={`flex flex-1 cursor-pointer justify-start ${
 						currentList.id === list.id
 							? 'rounded-md bg-cyan-200 font-semibold'
 							: ''
@@ -58,7 +58,7 @@ export default function SideBar({
 
 	return (
 		<div
-			className={`w-25% absolute left-0 top-0 my-6 flex flex-col  rounded-xl border-2 border-black bg-white p-10 ${
+			className={`absolute left-0 top-0 my-6 flex w-25% flex-col  rounded-xl border-2 border-black bg-white p-10 ${
 				showSidebar
 					? 'animate-[sidebar-content-show_300ms]'
 					: 'animate-[sidebar-content-hide_300ms]'
@@ -67,7 +67,7 @@ export default function SideBar({
 			<div className='mb-1 flex flex-col'>
 				<div className='mb-2 text-xl font-bold'>Tareas</div>
 				<button
-					className={`flex justify-start cursor-pointer ${
+					className={`flex cursor-pointer justify-start ${
 						currentList.id === userSettings.homeListId
 							? 'rounded-md bg-cyan-200 font-semibold'
 							: ''

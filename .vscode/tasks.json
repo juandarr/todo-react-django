@@ -36,7 +36,7 @@
 		{
 			"label": "Django Server",
 			"type": "shell",
-			"command": "source ../env/bin/activate;python manage.py runserver",
+			"command": "source ../env/bin/activate;python manage.py runserver 0.0.0.0:8000",
 			"group": {
 			  "kind": "test",
 			  "isDefault": true
@@ -45,7 +45,16 @@
 			  "reveal": "always",
 			  "panel": "dedicated"
 			},
-"dependsOn": ["tailwind-watch","webpack dev"]
-		  }
+
+	  },
+		  {
+			"label": "Development",
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			},
+		  "dependsOn": ["tailwind-watch", "webpack dev", "Django Server"]
+	}
+
 	]
 }
