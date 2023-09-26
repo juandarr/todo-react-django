@@ -617,10 +617,6 @@ body {
   left: 0.75rem;
 }
 
-.left-40 {
-  left: 10rem;
-}
-
 .right-2 {
   right: 0.5rem;
 }
@@ -683,10 +679,6 @@ body {
 
 .mb-6 {
   margin-bottom: 1.5rem;
-}
-
-.ml-12 {
-  margin-left: 3rem;
 }
 
 .ml-4 {
@@ -1348,11 +1340,6 @@ body {
 
 .text-primary-foreground {
   color: hsl(var(--primary-foreground));
-}
-
-.text-red-500 {
-  --tw-text-opacity: 1;
-  color: rgb(239 68 68 / var(--tw-text-opacity));
 }
 
 .text-rose-400 {

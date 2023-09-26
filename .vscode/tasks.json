@@ -1,0 +1,51 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "dev",
+			"path": "jstoolchains",
+			"problemMatcher": [],
+			"label": "webpack dev",
+			"detail": "webpack --mode development --watch",
+			"group": {
+			  "kind": "test",
+			  "isDefault": true
+			},
+			"presentation": {
+			  "reveal": "always",
+			  "panel": "dedicated"
+			}
+		},
+		{
+			"type": "npm",
+			"script": "tailwind-watch",
+			"path": "jstoolchains",
+			"problemMatcher": [],
+			"label": "tailwind-watch",
+			"detail": "tailwindcss -i ../input.css -o ../static/css/output.css --watch",
+			"group": {
+			  "kind": "test",
+			  "isDefault": true
+			},
+			"presentation": {
+			  "reveal": "always",
+			  "panel": "dedicated"
+			}
+		},
+		{
+			"label": "Django Server",
+			"type": "shell",
+			"command": "source ../env/bin/activate;python manage.py runserver",
+			"group": {
+			  "kind": "test",
+			  "isDefault": true
+			},
+			"presentation": {
+			  "reveal": "always",
+			  "panel": "dedicated"
+			},
+"dependsOn": ["tailwind-watch","webpack dev"]
+		  }
+	]
+}
