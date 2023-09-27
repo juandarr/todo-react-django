@@ -21,7 +21,7 @@
 	"rules": {
 		"react/prop-types": [
 			2,
-			{ "ignore": ["className", "align", "sideOffset", "position"] }
+			{ "ignore": ["className","classNames", "align", "sideOffset", "position", "showOutsideDays", "mode"] }
 		],
         "no-console": "warn"
 	}
