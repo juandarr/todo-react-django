@@ -32,6 +32,7 @@ import type { CreateModalTodoProps, todoType } from '../../lib/customTypes';
 import { PriorityEnum, userSettings } from '../../lib/userSettings';
 import { isDescendantOf } from '../../lib/utils';
 import useAutosizeTextArea from '../../lib/useAutosizeTextArea';
+import { DatePickerWithPresets } from '../ui/datapicker';
 
 const override: CSSProperties = {
 	display: 'block',
@@ -274,6 +275,9 @@ export default function CreateModalTodo({
 								))}
 							</SelectContent>
 						</Select>
+					</div>
+					<div className='mb-3 ml-4 mr-4 flex items-center justify-between'>
+						<DatePickerWithPresets />
 					</div>
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-between'>
 						<button
