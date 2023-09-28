@@ -23,7 +23,12 @@ export default function SideBar({
 		</a>
 	);
 	const otherLists = lists
-		.filter((list) => list.id !== userSettings.homeListId)
+		.filter(
+			(list) =>
+				![userSettings.homeListId, userSettings.todayListId].includes(
+					list.id as number,
+				),
+		)
 		.map((list) => (
 			<div key={list.id} className='parent flex items-center justify-between'>
 				<button
@@ -75,7 +80,18 @@ export default function SideBar({
 					onClick={() => {
 						changeCurrentList(userSettings.homeListId);
 					}}>
-					Inbox
+					📥 Inbox
+				</button>
+				<button
+					className={`flex cursor-pointer justify-start ${
+						currentList.id === userSettings.todayListId
+							? 'rounded-md bg-cyan-200 font-semibold'
+							: ''
+					} rounded-xl p-1 pl-2 text-lg hover:underline hover:decoration-rose-500 hover:decoration-2`}
+					onClick={() => {
+						changeCurrentList(userSettings.todayListId);
+					}}>
+					🌻 Today
 				</button>
 			</div>
 			<div className='mt-4 flex flex-col'>

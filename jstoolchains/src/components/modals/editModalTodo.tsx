@@ -144,6 +144,7 @@ export default function EditModalTodo({
 		if (el !== null) el.classList.toggle('hidden-child');
 	};
 	console.log('Modal todo edition opened');
+	console.log(new Date().toDateString() === todo.dueDate?.toDateString());
 	return (
 		<Popover modal={true} open={isOpen} onOpenChange={setIsOpen}>
 			<TooltipProvider>

@@ -23,11 +23,9 @@ export function DatePickerWithPresets({
 	newTodo,
 	setNewTodo,
 }: DatePickerProps): React.JSX.Element {
-	// const [date, setDate] = React.useState<Date>();
 	if (newTodo.dueDate !== undefined) {
 		console.log('Current date: ', newTodo.dueDate);
 	}
-	// console.log('New date: ', newTodo.dueDate?.toUTCString());
 
 	return (
 		<Popover modal={true}>

@@ -1,5 +1,6 @@
 export const userSettings = {
 	homeListId: 1,
+	todayListId: 63,
 };
 
 export const PriorityEnum = {

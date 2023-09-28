@@ -28,6 +28,7 @@ export type listsType = listType[];
 
 export interface userSettingsType {
 	homeListId: number;
+	todayListId: number;
 }
 
 export interface cssTailVariant {

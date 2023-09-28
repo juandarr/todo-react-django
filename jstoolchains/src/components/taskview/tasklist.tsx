@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import type { TaskListProps } from '../../lib/customTypes';
 import TaskItem from './taskitem';
+import { userSettings } from '../../lib/userSettings';
 
 export default function TaskList({
 	todos,
@@ -17,7 +18,15 @@ export default function TaskList({
 }: TaskListProps): React.JSX.Element {
 	const [edit, setEdit] = useState<[boolean, number]>([false, 0]);
 
-	const listTodos = todos.filter((todo) => todo.list === currentList.id);
+	let listTodos;
+	if ((currentList.id as number) !== userSettings.todayListId) {
+		listTodos = todos.filter((todo) => todo.list === currentList.id);
+	} else {
+		const today = new Date();
+		listTodos = todos.filter(
+			(todo) => todo.dueDate?.toDateString() === today.toDateString(),
+		);
+	}
 
 	let filteredTodos = listTodos.filter((todo) => todo.complete === condition);
 	if (condition) {

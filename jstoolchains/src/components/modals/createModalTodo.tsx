@@ -99,7 +99,6 @@ export default function CreateModalTodo({
 				title: '',
 				description: '',
 				priority: PriorityEnum.None,
-				dueDate: undefined,
 				list: userSettings.homeListId.toString(),
 			});
 			setStatus('typing');
