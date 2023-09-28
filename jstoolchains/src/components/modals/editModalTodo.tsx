@@ -154,8 +154,8 @@ export default function EditModalTodo({
 							openPopover();
 						}}>
 						<TooltipTrigger asChild={true}>
-							<a className='mr-2 flex cursor-pointer justify-end text-2xl text-sky-500 hover:text-sky-600'>
-								<Edit size={'1.8rem'} />
+							<a className='mr-2 flex cursor-pointer items-center text-2xl text-sky-500 hover:text-sky-600'>
+								<Edit size={'1.6rem'} />
 							</a>
 						</TooltipTrigger>
 					</PopoverTrigger>

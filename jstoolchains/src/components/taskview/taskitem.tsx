@@ -16,7 +16,7 @@ import { type Todo } from '../../../../todo-api-client/models';
 import { Badge } from '../ui/badge';
 import { PriorityEnumRev } from '../../lib/userSettings';
 import DeleteModal from '../modals/deleteModal';
-import { Trash, Edit2 } from 'iconsax-react';
+import { Trash, Edit2, Calendar2 } from 'iconsax-react';
 import EditModalTodo from '../modals/editModalTodo';
 
 export default function TaskItem({
@@ -75,14 +75,14 @@ export default function TaskItem({
 			id='deleteTodo'
 			className='h-7 w-7 text-rose-400 hover:text-rose-500'
 			style={{ cursor: 'pointer', display: 'inline' }}>
-			<Trash size={'1.8rem'} />
+			<Trash size={'1.6rem'} />
 		</a>
 	);
 
 	return (
 		<>
 			<div className='parent flex'>
-				<div className='flex w-1/5 items-center justify-center'>
+				<div className='mt-3 flex w-2/12 items-start justify-center'>
 					<Checkbox
 						id={'checkbox-' + todo.id}
 						checked={todo.complete}
@@ -93,59 +93,112 @@ export default function TaskItem({
 					/>
 				</div>
 				<form
-					className='font-serif relative flex w-3/5 justify-start'
+					className='font-serif relative flex w-8/12 flex-col'
 					onSubmit={(event) => {
 						handleSubmit(event, todo);
 					}}>
-					{!showEdit ? (
-						<div
-							className={`flex-1 truncate py-2 text-lg ${
-								(todo.complete as boolean) ? 'text-gray-400' : 'text-gray-700'
-							}`}
-							style={{ cursor: 'pointer' }}
-							onClick={(e) => {
-								setEdit([true, todo.id as number]);
-								setNewTodoEdit((old) => ({ ...old, title: todo.title }));
-							}}>
-							{todo.title}
-						</div>
-					) : (
-						<input
-							type='text'
-							className='mr-2 flex-1 border-0 bg-white py-2 text-lg text-gray-700'
-							name='title'
-							value={newTodoEdit.title}
-							onChange={(event) => {
-								setNewTodoEdit((old) => ({
-									...old,
-									title: event.target.value,
-								}));
-							}}
-							autoFocus></input>
-					)}
+					<div className='flex justify-start'>
+						{!showEdit ? (
+							<div
+								className={`flex-1 truncate py-2 text-base ${
+									(todo.complete as boolean) ? 'text-gray-400' : 'text-gray-700'
+								}`}
+								style={{ cursor: 'pointer' }}
+								onClick={(e) => {
+									setEdit([true, todo.id as number]);
+									setNewTodoEdit((old) => ({ ...old, title: todo.title }));
+								}}>
+								{todo.title}
+							</div>
+						) : (
+							<input
+								type='text'
+								className='mr-2 flex-1 border-0 bg-white py-2 text-base text-gray-700'
+								name='title'
+								value={newTodoEdit.title}
+								onChange={(event) => {
+									setNewTodoEdit((old) => ({
+										...old,
+										title: event.target.value,
+									}));
+								}}
+								autoFocus></input>
+						)}
 
-					{(edit[0] as boolean) && edit[1] === todo.id && (
-						<TooltipProvider>
-							<Tooltip>
-								<TooltipTrigger className=''>
-									<button
-										className='flex items-center justify-center text-sky-500 hover:text-sky-600'
-										type='submit'
-										style={{ cursor: 'pointer', display: 'inline' }}>
-										<Edit2 size={'1.4rem'} />
-									</button>
-								</TooltipTrigger>
-								,
-								<TooltipContent className='bg-sky-500'>
-									<p className='font-bold text-white'>Save</p>
-								</TooltipContent>
-							</Tooltip>
-						</TooltipProvider>
-					)}
+						{(edit[0] as boolean) && edit[1] === todo.id && (
+							<TooltipProvider>
+								<Tooltip>
+									<TooltipTrigger className=''>
+										<button
+											className='flex items-center justify-center text-sky-500 hover:text-sky-600'
+											type='submit'
+											style={{ cursor: 'pointer', display: 'inline' }}>
+											<Edit2 size={'1.4rem'} />
+										</button>
+									</TooltipTrigger>
+									,
+									<TooltipContent className='bg-sky-500'>
+										<p className='font-bold text-white'>Save</p>
+									</TooltipContent>
+								</Tooltip>
+							</TooltipProvider>
+						)}
+					</div>
+					<div className='mt-0 flex justify-start pb-2 pt-0 text-sm text-gray-400'>
+						<div className='flex w-3/12 items-start justify-start'>
+							<Badge
+								variant='outline'
+								className={`auto mr-3 h-2 p-3 ${
+									todo.priority === 1
+										? 'bg-rose-200'
+										: todo.priority === 2
+										? 'bg-amber-200'
+										: todo.priority === 3
+										? 'bg-sky-200'
+										: 'bg-white'
+								} `}>
+								P: {PriorityEnumRev[todo.priority as number]}
+							</Badge>
+						</div>
+						<div className='w-4/12 text-center'>
+							<div className='flex items-center justify-start text-gray-600'>
+								{todo.dueDate !== undefined ? (
+									<>
+										<Calendar2 />
+										<div className='ml-2'>
+											{todo.dueDate !== undefined
+												? (todo.dueDate as Date).toDateString()
+												: ''}
+										</div>
+									</>
+								) : (
+									<></>
+								)}
+							</div>
+						</div>
+						<div className='w-4/12 text-center'>
+							<div
+								className={`flex items-start justify-start underline ${
+									(todo.complete as boolean)
+										? 'text-gray-400 decoration-green-500'
+										: 'text-gray-600 decoration-rose-500'
+								}`}>
+								{(todo.complete as boolean)
+									? 'Completion: ' +
+									  (todo.completedAt as Date).toDateString() +
+									  ' ' +
+									  (todo.completedAt as Date).toLocaleTimeString()
+									: 'Creation: ' +
+									  (todo.createdAt as Date).toDateString() +
+									  ' ' +
+									  (todo.createdAt as Date).toLocaleTimeString()}
+							</div>
+						</div>
+					</div>
 				</form>
 				<div
 					id={`todo-${todo.id}`}
-					className='hidden-child flex w-1/5 justify-center py-2'>
+					className='hidden-child mt-3 flex w-2/12 items-start justify-center'>
 					<EditModalTodo
 						editTodoFull={editTodoFull}
 						todo={todo}
@@ -161,43 +214,6 @@ export default function TaskItem({
 						id={todo.id as number}
 						key={`del-${todo.id}`}
 					/>
-				</div>
-			</div>
-			<div className='mt-0 flex justify-start pb-2 pt-0 text-sm text-gray-400'>
-				<div className='w-1/5'></div>
-
-				<div className='flex w-1/5 items-center justify-start'>
-					<Badge
-						variant='outline'
-						className={`mr-3 h-2 w-6/12 p-3 ${
-							todo.priority === 1
-								? 'bg-rose-200'
-								: todo.priority === 2
-								? 'bg-amber-200'
-								: todo.priority === 3
-								? 'bg-sky-200'
-								: 'bg-white'
-						} `}>
-						{PriorityEnumRev[todo.priority as number]}
-					</Badge>
-				</div>
-				<div className='w-3/5 text-center'>
-					<div
-						className={`underline ${
-							(todo.complete as boolean)
-								? 'text-gray-400 decoration-green-500'
-								: 'text-gray-600 decoration-rose-500'
-						}`}>
-						{(todo.complete as boolean)
-							? 'Completion: ' +
-							  (todo.completedAt as Date).toDateString() +
-							  ' ' +
-							  (todo.completedAt as Date).toLocaleTimeString()
-							: 'Creation: ' +
-							  (todo.createdAt as Date).toDateString() +
-							  ' ' +
-							  (todo.createdAt as Date).toLocaleTimeString()}
-					</div>
 				</div>
 			</div>
 		</>
