@@ -25,7 +25,7 @@ class Todo(models.Model):
         (2, 'Medium'),
         (1, 'High')
     )
-
+    due_date = models.DateTimeField(blank=True, null=True)
     list = models.ForeignKey(List, on_delete=models.CASCADE, blank=True, default=1)
     user = models.ForeignKey(User, on_delete= models.CASCADE, blank=True, related_name='todos')
 

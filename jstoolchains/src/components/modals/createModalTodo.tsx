@@ -32,7 +32,7 @@ import type { CreateModalTodoProps, todoType } from '../../lib/customTypes';
 import { PriorityEnum, userSettings } from '../../lib/userSettings';
 import { isDescendantOf } from '../../lib/utils';
 import useAutosizeTextArea from '../../lib/useAutosizeTextArea';
-import { DatePickerWithPresets } from '../ui/datapicker';
+import { DatePickerWithPresets } from '../ui/datepicker';
 
 const override: CSSProperties = {
 	display: 'block',
@@ -50,6 +50,7 @@ export default function CreateModalTodo({
 		title: '',
 		description: '',
 		priority: '4',
+		dueDate: undefined,
 		list: userSettings.homeListId.toString(),
 	});
 	const [status, setStatus] = useState('typing');
@@ -98,6 +99,7 @@ export default function CreateModalTodo({
 				title: '',
 				description: '',
 				priority: PriorityEnum.None,
+				dueDate: undefined,
 				list: userSettings.homeListId.toString(),
 			});
 			setStatus('typing');
@@ -277,7 +279,7 @@ export default function CreateModalTodo({
 						</Select>
 					</div>
 					<div className='mb-3 ml-4 mr-4 flex items-center justify-between'>
-						<DatePickerWithPresets />
+						<DatePickerWithPresets newTodo={newTodo} setNewTodo={setNewTodo} />
 					</div>
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-between'>
 						<button

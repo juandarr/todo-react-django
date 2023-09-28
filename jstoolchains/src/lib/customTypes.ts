@@ -12,6 +12,7 @@ export interface todoType {
 	completeAt?: Date;
 	createdAt?: Date;
 	priority?: string;
+	dueDate?: Date | null;
 	list?: string;
 }
 
@@ -130,4 +131,9 @@ export interface NavBarProps {
 	lists: List[];
 	addTodo: addTodoType;
 	setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface DatePickerProps {
+	newTodo: todoType;
+	setNewTodo: React.Dispatch<React.SetStateAction<todoType>>;
 }

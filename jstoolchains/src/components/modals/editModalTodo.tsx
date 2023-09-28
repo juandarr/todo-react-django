@@ -33,7 +33,7 @@ import type { EditModalTodoProps, todoType } from '../../lib/customTypes';
 import { PriorityEnum } from '../../lib/userSettings';
 
 import { waitForElementToExist } from '../../lib/utils';
-import { DatePickerWithPresets } from '../ui/datapicker';
+import { DatePickerWithPresets } from '../ui/datepicker';
 
 const override: CSSProperties = {
 	display: 'block',
@@ -281,7 +281,10 @@ export default function EditModalTodo({
 					</div>
 
 					<div className='mb-3 ml-4 mr-4 flex items-center justify-between'>
-						<DatePickerWithPresets />
+						<DatePickerWithPresets
+							newTodo={newEditTodo}
+							setNewTodo={setNewEditTodo}
+						/>
 					</div>
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-between'>
 						<button

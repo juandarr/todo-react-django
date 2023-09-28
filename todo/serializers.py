@@ -9,7 +9,7 @@ class TodoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Todo
         fields = ('id','title','description', 'created_at','complete',
-                  'completed_at','priority','list','user')
+                  'completed_at','priority','due_date','list','user')
 
 class ListSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField( read_only=True,
