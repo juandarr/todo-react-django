@@ -60,7 +60,8 @@ export default function SideBar({
 				</div>
 			</div>
 		));
-
+	const inbox = lists.find((list) => userSettings.homeListId === list.id);
+	const today = lists.find((list) => userSettings.todayListId === list.id);
 	return (
 		<div
 			className={`absolute left-0 top-0 my-6 flex w-25% flex-col  rounded-xl border-2 border-black bg-white p-10 ${
@@ -80,7 +81,7 @@ export default function SideBar({
 					onClick={() => {
 						changeCurrentList(userSettings.homeListId);
 					}}>
-					📥 Inbox
+					{inbox !== undefined ? inbox.title : ''}
 				</button>
 				<button
 					className={`flex cursor-pointer justify-start ${
@@ -91,7 +92,7 @@ export default function SideBar({
 					onClick={() => {
 						changeCurrentList(userSettings.todayListId);
 					}}>
-					🌻 Today
+					{today !== undefined ? today.title : ''}
 				</button>
 			</div>
 			<div className='mt-4 flex flex-col'>

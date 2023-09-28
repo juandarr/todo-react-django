@@ -136,18 +136,6 @@ export default function App(): React.JSX.Element {
 		if ('priority' in todo) {
 			tmp.priority = parseInt(todo.priority as string);
 		}
-		if ('dueDate' in todo) {
-			const date = todo.dueDate as Date;
-			tmp.dueDate = new Date(
-				Date.UTC(
-					date.getUTCFullYear(),
-					date.getUTCMonth(),
-					date.getUTCDate(),
-					date.getUTCHours(),
-				),
-			);
-			console.log('this is going to be the utc date: ', tmp.dueDate);
-		}
 		if ('list' in todo) {
 			tmp.list = parseInt(todo.list as string);
 		} else {
