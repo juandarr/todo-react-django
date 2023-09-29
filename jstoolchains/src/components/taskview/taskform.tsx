@@ -1,10 +1,11 @@
-import React, { useState, useRef, type CSSProperties, useEffect } from 'react';
+import React, { useState, useRef, type CSSProperties } from 'react';
 
 import { useToast } from '../ui/toast/use-toast';
 
 import Spinner from 'react-spinners/DotLoader';
 
-import type { TaskFormProps } from '../../lib/customTypes';
+import type { TaskFormProps, todoType } from '../../lib/customTypes';
+import { flushSync } from 'react-dom';
 
 const override: CSSProperties = {
 	display: 'block',
@@ -12,61 +13,55 @@ const override: CSSProperties = {
 	justifyContent: 'center',
 	alignSelf: 'center',
 };
+
 export default function TaskForm({
 	addTodo,
-	newTodo,
-	setNewTodo,
 }: TaskFormProps): React.JSX.Element {
+	const [newTodo, setNewTodo] = useState<todoType>({
+		title: '',
+		description: '',
+	});
 	const [status, setStatus] = useState('typing');
 	const inputRef = useRef<HTMLInputElement>(null);
-	const previousStatus = useRef<string>('');
 	const { toast } = useToast();
 
-	useEffect(() => {
-		if (status === 'typing' && previousStatus.current === 'submitting') {
-			if (inputRef.current !== null) {
-				inputRef.current.focus();
-			}
-		}
-		previousStatus.current = status;
-	}, [status]);
-
-	const handleSubmit = async (
-		event: React.FormEvent<HTMLFormElement>,
-	): Promise<void> => {
+	const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
 		event.preventDefault();
 		if (newTodo.title === '') return;
 		setStatus('submitting');
 
-		try {
-			await addTodo(newTodo, 'taskList');
-			setNewTodo({ title: '', description: '' });
-			setStatus('typing');
-			toast({
-				title: 'Task was created!',
-				description: '',
-			});
-		} catch (error) {
-			if (error instanceof Error) {
+		addTodo(newTodo, 'taskList')
+			.then((result) => {
+				setNewTodo({ title: '', description: '' });
 				toast({
-					variant: 'destructive',
-					title: 'There was an error creating the task: ',
-					description: error.message,
+					title: 'Task was created!',
+					description: '',
 				});
-			}
-			setStatus('typing');
-		}
+			})
+			.catch((error) => {
+				if (error instanceof Error) {
+					toast({
+						variant: 'destructive',
+						title: 'There was an error creating the task: ',
+						description: error.message,
+					});
+				}
+			})
+			.finally(() => {
+				flushSync(() => {
+					setStatus('typing');
+				});
+				if (inputRef.current !== null) {
+					inputRef.current.focus();
+				}
+			});
 	};
 
 	return (
 		<form
 			id='myform'
 			className='font-serif mb-6 flex space-x-4 text-lg'
-			onSubmit={(e) => {
-				handleSubmit(e)
-					.then(() => {})
-					.catch(() => {});
-			}}>
+			onSubmit={handleSubmit}>
 			<input
 				type='text'
 				name='title'

@@ -41,8 +41,6 @@ export type addListType = (title: string) => Promise<List>;
 
 export interface TaskFormProps {
 	addTodo: addTodoType;
-	newTodo: todoType;
-	setNewTodo: React.Dispatch<React.SetStateAction<todoType>>;
 }
 
 export interface TaskItemProps {

@@ -69,6 +69,7 @@ export default function DeleteModal({
 	const closePopover = (): void => {
 		setIsOpen(false);
 	};
+
 	const openPopover = (): void => {
 		setStatus('viewing');
 		setIsOpen(true);

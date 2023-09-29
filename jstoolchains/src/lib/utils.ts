@@ -62,3 +62,14 @@ export async function waitForElementToExist(selector: string): Promise<void> {
 		});
 	});
 }
+
+/* Use the following portion of code to test every async api function */
+// setTimeout(() => {
+//   const value = Math.random();
+//   if (value > 0.5) {
+//     closePopover();
+//   } else {
+//     setError("Invented error");
+//     setStatus("viewing");
+//   }
+// }, 2000);

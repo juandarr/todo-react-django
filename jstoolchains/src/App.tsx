@@ -32,10 +32,6 @@ export default function App(): React.JSX.Element {
 		title: '',
 		archived: false,
 	});
-	const [newTodo, setNewTodo] = useState<todoType>({
-		title: '',
-		description: '',
-	});
 	const [newTodoEdit, setNewTodoEdit] = useState<Todo>({ title: '' });
 	const [newListEdit, setNewListEdit] = useState('');
 	const [showSidebar, setShowSidebar] = useState(true);
@@ -100,19 +96,9 @@ export default function App(): React.JSX.Element {
 	const changeCurrentList = (newListId: number): void => {
 		const newList: List = lists.find((list) => list.id === newListId) as List;
 		setCurrentList(newList);
-		setNewTodo({ title: '', description: '' });
+		// setNewTodo({ title: '', description: '' });
 	};
 
-	/* Use the following portion of code to test every async api function */
-	// setTimeout(() => {
-	//   const value = Math.random();
-	//   if (value > 0.5) {
-	//     closePopover();
-	//   } else {
-	//     setError("Invented error");
-	//     setStatus("viewing");
-	//   }
-	// }, 2000);
 	const addList = async (title: string): Promise<List> => {
 		const list = {
 			title,
@@ -129,7 +115,7 @@ export default function App(): React.JSX.Element {
 	};
 
 	const addTodo = async (todo: todoType, origin: string): Promise<Todo> => {
-		const tmp: { priority: number; list: number; dueDate?: Date } = {
+		const tmp: { priority: number; list: number } = {
 			priority: 4,
 			list: 0,
 		};
@@ -343,11 +329,7 @@ export default function App(): React.JSX.Element {
 					<div className='absolute left-3 top-2 text-sm font-bold text-violet-600'>
 						{currentList.title}
 					</div>
-					<TaskForm
-						addTodo={addTodo}
-						newTodo={newTodo}
-						setNewTodo={setNewTodo}
-					/>
+					<TaskForm addTodo={addTodo} key={currentList.id} />
 					<TaskListHeader
 						fieldDone={'Done?'}
 						fieldTask={'Task'}
