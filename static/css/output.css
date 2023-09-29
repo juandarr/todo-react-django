@@ -693,6 +693,10 @@ body {
   margin-left: 1rem;
 }
 
+.mr-1 {
+  margin-right: 0.25rem;
+}
+
 .mr-2 {
   margin-right: 0.5rem;
 }
@@ -829,20 +833,12 @@ body {
   width: 0.875rem;
 }
 
-.w-3\/12 {
-  width: 25%;
-}
-
 .w-30\% {
   width: 30%;
 }
 
 .w-4 {
   width: 1rem;
-}
-
-.w-4\/12 {
-  width: 33.333333%;
 }
 
 .w-4\/5 {
@@ -897,8 +893,17 @@ body {
   width: auto;
 }
 
+.w-fit {
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
 .w-full {
   width: 100%;
+}
+
+.min-w-\[25\%\] {
+  min-width: 25%;
 }
 
 .min-w-\[8rem\] {
@@ -907,6 +912,15 @@ body {
 
 .min-w-\[var\(--radix-select-trigger-width\)\] {
   min-width: var(--radix-select-trigger-width);
+}
+
+.min-w-\[20\%\] {
+  min-width: 20%;
+}
+
+.max-w-fit {
+  max-width: -moz-fit-content;
+  max-width: fit-content;
 }
 
 .flex-1 {

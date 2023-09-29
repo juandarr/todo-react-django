@@ -137,7 +137,7 @@ export default function TaskItem({
 						)}
 					</div>
 					<div className='mt-0 flex justify-start pb-2 pt-0 text-sm text-gray-400'>
-						<div className='flex w-3/12 items-start justify-start'>
+						<div className='mr-2 flex min-w-[20%] max-w-fit items-start justify-start'>
 							<Badge
 								variant='outline'
 								className={`auto font-regular py-0.5 text-xs ${
@@ -152,23 +152,20 @@ export default function TaskItem({
 								P: {PriorityEnumRev[todo.priority as number]}
 							</Badge>
 						</div>
-						<div className='w-4/12 text-center'>
-							<div className='flex items-center justify-start text-gray-600'>
-								{todo.dueDate !== undefined ? (
-									<>
-										<Calendar2 className='mr-2' size={'1.2rem'} />
-										<div className='text-xs'>
-											{todo.dueDate !== undefined
-												? (todo.dueDate as Date).toDateString()
-												: ''}
-										</div>
-									</>
-								) : (
-									<></>
-								)}
-							</div>
+						<div className='w-fit text-center'>
+							{todo.dueDate !== undefined ? (
+								<div className='flex items-start justify-start text-gray-600'>
+									<Calendar2 className='mr-1' size={'1.2rem'} />
+									<div className='text-xs'>
+										{todo.dueDate !== undefined
+											? (todo.dueDate as Date).toDateString()
+											: ''}
+									</div>
+								</div>
+							) : (
+								<></>
+							)}
 						</div>
-						<div className='w-4/12 text-center'></div>
 					</div>
 				</form>
 				<div
