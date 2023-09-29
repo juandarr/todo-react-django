@@ -73,7 +73,7 @@ export default function SideBar({
 				showSidebar
 					? 'animate-[sidebar-content-show_300ms]'
 					: 'animate-[sidebar-content-hide_300ms]'
-			}`}
+			} fill-mode-forwards`}
 			id='sidebar'>
 			<div className='mb-1 flex flex-col'>
 				<div className='mb-2 text-xl font-bold'>Tareas</div>
@@ -89,17 +89,6 @@ export default function SideBar({
 					{inbox !== undefined ? inbox.title : ''}
 				</button>
 				{ViewLists}
-				{/* <button
-					className={`flex cursor-pointer justify-start ${
-						currentList.id === userSettings.todayListId
-							? 'rounded-md bg-cyan-200 font-semibold'
-							: ''
-					} rounded-xl p-1 pl-2 text-lg hover:underline hover:decoration-rose-500 hover:decoration-2`}
-					onClick={() => {
-						changeCurrentList(userSettings.todayListId);
-					}}>
-					{today}
-				</button> */}
 			</div>
 			<div className='mt-4 flex flex-col'>
 				<div className='mb-2 flex justify-between'>

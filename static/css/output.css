@@ -1584,6 +1584,14 @@ body {
   transition-duration: 300ms;
 }
 
+.duration-500 {
+  transition-duration: 500ms;
+}
+
+.duration-700 {
+  transition-duration: 700ms;
+}
+
 .ease-in-out {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -1624,8 +1632,20 @@ body {
   animation-duration: 300ms;
 }
 
+.duration-500 {
+  animation-duration: 500ms;
+}
+
+.duration-700 {
+  animation-duration: 700ms;
+}
+
 .ease-in-out {
   animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fill-mode-forwards {
+  animation-fill-mode: forwards;
 }
 
 /*Show child element when hovering on parent element */

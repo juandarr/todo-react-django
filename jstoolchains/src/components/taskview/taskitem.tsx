@@ -168,24 +168,7 @@ export default function TaskItem({
 								)}
 							</div>
 						</div>
-						<div className='w-4/12 text-center'>
-							{/* <div
-								className={`flex items-start justify-start underline ${
-									(todo.complete as boolean)
-										? 'text-gray-400 decoration-green-500'
-										: 'text-gray-600 decoration-rose-500'
-								}`}>
-								{(todo.complete as boolean)
-									? 'Completion: ' +
-									  (todo.completedAt as Date).toDateString() +
-									  ' ' +
-									  (todo.completedAt as Date).toLocaleTimeString()
-									: 'Creation: ' +
-									  (todo.createdAt as Date).toDateString() +
-									  ' ' +
-									  (todo.createdAt as Date).toLocaleTimeString()}
-							</div> */}
-						</div>
+						<div className='w-4/12 text-center'></div>
 					</div>
 				</form>
 				<div
