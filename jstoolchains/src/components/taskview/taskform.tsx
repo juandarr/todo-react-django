@@ -28,6 +28,7 @@ export default function TaskForm({
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
 		event.preventDefault();
 		if (newTodo.title === '') return;
+
 		setStatus('submitting');
 
 		addTodo(newTodo, 'taskList')

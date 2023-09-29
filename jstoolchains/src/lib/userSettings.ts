@@ -1,6 +1,25 @@
+import type { Todo } from '../../../todo-api-client/models/Todo';
+
 export const userSettings = {
 	homeListId: 1,
-	todayListId: 63,
+	inboxListId: 1,
+	todayListId: '0',
+	listViews: new Map([
+		['0', '🌻 Today'],
+		['-1', '🔮 Upcoming'],
+	]),
+	listViewsFilters: new Map([
+		[
+			'0',
+			(todo: Todo) =>
+				todo.dueDate?.toDateString() === new Date().toDateString(),
+		],
+		[
+			'-1',
+			(todo: Todo) =>
+				(todo.dueDate?.toDateString() as string) > new Date().toDateString(),
+		],
+	]),
 };
 
 export const PriorityEnum = {

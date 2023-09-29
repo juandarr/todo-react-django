@@ -26,9 +26,19 @@ export interface listType {
 
 export type listsType = listType[];
 
+export type filterType = (todo: Todo) => boolean;
+
 export interface userSettingsType {
 	homeListId: number;
-	todayListId: number;
+	inboxListId: number;
+	todayListId: string;
+	listViews: Map<string, string>;
+	listViewsFilters: Map<string, filterType>;
+}
+
+export interface viewType {
+	id: number | string;
+	title: string;
 }
 
 export interface cssTailVariant {
@@ -72,7 +82,7 @@ export interface TaskListProps {
 	) => Promise<void>;
 	editTodoFull: (todo: todoType) => Promise<Todo>;
 	condition: boolean;
-	currentList: List;
+	currentList: viewType;
 	newTodoEdit: Todo;
 	setNewTodoEdit: React.Dispatch<React.SetStateAction<Todo>>;
 }
@@ -114,8 +124,8 @@ export interface DeleteModalProps {
 export interface SideBarProps {
 	lists: List[];
 	userSettings: userSettingsType;
-	changeCurrentList: (oldList: number) => void;
-	currentList: List;
+	changeCurrentList: (viewId: number | string) => void;
+	currentList: viewType;
 	addList: addListType;
 	deleteList: (id: number) => Promise<void>;
 	editList: (id: number, title: string) => Promise<List>;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import type { TaskListProps } from '../../lib/customTypes';
+import type { TaskListProps, filterType } from '../../lib/customTypes';
 import TaskItem from './taskitem';
 import { userSettings } from '../../lib/userSettings';
 
@@ -19,13 +19,11 @@ export default function TaskList({
 	const [edit, setEdit] = useState<[boolean, number]>([false, 0]);
 
 	let listTodos;
-	if ((currentList.id as number) !== userSettings.todayListId) {
+	if (typeof currentList.id === 'number') {
 		listTodos = todos.filter((todo) => todo.list === currentList.id);
 	} else {
-		const today = new Date();
-		listTodos = todos.filter(
-			(todo) => todo.dueDate?.toDateString() === today.toDateString(),
-		);
+		const customFilter = userSettings.listViewsFilters.get(currentList.id);
+		listTodos = todos.filter(customFilter as filterType);
 	}
 
 	let filteredTodos = listTodos.filter((todo) => todo.complete === condition);

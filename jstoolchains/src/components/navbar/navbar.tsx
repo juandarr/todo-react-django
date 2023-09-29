@@ -20,7 +20,7 @@ export default function NavBar({
 	addTodo,
 	setShowSidebar,
 }: NavBarProps): React.JSX.Element {
-	const call = (event: KeyboardEvent): void => {
+	const homeCallback = (event: KeyboardEvent): void => {
 		if (!isDescendantOf(event.target as HTMLElement, 'form')) {
 			if (event.key === 'h') {
 				event.preventDefault();
@@ -30,11 +30,11 @@ export default function NavBar({
 	};
 
 	useEffect(() => {
-		document.addEventListener('keydown', call);
+		document.addEventListener('keydown', homeCallback);
 		return () => {
-			document.removeEventListener('keydown', call);
+			document.removeEventListener('keydown', homeCallback);
 		};
-	}, [call]);
+	}, [homeCallback]);
 
 	return (
 		<nav className='mx-6 mb-6 mt-12 flex w-5/6 justify-between rounded-lg border-2 border-black bg-white p-2'>

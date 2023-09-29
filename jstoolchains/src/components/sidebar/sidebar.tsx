@@ -19,7 +19,7 @@ export default function SideBar({
 	const otherLists = lists
 		.filter(
 			(list) =>
-				![userSettings.homeListId, userSettings.todayListId].includes(
+				![userSettings.inboxListId, userSettings.todayListId].includes(
 					list.id as number,
 				),
 		)
@@ -53,8 +53,8 @@ export default function SideBar({
 				</div>
 			</div>
 		));
-	const inbox = lists.find((list) => userSettings.homeListId === list.id);
-	const today = lists.find((list) => userSettings.todayListId === list.id);
+	const inbox = lists.find((list) => userSettings.inboxListId === list.id);
+	const today = userSettings.listViews.get(userSettings.todayListId);
 	return (
 		<div
 			className={`absolute left-0 top-0 my-6 flex w-25% flex-col  rounded-xl border-2 border-black bg-white p-10 ${
@@ -67,12 +67,12 @@ export default function SideBar({
 				<div className='mb-2 text-xl font-bold'>Tareas</div>
 				<button
 					className={`flex cursor-pointer justify-start ${
-						currentList.id === userSettings.homeListId
+						currentList.id === userSettings.inboxListId
 							? 'rounded-md bg-cyan-200 font-semibold'
 							: ''
 					} rounded-xl p-1 pl-2 text-lg hover:underline hover:decoration-rose-500 hover:decoration-2`}
 					onClick={() => {
-						changeCurrentList(userSettings.homeListId);
+						changeCurrentList(userSettings.inboxListId);
 					}}>
 					{inbox !== undefined ? inbox.title : ''}
 				</button>
@@ -85,7 +85,7 @@ export default function SideBar({
 					onClick={() => {
 						changeCurrentList(userSettings.todayListId);
 					}}>
-					{today !== undefined ? today.title : ''}
+					{today}
 				</button>
 			</div>
 			<div className='mt-4 flex flex-col'>

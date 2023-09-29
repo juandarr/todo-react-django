@@ -16,7 +16,12 @@ import { userSettings } from './lib/userSettings';
 import confetti from 'canvas-confetti';
 import { Toaster } from './components/ui/toast/toaster';
 
-import type { todoType, listType, EditionSetState } from './lib/customTypes';
+import type {
+	todoType,
+	listType,
+	EditionSetState,
+	viewType,
+} from './lib/customTypes';
 import type { Todo, List } from '../../todo-api-client/models';
 
 function randomInRange(min: number, max: number): number {
@@ -27,10 +32,10 @@ export default function App(): React.JSX.Element {
 	// TODO : review exposure modifications to the DOM done without refs in the codebase. Are any changes being done to the DOM
 	const [todos, setTodos] = useState<Todo[]>([]);
 	const [lists, setLists] = useState<List[]>([]);
-	const [currentList, setCurrentList] = useState<List>({
+	// Views can be lists or tags, such as today or upcoming
+	const [currentList, setCurrentList] = useState<viewType>({
 		id: 0,
 		title: '',
-		archived: false,
 	});
 	const [newTodoEdit, setNewTodoEdit] = useState<Todo>({ title: '' });
 	const [newListEdit, setNewListEdit] = useState('');
@@ -93,10 +98,15 @@ export default function App(): React.JSX.Element {
 			});
 	}, []);
 
-	const changeCurrentList = (newListId: number): void => {
-		const newList: List = lists.find((list) => list.id === newListId) as List;
-		setCurrentList(newList);
-		// setNewTodo({ title: '', description: '' });
+	const changeCurrentList = (newListId: number | string): void => {
+		let newView;
+		if (typeof newListId === 'number') {
+			const newList: List = lists.find((list) => list.id === newListId) as List;
+			newView = { id: newList.id, title: newList.title };
+		} else {
+			newView = { id: newListId, title: userSettings.listViews.get(newListId) };
+		}
+		setCurrentList(newView as viewType);
 	};
 
 	const addList = async (title: string): Promise<List> => {
@@ -115,9 +125,10 @@ export default function App(): React.JSX.Element {
 	};
 
 	const addTodo = async (todo: todoType, origin: string): Promise<Todo> => {
-		const tmp: { priority: number; list: number } = {
+		const tmp: { priority: number; list: number; dueDate: Date | undefined } = {
 			priority: 4,
 			list: 0,
+			dueDate: undefined,
 		};
 		if ('priority' in todo) {
 			tmp.priority = parseInt(todo.priority as string);
@@ -126,7 +137,14 @@ export default function App(): React.JSX.Element {
 			tmp.list = parseInt(todo.list as string);
 		} else {
 			if (origin === 'taskList') {
-				tmp.list = currentList.id as number;
+				if (typeof currentList.id === 'number') {
+					tmp.list = currentList.id;
+				} else {
+					tmp.list = userSettings.inboxListId;
+					if (currentList.id === '0') {
+						tmp.dueDate = new Date();
+					}
+				}
 			} else {
 				tmp.list = userSettings.homeListId;
 			}
@@ -163,9 +181,12 @@ export default function App(): React.JSX.Element {
 				return prevLists.filter((list) => list.id !== id);
 			});
 			if (id === currentList.id) {
-				setCurrentList(
-					lists.find((list) => list.id === userSettings.homeListId) as List,
-				);
+				setCurrentList(() => {
+					const list = lists.find(
+						(list) => list.id === userSettings.homeListId,
+					) as List;
+					return { id: list.id as number, title: list.title };
+				});
 			}
 			console.log('List was deleted');
 		} catch (error) {
