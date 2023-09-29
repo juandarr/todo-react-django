@@ -22,6 +22,7 @@ import type {
 	EditionSetState,
 	viewType,
 } from './lib/customTypes';
+
 import type { Todo, List } from '../../todo-api-client/models';
 
 function randomInRange(min: number, max: number): number {
@@ -87,10 +88,22 @@ export default function App(): React.JSX.Element {
 			.then((result) => {
 				console.log('Here are the lists: ', result);
 				setLists(result);
-				setCurrentList((oldList) => {
-					return result.find(
-						(list) => list.id === userSettings.homeListId,
-					) as listType;
+				setCurrentList((oldlist) => {
+					let tmp: viewType;
+					if (typeof userSettings.homeListId === 'number') {
+						const list = result.find(
+							(list) => list.id === userSettings.homeListId,
+						) as listType;
+						tmp = { id: list.id, title: list.title };
+					} else {
+						const homeId = userSettings.homeListId;
+
+						tmp = {
+							id: homeId,
+							title: userSettings.listViews.get(homeId) as string,
+						};
+					}
+					return tmp;
 				});
 			})
 			.catch(() => {
@@ -99,14 +112,17 @@ export default function App(): React.JSX.Element {
 	}, []);
 
 	const changeCurrentList = (newListId: number | string): void => {
-		let newView;
+		let newView: viewType;
 		if (typeof newListId === 'number') {
 			const newList: List = lists.find((list) => list.id === newListId) as List;
-			newView = { id: newList.id, title: newList.title };
+			newView = { id: newList.id as number, title: newList.title };
 		} else {
-			newView = { id: newListId, title: userSettings.listViews.get(newListId) };
+			newView = {
+				id: newListId,
+				title: userSettings.listViews.get(newListId) as string,
+			};
 		}
-		setCurrentList(newView as viewType);
+		setCurrentList(newView);
 	};
 
 	const addList = async (title: string): Promise<List> => {
@@ -146,7 +162,7 @@ export default function App(): React.JSX.Element {
 					}
 				}
 			} else {
-				tmp.list = userSettings.homeListId;
+				tmp.list = userSettings.inboxListId;
 			}
 		}
 		const todoFiltered: Todo = { ...todo, ...tmp };
@@ -346,7 +362,7 @@ export default function App(): React.JSX.Element {
 				/>
 				<div
 					className={`relative my-6 duration-300 ease-in-out ${
-						showSidebar ? 'w-70%' : 'w-full'
+						showSidebar ? 'w-65%' : 'w-full'
 					} rounded-xl border-2 border-black bg-white p-10`}>
 					<div className='absolute left-3 top-2 text-sm font-bold text-violet-600'>
 						{currentList.title}

@@ -29,9 +29,10 @@ export type listsType = listType[];
 export type filterType = (todo: Todo) => boolean;
 
 export interface userSettingsType {
-	homeListId: number;
+	homeListId: number | string;
 	inboxListId: number;
 	todayListId: string;
+	viewLists: string[];
 	listViews: Map<string, string>;
 	listViewsFilters: Map<string, filterType>;
 }
@@ -135,7 +136,7 @@ export interface SideBarProps {
 }
 
 export interface NavBarProps {
-	changeCurrentList: (oldList: number) => void;
+	changeCurrentList: (viewId: number | string) => void;
 	lists: List[];
 	addTodo: addTodoType;
 	setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;

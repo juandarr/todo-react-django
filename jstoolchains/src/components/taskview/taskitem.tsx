@@ -140,7 +140,7 @@ export default function TaskItem({
 						<div className='flex w-3/12 items-start justify-start'>
 							<Badge
 								variant='outline'
-								className={`auto mr-3 h-2 p-3 ${
+								className={`auto font-regular py-0.5 text-xs ${
 									todo.priority === 1
 										? 'bg-rose-200'
 										: todo.priority === 2
@@ -156,8 +156,8 @@ export default function TaskItem({
 							<div className='flex items-center justify-start text-gray-600'>
 								{todo.dueDate !== undefined ? (
 									<>
-										<Calendar2 />
-										<div className='ml-2'>
+										<Calendar2 className='mr-2' size={'1.2rem'} />
+										<div className='text-xs'>
 											{todo.dueDate !== undefined
 												? (todo.dueDate as Date).toDateString()
 												: ''}

@@ -54,10 +54,22 @@ export default function SideBar({
 			</div>
 		));
 	const inbox = lists.find((list) => userSettings.inboxListId === list.id);
-	const today = userSettings.listViews.get(userSettings.todayListId);
+
+	const ViewLists = userSettings.viewLists.map((value) => (
+		<button
+			key={value}
+			className={`flex cursor-pointer justify-start ${
+				currentList.id === value ? 'rounded-md bg-cyan-200 font-semibold' : ''
+			} rounded-xl p-1 pl-2 text-lg hover:underline hover:decoration-rose-500 hover:decoration-2`}
+			onClick={() => {
+				changeCurrentList(value);
+			}}>
+			{userSettings.listViews.get(value)}
+		</button>
+	));
 	return (
 		<div
-			className={`absolute left-0 top-0 my-6 flex w-25% flex-col  rounded-xl border-2 border-black bg-white p-10 ${
+			className={`w-30% flexflex-col absolute left-0 top-0 my-6  rounded-xl border-2 border-black bg-white p-10 ${
 				showSidebar
 					? 'animate-[sidebar-content-show_300ms]'
 					: 'animate-[sidebar-content-hide_300ms]'
@@ -76,7 +88,8 @@ export default function SideBar({
 					}}>
 					{inbox !== undefined ? inbox.title : ''}
 				</button>
-				<button
+				{ViewLists}
+				{/* <button
 					className={`flex cursor-pointer justify-start ${
 						currentList.id === userSettings.todayListId
 							? 'rounded-md bg-cyan-200 font-semibold'
@@ -86,7 +99,7 @@ export default function SideBar({
 						changeCurrentList(userSettings.todayListId);
 					}}>
 					{today}
-				</button>
+				</button> */}
 			</div>
 			<div className='mt-4 flex flex-col'>
 				<div className='mb-2 flex justify-between'>

@@ -689,10 +689,6 @@ body {
   margin-bottom: 1.5rem;
 }
 
-.ml-2 {
-  margin-left: 0.5rem;
-}
-
 .ml-4 {
   margin-left: 1rem;
 }
@@ -825,10 +821,6 @@ body {
   width: 40%;
 }
 
-.w-25\% {
-  width: 25%;
-}
-
 .w-3 {
   width: 0.75rem;
 }
@@ -839,6 +831,10 @@ body {
 
 .w-3\/12 {
   width: 25%;
+}
+
+.w-30\% {
+  width: 30%;
 }
 
 .w-4 {
@@ -865,12 +861,12 @@ body {
   width: 50%;
 }
 
-.w-7 {
-  width: 1.75rem;
+.w-65\% {
+  width: 65%;
 }
 
-.w-70\% {
-  width: 70%;
+.w-7 {
+  width: 1.75rem;
 }
 
 .w-72 {

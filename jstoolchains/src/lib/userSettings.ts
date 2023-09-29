@@ -1,12 +1,14 @@
 import type { Todo } from '../../../todo-api-client/models/Todo';
+import { type userSettingsType } from './customTypes';
 
-export const userSettings = {
-	homeListId: 1,
+export const userSettings: userSettingsType = {
+	homeListId: '0',
 	inboxListId: 1,
 	todayListId: '0',
+	viewLists: ['0', '-1'],
 	listViews: new Map([
 		['0', '🌻 Today'],
-		['-1', '🔮 Upcoming'],
+		['-1', '🌝 Upcoming'],
 	]),
 	listViewsFilters: new Map([
 		[
@@ -17,7 +19,7 @@ export const userSettings = {
 		[
 			'-1',
 			(todo: Todo) =>
-				(todo.dueDate?.toDateString() as string) > new Date().toDateString(),
+				(todo.dueDate?.getTime() as number) > new Date().getTime(),
 		],
 	]),
 };
