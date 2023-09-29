@@ -108,7 +108,6 @@ export interface EditModalTodoProps {
 }
 export interface DeleteModalProps {
 	deleteFunction: (id: number) => Promise<void>;
-	triggerElement: React.JSX.Element;
 	deleteEntity: string;
 	parentId: string;
 	id: number;

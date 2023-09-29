@@ -1,5 +1,4 @@
 import React from 'react';
-import { Trash } from 'iconsax-react';
 
 import { type SideBarProps } from '../../lib/customTypes';
 
@@ -17,11 +16,6 @@ export default function SideBar({
 	editList,
 	showSidebar,
 }: SideBarProps): React.JSX.Element {
-	const deleteElement = (
-		<a className='flex cursor-pointer justify-end text-2xl text-rose-500 hover:text-rose-600'>
-			<Trash size={'1.4rem'} />
-		</a>
-	);
 	const otherLists = lists
 		.filter(
 			(list) =>
@@ -52,7 +46,6 @@ export default function SideBar({
 					/>
 					<DeleteModal
 						deleteFunction={deleteList}
-						triggerElement={deleteElement}
 						deleteEntity='list'
 						parentId={`list-${list.id}`}
 						id={list.id as number}

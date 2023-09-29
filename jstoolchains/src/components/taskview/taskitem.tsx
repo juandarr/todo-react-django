@@ -16,7 +16,7 @@ import { type Todo } from '../../../../todo-api-client/models';
 import { Badge } from '../ui/badge';
 import { PriorityEnumRev } from '../../lib/userSettings';
 import DeleteModal from '../modals/deleteModal';
-import { Trash, Edit2, Calendar2 } from 'iconsax-react';
+import { Edit2, Calendar2 } from 'iconsax-react';
 import EditModalTodo from '../modals/editModalTodo';
 
 export default function TaskItem({
@@ -69,15 +69,6 @@ export default function TaskItem({
 				}
 			});
 	}
-
-	const deleteElement = (
-		<a
-			id='deleteTodo'
-			className='h-7 w-7 text-rose-400 hover:text-rose-500'
-			style={{ cursor: 'pointer', display: 'inline' }}>
-			<Trash size={'1.6rem'} />
-		</a>
-	);
 
 	// TODO: decide what to do about the div element showing deletion and completion date
 	return (
@@ -209,7 +200,6 @@ export default function TaskItem({
 					/>
 					<DeleteModal
 						deleteFunction={deleteTodo}
-						triggerElement={deleteElement}
 						deleteEntity={'todo'}
 						parentId={`todo-${todo.id}`}
 						id={todo.id as number}

@@ -20,6 +20,7 @@ import {
 import { useToast } from '../ui/toast/use-toast';
 
 import Spinner from 'react-spinners/DotLoader';
+import { Trash } from 'iconsax-react';
 
 const override: CSSProperties = {
 	display: 'block',
@@ -30,7 +31,6 @@ const override: CSSProperties = {
 
 export default function DeleteModal({
 	deleteFunction,
-	triggerElement,
 	deleteEntity,
 	parentId,
 	id,
@@ -89,7 +89,11 @@ export default function DeleteModal({
 						onClick={() => {
 							openPopover();
 						}}>
-						<TooltipTrigger>{triggerElement}</TooltipTrigger>
+						<TooltipTrigger>
+							<a className='flex cursor-pointer justify-center text-rose-500 hover:text-rose-600'>
+								<Trash size={'1.6rem'} />
+							</a>
+						</TooltipTrigger>
 					</PopoverTrigger>
 					<TooltipContent className='bg-rose-500'>
 						<p className='font-bold text-white'>Delete</p>
