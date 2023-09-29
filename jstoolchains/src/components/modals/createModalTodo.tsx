@@ -49,9 +49,9 @@ export default function CreateModalTodo({
 	const [newTodo, setNewTodo] = useState<todoType>({
 		title: '',
 		description: '',
-		priority: '4',
+		priority: PriorityEnum.None,
 		dueDate: undefined,
-		list: userSettings.homeListId.toString(),
+		list: userSettings.inboxListId.toString(),
 	});
 	const [status, setStatus] = useState('typing');
 	const { toast } = useToast();
@@ -95,12 +95,13 @@ export default function CreateModalTodo({
 
 		try {
 			await addTodo(newTodo, 'NavBar');
-			setNewTodo({
+			setNewTodo((oldTodo) => ({
+				...oldTodo,
 				title: '',
 				description: '',
 				priority: PriorityEnum.None,
-				list: userSettings.homeListId.toString(),
-			});
+				dueDate: undefined,
+			}));
 			setStatus('typing');
 			toast({
 				title: 'Task was created!',
@@ -132,7 +133,8 @@ export default function CreateModalTodo({
 			title: '',
 			description: '',
 			priority: PriorityEnum.None,
-			list: userSettings.homeListId.toString(),
+			list: userSettings.inboxListId.toString(),
+			dueDate: undefined,
 		});
 		setStatus('typing');
 		setIsOpen(true);
@@ -141,7 +143,7 @@ export default function CreateModalTodo({
 	// const closePopover = (): void => {
 	// 	setIsOpen(false);
 	// };
-	console.log('Modal todo creation opened');
+	console.log('Modal todo creation opened', newTodo.dueDate);
 	return (
 		<Popover modal={true} open={isOpen} onOpenChange={setIsOpen}>
 			<TooltipProvider>
@@ -170,7 +172,7 @@ export default function CreateModalTodo({
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
 				}}
-				className='data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
+				className='w-80 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
 				<form
 					id='listform'
 					className='font-serif flex flex-col'
@@ -228,7 +230,7 @@ export default function CreateModalTodo({
 						rows={1}
 						disabled={status === 'submitting'}
 					/>
-					<div className='mb-3 ml-4 mr-4 mt-2 flex items-center justify-between'>
+					<div className='mb-3 ml-4 mr-4 mt-2 flex items-center justify-around'>
 						<Select
 							value={newTodo.priority}
 							onValueChange={(value) => {
@@ -236,7 +238,7 @@ export default function CreateModalTodo({
 							}}
 							disabled={status === 'submitting'}>
 							<SelectTrigger
-								className={`mr-3 h-2 w-6/12 p-3 ${
+								className={`mr-3 h-2 w-5/12 p-3 ${
 									newTodo.priority === '1'
 										? 'bg-rose-200'
 										: newTodo.priority === '2'
@@ -277,7 +279,7 @@ export default function CreateModalTodo({
 							</SelectContent>
 						</Select>
 					</div>
-					<div className='mb-3 ml-4 mr-4 flex items-center justify-between'>
+					<div className='mb-3 ml-4 mr-4 flex items-center justify-start'>
 						<DatePickerWithPresets newTodo={newTodo} setNewTodo={setNewTodo} />
 					</div>
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-between'>

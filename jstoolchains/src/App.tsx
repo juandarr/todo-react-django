@@ -157,12 +157,16 @@ export default function App(): React.JSX.Element {
 					tmp.list = currentList.id;
 				} else {
 					tmp.list = userSettings.inboxListId;
-					if (currentList.id === '0') {
-						tmp.dueDate = new Date();
-					}
 				}
 			} else {
 				tmp.list = userSettings.inboxListId;
+			}
+		}
+		if ('dueDate' in todo) {
+			tmp.dueDate = todo.dueDate as Date;
+		} else {
+			if (currentList.id === '0') {
+				tmp.dueDate = new Date();
 			}
 		}
 		const todoFiltered: Todo = { ...todo, ...tmp };

@@ -171,7 +171,7 @@ export default function EditModalTodo({
 					event.preventDefault();
 					toggleHidden();
 				}}
-				className='data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
+				className='w-80 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
 				<form
 					id='listform'
 					className='font-serif flex flex-col'
@@ -238,7 +238,7 @@ export default function EditModalTodo({
 							}}
 							disabled={status === 'submitting'}>
 							<SelectTrigger
-								className={`mr-3 h-2 w-6/12 p-3 ${
+								className={`mr-3 h-2 w-5/12 p-3 ${
 									newEditTodo.priority === '1'
 										? 'bg-rose-200'
 										: newEditTodo.priority === '2'

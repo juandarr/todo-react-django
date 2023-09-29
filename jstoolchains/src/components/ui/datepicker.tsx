@@ -33,7 +33,7 @@ export function DatePickerWithPresets({
 				<Button
 					variant={'outline'}
 					className={cn(
-						'w-[240px] justify-start text-left font-normal',
+						'w-full justify-start text-left font-normal',
 						newTodo.dueDate === undefined && 'text-muted-foreground',
 					)}>
 					<CalendarIconSax className='mr-2 h-6 w-6' />
