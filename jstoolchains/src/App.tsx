@@ -271,6 +271,7 @@ export default function App(): React.JSX.Element {
 			...todo,
 			list: parseInt(todo.list as string),
 			priority: parseInt(todo.priority as string),
+			dueDate: todo.dueDate !== undefined ? todo.dueDate : null,
 		};
 		try {
 			const todoUpdated = await clientTodo.todosPartialUpdate({
