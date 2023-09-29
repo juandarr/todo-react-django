@@ -79,6 +79,7 @@ export default function TaskItem({
 		</a>
 	);
 
+	// TODO: decide what to do about the div element showing deletion and completion date
 	return (
 		<>
 			<div className='parent flex'>
@@ -177,7 +178,7 @@ export default function TaskItem({
 							</div>
 						</div>
 						<div className='w-4/12 text-center'>
-							<div
+							{/* <div
 								className={`flex items-start justify-start underline ${
 									(todo.complete as boolean)
 										? 'text-gray-400 decoration-green-500'
@@ -192,7 +193,7 @@ export default function TaskItem({
 									  (todo.createdAt as Date).toDateString() +
 									  ' ' +
 									  (todo.createdAt as Date).toLocaleTimeString()}
-							</div>
+							</div> */}
 						</div>
 					</div>
 				</form>

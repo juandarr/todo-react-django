@@ -689,6 +689,10 @@ body {
   margin-bottom: 1.5rem;
 }
 
+.ml-2 {
+  margin-left: 0.5rem;
+}
+
 .ml-4 {
   margin-left: 1rem;
 }
@@ -721,16 +725,12 @@ body {
   margin-top: 0.5rem;
 }
 
-.mt-4 {
-  margin-top: 1rem;
-}
-
-.ml-2 {
-  margin-left: 0.5rem;
-}
-
 .mt-3 {
   margin-top: 0.75rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
 }
 
 .block {
@@ -817,6 +817,10 @@ body {
   width: 20%;
 }
 
+.w-2\/12 {
+  width: 16.666667%;
+}
+
 .w-2\/5 {
   width: 40%;
 }
@@ -833,12 +837,16 @@ body {
   width: 0.875rem;
 }
 
-.w-3\/5 {
-  width: 60%;
+.w-3\/12 {
+  width: 25%;
 }
 
 .w-4 {
   width: 1rem;
+}
+
+.w-4\/12 {
+  width: 33.333333%;
 }
 
 .w-4\/5 {
@@ -891,30 +899,6 @@ body {
 
 .w-full {
   width: 100%;
-}
-
-.w-2\/12 {
-  width: 16.666667%;
-}
-
-.w-3\/12 {
-  width: 25%;
-}
-
-.w-4\/12 {
-  width: 33.333333%;
-}
-
-.w-5\/12 {
-  width: 41.666667%;
-}
-
-.w-10\/12 {
-  width: 83.333333%;
-}
-
-.w-9\/12 {
-  width: 75%;
 }
 
 .min-w-\[8rem\] {
