@@ -100,7 +100,7 @@ export default function App(): React.JSX.Element {
 
 						tmp = {
 							id: homeId,
-							title: userSettings.listViews.get(homeId) as string,
+							title: userSettings.viewTagDetails.get(homeId) as string,
 						};
 					}
 					return tmp;
@@ -119,7 +119,7 @@ export default function App(): React.JSX.Element {
 		} else {
 			newView = {
 				id: newListId,
-				title: userSettings.listViews.get(newListId) as string,
+				title: userSettings.viewTagDetails.get(newListId) as string,
 			};
 		}
 		setCurrentView(newView);
@@ -165,7 +165,7 @@ export default function App(): React.JSX.Element {
 		if ('dueDate' in todo) {
 			tmp.dueDate = todo.dueDate as Date;
 		} else {
-			if (currentView.id === userSettings.todayListId) {
+			if (currentView.id === userSettings.viewTags.get('today')) {
 				tmp.dueDate = new Date();
 			}
 		}

@@ -31,10 +31,10 @@ export type filterType = (todo: Todo) => boolean;
 export interface userSettingsType {
 	homeListId: number | string;
 	inboxListId: number;
-	todayListId: string;
-	viewLists: string[];
-	listViews: Map<string, string>;
-	listViewsFilters: Map<string, filterType>;
+	viewTags: Map<string, string>;
+	viewTagIds: string[];
+	viewTagDetails: Map<string, string>;
+	viewTagFilters: Map<string, filterType>;
 }
 
 export interface viewType {

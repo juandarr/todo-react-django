@@ -4,13 +4,16 @@ import { type userSettingsType } from './customTypes';
 export const userSettings: userSettingsType = {
 	homeListId: '0',
 	inboxListId: 1,
-	todayListId: '0',
-	viewLists: ['0', '-1'],
-	listViews: new Map([
+	viewTags: new Map([
+		['today', '0'],
+		['upcoming', '-1'],
+	]),
+	viewTagIds: ['0', '-1'],
+	viewTagDetails: new Map([
 		['0', '🌻 Today'],
 		['-1', '🌝 Upcoming'],
 	]),
-	listViewsFilters: new Map([
+	viewTagFilters: new Map([
 		[
 			'0',
 			(todo: Todo) =>
@@ -18,8 +21,13 @@ export const userSettings: userSettingsType = {
 		],
 		[
 			'-1',
-			(todo: Todo) =>
-				(todo.dueDate?.getTime() as number) > new Date().getTime(),
+			(todo: Todo) => {
+				const tmp = new Date();
+				const tomorrow =
+					new Date(tmp.getFullYear(), tmp.getMonth(), tmp.getDate()).getTime() +
+					24 * 60 * 60 * 1000;
+				return (todo.dueDate?.getTime() as number) >= tomorrow;
+			},
 		],
 	]),
 };

@@ -50,7 +50,7 @@ export default function SideBar({
 		));
 	const inbox = lists.find((list) => userSettings.inboxListId === list.id);
 
-	const ViewLists = userSettings.viewLists.map((value) => (
+	const ViewLists = userSettings.viewTagIds.map((value) => (
 		<button
 			key={value}
 			className={`flex cursor-pointer justify-start ${
@@ -59,7 +59,7 @@ export default function SideBar({
 			onClick={() => {
 				changeCurrentList(value);
 			}}>
-			{userSettings.listViews.get(value)}
+			{userSettings.viewTagDetails.get(value)}
 		</button>
 	));
 	return (

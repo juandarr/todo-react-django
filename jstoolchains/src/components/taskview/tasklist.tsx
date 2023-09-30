@@ -22,7 +22,8 @@ export default function TaskList({
 	if (typeof currentView.id === 'number') {
 		listTodos = todos.filter((todo) => todo.list === currentView.id);
 	} else {
-		const customFilter = userSettings.listViewsFilters.get(currentView.id);
+		console.log('using filter of type: ', currentView.id);
+		const customFilter = userSettings.viewTagFilters.get(currentView.id);
 		listTodos = todos.filter(customFilter as filterType);
 	}
 
