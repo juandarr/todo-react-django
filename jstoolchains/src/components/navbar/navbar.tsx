@@ -15,7 +15,7 @@ import { userSettings } from '../../lib/userSettings';
 import { isDescendantOf } from '../../lib/utils';
 
 export default function NavBar({
-	changeCurrentList,
+	changeCurrentView,
 	lists,
 	addTodo,
 	setShowSidebar,
@@ -24,7 +24,7 @@ export default function NavBar({
 		if (!isDescendantOf(event.target as HTMLElement, 'form')) {
 			if (event.key === 'h') {
 				event.preventDefault();
-				changeCurrentList(userSettings.homeListId);
+				changeCurrentView(userSettings.homeListId);
 			}
 		}
 	};
@@ -61,7 +61,7 @@ export default function NavBar({
 			<div
 				className='flex w-1/12 justify-start pl-3 text-2xl'
 				onClick={() => {
-					changeCurrentList(userSettings.homeListId);
+					changeCurrentView(userSettings.homeListId);
 				}}>
 				<TooltipProvider>
 					<Tooltip>

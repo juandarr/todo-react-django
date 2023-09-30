@@ -10,7 +10,7 @@ export default function SideBar({
 	lists,
 	userSettings,
 	currentView,
-	changeCurrentList,
+	changeCurrentView,
 	addList,
 	deleteList,
 	editList,
@@ -27,7 +27,7 @@ export default function SideBar({
 							: ''
 					} truncate rounded-xl p-1 pl-2 text-lg hover:underline hover:decoration-rose-500 hover:decoration-2`}
 					onClick={() => {
-						changeCurrentList(list.id as number);
+						changeCurrentView(list.id as number);
 					}}>
 					{list.title}
 				</button>
@@ -57,7 +57,7 @@ export default function SideBar({
 				currentView.id === value ? 'rounded-md bg-cyan-200 font-semibold' : ''
 			} rounded-xl p-1 pl-2 text-lg hover:underline hover:decoration-rose-500 hover:decoration-2`}
 			onClick={() => {
-				changeCurrentList(value);
+				changeCurrentView(value);
 			}}>
 			{userSettings.viewTagDetails.get(value)}
 		</button>
@@ -79,7 +79,7 @@ export default function SideBar({
 							: ''
 					} rounded-xl p-1 pl-2 text-lg hover:underline hover:decoration-rose-500 hover:decoration-2`}
 					onClick={() => {
-						changeCurrentList(userSettings.inboxListId);
+						changeCurrentView(userSettings.inboxListId);
 					}}>
 					{inbox !== undefined ? inbox.title : ''}
 				</button>

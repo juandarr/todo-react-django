@@ -125,7 +125,7 @@ export interface DeleteModalProps {
 export interface SideBarProps {
 	lists: List[];
 	userSettings: userSettingsType;
-	changeCurrentList: (viewId: number | string) => void;
+	changeCurrentView: (viewId: number | string) => void;
 	currentView: viewType;
 	addList: addListType;
 	deleteList: (id: number) => Promise<void>;
@@ -136,7 +136,7 @@ export interface SideBarProps {
 }
 
 export interface NavBarProps {
-	changeCurrentList: (viewId: number | string) => void;
+	changeCurrentView: (viewId: number | string) => void;
 	lists: List[];
 	addTodo: addTodoType;
 	setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;

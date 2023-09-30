@@ -111,15 +111,15 @@ export default function App(): React.JSX.Element {
 			});
 	}, []);
 
-	const changeCurrentList = (newListId: number | string): void => {
+	const changeCurrentView = (newViewId: number | string): void => {
 		let newView: viewType;
-		if (typeof newListId === 'number') {
-			const newList: List = lists.find((list) => list.id === newListId) as List;
+		if (typeof newViewId === 'number') {
+			const newList: List = lists.find((list) => list.id === newViewId) as List;
 			newView = { id: newList.id as number, title: newList.title };
 		} else {
 			newView = {
-				id: newListId,
-				title: userSettings.viewTagDetails.get(newListId) as string,
+				id: newViewId,
+				title: userSettings.viewTagDetails.get(newViewId) as string,
 			};
 		}
 		setCurrentView(newView);
@@ -347,7 +347,7 @@ export default function App(): React.JSX.Element {
 	return (
 		<>
 			<NavBar
-				changeCurrentList={changeCurrentList}
+				changeCurrentView={changeCurrentView}
 				lists={lists}
 				addTodo={addTodo}
 				setShowSidebar={setShowSidebar}
@@ -356,7 +356,7 @@ export default function App(): React.JSX.Element {
 				<SideBar
 					lists={lists}
 					userSettings={userSettings}
-					changeCurrentList={changeCurrentList}
+					changeCurrentView={changeCurrentView}
 					currentView={currentView}
 					addList={addList}
 					deleteList={deleteList}
