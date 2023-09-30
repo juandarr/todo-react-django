@@ -34,7 +34,7 @@ export default function App(): React.JSX.Element {
 	const [todos, setTodos] = useState<Todo[]>([]);
 	const [lists, setLists] = useState<List[]>([]);
 	// Views can be lists or tags, such as today or upcoming
-	const [currentList, setCurrentList] = useState<viewType>({
+	const [currentView, setCurrentView] = useState<viewType>({
 		id: 0,
 		title: '',
 	});
@@ -88,7 +88,7 @@ export default function App(): React.JSX.Element {
 			.then((result) => {
 				console.log('Here are the lists: ', result);
 				setLists(result);
-				setCurrentList((oldlist) => {
+				setCurrentView((oldView) => {
 					let tmp: viewType;
 					if (typeof userSettings.homeListId === 'number') {
 						const list = result.find(
@@ -122,7 +122,7 @@ export default function App(): React.JSX.Element {
 				title: userSettings.listViews.get(newListId) as string,
 			};
 		}
-		setCurrentList(newView);
+		setCurrentView(newView);
 	};
 
 	const addList = async (title: string): Promise<List> => {
@@ -153,8 +153,8 @@ export default function App(): React.JSX.Element {
 			tmp.list = parseInt(todo.list as string);
 		} else {
 			if (origin === 'taskList') {
-				if (typeof currentList.id === 'number') {
-					tmp.list = currentList.id;
+				if (typeof currentView.id === 'number') {
+					tmp.list = currentView.id;
 				} else {
 					tmp.list = userSettings.inboxListId;
 				}
@@ -165,7 +165,7 @@ export default function App(): React.JSX.Element {
 		if ('dueDate' in todo) {
 			tmp.dueDate = todo.dueDate as Date;
 		} else {
-			if (currentList.id === '0') {
+			if (currentView.id === userSettings.todayListId) {
 				tmp.dueDate = new Date();
 			}
 		}
@@ -200,8 +200,9 @@ export default function App(): React.JSX.Element {
 			setLists((prevLists) => {
 				return prevLists.filter((list) => list.id !== id);
 			});
-			if (id === currentList.id) {
-				setCurrentList(() => {
+			// If current view is the one being deleted, default current view to the home view
+			if (id === currentView.id) {
+				setCurrentView(() => {
 					const list = lists.find(
 						(list) => list.id === userSettings.homeListId,
 					) as List;
@@ -236,10 +237,10 @@ export default function App(): React.JSX.Element {
 					}
 				});
 			});
-
-			if (id === currentList.id) {
+			// If the current view is the one being edited, update the current view
+			if (id === currentView.id) {
 				console.log('Patched list and current list match! ', title);
-				setCurrentList((oldCurrentList) => ({ ...oldCurrentList, title }));
+				setCurrentView((oldCurrentView) => ({ ...oldCurrentView, title }));
 			}
 			return updatedList;
 		} catch (error) {
@@ -356,7 +357,7 @@ export default function App(): React.JSX.Element {
 					lists={lists}
 					userSettings={userSettings}
 					changeCurrentList={changeCurrentList}
-					currentList={currentList}
+					currentView={currentView}
 					addList={addList}
 					deleteList={deleteList}
 					editList={editList}
@@ -369,9 +370,9 @@ export default function App(): React.JSX.Element {
 						showSidebar ? 'w-65%' : 'w-full'
 					} rounded-xl border-2 border-black bg-white p-10 fill-mode-forwards`}>
 					<div className='absolute left-3 top-2 text-sm font-bold text-violet-600'>
-						{currentList.title}
+						{currentView.title}
 					</div>
-					<TaskForm addTodo={addTodo} key={currentList.id} />
+					<TaskForm addTodo={addTodo} key={currentView.id} />
 					<TaskListHeader
 						fieldDone={'Done?'}
 						fieldTask={'Task'}
@@ -385,7 +386,7 @@ export default function App(): React.JSX.Element {
 						editTodo={editTodo}
 						editTodoFull={editTodoFull}
 						condition={false}
-						currentList={currentList}
+						currentView={currentView}
 						newTodoEdit={newTodoEdit}
 						setNewTodoEdit={setNewTodoEdit}
 					/>
@@ -402,7 +403,7 @@ export default function App(): React.JSX.Element {
 						editTodo={editTodo}
 						editTodoFull={editTodoFull}
 						condition={true}
-						currentList={currentList}
+						currentView={currentView}
 						newTodoEdit={newTodoEdit}
 						setNewTodoEdit={setNewTodoEdit}
 					/>

@@ -902,8 +902,8 @@ body {
   width: 100%;
 }
 
-.min-w-\[25\%\] {
-  min-width: 25%;
+.min-w-\[20\%\] {
+  min-width: 20%;
 }
 
 .min-w-\[8rem\] {
@@ -912,10 +912,6 @@ body {
 
 .min-w-\[var\(--radix-select-trigger-width\)\] {
   min-width: var(--radix-select-trigger-width);
-}
-
-.min-w-\[20\%\] {
-  min-width: 20%;
 }
 
 .max-w-fit {

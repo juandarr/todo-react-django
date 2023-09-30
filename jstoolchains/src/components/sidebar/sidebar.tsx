@@ -9,7 +9,7 @@ import DeleteModal from '../modals/deleteModal';
 export default function SideBar({
 	lists,
 	userSettings,
-	currentList,
+	currentView,
 	changeCurrentList,
 	addList,
 	deleteList,
@@ -17,17 +17,12 @@ export default function SideBar({
 	showSidebar,
 }: SideBarProps): React.JSX.Element {
 	const otherLists = lists
-		.filter(
-			(list) =>
-				![userSettings.inboxListId, userSettings.todayListId].includes(
-					list.id as number,
-				),
-		)
+		.filter((list) => userSettings.inboxListId !== list.id)
 		.map((list) => (
 			<div key={list.id} className='parent flex items-center justify-between'>
 				<button
 					className={`flex flex-1 cursor-pointer justify-start ${
-						currentList.id === list.id
+						currentView.id === list.id
 							? 'rounded-md bg-cyan-200 font-semibold'
 							: ''
 					} truncate rounded-xl p-1 pl-2 text-lg hover:underline hover:decoration-rose-500 hover:decoration-2`}
@@ -59,7 +54,7 @@ export default function SideBar({
 		<button
 			key={value}
 			className={`flex cursor-pointer justify-start ${
-				currentList.id === value ? 'rounded-md bg-cyan-200 font-semibold' : ''
+				currentView.id === value ? 'rounded-md bg-cyan-200 font-semibold' : ''
 			} rounded-xl p-1 pl-2 text-lg hover:underline hover:decoration-rose-500 hover:decoration-2`}
 			onClick={() => {
 				changeCurrentList(value);
@@ -69,7 +64,7 @@ export default function SideBar({
 	));
 	return (
 		<div
-			className={`w-30% flexflex-col absolute left-0 top-0 my-6  rounded-xl border-2 border-black bg-white p-10 ${
+			className={`flexflex-col absolute left-0 top-0 my-6 w-30%  rounded-xl border-2 border-black bg-white p-10 ${
 				showSidebar
 					? 'animate-[sidebar-content-show_300ms]'
 					: 'animate-[sidebar-content-hide_300ms]'
@@ -79,7 +74,7 @@ export default function SideBar({
 				<div className='mb-2 text-xl font-bold'>Tareas</div>
 				<button
 					className={`flex cursor-pointer justify-start ${
-						currentList.id === userSettings.inboxListId
+						currentView.id === userSettings.inboxListId
 							? 'rounded-md bg-cyan-200 font-semibold'
 							: ''
 					} rounded-xl p-1 pl-2 text-lg hover:underline hover:decoration-rose-500 hover:decoration-2`}

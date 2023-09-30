@@ -12,17 +12,17 @@ export default function TaskList({
 	editTodo,
 	editTodoFull,
 	condition,
-	currentList,
+	currentView,
 	newTodoEdit,
 	setNewTodoEdit,
 }: TaskListProps): React.JSX.Element {
 	const [edit, setEdit] = useState<[boolean, number]>([false, 0]);
 
 	let listTodos;
-	if (typeof currentList.id === 'number') {
-		listTodos = todos.filter((todo) => todo.list === currentList.id);
+	if (typeof currentView.id === 'number') {
+		listTodos = todos.filter((todo) => todo.list === currentView.id);
 	} else {
-		const customFilter = userSettings.listViewsFilters.get(currentList.id);
+		const customFilter = userSettings.listViewsFilters.get(currentView.id);
 		listTodos = todos.filter(customFilter as filterType);
 	}
 

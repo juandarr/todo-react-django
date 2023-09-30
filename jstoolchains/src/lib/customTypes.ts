@@ -83,7 +83,7 @@ export interface TaskListProps {
 	) => Promise<void>;
 	editTodoFull: (todo: todoType) => Promise<Todo>;
 	condition: boolean;
-	currentList: viewType;
+	currentView: viewType;
 	newTodoEdit: Todo;
 	setNewTodoEdit: React.Dispatch<React.SetStateAction<Todo>>;
 }
@@ -126,7 +126,7 @@ export interface SideBarProps {
 	lists: List[];
 	userSettings: userSettingsType;
 	changeCurrentList: (viewId: number | string) => void;
-	currentList: viewType;
+	currentView: viewType;
 	addList: addListType;
 	deleteList: (id: number) => Promise<void>;
 	editList: (id: number, title: string) => Promise<List>;
