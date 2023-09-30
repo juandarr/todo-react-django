@@ -203,10 +203,19 @@ export default function App(): React.JSX.Element {
 			// If current view is the one being deleted, default current view to the home view
 			if (id === currentView.id) {
 				setCurrentView(() => {
-					const list = lists.find(
-						(list) => list.id === userSettings.homeListId,
-					) as List;
-					return { id: list.id as number, title: list.title };
+					if (typeof userSettings.homeListId === 'number') {
+						const list = lists.find(
+							(list) => list.id === userSettings.homeListId,
+						) as List;
+						return { id: list.id as number, title: list.title };
+					} else {
+						return {
+							id: userSettings.homeListId,
+							title: userSettings.viewTagDetails.get(
+								userSettings.homeListId,
+							) as string,
+						};
+					}
 				});
 			}
 			console.log('List was deleted');

@@ -143,7 +143,7 @@ export default function EditModalTodo({
 		const el: HTMLElement = document.getElementById(parentId) as HTMLElement;
 		if (el !== null) el.classList.toggle('hidden-child');
 	};
-	console.log('Modal todo edition opened', newEditTodo);
+	console.log('Modal todo edition opened');
 	return (
 		<Popover modal={true} open={isOpen} onOpenChange={setIsOpen}>
 			<TooltipProvider>
