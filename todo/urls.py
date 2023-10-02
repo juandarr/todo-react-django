@@ -4,6 +4,9 @@ from rest_framework import routers
 
 urlpatterns = [
     path('', views.todo, name='main view'),
+    path(
+        'signup', views.signup_request, name='signup'
+    ),
 ]
 
 router = routers.DefaultRouter()
