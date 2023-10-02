@@ -3,7 +3,7 @@ import { type userSettingsType } from './customTypes';
 
 export const userSettings: userSettingsType = {
 	homeListId: '0',
-	inboxListId: 1,
+	inboxListId: 69,
 	viewTags: new Map([
 		['today', '0'],
 		['upcoming', '-1'],

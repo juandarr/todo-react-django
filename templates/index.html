@@ -15,7 +15,6 @@ Task manager
 {% else %}
 <div class="flex flex-col items-center mt-3">
     <p class="mb-2">You are not logged in</p>
-    {{ user.username }}
     <a class="bg-white p-3 w-fit hover:bg-gray-200 rounded-md" href="{% url 'login' %}">Log In</a>
 </div>
 {% endif %}

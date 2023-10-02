@@ -17,15 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
-from todo import views as todoViews
-from rest_framework import routers
-from . import views
+from .views import SignUpView
 
 urlpatterns = [
-    path('', todoViews.todo, name="home"),
     path('', include('todo.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
+path("accounts/signup", SignUpView.as_view(), name="signup"),
 # path("login", views.login_request, name="login"),
     path('api-auth/', include('rest_framework.urls')),
     path('__reload__/', include('django_browser_reload.urls')),
@@ -33,9 +31,3 @@ urlpatterns = [
     path('api/schema/', SpectacularAPIView.as_view(), name='schema')
 ]
 
-
-router = routers.DefaultRouter()
-router.register('api/todos', todoViews.TodoApiView, basename='TodoApi')
-router.register('api/lists', todoViews.ListApiView, basename='ListApi')
-
-urlpatterns += router.urls

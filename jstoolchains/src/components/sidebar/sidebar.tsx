@@ -49,7 +49,7 @@ export default function SideBar({
 			</div>
 		));
 	const inbox = lists.find((list) => userSettings.inboxListId === list.id);
-
+	console.log('These are the lists: ', lists, userSettings.inboxListId);
 	const ViewLists = userSettings.viewTagIds.map((value) => (
 		<button
 			key={value}
