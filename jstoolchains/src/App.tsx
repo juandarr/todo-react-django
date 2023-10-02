@@ -30,7 +30,6 @@ function randomInRange(min: number, max: number): number {
 }
 
 export default function App(): React.JSX.Element {
-	// TODO : review exposure modifications to the DOM done without refs in the codebase. Are any changes being done to the DOM
 	const [todos, setTodos] = useState<Todo[]>([]);
 	const [lists, setLists] = useState<List[]>([]);
 	// Views can be lists or tags, such as today or upcoming
@@ -51,8 +50,6 @@ export default function App(): React.JSX.Element {
 		}
 	};
 
-	// TODO: Reset forms using keys instead of hardcode it every time (specially for forms)
-	// https://react.dev/learn/preserving-and-resetting-state#resetting-a-form-with-a-key
 	useEffect(() => {
 		document.addEventListener('keydown', toggleSidebarCallback);
 		return () => {
