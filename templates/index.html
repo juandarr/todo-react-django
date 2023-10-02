@@ -6,12 +6,17 @@ Task manager
 
 {% block content %}
 {% if user.is_authenticated %}
-Hi , {{user.name}}
-<div id="root" class="flex flex-col items-center" />
+<div class="flex justify-around">
+    <p>Welcome, {{ user.username }}</p>
+
+    <p><a class="bg-white h-2 w-fit hover:bg-gray-200 rounded-md" href="{% url 'logout' %}">Log Out</a></p>
+</div>
+<div id="root" class="flex flex-col items-center"></div>
 {% else %}
 <div class="flex flex-col items-center mt-3">
     <p class="mb-2">You are not logged in</p>
-    <a class="bg-white p-3 w-fit hover:bg-gray-200" href="{% url 'login' %}">Log In</a>
+    {{ user.username }}
+    <a class="bg-white p-3 w-fit hover:bg-gray-200 rounded-md" href="{% url 'login' %}">Log In</a>
 </div>
 {% endif %}
 {% endblock %}

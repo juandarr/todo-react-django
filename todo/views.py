@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.shortcuts import render
 from django.template import loader
 from rest_framework import viewsets
 from .models import Todo, List
@@ -6,14 +7,12 @@ from .serializers import TodoSerializer, ListSerializer
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from django.shortcuts import  render, redirect
-from .forms import NewUserForm
-from django.contrib.auth import login
-from django.contrib import messages
-
 def todo(request):
+    context = {
+        'user': request.user
+    }
     template = loader.get_template('index.html')
-    return HttpResponse(template.render())
+    return render(request, 'index.html', context)
 
 class TodoApiView(viewsets.ModelViewSet):
     queryset = Todo.objects.all() 
@@ -39,15 +38,3 @@ class ListApiView(viewsets.ModelViewSet):
     def get_queryset(self):
         return self.request.user.lists.all()
 
-
-def signup_request(request):
-	if request.method == "POST":
-		form = NewUserForm(request.POST)
-		if form.is_valid():
-			user = form.save()
-			login(request, user)
-			#messages.success(request, "Registration successful." )
-			return redirect("main view")
-		#messages.error(request, "Unsuccessful registration. Invalid information.")
-	form = NewUserForm()
-	return render (request=request, template_name="signup.html", context={"signup_form":form})
