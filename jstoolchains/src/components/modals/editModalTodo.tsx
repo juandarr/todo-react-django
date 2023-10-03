@@ -89,8 +89,6 @@ export default function EditModalTodo({
 				.catch(() => {});
 		}
 	}, [isOpen]);
-	// TODO: find a way to get better error messages and guide
-	// the user to find a solution. Current error is quite vague and useless
 	const editHandleSubmit = async (): Promise<void> => {
 		if (newEditTodo.title === '') return;
 		setStatus('submitting');

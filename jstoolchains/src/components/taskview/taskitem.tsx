@@ -70,7 +70,6 @@ export default function TaskItem({
 			});
 	}
 
-	// TODO: decide what to do about the div element showing deletion and completion date
 	return (
 		<>
 			<div className='parent flex'>
