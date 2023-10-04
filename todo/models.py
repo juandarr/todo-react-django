@@ -1,6 +1,26 @@
 from django.db import models
 from django.utils.timezone import now
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser, BaseUserManager, PermissionsMixin
+
+class UserManager(BaseUserManager):
+    def create_user(self, password=None, **extra_fields):
+        extra_fields.setdefault("inbox_id", 0)
+        print("User was created with inbox id!")
+        user = self.model(**extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, password=None, **extra_fields):
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+        return self.create_user(password = password, **extra_fields)
+
+class User(AbstractUser, PermissionsMixin):
+    inbox_id = models.IntegerField(blank=True, null=True)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    objects = UserManager()
 
 class List(models.Model):
     id = models.BigAutoField(primary_key=True,unique=True, blank=True)
@@ -26,7 +46,7 @@ class Todo(models.Model):
         (1, 'High')
     )
     due_date = models.DateTimeField(blank=True, null=True)
-    list = models.ForeignKey(List, on_delete=models.CASCADE, blank=True, default=1)
+    list = models.ForeignKey(List, on_delete=models.CASCADE, blank=True)
     user = models.ForeignKey(User, on_delete= models.CASCADE, blank=True, related_name='todos')
 
     class Meta:

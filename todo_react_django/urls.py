@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
-from .views import SignUpView
+from todo.views import SignUpView
 
 urlpatterns = [
     path('', include('todo.urls')),
