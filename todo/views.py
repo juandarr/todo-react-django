@@ -1,4 +1,3 @@
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.template import loader
 from rest_framework import viewsets
@@ -11,7 +10,7 @@ from django.contrib.auth import login, authenticate, get_user_model
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 
-from django.contrib.auth.forms import UserCreationForm
+from .forms import CustomUserCreationForm
 from django.urls import reverse_lazy
 from django.views import generic
 
@@ -69,7 +68,6 @@ def login_request(request):
 	form = AuthenticationForm()
 	return render(request=request, template_name="registration/login.html", context={"login_form":form, "user": request.user})
 
-
 # def signup_request(request):
 # 	if request.method == "POST":
 # 		form = NewUserForm(request.POST)
@@ -81,11 +79,9 @@ def login_request(request):
 # 		messages.error(request, "Unsuccessful registration. Invalid information.")
 # 	form = NewUserForm()
 # 	return render (request=request, template_name="signup.html", context={"signup_form":form})
-class RegisterForm (UserCreationForm):
-      class Meta(UserCreationForm.Meta):
-            model = get_user_model()
+
 
 class SignUpView(generic.CreateView):
-    form_class = RegisterForm
+    form_class = CustomUserCreationForm 
     success_url = reverse_lazy("login")
     template_name = "registration/signup.html"

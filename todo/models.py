@@ -1,11 +1,12 @@
 from django.db import models
 from django.utils.timezone import now
+from todo_react_django import settings
 from django.contrib.auth.models import AbstractUser, BaseUserManager, PermissionsMixin
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class UserManager(BaseUserManager):
     def create_user(self, password=None, **extra_fields):
-        extra_fields.setdefault("inbox_id", 0)
-        print("User was created with inbox id!")
         user = self.model(**extra_fields)
         user.set_password(password)
         user.save(using=self._db)
@@ -17,16 +18,19 @@ class UserManager(BaseUserManager):
         return self.create_user(password = password, **extra_fields)
 
 class User(AbstractUser, PermissionsMixin):
-    inbox_id = models.IntegerField(blank=True, null=True)
+    inbox_id = models.IntegerField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     objects = UserManager()
+
+    def __str__(self):
+        return self.username
 
 class List(models.Model):
     id = models.BigAutoField(primary_key=True,unique=True, blank=True)
     title = models.CharField(max_length=75)
     archived = models.BooleanField(blank=True, default=False)
-    user = models.ForeignKey(User, on_delete =models.CASCADE, blank=True, related_name='lists')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete =models.CASCADE, blank=True, related_name='lists')
 
     def __str__(self):
         return self.title
@@ -49,8 +53,8 @@ class Todo(models.Model):
     list = models.ForeignKey(List, on_delete=models.CASCADE, blank=True)
     user = models.ForeignKey(User, on_delete= models.CASCADE, blank=True, related_name='todos')
 
-    class Meta:
-        ordering = ['created_at']
+    def __str__(self):
+        return self.title
 
     def __init__(self, *args, **kwargs):
         super(Todo, self).__init__(*args, **kwargs)
@@ -61,5 +65,16 @@ class Todo(models.Model):
             self.completed_at = now()
         super(Todo, self).save(*args, **kwargs)
 
-    def __str__(self):
-        return self.title
+    class Meta:
+        ordering = ['created_at']
+
+@receiver(post_save, sender=User)
+def create_list_record(sender, instance, created, **kwargs):
+    from .models import List
+    if created:
+        new_model = List(title="📥 Inbox", user_id = instance.id)
+        new_model.save()
+
+        # Update the related User model to establish the relationship with new List
+        instance.inbox_id = new_model.id
+        instance.save()
