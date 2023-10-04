@@ -188,7 +188,7 @@ export default function CreateModalTodo({
 						value={newTodo.title}
 						ref={textAreaTitle}
 						placeholder='Name this todo'
-						className='mb-2 ml-4 mr-4 mt-4 rounded-lg bg-gray-300 px-4 py-3 text-base text-gray-900 placeholder:text-gray-500'
+						className='mb-2 ml-4 mr-4 mt-4 rounded-lg bg-gray-300 px-4 py-3 text-base font-medium text-gray-900 placeholder:text-gray-500'
 						onChange={(event) => {
 							setNewTodo((old) => ({ ...old, title: event.target.value }));
 						}}
@@ -211,7 +211,7 @@ export default function CreateModalTodo({
 						value={newTodo.description}
 						ref={textAreaDescription}
 						placeholder='Description'
-						className='mb-1 ml-4 mr-4 mt-1 rounded-lg bg-gray-300 px-4 py-3 text-base text-gray-900 placeholder:text-gray-500'
+						className='mb-1 ml-4 mr-4 mt-1 rounded-lg bg-gray-300 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-500'
 						onChange={(event) => {
 							setNewTodo((old) => ({
 								...old,

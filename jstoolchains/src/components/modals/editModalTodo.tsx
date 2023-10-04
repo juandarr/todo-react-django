@@ -184,7 +184,7 @@ export default function EditModalTodo({
 						name='title'
 						value={newEditTodo.title}
 						placeholder='Name this todo'
-						className='mb-3 ml-4 mr-4 mt-4 overflow-y-hidden rounded-lg bg-gray-300 px-4 py-3 text-base text-gray-900 placeholder:text-gray-500'
+						className='mb-3 ml-4 mr-4 mt-4 overflow-y-hidden rounded-lg bg-gray-300 px-4 py-3 text-base font-medium text-gray-900 placeholder:text-gray-500'
 						onChange={(event) => {
 							adjustHeight();
 							setNewEditTodo((old) => ({ ...old, title: event.target.value }));
@@ -207,7 +207,7 @@ export default function EditModalTodo({
 						name='description'
 						value={newEditTodo.description}
 						placeholder='Description'
-						className='mb-1 ml-4 mr-4 overflow-y-hidden rounded-lg bg-gray-300 px-4 py-3 text-base text-gray-900 placeholder:text-gray-500'
+						className='mb-1 ml-4 mr-4 overflow-y-hidden rounded-lg bg-gray-300 px-4 py-3 text-sm  text-gray-900 placeholder:text-gray-500'
 						onChange={(event) => {
 							adjustHeight();
 							setNewEditTodo((old) => {

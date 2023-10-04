@@ -1,4 +1,6 @@
 todo_react_django/__pycache__
+static/css/
+static/js/
 jstoolchains/node_modules
 todo/__pycache__
 todo/migrations/__pycache__
