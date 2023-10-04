@@ -28,9 +28,14 @@ export type listsType = listType[];
 
 export type filterType = (todo: Todo) => boolean;
 
-export interface userSettingsType {
+export interface userInfoType {
+	id: number;
+	username: string;
 	homeListId: number | string;
 	inboxListId: number;
+}
+
+export interface viewDataType {
 	viewTags: Map<string, string>;
 	viewTagIds: string[];
 	viewTagDetails: Map<string, string>;
@@ -97,6 +102,7 @@ export interface TaskListHeaderProps {
 export interface CreateModalTodoProps {
 	lists: Todo[];
 	addTodo: addTodoType;
+	userInfo: userInfoType;
 }
 
 export interface CreateModalListProps {
@@ -124,7 +130,8 @@ export interface DeleteModalProps {
 
 export interface SideBarProps {
 	lists: List[];
-	userSettings: userSettingsType;
+	userInfo: userInfoType;
+	viewData: viewDataType;
 	changeCurrentView: (viewId: number | string) => void;
 	currentView: viewType;
 	addList: addListType;
@@ -139,6 +146,7 @@ export interface NavBarProps {
 	changeCurrentView: (viewId: number | string) => void;
 	lists: List[];
 	addTodo: addTodoType;
+	userInfo: userInfoType;
 	setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
 }
 

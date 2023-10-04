@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { TodosApi, ListsApi } from '../../todo-api-client/apis/index';
+import { TodosApi, ListsApi, UsersApi } from '../../todo-api-client/apis/index';
 import { Configuration } from '../../todo-api-client/runtime';
 
 import { getPoint, getCookie, isDescendantOf } from './lib/utils';
@@ -11,7 +11,7 @@ import TaskForm from './components/taskview/taskform';
 import TaskListHeader from './components/taskview/taskheader';
 import TaskList from './components/taskview/tasklist';
 
-import { userSettings } from './lib/userSettings';
+import { viewData } from './lib/userSettings';
 
 import confetti from 'canvas-confetti';
 import { Toaster } from './components/ui/toast/toaster';
@@ -19,6 +19,7 @@ import { Toaster } from './components/ui/toast/toaster';
 import type {
 	todoType,
 	listType,
+	userInfoType,
 	EditionSetState,
 	viewType,
 } from './lib/customTypes';
@@ -28,6 +29,13 @@ import type { Todo, List } from '../../todo-api-client/models';
 function randomInRange(min: number, max: number): number {
 	return Math.random() * (max - min) + min;
 }
+
+let userInfo: userInfoType = {
+	id: 0,
+	username: '',
+	homeListId: 0,
+	inboxListId: 0,
+};
 
 export default function App(): React.JSX.Element {
 	const [todos, setTodos] = useState<Todo[]>([]);
@@ -64,10 +72,54 @@ export default function App(): React.JSX.Element {
 		},
 	});
 
+	const clientUser = new UsersApi(apiConfig);
 	const clientTodo = new TodosApi(apiConfig);
 	const clientList = new ListsApi(apiConfig);
 
 	useEffect(() => {
+		clientUser
+			.usersList()
+			.then((result) => {
+				console.log('Here is the user: ', result);
+				const user = result[0];
+				userInfo = {
+					id: user.id,
+					username: user.username,
+					inboxListId: user.inboxId as number,
+					homeListId: user.inboxId as number,
+				};
+
+				clientList
+					.listsList()
+					.then((result) => {
+						console.log('Here are the lists: ', result);
+						setLists(result);
+						setCurrentView((oldView) => {
+							let tmp: viewType;
+							if (typeof userInfo.homeListId === 'number') {
+								const list = result.find(
+									(list) => list.id === userInfo.homeListId,
+								) as listType;
+								tmp = { id: list.id, title: list.title };
+							} else {
+								const homeId = userInfo.homeListId;
+
+								tmp = {
+									id: homeId,
+									title: viewData.viewTagDetails.get(homeId) as string,
+								};
+							}
+							return tmp;
+						});
+					})
+					.catch(() => {
+						console.log('There was an error retrieving lists');
+					});
+			})
+			.catch(() => {
+				console.log('There was an error retrieving user');
+			});
+
 		clientTodo
 			.todosList()
 			.then((result) => {
@@ -79,33 +131,6 @@ export default function App(): React.JSX.Element {
 			});
 
 		console.log('calling clientList now');
-
-		clientList
-			.listsList()
-			.then((result) => {
-				console.log('Here are the lists: ', result);
-				setLists(result);
-				setCurrentView((oldView) => {
-					let tmp: viewType;
-					if (typeof userSettings.homeListId === 'number') {
-						const list = result.find(
-							(list) => list.id === userSettings.homeListId,
-						) as listType;
-						tmp = { id: list.id, title: list.title };
-					} else {
-						const homeId = userSettings.homeListId;
-
-						tmp = {
-							id: homeId,
-							title: userSettings.viewTagDetails.get(homeId) as string,
-						};
-					}
-					return tmp;
-				});
-			})
-			.catch(() => {
-				console.log('There was an error retrieving lists');
-			});
 	}, []);
 
 	const changeCurrentView = (newViewId: number | string): void => {
@@ -116,7 +141,7 @@ export default function App(): React.JSX.Element {
 		} else {
 			newView = {
 				id: newViewId,
-				title: userSettings.viewTagDetails.get(newViewId) as string,
+				title: viewData.viewTagDetails.get(newViewId) as string,
 			};
 		}
 		setCurrentView(newView);
@@ -153,16 +178,16 @@ export default function App(): React.JSX.Element {
 				if (typeof currentView.id === 'number') {
 					tmp.list = currentView.id;
 				} else {
-					tmp.list = userSettings.inboxListId;
+					tmp.list = userInfo.inboxListId;
 				}
 			} else {
-				tmp.list = userSettings.inboxListId;
+				tmp.list = userInfo.inboxListId;
 			}
 		}
 		if ('dueDate' in todo) {
 			tmp.dueDate = todo.dueDate as Date;
 		} else {
-			if (currentView.id === userSettings.viewTags.get('today')) {
+			if (currentView.id === viewData.viewTags.get('today')) {
 				tmp.dueDate = new Date();
 			}
 		}
@@ -200,17 +225,15 @@ export default function App(): React.JSX.Element {
 			// If current view is the one being deleted, default current view to the home view
 			if (id === currentView.id) {
 				setCurrentView(() => {
-					if (typeof userSettings.homeListId === 'number') {
+					if (typeof userInfo.homeListId === 'number') {
 						const list = lists.find(
-							(list) => list.id === userSettings.homeListId,
+							(list) => list.id === userInfo.homeListId,
 						) as List;
 						return { id: list.id as number, title: list.title };
 					} else {
 						return {
-							id: userSettings.homeListId,
-							title: userSettings.viewTagDetails.get(
-								userSettings.homeListId,
-							) as string,
+							id: userInfo.homeListId,
+							title: viewData.viewTagDetails.get(userInfo.homeListId) as string,
 						};
 					}
 				});
@@ -356,12 +379,14 @@ export default function App(): React.JSX.Element {
 				changeCurrentView={changeCurrentView}
 				lists={lists}
 				addTodo={addTodo}
+				userInfo={userInfo}
 				setShowSidebar={setShowSidebar}
 			/>
 			<div className='font-serif relative mx-6 flex w-5/6 justify-end'>
 				<SideBar
 					lists={lists}
-					userSettings={userSettings}
+					userInfo={userInfo}
+					viewData={viewData}
 					changeCurrentView={changeCurrentView}
 					currentView={currentView}
 					addList={addList}

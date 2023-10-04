@@ -1,9 +1,7 @@
 import type { Todo } from '../../../todo-api-client/models/Todo';
-import { type userSettingsType } from './customTypes';
+import { type viewDataType } from './customTypes';
 
-export const userSettings: userSettingsType = {
-	homeListId: '0',
-	inboxListId: 1,
+export const viewData: viewDataType = {
 	viewTags: new Map([
 		['today', '0'],
 		['upcoming', '-1'],

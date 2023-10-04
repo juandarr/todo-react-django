@@ -29,7 +29,7 @@ import { useToast } from '../ui/toast/use-toast';
 import Spinner from 'react-spinners/DotLoader';
 
 import type { CreateModalTodoProps, todoType } from '../../lib/customTypes';
-import { PriorityEnum, userSettings } from '../../lib/userSettings';
+import { PriorityEnum } from '../../lib/userSettings';
 import { isDescendantOf } from '../../lib/utils';
 import useAutosizeTextArea from '../../lib/useAutosizeTextArea';
 import { DatePickerWithPresets } from '../ui/datepicker';
@@ -44,6 +44,7 @@ const override: CSSProperties = {
 export default function CreateModalTodo({
 	lists,
 	addTodo,
+	userInfo,
 }: CreateModalTodoProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
 	const [newTodo, setNewTodo] = useState<todoType>({
@@ -51,7 +52,7 @@ export default function CreateModalTodo({
 		description: '',
 		priority: PriorityEnum.None,
 		dueDate: undefined,
-		list: userSettings.inboxListId.toString(),
+		list: userInfo.inboxListId.toString(),
 	});
 	const [status, setStatus] = useState('typing');
 	const { toast } = useToast();
@@ -133,7 +134,7 @@ export default function CreateModalTodo({
 			title: '',
 			description: '',
 			priority: PriorityEnum.None,
-			list: userSettings.inboxListId.toString(),
+			list: userInfo.inboxListId.toString(),
 			dueDate: undefined,
 		});
 		setStatus('typing');

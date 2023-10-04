@@ -8,23 +8,23 @@ import {
 } from '../ui/tooltip';
 
 import CreateModalTodo from '../modals/createModalTodo';
-import { SidebarLeft, House, StatusUp, Setting2 } from 'iconsax-react';
+import { Logout, SidebarLeft, House, StatusUp, Setting2 } from 'iconsax-react';
 
 import type { NavBarProps } from '../../lib/customTypes';
-import { userSettings } from '../../lib/userSettings';
 import { isDescendantOf } from '../../lib/utils';
 
 export default function NavBar({
 	changeCurrentView,
 	lists,
 	addTodo,
+	userInfo,
 	setShowSidebar,
 }: NavBarProps): React.JSX.Element {
 	const homeCallback = (event: KeyboardEvent): void => {
 		if (!isDescendantOf(event.target as HTMLElement, 'form')) {
 			if (event.key === 'h') {
 				event.preventDefault();
-				changeCurrentView(userSettings.homeListId);
+				changeCurrentView(userInfo.homeListId);
 			}
 		}
 	};
@@ -61,7 +61,7 @@ export default function NavBar({
 			<div
 				className='flex w-1/12 justify-start pl-3 text-2xl'
 				onClick={() => {
-					changeCurrentView(userSettings.homeListId);
+					changeCurrentView(userInfo.homeListId);
 				}}>
 				<TooltipProvider>
 					<Tooltip>
@@ -77,7 +77,7 @@ export default function NavBar({
 				</TooltipProvider>
 			</div>
 			<div className='flex w-8/12 justify-center text-2xl'>
-				<CreateModalTodo lists={lists} addTodo={addTodo} />
+				<CreateModalTodo lists={lists} addTodo={addTodo} userInfo={userInfo} />
 			</div>
 			<div className='flex w-1/12 justify-end pl-3 pr-3 text-2xl '>
 				<TooltipProvider>
@@ -103,6 +103,22 @@ export default function NavBar({
 						</TooltipTrigger>
 						<TooltipContent className='bg-cyan-500'>
 							<p className='font-bold text-white'>Settings</p>
+						</TooltipContent>
+					</Tooltip>
+				</TooltipProvider>
+			</div>
+			<div className='flex w-1/12 justify-end pl-3 pr-3 text-2xl '>
+				<TooltipProvider>
+					<Tooltip>
+						<TooltipTrigger asChild={true}>
+							<a
+								href='/accounts/logout'
+								className='text-amber-500 hover:text-amber-600'>
+								<Logout size='1.8rem' />
+							</a>
+						</TooltipTrigger>
+						<TooltipContent className='bg-amber-500'>
+							<p className='font-bold text-white'>Logout</p>
 						</TooltipContent>
 					</Tooltip>
 				</TooltipProvider>

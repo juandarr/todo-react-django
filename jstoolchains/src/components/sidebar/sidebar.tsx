@@ -8,7 +8,8 @@ import DeleteModal from '../modals/deleteModal';
 
 export default function SideBar({
 	lists,
-	userSettings,
+	userInfo,
+	viewData,
 	currentView,
 	changeCurrentView,
 	addList,
@@ -17,7 +18,7 @@ export default function SideBar({
 	showSidebar,
 }: SideBarProps): React.JSX.Element {
 	const otherLists = lists
-		.filter((list) => userSettings.inboxListId !== list.id)
+		.filter((list) => userInfo.inboxListId !== list.id)
 		.map((list) => (
 			<div key={list.id} className='parent flex items-center justify-between'>
 				<button
@@ -48,9 +49,9 @@ export default function SideBar({
 				</div>
 			</div>
 		));
-	const inbox = lists.find((list) => userSettings.inboxListId === list.id);
-	console.log('These are the lists: ', lists, userSettings.inboxListId);
-	const ViewLists = userSettings.viewTagIds.map((value) => (
+	const inbox = lists.find((list) => userInfo.inboxListId === list.id);
+	console.log('These are the lists: ', lists, userInfo.inboxListId);
+	const ViewLists = viewData.viewTagIds.map((value) => (
 		<button
 			key={value}
 			className={`flex cursor-pointer justify-start ${
@@ -59,7 +60,7 @@ export default function SideBar({
 			onClick={() => {
 				changeCurrentView(value);
 			}}>
-			{userSettings.viewTagDetails.get(value)}
+			{viewData.viewTagDetails.get(value)}
 		</button>
 	));
 	return (
@@ -70,16 +71,19 @@ export default function SideBar({
 					: 'animate-[sidebar-content-hide_300ms]'
 			} fill-mode-forwards`}
 			id='sidebar'>
+			<div className='absolute left-3 top-2 text-sm font-bold text-violet-600'>
+				Welcome, {userInfo.username} ;)
+			</div>
 			<div className='mb-1 flex flex-col'>
 				<div className='mb-2 text-xl font-bold'>Tareas</div>
 				<button
 					className={`flex cursor-pointer justify-start ${
-						currentView.id === userSettings.inboxListId
+						currentView.id === userInfo.inboxListId
 							? 'rounded-md bg-cyan-200 font-semibold'
 							: ''
 					} rounded-xl p-1 pl-2 text-lg hover:underline hover:decoration-rose-500 hover:decoration-2`}
 					onClick={() => {
-						changeCurrentView(userSettings.inboxListId);
+						changeCurrentView(userInfo.inboxListId);
 					}}>
 					{inbox !== undefined ? inbox.title : ''}
 				</button>

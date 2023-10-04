@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import type { TaskListProps, filterType } from '../../lib/customTypes';
 import TaskItem from './taskitem';
-import { userSettings } from '../../lib/userSettings';
+import { viewData } from '../../lib/userSettings';
 
 export default function TaskList({
 	todos,
@@ -22,7 +22,7 @@ export default function TaskList({
 	if (typeof currentView.id === 'number') {
 		listTodos = todos.filter((todo) => todo.list === currentView.id);
 	} else {
-		const customFilter = userSettings.viewTagFilters.get(currentView.id);
+		const customFilter = viewData.viewTagFilters.get(currentView.id);
 		listTodos = todos.filter(customFilter as filterType);
 	}
 
