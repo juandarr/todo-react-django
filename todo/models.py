@@ -70,6 +70,10 @@ class Todo(models.Model):
 
 @receiver(post_save, sender=User)
 def create_list_record(sender, instance, created, **kwargs):
+    '''
+    Create a new list associated to the new user, and its id 
+    is stored as the inbox id for the new user
+    '''
     from .models import List
     if created:
         new_model = List(title="📥 Inbox", user_id = instance.id)

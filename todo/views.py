@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
 from django.template import loader
 from rest_framework import viewsets
-from .models import Todo, List
-from .serializers import TodoSerializer, ListSerializer
+from .models import Todo, List, User
+from .serializers import TodoSerializer, ListSerializer, UserSerializer
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from django.contrib.auth import login, authenticate, get_user_model
+from django.contrib.auth import login, authenticate
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 
@@ -20,6 +20,15 @@ def todo(request):
     }
     template = loader.get_template('index.html')
     return render(request, 'index.html', context)
+
+class UserApiView(viewsets.ModelViewSet):
+    queryset = User.objects.all() 
+    serializer_class = UserSerializer
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        return  User.objects.filter(pk=self.request.user.id)
 
 class TodoApiView(viewsets.ModelViewSet):
     queryset = Todo.objects.all() 

@@ -6,11 +6,6 @@ Task manager
 
 {% block content %}
 {% if user.is_authenticated %}
-<div class="flex justify-around">
-    <p>Welcome, {{ user.username }}</p>
-
-    <p><a class="bg-white h-2 w-fit hover:bg-gray-200 rounded-md" href="{% url 'logout' %}">Log Out</a></p>
-</div>
 <div id="root" class="flex flex-col items-center"></div>
 {% else %}
 <div class="flex flex-col items-center mt-3">
