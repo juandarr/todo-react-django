@@ -155,7 +155,7 @@ export default function EditModalList({
 								data-testid='loader'
 							/>
 							<span className={status === 'submitting' ? 'invisible' : 'block'}>
-								Edit
+								Save
 							</span>
 						</button>
 						<PopoverClose asChild={true}>
