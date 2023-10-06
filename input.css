@@ -132,6 +132,7 @@
   }
 }
 
+/* Input form style */
 input {
  margin-top: 0.5rem;
  height: 2rem;
@@ -142,4 +143,17 @@ input {
  padding-top: 0.75rem;
  padding-bottom: 0.75rem;
  color: rgb(17 24 39);
+}
+
+/* Message duration */
+.messages {
+    /* Add animation and transition properties */
+    animation: fadeOut 5s; /* Adjust the duration as needed */
+    transition: opacity 0.5s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
 }

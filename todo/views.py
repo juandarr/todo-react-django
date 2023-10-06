@@ -10,9 +10,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 
-from .forms import CustomUserCreationForm
-from django.urls import reverse_lazy
-from django.views import generic
+from .forms import UserCreationForm
 
 def todo(request):
     context = {
@@ -70,22 +68,22 @@ def login_request(request):
 		else:
 			messages.error(request,"Invalid username or password.")
 	form = AuthenticationForm()
-	return render(request=request, template_name="registration/login.html", context={"login_form":form, "user": request.user})
+	return render(request=request, template_name="registration/login.html", context={"login_form":form})
 
-# def signup_request(request):
-# 	if request.method == "POST":
-# 		form = NewUserForm(request.POST)
-# 		if form.is_valid():
-# 			user = form.save()
-# 			login(request, user)
-# 			messages.success(request, "Registration successful." )
-# 			return redirect("home")
-# 		messages.error(request, "Unsuccessful registration. Invalid information.")
-# 	form = NewUserForm()
-# 	return render (request=request, template_name="signup.html", context={"signup_form":form})
-
-
-class SignUpView(generic.CreateView):
-    form_class = CustomUserCreationForm 
-    success_url = reverse_lazy("login")
-    template_name = "registration/signup.html"
+def signup_request(request):
+	if request.method == "POST":
+		form = UserCreationForm(request.POST)
+		if form.is_valid():
+			user = form.save()
+			login(request, user)
+			messages.success(request, form )
+			return redirect("login")
+		else:
+			password1 = form.cleaned_data.get('password1')
+			password2 = form.cleaned_data.get('password2')
+			if (password1 != password2):
+				messages.error(request, "Unsuccesful registration. Passwords don't match")
+			else:
+				messages.error(request, "Unsuccessful registration. Invalid information.")
+	form = UserCreationForm()
+	return render (request=request, template_name="registration/signup.html", context={"signup_form":form})

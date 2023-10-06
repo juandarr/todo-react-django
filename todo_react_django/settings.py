@@ -76,6 +76,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'todo_react_django.wsgi.application'
 
+#MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases

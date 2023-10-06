@@ -17,14 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
-from todo.views import SignUpView
+from todo.views import signup_request, login_request
 
 urlpatterns = [
     path('', include('todo.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
-path("accounts/signup", SignUpView.as_view(), name="signup"),
-# path("login", views.login_request, name="login"),
+path("signup", signup_request, name="signup"),
+ path("login", login_request, name="login"),
     path('api-auth/', include('rest_framework.urls')),
     path('__reload__/', include('django_browser_reload.urls')),
     path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
