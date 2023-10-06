@@ -1,20 +1,40 @@
 {% extends "base.html" %}
-
-{% block title %}Login{% endblock %}
-
-
+{% block title %}
+Login
+{% endblock %}
 {% block content %}
-<div className="flex flex-col items-center">
-    <div class="p-3 flex flex-col items-start justify-center">
-        <h2 class="text-xl mb-2">Log In</h2>
-        <form method="post">
+<div class="flex justify-center items-center">
+    <div class="flex flex-col items-center justify-center bg-white w-fit rounded-xl mt-10 m-4 p-8">
+        <h2 class="text-xl mb-2 font-bold">Log In</h2>
+        <form class="" method="post">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button class="mt-2 bg-white p-3 w-fit hover:bg-gray-200 rounded-md" type="submit">Log In</button>
+            <div class="mb-4">
+                <label for="{{ form.username.id_for_label }}"
+                    class="block text-gray-700 font-semibold">Username:</label>
+                {{ form.username }}
+            </div>
+            <div class="mb-4">
+                <label for="{{ form.password.id_for_label }}"
+                    class="block text-gray-700 font-semibold">Password:</label>
+                {{ form.password }}
+            </div>
+            <div class="flex justify-center">
+                <button class="mt-2 mb-4 bg-cyan-500 p-3 w-fit rounded-md font-semibold text-lg hover:bg-cyan-600"
+                    type="submit">
+                    Login
+                </button>
+            </div>
         </form>
+        <div>
+            <p class="mt-2"><a class="hover:underline-offset-2 hover:text-violet-500 hover:underline font-bold"
+                    href="{% url 'password_reset' %}">Forgot Password?</a>
+            </p>
+            <p class="mt-2">
+                Don't have an account? Sign up
+                <a class="hover:decoration-rose-500 hover:text-rose-500 hover:underline-offset-2 hover:underline font-bold"
+                    href="{% url 'signup' %}">here</a>
+            </p>
+        </div>
     </div>
-    <p><a href="{% url 'password_reset' %}">Forgot Password?</a></p>
-    <p>Don't have an account? Sign up <a className="hover:decoration-rose-500 hover:underline-offset-0 text-white"
-            href="{% url 'signup' %}">here</a></p>
 </div>
 {% endblock %}

@@ -55,7 +55,6 @@ class ListApiView(viewsets.ModelViewSet):
         return self.request.user.lists.all()
 
 def login_request(request):
-	print("Trying to validate")
 	if request.method == "POST":
 		form = AuthenticationForm(request, data=request.POST)
 		if form.is_valid():
@@ -65,10 +64,6 @@ def login_request(request):
 			if user is not None:
 				login(request, user)
 				messages.info(request, f"You are now logged in as {username}.")
-				if request.user.is_authenticated:
-					print("User is authenticated")
-				else:
-					print("User not authenticated")
 				return redirect("home")
 			else:
 				messages.error(request,"Invalid username or password.")
