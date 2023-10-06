@@ -3,7 +3,8 @@ import { fontFamily } from 'tailwindcss/defaultTheme';
 /** @type {import('tailwindcss').Config} */
 export const darkMode = ['class'];
 export const content = [
-	'../templates/*.html',
+	'../tempaltes/*.html',
+	'../templates/**/*.html',
 	'./src/*.{tsx,ts,js,jsx}',
 	'./src/**/*.{tsx,ts,js,jsx}',
 ];
