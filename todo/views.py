@@ -84,7 +84,7 @@ def signup_request(request):
 			password1 = form.cleaned_data.get('password1')
 			password2 = form.cleaned_data.get('password2')
 			if User.objects.filter(username=username).exists():
-				messages.error(request, "Username is already taken. Pick a different one.")
+				messages.error(request, "This username is already in use. Please choose another.")
 			elif (password1 != password2):
 				messages.error(request, "Unsuccesful registration. Passwords don't match")
 			else:
