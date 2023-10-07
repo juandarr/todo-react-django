@@ -148,7 +148,7 @@ input {
 /* Message duration */
 .messages {
     /* Add animation and transition properties */
-    animation: fadeOut 5s; /* Adjust the duration as needed */
+    animation: fadeOut 6s; /* Adjust the duration as needed */
     transition: opacity 0.5s;
     animation-fill-mode: forwards;
 }
@@ -156,4 +156,60 @@ input {
 @keyframes fadeOut {
     0% { opacity: 1; }
     100% { opacity: 0; }
+}
+
+/* Style different message levels */
+.alert-success {
+  /* Tailwind-inspired success message styles */
+  background-color: #48bb78; /* Customize color as needed */
+  color: #fff; /* Text color */
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-left: 0.5rem;
+  margin-top: 0.5rem;
+  font-weight:500; 
+}
+
+.alert-info {
+  /* Tailwind-inspired info message styles */
+  background-color: #4299e1;
+  color: #fff;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-left: 0.5rem;
+  margin-top: 0.5rem;
+  font-weight:500; 
+}
+
+.alert-warning {
+  /* Tailwind-inspired warning message styles */
+  background-color: #ecc94b;
+  color: #333; /* Customize text color */
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-left: 0.5rem;
+  margin-top: 0.5rem;
+  font-weight:500; 
+}
+
+.alert-error {
+  /* Tailwind-inspired error message styles */
+  background-color: #f56565;
+  color: #fff;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-left: 0.5rem;
+  margin-top: 0.5rem;
+  font-weight:500; 
+}
+
+.alert-debug {
+  /* Tailwind-inspired error message styles */
+  background-color: #4c0edf;
+  color: #fff;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-left: 0.5rem;
+  margin-top: 0.5rem;
+  font-weight:500; 
 }
