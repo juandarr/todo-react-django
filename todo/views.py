@@ -10,7 +10,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 
-from .forms import UserCreationForm
+from .forms import CustomUserCreationForm
 
 def todo(request):
     context = {
@@ -72,18 +72,22 @@ def login_request(request):
 
 def signup_request(request):
 	if request.method == "POST":
-		form = UserCreationForm(request.POST)
+		form = CustomUserCreationForm(request.POST)
 		if form.is_valid():
+			username = form.cleaned_data.get('username')
 			user = form.save()
 			login(request, user)
-			messages.success(request, form )
+			messages.success(request, f'User {username} was created succesfully')
 			return redirect("login")
 		else:
+			username = request.POST.get('username')
 			password1 = form.cleaned_data.get('password1')
 			password2 = form.cleaned_data.get('password2')
-			if (password1 != password2):
+			if User.objects.filter(username=username).exists():
+				messages.error(request, "Username is already taken. Pick a different one.")
+			elif (password1 != password2):
 				messages.error(request, "Unsuccesful registration. Passwords don't match")
 			else:
 				messages.error(request, "Unsuccessful registration. Invalid information.")
-	form = UserCreationForm()
+	form = CustomUserCreationForm()
 	return render (request=request, template_name="registration/signup.html", context={"signup_form":form})
