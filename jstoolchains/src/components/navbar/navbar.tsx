@@ -7,8 +7,23 @@ import {
 	TooltipTrigger,
 } from '../ui/tooltip';
 
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+	PopoverArrow,
+} from '../ui/popover';
+
 import CreateModalTodo from '../modals/createModalTodo';
-import { Logout, SidebarLeft, House, StatusUp, Setting2 } from 'iconsax-react';
+import {
+	Logout,
+	SidebarLeft,
+	House,
+	StatusUp,
+	Setting2,
+	PasswordCheck,
+	UserSquare,
+} from 'iconsax-react';
 
 import type { NavBarProps } from '../../lib/customTypes';
 import { isDescendantOf } from '../../lib/utils';
@@ -108,18 +123,43 @@ export default function NavBar({
 				</TooltipProvider>
 			</div>
 			<div className='flex w-1/12 justify-end pl-3 pr-3 text-2xl '>
-				<TooltipProvider>
-					<Tooltip>
-						<TooltipTrigger asChild={true}>
-							<a href='/logout' className='text-amber-500 hover:text-amber-600'>
-								<Logout size='1.8rem' />
+				<Popover modal={true}>
+					<TooltipProvider>
+						<Tooltip>
+							<PopoverTrigger
+								asChild={true}
+								className='flex cursor-pointer justify-center text-2xl text-violet-500 hover:text-violet-600'>
+								<TooltipTrigger asChild={true}>
+									<a className='text-amber-500 hover:text-amber-600'>
+										<UserSquare size='1.8rem' />
+									</a>
+								</TooltipTrigger>
+							</PopoverTrigger>
+							<TooltipContent className='bg-amber-500'>
+								<p className='font-bold text-white'>Logout</p>
+							</TooltipContent>
+						</Tooltip>
+					</TooltipProvider>
+					<PopoverContent
+						align={'center'}
+						className='data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
+						<div className='flex flex-col'>
+							<a
+								href='/accounts/password_change'
+								className='mb-2 flex items-center justify-start font-semibold text-rose-500 hover:text-rose-600'>
+								<PasswordCheck size='1.8rem' />
+								<p className='ml-4'>Change password</p>
 							</a>
-						</TooltipTrigger>
-						<TooltipContent className='bg-amber-500'>
-							<p className='font-bold text-white'>Logout</p>
-						</TooltipContent>
-					</Tooltip>
-				</TooltipProvider>
+							<a
+								href='/logout'
+								className='mb-2 flex items-center justify-start font-semibold text-amber-500 hover:text-amber-600'>
+								<Logout size='1.8rem' />
+								<p className='ml-4'>Logout</p>
+							</a>
+						</div>
+						<PopoverArrow className='fill-violet-500' />
+					</PopoverContent>
+				</Popover>
 			</div>
 		</nav>
 	);
