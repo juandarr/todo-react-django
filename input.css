@@ -159,7 +159,7 @@ input {
 }
 
 /* Style different message levels */
-.alert-success {
+.alert-info {
   /* Tailwind-inspired success message styles */
   background-color: #48bb78; /* Customize color as needed */
   color: #fff; /* Text color */
@@ -170,7 +170,7 @@ input {
   font-weight:500; 
 }
 
-.alert-info {
+.alert-success {
   /* Tailwind-inspired info message styles */
   background-color: #4299e1;
   color: #fff;
