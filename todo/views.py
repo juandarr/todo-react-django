@@ -6,7 +6,7 @@ from .serializers import TodoSerializer, ListSerializer, UserSerializer
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 
@@ -52,24 +52,6 @@ class ListApiView(viewsets.ModelViewSet):
     def get_queryset(self):
         return self.request.user.lists.all()
 
-def login_request(request):
-	if request.method == "POST":
-		form = AuthenticationForm(request, data=request.POST)
-		if form.is_valid():
-			username = form.cleaned_data.get('username')
-			password = form.cleaned_data.get('password')
-			user = authenticate(username=username, password=password)
-			if user is not None:
-				login(request, user)
-				messages.success(request, f"You are now logged in as {username}.")
-				return redirect("home")
-			else:
-				messages.error(request,"Invalid username or password.")
-		else:
-			messages.error(request,"Invalid username or password.")
-	form = AuthenticationForm()
-	return render(request=request, template_name="registration/login.html", context={"login_form":form})
-
 def signup_request(request):
 	if request.method == "POST":
 		form = CustomUserCreationForm(request.POST)
@@ -84,10 +66,33 @@ def signup_request(request):
 			password1 = form.cleaned_data.get('password1')
 			password2 = form.cleaned_data.get('password2')
 			if User.objects.filter(username=username).exists():
-				messages.error(request, "This username is already in use. Please choose another.")
+				messages.error(request, "This username is already in use. Please choose another")
 			elif (password1 != password2):
 				messages.error(request, "Unsuccesful registration. Passwords don't match")
 			else:
-				messages.error(request, "Unsuccessful registration. Invalid information.")
+				messages.error(request, "Unsuccessful registration. Invalid information")
 	form = CustomUserCreationForm()
 	return render (request=request, template_name="registration/signup.html", context={"signup_form":form})
+
+def login_request(request):
+	if request.method == "POST":
+		form = AuthenticationForm(request, data=request.POST)
+		if form.is_valid():
+			username = form.cleaned_data.get('username')
+			password = form.cleaned_data.get('password')
+			user = authenticate(username=username, password=password)
+			if user is not None:
+				login(request, user)
+				messages.success(request, f"You are now logged in as {username}.")
+				return redirect("home")
+			else:
+				messages.error(request,"Invalid username or password")
+		else:
+			messages.error(request,"Invalid username or password")
+	form = AuthenticationForm()
+	return render(request=request, template_name="registration/login.html", context={"login_form":form})
+
+def logout_request(request):
+	logout(request)
+	messages.info(request, "You have successfully logged out")
+	return redirect("home")

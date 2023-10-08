@@ -33,6 +33,8 @@ from django.core.exceptions import ValidationError
 #             user.save()
 #         return user
 
+# TODO review of forms and learn about best practices and tools
+# present to use this Django feature. Explore books, guides
 class CustomUserCreationForm (UserCreationForm):
       class Meta(UserCreationForm.Meta):
             model = get_user_model()

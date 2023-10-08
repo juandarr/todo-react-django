@@ -111,9 +111,7 @@ export default function NavBar({
 				<TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger asChild={true}>
-							<a
-								href='/accounts/logout'
-								className='text-amber-500 hover:text-amber-600'>
+							<a href='/logout' className='text-amber-500 hover:text-amber-600'>
 								<Logout size='1.8rem' />
 							</a>
 						</TooltipTrigger>
