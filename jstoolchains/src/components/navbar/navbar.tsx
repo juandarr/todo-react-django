@@ -130,19 +130,22 @@ export default function NavBar({
 								asChild={true}
 								className='flex cursor-pointer justify-center text-2xl'>
 								<TooltipTrigger asChild={true}>
-									<a className='text-amber-500 hover:text-amber-600'>
+									<button className='text-amber-500 hover:text-amber-600'>
 										<UserSquare size='1.8rem' />
-									</a>
+									</button>
 								</TooltipTrigger>
 							</PopoverTrigger>
 							<TooltipContent className='bg-amber-500'>
-								<p className='font-bold text-white'>Logout</p>
+								<p className='font-bold text-white'>Profile</p>
 							</TooltipContent>
 						</Tooltip>
 					</TooltipProvider>
 					<PopoverContent
 						align={'center'}
-						className='data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
+						className='data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'
+						onCloseAutoFocus={(event) => {
+							event.preventDefault();
+						}}>
 						<div className='flex flex-col'>
 							<a
 								href='/accounts/password_change'
