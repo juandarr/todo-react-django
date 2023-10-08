@@ -109,20 +109,6 @@ export default function NavBar({
 				</TooltipProvider>
 			</div>
 			<div className='flex w-1/12 justify-end pl-3 pr-3 text-2xl '>
-				<TooltipProvider>
-					<Tooltip>
-						<TooltipTrigger asChild={true}>
-							<a href='/admin' className='text-cyan-500 hover:text-cyan-600'>
-								<Setting2 size='1.8rem' />
-							</a>
-						</TooltipTrigger>
-						<TooltipContent className='bg-cyan-500'>
-							<p className='font-bold text-white'>Settings</p>
-						</TooltipContent>
-					</Tooltip>
-				</TooltipProvider>
-			</div>
-			<div className='flex w-1/12 justify-end pl-3 pr-3 text-2xl '>
 				<Popover modal={true}>
 					<TooltipProvider>
 						<Tooltip>
@@ -147,6 +133,12 @@ export default function NavBar({
 							event.preventDefault();
 						}}>
 						<div className='flex flex-col'>
+							<a
+								href='/admin'
+								className='mb-2 flex items-center justify-start font-semibold text-cyan-500 hover:text-cyan-600'>
+								<Setting2 size='1.8rem' />
+								<p className='ml-4'>Settings</p>
+							</a>
 							<a
 								href='/accounts/password_change'
 								className='mb-2 flex items-center justify-start font-semibold text-rose-500 hover:text-rose-600'>

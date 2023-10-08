@@ -61,12 +61,12 @@ export default function TaskForm({
 	return (
 		<form
 			id='myform'
-			className='font-serif mb-6 flex space-x-4 text-lg'
+			className='mb-6 flex items-center space-x-4 text-lg'
 			onSubmit={handleSubmit}>
 			<input
 				type='text'
 				name='title'
-				className='h-10 flex-1 rounded-xl bg-gray-300 px-4 py-3 text-gray-900 placeholder:text-gray-500'
+				className='mt-0 h-10 flex-1 rounded-xl bg-gray-300 px-4 py-3 text-gray-900 placeholder:text-gray-500'
 				id='todoText'
 				value={newTodo.title}
 				onChange={(e) => {

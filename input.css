@@ -1,3 +1,16 @@
+/* Input form style */
+input {
+ margin-top: 0.5rem;
+ height: 2rem;
+ border-radius: 0.75rem;
+ background-color:rgb(209 213 219);
+ padding-left: 1rem;
+ padding-right:1rem;
+ padding-top: 0.75rem;
+ padding-bottom: 0.75rem;
+ color: rgb(17 24 39);
+}
+
 /* input.css */
 @tailwind base;
 @tailwind components;
@@ -132,18 +145,6 @@
   }
 }
 
-/* Input form style */
-input {
- margin-top: 0.5rem;
- height: 2rem;
- border-radius: 0.75rem;
- background-color:rgb(209 213 219);
- padding-left: 1rem;
- padding-right:1rem;
- padding-top: 0.75rem;
- padding-bottom: 0.75rem;
- color: rgb(17 24 39);
-}
 
 /* Message duration */
 .messages {
