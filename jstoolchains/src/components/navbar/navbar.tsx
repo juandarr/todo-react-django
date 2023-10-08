@@ -128,7 +128,7 @@ export default function NavBar({
 						<Tooltip>
 							<PopoverTrigger
 								asChild={true}
-								className='flex cursor-pointer justify-center text-2xl text-violet-500 hover:text-violet-600'>
+								className='flex cursor-pointer justify-center text-2xl'>
 								<TooltipTrigger asChild={true}>
 									<a className='text-amber-500 hover:text-amber-600'>
 										<UserSquare size='1.8rem' />
@@ -152,12 +152,12 @@ export default function NavBar({
 							</a>
 							<a
 								href='/logout'
-								className='mb-2 flex items-center justify-start font-semibold text-amber-500 hover:text-amber-600'>
+								className='mb-2 flex items-center justify-start font-semibold text-violet-500 hover:text-violet-600'>
 								<Logout size='1.8rem' />
 								<p className='ml-4'>Logout</p>
 							</a>
 						</div>
-						<PopoverArrow className='fill-violet-500' />
+						<PopoverArrow className='fill-amber-500' />
 					</PopoverContent>
 				</Popover>
 			</div>
