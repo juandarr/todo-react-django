@@ -77,60 +77,76 @@ export default function App(): React.JSX.Element {
 	const clientList = new ListsApi(apiConfig);
 
 	useEffect(() => {
-		clientUser
-			.usersList()
-			.then((result) => {
-				console.log('Here is the user: ', result);
-				const user = result[0];
-				userInfo = {
-					id: user.id,
-					username: user.username,
-					inboxListId: user.inboxId as number,
-					homeListId: user.inboxId as number,
-				};
+		let ignoreTodoFetch = false;
+		let ignoreUserFetch = false;
+		let ignoreListFetch = false;
 
-				clientList
-					.listsList()
-					.then((result) => {
-						console.log('Here are the lists: ', result);
-						setLists(result);
-						setCurrentView((oldView) => {
-							let tmp: viewType;
-							if (typeof userInfo.homeListId === 'number') {
-								const list = result.find(
-									(list) => list.id === userInfo.homeListId,
-								) as listType;
-								tmp = { id: list.id, title: list.title };
-							} else {
-								const homeId = userInfo.homeListId;
+		async function startListFetching(): Promise<void> {
+			try {
+				const listResult = await clientList.listsList();
+				if (!ignoreListFetch) {
+					setLists(listResult);
+					setCurrentView((oldView) => {
+						let tmp: viewType;
+						if (typeof userInfo.homeListId === 'number') {
+							const list = listResult.find(
+								(list) => list.id === userInfo.homeListId,
+							) as listType;
+							tmp = { id: list.id, title: list.title };
+						} else {
+							const homeId = userInfo.homeListId;
 
-								tmp = {
-									id: homeId,
-									title: viewData.viewTagDetails.get(homeId) as string,
-								};
-							}
-							return tmp;
-						});
-					})
-					.catch(() => {
-						console.log('There was an error retrieving lists');
+							tmp = {
+								id: homeId,
+								title: viewData.viewTagDetails.get(homeId) as string,
+							};
+						}
+						return tmp;
 					});
-			})
-			.catch(() => {
-				console.log('There was an error retrieving user');
-			});
+				}
+			} catch (error) {
+				console.log('There was an error retrieving lists: ', error);
+			}
+		}
 
-		clientTodo
-			.todosList()
-			.then((result) => {
-				console.log('Here are the todos: ', result);
-				setTodos(result);
-			})
-			.catch(() => {
-				console.log('There was an error retrieving todos');
-			});
+		async function startUserFetching(): Promise<void> {
+			try {
+				const userResult = await clientUser.usersList();
+				if (!ignoreUserFetch) {
+					const user = userResult[0];
+					userInfo = {
+						id: user.id,
+						username: user.username,
+						inboxListId: user.inboxId as number,
+						homeListId: user.inboxId as number,
+					};
+				}
+				void startListFetching();
+			} catch (error) {
+				console.log('There was an error retrieving user: ', error);
+			}
+		}
 
-		console.log('calling clientList now');
+		async function startTodoFetching(): Promise<void> {
+			try {
+				const todosResult = await clientTodo.todosList();
+				if (!ignoreTodoFetch) {
+					console.log('Here are the todos: ', todosResult);
+					setTodos(todosResult);
+				}
+			} catch (error) {
+				console.log('There was an error retrieving todos: ', error);
+			}
+		}
+
+		void startUserFetching();
+		void startTodoFetching();
+
+		return () => {
+			ignoreUserFetch = true;
+			ignoreListFetch = true;
+			ignoreTodoFetch = true;
+		};
 	}, []);
 
 	const changeCurrentView = (newViewId: number | string): void => {
