@@ -26,6 +26,8 @@ import type {
 
 import type { Todo, List } from '../../todo-api-client/models';
 
+import { useOnlineStatus } from './lib/hooks';
+
 function randomInRange(min: number, max: number): number {
 	return Math.random() * (max - min) + min;
 }
@@ -38,6 +40,7 @@ let userInfo: userInfoType = {
 };
 
 export default function App(): React.JSX.Element {
+	const isOnline = useOnlineStatus();
 	const [todos, setTodos] = useState<Todo[]>([]);
 	const [lists, setLists] = useState<List[]>([]);
 	// Views can be lists or tags, such as today or upcoming
@@ -417,7 +420,7 @@ export default function App(): React.JSX.Element {
 						showSidebar ? 'w-65%' : 'w-full'
 					} rounded-xl border-2 border-black bg-white p-10 fill-mode-forwards`}>
 					<div className='absolute left-3 top-2 text-sm font-bold text-violet-600'>
-						{currentView.title}
+						{currentView.title} - {isOnline ? 'Online' : 'Offline'}
 					</div>
 					<TaskForm addTodo={addTodo} key={currentView.id} />
 					<TaskListHeader
