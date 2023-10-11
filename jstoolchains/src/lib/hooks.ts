@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from 'react';
 
-function subscribe(callback: () => void) {
+function subscribe(callback: () => void): () => void {
 	window.addEventListener('online', callback);
 	window.addEventListener('offline', callback);
 	return () => {
@@ -9,7 +9,10 @@ function subscribe(callback: () => void) {
 	};
 }
 
-export function useOnlineStatus() {
+// TODO : the implementation of an online status checker requires more effort.
+// the navigator API is not enough to reliable know the online state, it will
+// normally indicate when the device is connected to a router or local network
+export function useOnlineStatus(): boolean {
 	return useSyncExternalStore(
 		subscribe,
 		() => navigator.onLine,
