@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-import { TodosApi, ListsApi, UsersApi } from '../../todo-api-client/apis/index';
-import { Configuration } from '../../todo-api-client/runtime';
+import { clientUser, clientTodo, clientList } from './lib/api';
 
-import { getPoint, getCookie, isDescendantOf } from './lib/utils';
+import { getPoint, isDescendantOf } from './lib/utils';
 
 import NavBar from './components/navbar/navbar';
 import SideBar from './components/sidebar/sidebar';
@@ -26,7 +25,7 @@ import type {
 
 import type { Todo, List } from '../../todo-api-client/models';
 
-import { useOnlineStatus } from './lib/hooks';
+import { useOnlineStatus } from './hooks/useOnlineStatus';
 
 function randomInRange(min: number, max: number): number {
 	return Math.random() * (max - min) + min;
@@ -67,17 +66,6 @@ export default function App(): React.JSX.Element {
 			document.removeEventListener('keydown', toggleSidebarCallback);
 		};
 	}, [toggleSidebarCallback]);
-
-	const apiConfig = new Configuration({
-		basePath: 'http://127.0.0.1:8000',
-		headers: {
-			'X-CSRFToken': getCookie('csrftoken'),
-		},
-	});
-
-	const clientUser = new UsersApi(apiConfig);
-	const clientTodo = new TodosApi(apiConfig);
-	const clientList = new ListsApi(apiConfig);
 
 	useEffect(() => {
 		let ignoreTodoFetch = false;
