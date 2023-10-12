@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.template import loader
 from rest_framework import viewsets
@@ -96,3 +97,8 @@ def logout_request(request):
 	logout(request)
 	messages.success(request, "You have successfully logged out")
 	return redirect("home")
+
+def online_status(request):
+	status = "Online"
+	data = {"status": status}
+	return JsonResponse(data)

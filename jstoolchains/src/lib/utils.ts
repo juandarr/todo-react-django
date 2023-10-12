@@ -63,6 +63,14 @@ export async function waitForElementToExist(selector: string): Promise<void> {
 	});
 }
 
+export const checkOnlineStatus = async (): Promise<boolean> => {
+	try {
+		const online = await fetch('/api/status');
+		return online.status >= 200 && online.status < 300;
+	} catch (error) {
+		return false; // It is offline
+	}
+};
 /* Use the following portion of code to test every async api function */
 // setTimeout(() => {
 //   const value = Math.random();

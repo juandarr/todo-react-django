@@ -23,10 +23,12 @@ import {
 	Setting2,
 	PasswordCheck,
 	UserSquare,
+	Heart,
 } from 'iconsax-react';
 
 import type { NavBarProps } from '../../lib/customTypes';
 import { isDescendantOf } from '../../lib/utils';
+import { useOnlineStatus } from '../../hooks/useOnlineStatus';
 
 export default function NavBar({
 	changeCurrentView,
@@ -35,6 +37,8 @@ export default function NavBar({
 	userInfo,
 	setShowSidebar,
 }: NavBarProps): React.JSX.Element {
+	const isOnline = useOnlineStatus();
+
 	const homeCallback = (event: KeyboardEvent): void => {
 		if (!isDescendantOf(event.target as HTMLElement, 'form')) {
 			if (event.key === 'h') {
@@ -52,7 +56,7 @@ export default function NavBar({
 	}, [homeCallback]);
 
 	return (
-		<nav className='mx-6 mb-6 mt-12 flex w-5/6 justify-between rounded-lg border-2 border-black bg-white p-2'>
+		<nav className='relative mx-6 mb-6 mt-12 flex w-5/6 justify-between rounded-lg border-2 border-black bg-white p-2'>
 			<div
 				className='flex w-1/12 justify-start pl-3 text-2xl'
 				onClick={() => {
@@ -156,6 +160,13 @@ export default function NavBar({
 					</PopoverContent>
 				</Popover>
 			</div>
+			<Heart
+				size='12'
+				variant='Bold'
+				className={`${
+					isOnline ? 'text-emerald-500' : 'text-rose-500'
+				} absolute right-1 top-1`}
+			/>
 		</nav>
 	);
 }
