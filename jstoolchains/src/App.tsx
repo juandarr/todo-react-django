@@ -26,6 +26,7 @@ import type {
 import type { Todo, List } from '../../todo-api-client/models';
 
 import { useOnlineStatus } from './hooks/useOnlineStatus';
+import { useModelFetch } from './hooks/useModelFetch';
 
 function randomInRange(min: number, max: number): number {
 	return Math.random() * (max - min) + min;
@@ -40,7 +41,7 @@ let userInfo: userInfoType = {
 
 export default function App(): React.JSX.Element {
 	const isOnline = useOnlineStatus();
-	const [todos, setTodos] = useState<Todo[]>([]);
+	// const [todos, setTodos] = useState<Todo[]>([]);
 	const [lists, setLists] = useState<List[]>([]);
 	// Views can be lists or tags, such as today or upcoming
 	const [currentView, setCurrentView] = useState<viewType>({
@@ -50,6 +51,10 @@ export default function App(): React.JSX.Element {
 	const [newTodoEdit, setNewTodoEdit] = useState<Todo>({ title: '' });
 	const [newListEdit, setNewListEdit] = useState('');
 	const [showSidebar, setShowSidebar] = useState(true);
+	const [todos, setTodos]: [
+		Todo[],
+		React.Dispatch<React.SetStateAction<Todo[]>>,
+	] = useModelFetch(clientTodo.todosList(), 'todos');
 
 	const toggleSidebarCallback = (event: KeyboardEvent): void => {
 		if (!isDescendantOf(event.target as HTMLElement, 'form')) {
@@ -68,7 +73,7 @@ export default function App(): React.JSX.Element {
 	}, [toggleSidebarCallback]);
 
 	useEffect(() => {
-		let ignoreTodoFetch = false;
+		// let ignoreTodoFetch = false;
 		let ignoreUserFetch = false;
 		let ignoreListFetch = false;
 
@@ -118,25 +123,25 @@ export default function App(): React.JSX.Element {
 			}
 		}
 
-		async function startTodoFetching(): Promise<void> {
-			try {
-				const todosResult = await clientTodo.todosList();
-				if (!ignoreTodoFetch) {
-					console.log('Here are the todos: ', todosResult);
-					setTodos(todosResult);
-				}
-			} catch (error) {
-				console.log('There was an error retrieving todos: ', error);
-			}
-		}
+		// async function startTodoFetching(): Promise<void> {
+		// 	try {
+		// 		const todosResult = await clientTodo.todosList();
+		// 		if (!ignoreTodoFetch) {
+		// 			console.log('Here are the todos: ', todosResult);
+		// 			setTodos(todosResult);
+		// 		}
+		// 	} catch (error) {
+		// 		console.log('There was an error retrieving todos: ', error);
+		// 	}
+		// }
 
 		void startUserFetching();
-		void startTodoFetching();
+		// void startTodoFetching();
 
 		return () => {
 			ignoreUserFetch = true;
 			ignoreListFetch = true;
-			ignoreTodoFetch = true;
+			// ignoreTodoFetch = true;
 		};
 	}, []);
 
