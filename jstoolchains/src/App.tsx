@@ -23,7 +23,7 @@ import type {
 	viewType,
 } from './lib/customTypes';
 
-import type { Todo, List } from '../../todo-api-client/models';
+import type { Todo, List, User } from '../../todo-api-client/models';
 
 import { useOnlineStatus } from './hooks/useOnlineStatus';
 import { useModelFetch } from './hooks/useModelFetch';
@@ -41,8 +41,6 @@ let userInfo: userInfoType = {
 
 export default function App(): React.JSX.Element {
 	const isOnline = useOnlineStatus();
-	// const [todos, setTodos] = useState<Todo[]>([]);
-	const [lists, setLists] = useState<List[]>([]);
 	// Views can be lists or tags, such as today or upcoming
 	const [currentView, setCurrentView] = useState<viewType>({
 		id: 0,
@@ -51,10 +49,19 @@ export default function App(): React.JSX.Element {
 	const [newTodoEdit, setNewTodoEdit] = useState<Todo>({ title: '' });
 	const [newListEdit, setNewListEdit] = useState('');
 	const [showSidebar, setShowSidebar] = useState(true);
+
 	const [todos, setTodos]: [
 		Todo[],
 		React.Dispatch<React.SetStateAction<Todo[]>>,
 	] = useModelFetch(clientTodo.todosList(), 'todos');
+
+	const [user]: [User[], React.Dispatch<React.SetStateAction<User[]>>] =
+		useModelFetch(clientUser.usersList(), 'users');
+
+	const [lists, setLists]: [
+		List[],
+		React.Dispatch<React.SetStateAction<List[]>>,
+	] = useModelFetch(clientList.listsList(), 'lists');
 
 	const toggleSidebarCallback = (event: KeyboardEvent): void => {
 		if (!isDescendantOf(event.target as HTMLElement, 'form')) {
@@ -66,84 +73,45 @@ export default function App(): React.JSX.Element {
 	};
 
 	useEffect(() => {
+		if (user.length !== 0) {
+			const tmp = user[0];
+			userInfo = {
+				id: tmp.id,
+				username: tmp.username,
+				inboxListId: tmp.inboxId as number,
+				homeListId: tmp.inboxId as number,
+			};
+		}
+	}, [user]);
+
+	useEffect(() => {
+		if (userInfo.id !== 0 && lists.length !== 0) {
+			setCurrentView((oldView) => {
+				let tmp: viewType;
+				if (typeof userInfo.homeListId === 'number') {
+					const list = lists.find(
+						(list) => list.id === userInfo.homeListId,
+					) as listType;
+					tmp = { id: list.id, title: list.title };
+				} else {
+					const homeId = userInfo.homeListId;
+
+					tmp = {
+						id: homeId,
+						title: viewData.viewTagDetails.get(homeId) as string,
+					};
+				}
+				return tmp;
+			});
+		}
+	}, [lists]);
+
+	useEffect(() => {
 		document.addEventListener('keydown', toggleSidebarCallback);
 		return () => {
 			document.removeEventListener('keydown', toggleSidebarCallback);
 		};
 	}, [toggleSidebarCallback]);
-
-	useEffect(() => {
-		// let ignoreTodoFetch = false;
-		let ignoreUserFetch = false;
-		let ignoreListFetch = false;
-
-		async function startListFetching(): Promise<void> {
-			try {
-				const listResult = await clientList.listsList();
-				if (!ignoreListFetch) {
-					setLists(listResult);
-					setCurrentView((oldView) => {
-						let tmp: viewType;
-						if (typeof userInfo.homeListId === 'number') {
-							const list = listResult.find(
-								(list) => list.id === userInfo.homeListId,
-							) as listType;
-							tmp = { id: list.id, title: list.title };
-						} else {
-							const homeId = userInfo.homeListId;
-
-							tmp = {
-								id: homeId,
-								title: viewData.viewTagDetails.get(homeId) as string,
-							};
-						}
-						return tmp;
-					});
-				}
-			} catch (error) {
-				console.log('There was an error retrieving lists: ', error);
-			}
-		}
-
-		async function startUserFetching(): Promise<void> {
-			try {
-				const userResult = await clientUser.usersList();
-				if (!ignoreUserFetch) {
-					const user = userResult[0];
-					userInfo = {
-						id: user.id,
-						username: user.username,
-						inboxListId: user.inboxId as number,
-						homeListId: user.inboxId as number,
-					};
-				}
-				void startListFetching();
-			} catch (error) {
-				console.log('There was an error retrieving user: ', error);
-			}
-		}
-
-		// async function startTodoFetching(): Promise<void> {
-		// 	try {
-		// 		const todosResult = await clientTodo.todosList();
-		// 		if (!ignoreTodoFetch) {
-		// 			console.log('Here are the todos: ', todosResult);
-		// 			setTodos(todosResult);
-		// 		}
-		// 	} catch (error) {
-		// 		console.log('There was an error retrieving todos: ', error);
-		// 	}
-		// }
-
-		void startUserFetching();
-		// void startTodoFetching();
-
-		return () => {
-			ignoreUserFetch = true;
-			ignoreListFetch = true;
-			// ignoreTodoFetch = true;
-		};
-	}, []);
 
 	const changeCurrentView = (newViewId: number | string): void => {
 		let newView: viewType;
