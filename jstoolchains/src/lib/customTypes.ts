@@ -1,4 +1,4 @@
-import type { List, Todo } from '../../../todo-api-client/models';
+import type { List, Todo, User } from '../../../todo-api-client/models';
 
 export type EditionSetState = React.Dispatch<
 	React.SetStateAction<[boolean, number]>
@@ -54,6 +54,21 @@ export interface cssTailVariant {
 }
 export type addTodoType = (todo: todoType, origin: string) => Promise<Todo>;
 export type addListType = (title: string) => Promise<List>;
+
+export type todoModelFetch = [
+	Todo[],
+	React.Dispatch<React.SetStateAction<Todo[]>>,
+];
+
+export type listModelFetch = [
+	List[],
+	React.Dispatch<React.SetStateAction<List[]>>,
+];
+
+export type userModelFetch = [
+	User[],
+	React.Dispatch<React.SetStateAction<User[]>>,
+];
 
 export interface TaskFormProps {
 	addTodo: addTodoType;

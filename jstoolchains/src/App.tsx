@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import { clientUser, clientTodo, clientList } from './lib/api';
 
@@ -21,9 +21,12 @@ import type {
 	userInfoType,
 	EditionSetState,
 	viewType,
+	todoModelFetch,
+	listModelFetch,
+	userModelFetch,
 } from './lib/customTypes';
 
-import type { Todo, List, User } from '../../todo-api-client/models';
+import type { Todo, List } from '../../todo-api-client/models';
 
 import { useOnlineStatus } from './hooks/useOnlineStatus';
 import { useModelFetch } from './hooks/useModelFetch';
@@ -50,28 +53,19 @@ export default function App(): React.JSX.Element {
 	const [newListEdit, setNewListEdit] = useState('');
 	const [showSidebar, setShowSidebar] = useState(true);
 
-	const [todos, setTodos]: [
-		Todo[],
-		React.Dispatch<React.SetStateAction<Todo[]>>,
-	] = useModelFetch(clientTodo.todosList(), 'todos');
+	const [todos, setTodos]: todoModelFetch = useModelFetch(
+		clientTodo.todosList(),
+	);
 
-	const [user]: [User[], React.Dispatch<React.SetStateAction<User[]>>] =
-		useModelFetch(clientUser.usersList(), 'users');
+	const [user]: userModelFetch = useModelFetch(clientUser.usersList());
 
-	const [lists, setLists]: [
-		List[],
-		React.Dispatch<React.SetStateAction<List[]>>,
-	] = useModelFetch(clientList.listsList(), 'lists');
+	const [lists, setLists]: listModelFetch = useModelFetch(
+		clientList.listsList(),
+	);
+	const initializationCompleted = useRef(false);
 
-	const toggleSidebarCallback = (event: KeyboardEvent): void => {
-		if (!isDescendantOf(event.target as HTMLElement, 'form')) {
-			if (event.key === 's') {
-				event.preventDefault();
-				setShowSidebar((old) => !old);
-			}
-		}
-	};
-
+	// Initialization effects
+	// This effect initializes the userInfo configuration
 	useEffect(() => {
 		if (user.length !== 0) {
 			const tmp = user[0];
@@ -83,9 +77,13 @@ export default function App(): React.JSX.Element {
 			};
 		}
 	}, [user]);
-
+	// This effect initializes the currentView based on the homeList userInfo configuration and the initial list of List data. Runs only once
 	useEffect(() => {
-		if (userInfo.id !== 0 && lists.length !== 0) {
+		if (
+			!initializationCompleted.current &&
+			userInfo.id !== 0 &&
+			lists.length !== 0
+		) {
 			setCurrentView((oldView) => {
 				let tmp: viewType;
 				if (typeof userInfo.homeListId === 'number') {
@@ -103,15 +101,26 @@ export default function App(): React.JSX.Element {
 				}
 				return tmp;
 			});
+			initializationCompleted.current = true;
 		}
-	}, [lists]);
+	}, [user, lists]);
 
+	// Toggles sidebar using 's' key as long as the focus is not on an
+	// HTMLElement with a form as an ancestor
 	useEffect(() => {
+		const toggleSidebarCallback = (event: KeyboardEvent): void => {
+			if (!isDescendantOf(event.target as HTMLElement, 'form')) {
+				if (event.key === 's') {
+					event.preventDefault();
+					setShowSidebar((old) => !old);
+				}
+			}
+		};
 		document.addEventListener('keydown', toggleSidebarCallback);
 		return () => {
 			document.removeEventListener('keydown', toggleSidebarCallback);
 		};
-	}, [toggleSidebarCallback]);
+	}, []);
 
 	const changeCurrentView = (newViewId: number | string): void => {
 		let newView: viewType;

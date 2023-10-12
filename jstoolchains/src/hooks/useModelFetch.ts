@@ -1,15 +1,11 @@
 import { useState, useEffect } from 'react';
 
 export function useModelFetch<T>(
-	fetcher: any,
-	dependency: any,
+	fetcher: Promise<T[]>,
 ): [T[], React.Dispatch<React.SetStateAction<T[]>>] {
 	const [list, setList] = useState<T[]>([]);
 
 	useEffect(() => {
-		if (dependency === null) {
-			return;
-		}
 		let ignore = false;
 		fetcher
 			.then((result: T[]) => {
@@ -17,7 +13,7 @@ export function useModelFetch<T>(
 					setList(result);
 				}
 			})
-			.catch((error: any) => {
+			.catch((error: Error) => {
 				if (error instanceof Error) {
 					console.log('There was an error retrieving data: ', error.message);
 				}
@@ -26,7 +22,7 @@ export function useModelFetch<T>(
 		return () => {
 			ignore = true;
 		};
-	}, [dependency]);
+	}, []);
 
 	return [list, setList];
 }
