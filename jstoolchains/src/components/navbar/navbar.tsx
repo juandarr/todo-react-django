@@ -162,7 +162,7 @@ export default function NavBar({
 			</div>
 			<Heart
 				size='12'
-				variant='Bold'
+				variant='Bulk'
 				className={`${
 					isOnline ? 'text-emerald-500' : 'text-rose-500'
 				} absolute right-1 top-1`}
