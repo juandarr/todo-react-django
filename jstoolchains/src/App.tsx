@@ -6,9 +6,6 @@ import { getPoint, isDescendantOf } from './lib/utils';
 
 import NavBar from './components/navbar/navbar';
 import SideBar from './components/sidebar/sidebar';
-import TaskForm from './components/taskview/taskform';
-import TaskListHeader from './components/taskview/taskheader';
-import TaskList from './components/taskview/tasklist';
 
 import { viewData } from './lib/userSettings';
 
@@ -29,6 +26,7 @@ import type {
 import type { Todo, List } from '../../todo-api-client/models';
 
 import { useModelFetch } from './hooks/useModelFetch';
+import TaskView from './components/taskview/taskview';
 
 function randomInRange(min: number, max: number): number {
 	return Math.random() * (max - min) + min;
@@ -47,7 +45,6 @@ export default function App(): React.JSX.Element {
 		id: 0,
 		title: '',
 	});
-	const [newTodoEdit, setNewTodoEdit] = useState<Todo>({ title: '' });
 	const [newListEdit, setNewListEdit] = useState('');
 	const [showSidebar, setShowSidebar] = useState(true);
 
@@ -383,49 +380,17 @@ export default function App(): React.JSX.Element {
 					setNewListEdit={setNewListEdit}
 					showSidebar={showSidebar}
 				/>
-				<div
-					className={`relative my-6 duration-300 ease-in-out ${
-						showSidebar ? 'w-65%' : 'w-full'
-					} rounded-xl border-2 border-black bg-white p-10 fill-mode-forwards`}>
-					<div className='absolute left-3 top-2 text-sm font-bold text-violet-600'>
-						{currentView.title}
-					</div>
-					<TaskForm addTodo={addTodo} key={currentView.id} />
-					<TaskListHeader
-						fieldDone={'Done?'}
-						fieldTask={'Task'}
-						fieldActions={'Actions'}
-					/>
-					<TaskList
-						todos={todos}
-						lists={lists}
-						toggleTodo={toggleTodo}
-						deleteTodo={deleteTodo}
-						editTodo={editTodo}
-						editTodoFull={editTodoFull}
-						condition={false}
-						currentView={currentView}
-						newTodoEdit={newTodoEdit}
-						setNewTodoEdit={setNewTodoEdit}
-					/>
-					<TaskListHeader
-						fieldDone={'Completed'}
-						fieldTask={''}
-						fieldActions={''}
-					/>
-					<TaskList
-						todos={todos}
-						lists={lists}
-						toggleTodo={toggleTodo}
-						deleteTodo={deleteTodo}
-						editTodo={editTodo}
-						editTodoFull={editTodoFull}
-						condition={true}
-						currentView={currentView}
-						newTodoEdit={newTodoEdit}
-						setNewTodoEdit={setNewTodoEdit}
-					/>
-				</div>
+				<TaskView
+					todos={todos}
+					lists={lists}
+					showSidebar={showSidebar}
+					currentView={currentView}
+					addTodo={addTodo}
+					toggleTodo={toggleTodo}
+					deleteTodo={deleteTodo}
+					editTodo={editTodo}
+					editTodoFull={editTodoFull}
+				/>
 			</div>
 			<Toaster />
 		</>

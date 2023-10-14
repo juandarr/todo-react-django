@@ -70,6 +70,22 @@ export type userModelFetch = [
 	React.Dispatch<React.SetStateAction<User[]>>,
 ];
 
+export interface TaskViewProps {
+	todos: Todo[];
+	lists: List[];
+	showSidebar: boolean;
+	currentView: viewType;
+	addTodo: (todo: todoType, origin: string) => Promise<Todo>;
+	toggleTodo: (id: number, complete: boolean) => Promise<Todo>;
+	deleteTodo: (id: number) => Promise<void>;
+	editTodo: (
+		id: number,
+		title: string,
+		setEdit: EditionSetState,
+	) => Promise<void>;
+	editTodoFull: (todo: todoType) => Promise<Todo>;
+}
+
 export interface TaskFormProps {
 	addTodo: addTodoType;
 }
