@@ -1,6 +1,7 @@
 import type { Todo } from '../../../todo-api-client/models/Todo';
 import { type viewDataType } from './customTypes';
 
+// TODO : come up with a way to include overdue tasks (task with a past due date) in Today view without including completed tasks
 export const viewData: viewDataType = {
 	viewTags: new Map([
 		['today', '0'],
