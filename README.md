@@ -31,9 +31,9 @@ Organize and manage your personal projects in list and tasks.
 - Tasks created from the navigation bar can be associated to any current List. If no list is defined it will be associated to the default list for the current user(inbox)
 - Tasks created from the task view only allow to define title and are associated to inbox by default
 - Keyboard shortcuts
-  - 's': hide or show the sidebar
-  - 'q': open the task creation modal from the navigation bar 
-  - 'h': show the list defined as home list in the task view
+  - `s`: hide or show the sidebar
+  - `q`: open the task creation modal from the navigation bar 
+  - `h`: show the list defined as home list in the task view
 
 # License
 

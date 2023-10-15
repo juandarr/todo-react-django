@@ -8,6 +8,7 @@ drf-spectacular==0.26.4
 inflection==0.5.1
 jsonschema==4.19.0
 jsonschema-specifications==2023.7.1
+python-dotenv==1.0.0
 pytz==2023.3
 PyYAML==6.0.1
 referencing==0.30.2
