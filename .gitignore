@@ -1,9 +1,9 @@
 todo_react_django/__pycache__
-static/css/
-static/js/
 jstoolchains/node_modules
+static/css
+static/js
 todo/__pycache__
 todo/migrations/__pycache__
-todo-api-client/
 django/
+todo-api-client/
 .env
