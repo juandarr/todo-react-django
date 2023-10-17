@@ -224,7 +224,7 @@ export default function CreateModalTodo({
 							value={newTodo.description}
 							ref={textAreaDescription}
 							placeholder='Description'
-							className='mb-2 ml-4 mr-4 mt-1 rounded-lg bg-gray-300 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-500'
+							className='mb-2 ml-4 mr-4 mt-2 rounded-lg bg-gray-300 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-500'
 							onChange={(event) => {
 								setNewTodo((old) => ({
 									...old,
@@ -255,7 +255,7 @@ export default function CreateModalTodo({
 							<span id='maximum'>/1000</span>
 						</div>
 					</div>
-					<div className='mb-3 ml-4 mr-4 mt-2 flex items-center justify-around'>
+					<div className='mb-3 ml-4 mr-4 mt-3 flex items-center justify-around'>
 						<Select
 							value={newTodo.priority}
 							onValueChange={(value) => {

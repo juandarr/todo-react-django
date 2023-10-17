@@ -224,7 +224,7 @@ export default function EditModalTodo({
 							name='description'
 							value={newEditTodo.description}
 							placeholder='Description'
-							className='mb-2 ml-4 mr-4 mt-1 overflow-y-hidden rounded-lg bg-gray-300 px-4 py-3 text-sm  text-gray-900 placeholder:text-gray-500'
+							className='mb-2 ml-4 mr-4 mt-2 overflow-y-hidden rounded-lg bg-gray-300 px-4 py-3 text-sm  text-gray-900 placeholder:text-gray-500'
 							onChange={(event) => {
 								adjustHeight();
 								setNewEditTodo((old) => {
@@ -259,7 +259,7 @@ export default function EditModalTodo({
 							<span id='maximum'>/1000</span>
 						</div>
 					</div>
-					<div className='mb-3 ml-4 mr-4 mt-2 flex items-center justify-between'>
+					<div className='mb-3 ml-4 mr-4 mt-3 flex items-center justify-between'>
 						<Select
 							value={newEditTodo.priority}
 							onValueChange={(value) => {
