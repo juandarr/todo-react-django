@@ -82,16 +82,16 @@ export default function TaskForm({
 					placeholder='Enter your todo here'
 					ref={inputRef}
 					disabled={status === 'submitting'}
-					maxLength={75}
+					maxLength={100}
 					required
 				/>
 				<div
 					id='count'
 					className={`absolute -bottom-4 right-3 text-xs ${
-						newTodo.title.length < 38 ? 'text-gray-400' : 'text-amber-500'
+						newTodo.title.length < 50 ? 'text-gray-400' : 'text-amber-500'
 					}`}>
 					<span id='current'>{newTodo.title.length}</span>
-					<span id='maximum'>/75</span>
+					<span id='maximum'>/100</span>
 				</div>
 			</div>
 			<button

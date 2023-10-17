@@ -183,54 +183,76 @@ export default function CreateModalTodo({
 							.then(() => {})
 							.catch(() => {});
 					}}>
-					<textarea
-						id='todoTitle'
-						name='title'
-						value={newTodo.title}
-						ref={textAreaTitle}
-						placeholder='Name this todo'
-						className='mb-2 ml-4 mr-4 mt-4 rounded-lg bg-gray-300 px-4 py-3 text-base font-medium text-gray-900 placeholder:text-gray-500'
-						onChange={(event) => {
-							setNewTodo((old) => ({ ...old, title: event.target.value }));
-						}}
-						onFocus={(e) => {
-							e.target.setSelectionRange(
-								e.target.value.length,
-								e.target.value.length,
-							);
-						}}
-						onKeyDown={(e) => {
-							handleKeyDown(e);
-						}}
-						disabled={status === 'submitting'}
-						rows={1}
-						required
-					/>
-					<textarea
-						id='todoDescription'
-						name='description'
-						value={newTodo.description}
-						ref={textAreaDescription}
-						placeholder='Description'
-						className='mb-1 ml-4 mr-4 mt-1 rounded-lg bg-gray-300 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-500'
-						onChange={(event) => {
-							setNewTodo((old) => ({
-								...old,
-								description: event.target.value,
-							}));
-						}}
-						onFocus={(e) => {
-							e.target.setSelectionRange(
-								e.target.value.length,
-								e.target.value.length,
-							);
-						}}
-						onKeyDown={(e) => {
-							handleKeyDown(e);
-						}}
-						rows={1}
-						disabled={status === 'submitting'}
-					/>
+					<div className='relative flex flex-1 flex-col'>
+						<textarea
+							id='todoTitle'
+							name='title'
+							value={newTodo.title}
+							ref={textAreaTitle}
+							placeholder='Name this todo'
+							className='mb-3 ml-4 mr-4 mt-4 rounded-lg bg-gray-300 px-4 py-3 text-base font-medium text-gray-900 placeholder:text-gray-500'
+							onChange={(event) => {
+								setNewTodo((old) => ({ ...old, title: event.target.value }));
+							}}
+							onFocus={(e) => {
+								e.target.setSelectionRange(
+									e.target.value.length,
+									e.target.value.length,
+								);
+							}}
+							onKeyDown={(e) => {
+								handleKeyDown(e);
+							}}
+							disabled={status === 'submitting'}
+							rows={1}
+							maxLength={100}
+							required
+						/>
+						<div
+							id='count'
+							className={`absolute -bottom-1 right-6 text-[10px] ${
+								newTodo.title.length < 50 ? 'text-gray-400' : 'text-amber-500'
+							}`}>
+							<span id='current'>{newTodo.title.length}</span>
+							<span id='maximum'>/100</span>
+						</div>
+					</div>
+					<div className='relative flex flex-1 flex-col'>
+						<textarea
+							id='todoDescription'
+							name='description'
+							value={newTodo.description}
+							ref={textAreaDescription}
+							placeholder='Description'
+							className='mb-2 ml-4 mr-4 mt-1 rounded-lg bg-gray-300 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-500'
+							onChange={(event) => {
+								setNewTodo((old) => ({
+									...old,
+									description: event.target.value,
+								}));
+							}}
+							onFocus={(e) => {
+								e.target.setSelectionRange(
+									e.target.value.length,
+									e.target.value.length,
+								);
+							}}
+							onKeyDown={(e) => {
+								handleKeyDown(e);
+							}}
+							rows={1}
+							maxLength={1000}
+							disabled={status === 'submitting'}
+						/>
+						<div
+							id='count'
+							className={`absolute -bottom-2 right-6 text-[10px] ${
+								newTodo.title.length < 500 ? 'text-gray-400' : 'text-amber-500'
+							}`}>
+							<span id='current'>{newTodo.description?.length}</span>
+							<span id='maximum'>/1000</span>
+						</div>
+					</div>
 					<div className='mb-3 ml-4 mr-4 mt-2 flex items-center justify-around'>
 						<Select
 							value={newTodo.priority}
