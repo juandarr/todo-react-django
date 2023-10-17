@@ -87,7 +87,7 @@ export default function TaskForm({
 				/>
 				<div
 					id='count'
-					className={`absolute -bottom-4 right-3 text-xs ${
+					className={`absolute -bottom-5 right-3 text-[10px] ${
 						newTodo.title.length < 50 ? 'text-gray-400' : 'text-amber-500'
 					}`}>
 					<span id='current'>{newTodo.title.length}</span>
