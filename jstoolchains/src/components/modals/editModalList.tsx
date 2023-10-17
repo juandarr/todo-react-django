@@ -38,6 +38,7 @@ export default function EditModalList({
 	const [listEdit, setListEdit] = useState('');
 	const [status, setStatus] = useState('typing');
 	const inputTitle = useRef<HTMLInputElement>(null);
+	const inputTitleCount = useRef<HTMLDivElement>(null);
 	const { toast } = useToast();
 
 	useEffect(() => {
@@ -138,13 +139,22 @@ export default function EditModalList({
 							onChange={(event) => {
 								setListEdit(event.target.value);
 							}}
+							onFocus={(e) => {
+								(inputTitleCount.current as HTMLDivElement).style.display =
+									'block';
+							}}
+							onBlur={(e) => {
+								(inputTitleCount.current as HTMLDivElement).style.display =
+									'none';
+							}}
 							disabled={status === 'submitting'}
 							autoFocus
 							maxLength={75}
 							required
 						/>
 						<div
-							id='count'
+							id='listTitleCount'
+							ref={inputTitleCount}
 							className={`absolute bottom-0 right-6 text-[10px] ${
 								listEdit.length < 38 ? 'text-gray-400' : 'text-amber-500'
 							}`}>

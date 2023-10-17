@@ -58,6 +58,8 @@ export default function EditModalTodo({
 
 	const textAreaRefTitle = useRef<HTMLTextAreaElement>(null);
 	const textAreaRefDescription = useRef<HTMLTextAreaElement>(null);
+	const textAreaTitleCount = useRef<HTMLDivElement>(null);
+	const textAreaDescriptionCount = useRef<HTMLDivElement>(null);
 
 	const resizeTextArea = (textArea: HTMLElement): void => {
 		if (textArea !== null) {
@@ -85,10 +87,13 @@ export default function EditModalTodo({
 			waitForElementToExist('#todoEditTitle')
 				.then((element) => {
 					adjustHeight();
+					(textAreaTitleCount.current as HTMLDivElement).style.display =
+						'block';
 				})
 				.catch(() => {});
 		}
 	}, [isOpen]);
+
 	const editHandleSubmit = async (): Promise<void> => {
 		if (newEditTodo.title === '') return;
 		setStatus('submitting');
@@ -198,6 +203,12 @@ export default function EditModalTodo({
 									e.target.value.length,
 									e.target.value.length,
 								);
+								(textAreaTitleCount.current as HTMLDivElement).style.display =
+									'block';
+							}}
+							onBlur={(e) => {
+								(textAreaTitleCount.current as HTMLDivElement).style.display =
+									'none';
 							}}
 							onKeyDown={handleKeyDown}
 							disabled={status === 'submitting'}
@@ -208,14 +219,15 @@ export default function EditModalTodo({
 							required
 						/>
 						<div
-							id='count'
-							className={`absolute -bottom-1 right-6 text-[10px] ${
+							id='todoEditTitleCount'
+							ref={textAreaTitleCount}
+							className={`absolute -bottom-1 right-6 hidden text-[10px] ${
 								newEditTodo.title.length < 50
 									? 'text-gray-400'
 									: 'text-amber-500'
 							}`}>
-							<span id='current'>{newEditTodo.title.length}</span>
-							<span id='maximum'>/100</span>
+							<span>{newEditTodo.title.length}</span>
+							<span>/100</span>
 						</div>
 					</div>
 					<div className='relative flex flex-1 flex-col'>
@@ -239,6 +251,14 @@ export default function EditModalTodo({
 									e.target.value.length,
 									e.target.value.length,
 								);
+								(
+									textAreaDescriptionCount.current as HTMLDivElement
+								).style.display = 'block';
+							}}
+							onBlur={(e) => {
+								(
+									textAreaDescriptionCount.current as HTMLDivElement
+								).style.display = 'none';
 							}}
 							onKeyDown={handleKeyDown}
 							disabled={status === 'submitting'}
@@ -247,16 +267,15 @@ export default function EditModalTodo({
 							maxLength={1000}
 						/>
 						<div
-							id='count'
-							className={`absolute -bottom-2 right-6 text-[10px] ${
+							id='todoEditDescriptionCount'
+							ref={textAreaDescriptionCount}
+							className={`absolute -bottom-2 right-6 hidden text-[10px] ${
 								(newEditTodo.description as string).length < 500
 									? 'text-gray-400'
 									: 'text-amber-500'
 							}`}>
-							<span id='current'>
-								{(newEditTodo.description as string).length}
-							</span>
-							<span id='maximum'>/1000</span>
+							<span>{(newEditTodo.description as string).length}</span>
+							<span>/1000</span>
 						</div>
 					</div>
 					<div className='mb-3 ml-4 mr-4 mt-3 flex items-center justify-between'>

@@ -23,6 +23,8 @@ export default function TaskForm({
 	});
 	const [status, setStatus] = useState('typing');
 	const inputRef = useRef<HTMLInputElement>(null);
+	const inputRefCount = useRef<HTMLDivElement>(null);
+
 	const { toast } = useToast();
 
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
@@ -78,6 +80,10 @@ export default function TaskForm({
 							e.target.value.length,
 							e.target.value.length,
 						);
+						(inputRefCount.current as HTMLDivElement).style.display = 'block';
+					}}
+					onBlur={(e) => {
+						(inputRefCount.current as HTMLDivElement).style.display = 'none';
 					}}
 					placeholder='Enter your todo here'
 					ref={inputRef}
@@ -86,8 +92,9 @@ export default function TaskForm({
 					required
 				/>
 				<div
-					id='count'
-					className={`absolute -bottom-5 right-3 text-[10px] ${
+					id='todoTextCount'
+					ref={inputRefCount}
+					className={`absolute -bottom-5 right-3 hidden text-[10px] ${
 						newTodo.title.length < 50 ? 'text-gray-400' : 'text-amber-500'
 					}`}>
 					<span id='current'>{newTodo.title.length}</span>

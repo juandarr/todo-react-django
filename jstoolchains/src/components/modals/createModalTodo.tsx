@@ -59,6 +59,8 @@ export default function CreateModalTodo({
 
 	const textAreaTitle = useRef<HTMLTextAreaElement>(null);
 	const textAreaDescription = useRef<HTMLTextAreaElement>(null);
+	const textAreaTitleCount = useRef<HTMLDivElement>(null);
+	const textAreaDescriptionCount = useRef<HTMLDivElement>(null);
 
 	useAutosizeTextArea(textAreaTitle.current, newTodo.title);
 	useAutosizeTextArea(
@@ -195,10 +197,16 @@ export default function CreateModalTodo({
 								setNewTodo((old) => ({ ...old, title: event.target.value }));
 							}}
 							onFocus={(e) => {
+								(textAreaTitleCount.current as HTMLDivElement).style.display =
+									'block';
 								e.target.setSelectionRange(
 									e.target.value.length,
 									e.target.value.length,
 								);
+							}}
+							onBlur={(e) => {
+								(textAreaTitleCount.current as HTMLDivElement).style.display =
+									'none';
 							}}
 							onKeyDown={(e) => {
 								handleKeyDown(e);
@@ -209,12 +217,13 @@ export default function CreateModalTodo({
 							required
 						/>
 						<div
-							id='count'
-							className={`absolute -bottom-1 right-6 text-[10px] ${
+							id='todoTitleCount'
+							ref={textAreaTitleCount}
+							className={`absolute -bottom-1 right-6 hidden text-[10px] ${
 								newTodo.title.length < 50 ? 'text-gray-400' : 'text-amber-500'
 							}`}>
-							<span id='current'>{newTodo.title.length}</span>
-							<span id='maximum'>/100</span>
+							<span>{newTodo.title.length}</span>
+							<span>/100</span>
 						</div>
 					</div>
 					<div className='relative flex flex-1 flex-col'>
@@ -232,10 +241,18 @@ export default function CreateModalTodo({
 								}));
 							}}
 							onFocus={(e) => {
+								(
+									textAreaDescriptionCount.current as HTMLDivElement
+								).style.display = 'block';
 								e.target.setSelectionRange(
 									e.target.value.length,
 									e.target.value.length,
 								);
+							}}
+							onBlur={(e) => {
+								(
+									textAreaDescriptionCount.current as HTMLDivElement
+								).style.display = 'none';
 							}}
 							onKeyDown={(e) => {
 								handleKeyDown(e);
@@ -245,14 +262,15 @@ export default function CreateModalTodo({
 							disabled={status === 'submitting'}
 						/>
 						<div
-							id='count'
-							className={`absolute -bottom-2 right-6 text-[10px] ${
+							id='todoDescriptionCount'
+							ref={textAreaDescriptionCount}
+							className={`absolute -bottom-2 right-6 hidden text-[10px] ${
 								(newTodo.description as string).length < 500
 									? 'text-gray-400'
 									: 'text-amber-500'
 							}`}>
-							<span id='current'>{(newTodo.description as string).length}</span>
-							<span id='maximum'>/1000</span>
+							<span>{(newTodo.description as string).length}</span>
+							<span>/1000</span>
 						</div>
 					</div>
 					<div className='mb-3 ml-4 mr-4 mt-3 flex items-center justify-around'>

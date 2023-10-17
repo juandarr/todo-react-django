@@ -1,4 +1,4 @@
-import React, { useState, type CSSProperties } from 'react';
+import React, { useState, type CSSProperties, useRef } from 'react';
 
 import {
 	Tooltip,
@@ -36,6 +36,7 @@ export default function CreateModalList({
 
 	const [newList, setNewList] = useState('');
 	const [status, setStatus] = useState('typing');
+	const inputRefCount = useRef<HTMLDivElement>(null);
 	const { toast } = useToast();
 
 	const createHandleSubmit = async (
@@ -118,12 +119,21 @@ export default function CreateModalList({
 							onChange={(event) => {
 								setNewList(event.target.value);
 							}}
+							onFocus={(e) => {
+								(inputRefCount.current as HTMLDivElement).style.display =
+									'block';
+							}}
+							onBlur={(e) => {
+								(inputRefCount.current as HTMLDivElement).style.display =
+									'none';
+							}}
 							disabled={status === 'submitting'}
 							maxLength={75}
 							required
 						/>
 						<div
-							id='count'
+							id='listTitleCount'
+							ref={inputRefCount}
 							className={`absolute bottom-0 right-6 text-[10px] ${
 								newList.length < 38 ? 'text-gray-400' : 'text-amber-500'
 							}`}>
