@@ -247,9 +247,11 @@ export default function CreateModalTodo({
 						<div
 							id='count'
 							className={`absolute -bottom-2 right-6 text-[10px] ${
-								newTodo.title.length < 500 ? 'text-gray-400' : 'text-amber-500'
+								(newTodo.description as string).length < 500
+									? 'text-gray-400'
+									: 'text-amber-500'
 							}`}>
-							<span id='current'>{newTodo.description?.length}</span>
+							<span id='current'>{(newTodo.description as string).length}</span>
 							<span id='maximum'>/1000</span>
 						</div>
 					</div>

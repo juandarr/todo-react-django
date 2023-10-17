@@ -179,55 +179,86 @@ export default function EditModalTodo({
 							.then(() => {})
 							.catch(() => {});
 					}}>
-					<textarea
-						id='todoEditTitle'
-						name='title'
-						value={newEditTodo.title}
-						placeholder='Name this todo'
-						className='mb-3 ml-4 mr-4 mt-4 overflow-y-hidden rounded-lg bg-gray-300 px-4 py-3 text-base font-medium text-gray-900 placeholder:text-gray-500'
-						onChange={(event) => {
-							adjustHeight();
-							setNewEditTodo((old) => ({ ...old, title: event.target.value }));
-						}}
-						onFocus={(e) => {
-							e.target.setSelectionRange(
-								e.target.value.length,
-								e.target.value.length,
-							);
-						}}
-						onKeyDown={handleKeyDown}
-						disabled={status === 'submitting'}
-						ref={textAreaRefTitle}
-						rows={1}
-						autoFocus
-						required
-					/>
-					<textarea
-						id='todoEditDescription'
-						name='description'
-						value={newEditTodo.description}
-						placeholder='Description'
-						className='mb-1 ml-4 mr-4 overflow-y-hidden rounded-lg bg-gray-300 px-4 py-3 text-sm  text-gray-900 placeholder:text-gray-500'
-						onChange={(event) => {
-							adjustHeight();
-							setNewEditTodo((old) => {
-								return {
+					<div className='relative flex flex-1 flex-col'>
+						<textarea
+							id='todoEditTitle'
+							name='title'
+							value={newEditTodo.title}
+							placeholder='Name this todo'
+							className='mb-3 ml-4 mr-4 mt-4 overflow-y-hidden rounded-lg bg-gray-300 px-4 py-3 text-base font-medium text-gray-900 placeholder:text-gray-500'
+							onChange={(event) => {
+								adjustHeight();
+								setNewEditTodo((old) => ({
 									...old,
-									description: event.target.value,
-								};
-							});
-						}}
-						onFocus={(e) => {
-							e.target.setSelectionRange(
-								e.target.value.length,
-								e.target.value.length,
-							);
-						}}
-						onKeyDown={handleKeyDown}
-						disabled={status === 'submitting'}
-						ref={textAreaRefDescription}
-						rows={1}
-					/>
+									title: event.target.value,
+								}));
+							}}
+							onFocus={(e) => {
+								e.target.setSelectionRange(
+									e.target.value.length,
+									e.target.value.length,
+								);
+							}}
+							onKeyDown={handleKeyDown}
+							disabled={status === 'submitting'}
+							ref={textAreaRefTitle}
+							rows={1}
+							autoFocus
+							maxLength={100}
+							required
+						/>
+						<div
+							id='count'
+							className={`absolute -bottom-1 right-6 text-[10px] ${
+								newEditTodo.title.length < 50
+									? 'text-gray-400'
+									: 'text-amber-500'
+							}`}>
+							<span id='current'>{newEditTodo.title.length}</span>
+							<span id='maximum'>/100</span>
+						</div>
+					</div>
+					<div className='relative flex flex-1 flex-col'>
+						<textarea
+							id='todoEditDescription'
+							name='description'
+							value={newEditTodo.description}
+							placeholder='Description'
+							className='mb-2 ml-4 mr-4 mt-1 overflow-y-hidden rounded-lg bg-gray-300 px-4 py-3 text-sm  text-gray-900 placeholder:text-gray-500'
+							onChange={(event) => {
+								adjustHeight();
+								setNewEditTodo((old) => {
+									return {
+										...old,
+										description: event.target.value,
+									};
+								});
+							}}
+							onFocus={(e) => {
+								e.target.setSelectionRange(
+									e.target.value.length,
+									e.target.value.length,
+								);
+							}}
+							onKeyDown={handleKeyDown}
+							disabled={status === 'submitting'}
+							ref={textAreaRefDescription}
+							rows={1}
+							maxLength={1000}
+						/>
+						<div
+							id='count'
+							className={`absolute -bottom-2 right-6 text-[10px] ${
+								(newEditTodo.description as string).length < 500
+									? 'text-gray-400'
+									: 'text-amber-500'
+							}`}>
+							<span id='current'>
+								{(newEditTodo.description as string).length}
+							</span>
+							<span id='maximum'>/1000</span>
+						</div>
+					</div>
 					<div className='mb-3 ml-4 mr-4 mt-2 flex items-center justify-between'>
 						<Select
 							value={newEditTodo.priority}
