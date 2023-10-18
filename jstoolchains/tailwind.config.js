@@ -18,6 +18,7 @@ export const theme = {
 	},
 	fontFamily: {
 		OpenSans: ['"Open Sans"', 'sans-serif'],
+		Maple: ["maple", '"Open Sans"'],
 	},
 	extend: {
 		spacing: {
