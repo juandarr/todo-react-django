@@ -84,7 +84,7 @@ export default function TaskItem({
 					/>
 				</div>
 				<form
-					className='font-serif relative flex w-8/12 flex-col'
+					className='relative flex w-8/12 flex-col'
 					onSubmit={(event) => {
 						handleSubmit(event, todo);
 					}}>
@@ -139,7 +139,7 @@ export default function TaskItem({
 						<div className='mr-2 flex min-w-[20%] max-w-fit items-start justify-start'>
 							<Badge
 								variant='outline'
-								className={`auto font-regular py-0.5 text-xs ${
+								className={`auto py-0.5 text-xs font-medium ${
 									todo.priority === 1
 										? 'bg-rose-200'
 										: todo.priority === 2

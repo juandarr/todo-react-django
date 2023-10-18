@@ -366,7 +366,7 @@ export default function App(): React.JSX.Element {
 				userInfo={userInfo}
 				setShowSidebar={setShowSidebar}
 			/>
-			<div className='font-serif relative mx-6 flex w-5/6 justify-end'>
+			<div className='relative mx-6 flex w-5/6 justify-end'>
 				<SideBar
 					lists={lists}
 					userInfo={userInfo}
