@@ -139,7 +139,7 @@ export default function TaskItem({
 						<div className='mr-2 flex min-w-[20%] max-w-fit items-start justify-start'>
 							<Badge
 								variant='outline'
-								className={`auto py-0.5 text-xs font-medium ${
+								className={`auto py-0.5 text-xs font-normal ${
 									todo.priority === 1
 										? 'bg-rose-200'
 										: todo.priority === 2

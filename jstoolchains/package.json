@@ -5,8 +5,8 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"tailwind-watch": "tailwindcss -i ../input.css -o ../static/css/output.css --watch",
-		"tailwind-build": "tailwindcss -i ../input.css -o ../static/css/output.css --minify",
+		"tailwind-watch": "tailwindcss -i ../static/css/input.css -o ../static/css/output.css --watch",
+		"tailwind-build": "tailwindcss -i ../static/css/input.css -o ../static/css/output.css --minify",
 		"dev": "webpack --mode development --watch",
 		"format": "prettier --write .",
 		"lint": "eslint --fix ./src/**/* --ext .js,.jsx,.ts,.tsx"

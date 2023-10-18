@@ -1,5 +1,3 @@
-import { fontFamily } from 'tailwindcss/defaultTheme';
-
 /** @type {import('tailwindcss').Config} */
 export const darkMode = ['class'];
 export const content = [
@@ -17,14 +15,13 @@ export const theme = {
 		},
 	},
 	fontFamily: {
-		OpenSans: ['"Open Sans"', 'sans-serif'],
-		Maple: ['"Maple"', '"Noto Sans"'],
-		SourceCodePro: ['"Source Code Pro"', '"Open Sans"'],
+		Noto: ['Noto Sans', 'Open Sans',],
+		Maple: ['Maple', 'Noto Sans'],
+		SourceCodePro: ['Source Code Pro', 'Noto Sans'],
 	},
 	extend: {
 		spacing: {
 			'75%': '75%',
-
 			'70%': '70%',
 			'65%': '65%',
 			'50%': '50%',
@@ -72,9 +69,6 @@ export const theme = {
 			lg: `var(--radius)`,
 			md: `calc(var(--radius) - 2px)`,
 			sm: 'calc(var(--radius) - 4px)',
-		},
-		fontFamily: {
-			sans: [...fontFamily.sans],
 		},
 		keyframes: {
 			'accordion-down': {
