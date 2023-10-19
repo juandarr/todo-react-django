@@ -88,10 +88,10 @@ export default function TaskItem({
 					onSubmit={(event) => {
 						handleSubmit(event, todo);
 					}}>
-					<div className='flex justify-start'>
+					<div className='flex items-center justify-center'>
 						{!showEdit ? (
 							<div
-								className={`flex-1 truncate py-2 text-base ${
+								className={`mb-1 mr-2 mt-1 flex-1 truncate px-4 py-2 text-base ${
 									(todo.complete as boolean) ? 'text-gray-400' : 'text-gray-700'
 								}`}
 								style={{ cursor: 'pointer' }}
@@ -99,21 +99,23 @@ export default function TaskItem({
 									setEdit([true, todo.id as number]);
 									setNewTodoEdit((old) => ({ ...old, title: todo.title }));
 								}}>
-								{todo.title}
+								<span className='h-6'>{todo.title}</span>
 							</div>
 						) : (
-							<input
-								type='text'
-								className='mr-2 flex-1 border-0 bg-white py-2 text-base text-gray-700'
-								name='title'
-								value={newTodoEdit.title}
-								onChange={(event) => {
-									setNewTodoEdit((old) => ({
-										...old,
-										title: event.target.value,
-									}));
-								}}
-								autoFocus></input>
+							<div className='mr-2 flex flex-1 items-start justify-start border-0'>
+								<input
+									type='text'
+									className='mb-1 mt-1 h-10 w-full bg-white text-base text-gray-700'
+									name='title'
+									value={newTodoEdit.title}
+									onChange={(event) => {
+										setNewTodoEdit((old) => ({
+											...old,
+											title: event.target.value,
+										}));
+									}}
+									autoFocus></input>
+							</div>
 						)}
 
 						{(edit[0] as boolean) && edit[1] === todo.id && (
@@ -127,7 +129,6 @@ export default function TaskItem({
 											<Edit2 size={'1.4rem'} />
 										</button>
 									</TooltipTrigger>
-									,
 									<TooltipContent className='bg-sky-500'>
 										<p className='font-bold text-white'>Save</p>
 									</TooltipContent>
