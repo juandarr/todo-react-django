@@ -35,7 +35,9 @@ export default function TaskItem({
 	const showEdit = (edit[0] as boolean) && edit[1] === todo.id;
 
 	const handleSubmit = (
-		event: React.FormEvent<HTMLFormElement>,
+		event:
+			| React.FormEvent<HTMLFormElement>
+			| React.FocusEvent<HTMLInputElement, Element>,
 		todo: Todo,
 	): void => {
 		event.preventDefault();
@@ -108,6 +110,9 @@ export default function TaskItem({
 									className='mb-1 mt-1 h-10 w-full bg-white text-base text-gray-700'
 									name='title'
 									value={newTodoEdit.title}
+									onBlur={(event) => {
+										handleSubmit(event, todo);
+									}}
 									onChange={(event) => {
 										setNewTodoEdit((old) => ({
 											...old,
