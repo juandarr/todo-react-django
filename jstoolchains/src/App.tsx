@@ -131,21 +131,6 @@ export default function App(): React.JSX.Element {
 		setCurrentView(newView);
 	};
 
-	const addList = async (title: string): Promise<List> => {
-		const list = {
-			title,
-		};
-		try {
-			const listCreated = await clientList.listsCreate({ list });
-			console.log('List was created!', listCreated);
-			setLists((oldLists) => [...oldLists, listCreated]);
-			return listCreated;
-		} catch (error) {
-			console.log('List creation failed with error: ', error);
-			throw error;
-		}
-	};
-
 	const addTodo = async (todo: todoType, origin: string): Promise<Todo> => {
 		const tmp: { priority: number; list: number; dueDate: Date | undefined } = {
 			priority: 4,
@@ -183,81 +168,6 @@ export default function App(): React.JSX.Element {
 			return todoCreated;
 		} catch (error) {
 			console.log('Todo creation failed with error: ', error);
-			throw error;
-		}
-	};
-
-	const deleteTodo = async (id: number): Promise<void> => {
-		try {
-			await clientTodo.todosDestroy({ id });
-			setTodos((prevTodos) => {
-				return prevTodos.filter((todo) => todo.id !== id);
-			});
-			console.log('Todo was deleted');
-		} catch (error) {
-			console.log('Error deleting todo');
-			throw error;
-		}
-	};
-
-	const deleteList = async (id: number): Promise<void> => {
-		try {
-			await clientList.listsDestroy({ id });
-			setLists((prevLists) => {
-				return prevLists.filter((list) => list.id !== id);
-			});
-			// If current view is the one being deleted, default current view to the home view
-			if (id === currentView.id) {
-				setCurrentView(() => {
-					if (typeof userInfo.homeListId === 'number') {
-						const list = lists.find(
-							(list) => list.id === userInfo.homeListId,
-						) as List;
-						return { id: list.id as number, title: list.title };
-					} else {
-						return {
-							id: userInfo.homeListId,
-							title: viewData.viewTagDetails.get(userInfo.homeListId) as string,
-						};
-					}
-				});
-			}
-			console.log('List was deleted');
-		} catch (error) {
-			console.log('Error deleting list');
-			throw error;
-		}
-	};
-
-	const editList = async (id: number, title: string): Promise<List> => {
-		const list = {
-			title,
-		};
-
-		try {
-			const updatedList = await clientList.listsPartialUpdate({
-				id,
-				patchedList: list,
-			});
-			console.log('List was patched!');
-
-			setLists((prevLists) => {
-				return prevLists.map((list) => {
-					if (list.id === id) {
-						return { ...list, title };
-					} else {
-						return list;
-					}
-				});
-			});
-			// If the current view is the one being edited, update the current view
-			if (id === currentView.id) {
-				console.log('Patched list and current list match! ', title);
-				setCurrentView((oldCurrentView) => ({ ...oldCurrentView, title }));
-			}
-			return updatedList;
-		} catch (error) {
-			console.log('There was an error updating the field in List');
 			throw error;
 		}
 	};
@@ -353,6 +263,117 @@ export default function App(): React.JSX.Element {
 			setEdit([false, 0]);
 		} catch (error) {
 			console.log('There was an error updating the field in Todo');
+			throw error;
+		}
+	};
+	const deleteTodo = async (id: number): Promise<void> => {
+		try {
+			await clientTodo.todosDestroy({ id });
+			setTodos((prevTodos) => {
+				return prevTodos.filter((todo) => todo.id !== id);
+			});
+			console.log('Todo was deleted');
+		} catch (error) {
+			console.log('Error deleting todo');
+			throw error;
+		}
+	};
+
+	function handleAddList(title: string): void {
+		dispatch({
+			type: 'added',
+			title,
+		});
+	}
+
+	function handleEditList(id: number, title: string): void {
+		dispatch({
+			type: 'edited',
+			id,
+			title,
+		});
+	}
+
+	function handleDeleteList(id: number): void {
+		dispatch({
+			type: 'deleted',
+			id,
+		});
+	}
+
+	const addList = async (title: string): Promise<List> => {
+		const list = {
+			title,
+		};
+		try {
+			const listCreated = await clientList.listsCreate({ list });
+			console.log('List was created!', listCreated);
+			setLists((oldLists) => [...oldLists, listCreated]);
+			return listCreated;
+		} catch (error) {
+			console.log('List creation failed with error: ', error);
+			throw error;
+		}
+	};
+
+	const editList = async (id: number, title: string): Promise<List> => {
+		const list = {
+			title,
+		};
+
+		try {
+			const updatedList = await clientList.listsPartialUpdate({
+				id,
+				patchedList: list,
+			});
+			console.log('List was patched!');
+
+			setLists((prevLists) => {
+				return prevLists.map((list) => {
+					if (list.id === id) {
+						return { ...list, title };
+					} else {
+						return list;
+					}
+				});
+			});
+			// If the current view is the one being edited, update the current view
+			if (id === currentView.id) {
+				console.log('Patched list and current list match! ', title);
+				setCurrentView((oldCurrentView) => ({ ...oldCurrentView, title }));
+			}
+			return updatedList;
+		} catch (error) {
+			console.log('There was an error updating the field in List');
+			throw error;
+		}
+	};
+
+	const deleteList = async (id: number): Promise<void> => {
+		try {
+			await clientList.listsDestroy({ id });
+			setLists((prevLists) => {
+				return prevLists.filter((list) => list.id !== id);
+			});
+			// If current view is the one being deleted, default current view to the home view
+			if (id === currentView.id) {
+				setCurrentView(() => {
+					if (typeof userInfo.homeListId === 'number') {
+						const list = lists.find(
+							(list) => list.id === userInfo.homeListId,
+						) as List;
+						return { id: list.id as number, title: list.title };
+					} else {
+						return {
+							id: userInfo.homeListId,
+							title: viewData.viewTagDetails.get(userInfo.homeListId) as string,
+						};
+					}
+				});
+			}
+			console.log('List was deleted');
+		} catch (error) {
+			console.log('Error deleting list');
 			throw error;
 		}
 	};
