@@ -34,7 +34,7 @@ export const viewData: viewDataType = {
 export const PriorityEnum = {
 	None: '4',
 	Low: '3',
-	Medium: '2',
+	Med: '2',
 	High: '1',
 };
 type keys = Record<number, string>;

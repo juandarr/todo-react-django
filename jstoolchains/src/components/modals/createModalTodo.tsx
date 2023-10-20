@@ -7,7 +7,7 @@ import {
 	TooltipTrigger,
 } from '../ui/tooltip';
 
-import { AddCircle } from 'iconsax-react';
+import { AddCircle, Flag } from 'iconsax-react';
 
 import {
 	Popover,
@@ -296,7 +296,22 @@ export default function CreateModalTodo({
 								{Object.entries(PriorityEnum).map((item, idx) => {
 									return (
 										<SelectItem key={idx} value={item[1]}>
-											{item[0]}
+											<div className='flex items-center justify-start'>
+												<Flag
+													className={`mr-1.5 ${
+														idx === 3
+															? 'text-rose-400'
+															: idx === 2
+															? 'text-amber-400'
+															: idx === 1
+															? 'text-sky-400'
+															: 'text-gray-400'
+													}`}
+													size={'1rem'}
+													variant='Bold'
+												/>
+												<span>{item[0]}</span>
+											</div>
 										</SelectItem>
 									);
 								})}
