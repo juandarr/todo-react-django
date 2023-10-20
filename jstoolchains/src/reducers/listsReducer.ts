@@ -1,4 +1,4 @@
-import { type listsType } from '../lib/customTypes';
+import type { listsType } from '../lib/customTypes';
 
 interface actionType {
 	type: string;
@@ -10,7 +10,11 @@ export default function listsReducer(
 ): listsType {
 	switch (action.type) {
 		case 'added': {
-			return [...lists, action.payload];
+			if (!Array.isArray(action.payload)) {
+				return [...lists, action.payload];
+			} else {
+				return [...lists, ...action.payload];
+			}
 		}
 		case 'edited': {
 			return lists.map((list) => {

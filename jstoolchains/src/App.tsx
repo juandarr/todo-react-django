@@ -74,6 +74,29 @@ export default function App(): React.JSX.Element {
 			};
 		}
 	}, [user]);
+	// Load lists - need to do this since changed from useState to useReducer
+	useEffect(() => {
+		let ignore = false;
+		clientList
+			.listsList()
+			.then((result: List[]) => {
+				if (!ignore) {
+					dispatch({
+						type: 'added',
+						payload: result,
+					});
+				}
+			})
+			.catch((error: Error) => {
+				if (error instanceof Error) {
+					console.log('There was an error retrieving data: ', error.message);
+				}
+			});
+
+		return () => {
+			ignore = true;
+		};
+	}, []);
 	// This effect initializes the currentView based on the homeList userInfo configuration and the initial list of List data. Runs only once
 	useEffect(() => {
 		if (
