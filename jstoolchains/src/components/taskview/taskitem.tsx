@@ -13,10 +13,8 @@ import { useToast } from '../ui/toast/use-toast';
 
 import { type Todo } from '../../../../todo-api-client/models';
 
-import { Badge } from '../ui/badge';
-import { PriorityEnumRev } from '../../lib/userSettings';
 import DeleteModal from '../modals/deleteModal';
-import { Edit2, Calendar2 } from 'iconsax-react';
+import { Edit2, Calendar2, Task, Flag } from 'iconsax-react';
 import EditModalTodo from '../modals/editModalTodo';
 
 export default function TaskItem({
@@ -71,7 +69,6 @@ export default function TaskItem({
 				}
 			});
 	}
-
 	return (
 		<>
 			<div className='parent flex'>
@@ -142,24 +139,24 @@ export default function TaskItem({
 						)}
 					</div>
 					<div className='mt-0 flex justify-start pb-2 pt-0 text-sm text-gray-400'>
-						<div className='mr-2 flex min-w-[20%] max-w-fit items-start justify-start'>
-							<Badge
-								variant='outline'
-								className={`auto py-0.5 text-xs font-normal ${
+						<div className='mr-2 flex items-center justify-start pl-4'>
+							<Flag
+								className={`mr-1 ${
 									todo.priority === 1
-										? 'bg-rose-200'
+										? 'text-rose-400'
 										: todo.priority === 2
-										? 'bg-amber-200'
+										? 'text-amber-400'
 										: todo.priority === 3
-										? 'bg-sky-200'
-										: 'bg-white'
-								} `}>
-								P: {PriorityEnumRev[todo.priority as number]}
-							</Badge>
+										? 'text-sky-400'
+										: 'text-gray-400'
+								}`}
+								size={'1rem'}
+								variant='Bold'
+							/>
 						</div>
-						<div className='w-fit text-center'>
+						<div className='mr-2 w-fit text-center'>
 							{todo.dueDate !== undefined ? (
-								<div className='flex items-start justify-start text-gray-600'>
+								<div className='flex items-center justify-start text-gray-600 line-through'>
 									<Calendar2 className='mr-1' size={'1.2rem'} />
 									<div className='text-xs'>
 										{todo.dueDate !== undefined
@@ -171,6 +168,18 @@ export default function TaskItem({
 								<></>
 							)}
 						</div>
+						{(todo.complete as boolean) ? (
+							<div className='w-fit text-center'>
+								<div className='flex items-center justify-start text-gray-600'>
+									<Task className='mr-1' size={'1.2rem'} />
+									<div className='text-xs'>
+										{(todo.completedAt as Date).toDateString()}
+									</div>
+								</div>
+							</div>
+						) : (
+							<></>
+						)}
 					</div>
 				</form>
 				<div
