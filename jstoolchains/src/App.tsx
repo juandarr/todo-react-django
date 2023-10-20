@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useReducer } from 'react';
 
 import { clientUser, clientTodo, clientList } from './lib/api';
 
@@ -19,14 +19,15 @@ import type {
 	EditionSetState,
 	viewType,
 	todoModelFetch,
-	listModelFetch,
 	userModelFetch,
+	listsType,
 } from './lib/customTypes';
 
 import type { Todo, List } from '../../todo-api-client/models';
 
 import { useModelFetch } from './hooks/useModelFetch';
 import TaskView from './components/taskview/taskview';
+import listsReducer from './reducers/listsReducer';
 
 function randomInRange(min: number, max: number): number {
 	return Math.random() * (max - min) + min;
@@ -38,6 +39,8 @@ let userInfo: userInfoType = {
 	homeListId: 0,
 	inboxListId: 0,
 };
+
+const initialListsState: listsType = [];
 
 export default function App(): React.JSX.Element {
 	// Views can be lists or tags, such as today or upcoming
@@ -54,9 +57,8 @@ export default function App(): React.JSX.Element {
 
 	const [user]: userModelFetch = useModelFetch(clientUser.usersList());
 
-	const [lists, setLists]: listModelFetch = useModelFetch(
-		clientList.listsList(),
-	);
+	const [lists, dispatch] = useReducer(listsReducer, initialListsState);
+
 	const initializationCompleted = useRef(false);
 
 	// Initialization effects
@@ -279,28 +281,6 @@ export default function App(): React.JSX.Element {
 		}
 	};
 
-	function handleAddList(title: string): void {
-		dispatch({
-			type: 'added',
-			title,
-		});
-	}
-
-	function handleEditList(id: number, title: string): void {
-		dispatch({
-			type: 'edited',
-			id,
-			title,
-		});
-	}
-
-	function handleDeleteList(id: number): void {
-		dispatch({
-			type: 'deleted',
-			id,
-		});
-	}
-
 	const addList = async (title: string): Promise<List> => {
 		const list = {
 			title,
@@ -308,7 +288,10 @@ export default function App(): React.JSX.Element {
 		try {
 			const listCreated = await clientList.listsCreate({ list });
 			console.log('List was created!', listCreated);
-			setLists((oldLists) => [...oldLists, listCreated]);
+			dispatch({
+				type: 'added',
+				payload: listCreated,
+			});
 			return listCreated;
 		} catch (error) {
 			console.log('List creation failed with error: ', error);
@@ -328,14 +311,9 @@ export default function App(): React.JSX.Element {
 			});
 			console.log('List was patched!');
 
-			setLists((prevLists) => {
-				return prevLists.map((list) => {
-					if (list.id === id) {
-						return { ...list, title };
-					} else {
-						return list;
-					}
-				});
+			dispatch({
+				type: 'edited',
+				payload: updatedList,
 			});
 			// If the current view is the one being edited, update the current view
 			if (id === currentView.id) {
@@ -352,8 +330,9 @@ export default function App(): React.JSX.Element {
 	const deleteList = async (id: number): Promise<void> => {
 		try {
 			await clientList.listsDestroy({ id });
-			setLists((prevLists) => {
-				return prevLists.filter((list) => list.id !== id);
+			dispatch({
+				type: 'deleted',
+				payload: { id },
 			});
 			// If current view is the one being deleted, default current view to the home view
 			if (id === currentView.id) {
