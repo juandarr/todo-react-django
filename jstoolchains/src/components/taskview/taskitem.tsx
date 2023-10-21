@@ -156,7 +156,10 @@ export default function TaskItem({
 						</div>
 						<div className='mr-2 w-fit text-center'>
 							{todo.dueDate !== undefined ? (
-								<div className='flex items-center justify-start text-gray-600 line-through'>
+								<div
+									className={`flex items-center justify-start text-gray-600 ${
+										(todo.complete as boolean) ? 'line-through' : ''
+									}`}>
 									<Calendar2 className='mr-1' size={'1.2rem'} />
 									<div className='text-xs'>
 										{todo.dueDate !== undefined
