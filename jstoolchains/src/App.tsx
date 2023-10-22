@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useReducer } from 'react';
 
 import { clientUser, clientTodo, clientList } from './lib/api';
 
-import { getPoint, isDescendantOf } from './lib/utils';
+import { getPoint, isDescendantOf, randomInRange } from './lib/utils';
 
 import NavBar from './components/navbar/navbar';
 import SideBar from './components/sidebar/sidebar';
@@ -28,10 +28,7 @@ import type { Todo, List } from '../../todo-api-client/models';
 import { useModelFetch } from './hooks/useModelFetch';
 import TaskView from './components/taskview/taskview';
 import listsReducer from './reducers/listsReducer';
-
-function randomInRange(min: number, max: number): number {
-	return Math.random() * (max - min) + min;
-}
+import { UserContext } from './contexts/UserContext';
 
 let userInfo: userInfoType = {
 	id: 0,
@@ -382,40 +379,40 @@ export default function App(): React.JSX.Element {
 
 	return (
 		<>
-			<NavBar
-				changeCurrentView={changeCurrentView}
-				lists={lists}
-				addTodo={addTodo}
-				userInfo={userInfo}
-				setShowSidebar={setShowSidebar}
-			/>
-			<div className='relative mx-6 flex w-5/6 justify-end'>
-				<SideBar
-					lists={lists}
-					userInfo={userInfo}
-					viewData={viewData}
+			<UserContext.Provider value={userInfo}>
+				<NavBar
 					changeCurrentView={changeCurrentView}
-					currentView={currentView}
-					addList={addList}
-					deleteList={deleteList}
-					editList={editList}
-					newListEdit={newListEdit}
-					setNewListEdit={setNewListEdit}
-					showSidebar={showSidebar}
-				/>
-				<TaskView
-					todos={todos}
 					lists={lists}
-					showSidebar={showSidebar}
-					currentView={currentView}
 					addTodo={addTodo}
-					toggleTodo={toggleTodo}
-					deleteTodo={deleteTodo}
-					editTodo={editTodo}
-					editTodoFull={editTodoFull}
+					setShowSidebar={setShowSidebar}
 				/>
-			</div>
-			<Toaster />
+				<div className='relative mx-6 flex w-5/6 justify-end'>
+					<SideBar
+						lists={lists}
+						viewData={viewData}
+						changeCurrentView={changeCurrentView}
+						currentView={currentView}
+						addList={addList}
+						deleteList={deleteList}
+						editList={editList}
+						newListEdit={newListEdit}
+						setNewListEdit={setNewListEdit}
+						showSidebar={showSidebar}
+					/>
+					<TaskView
+						todos={todos}
+						lists={lists}
+						showSidebar={showSidebar}
+						currentView={currentView}
+						addTodo={addTodo}
+						toggleTodo={toggleTodo}
+						deleteTodo={deleteTodo}
+						editTodo={editTodo}
+						editTodoFull={editTodoFull}
+					/>
+				</div>
+				<Toaster />
+			</UserContext.Provider>
 		</>
 	);
 }

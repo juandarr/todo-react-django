@@ -1,4 +1,10 @@
-import React, { useState, useRef, type CSSProperties, useEffect } from 'react';
+import React, {
+	useState,
+	useRef,
+	type CSSProperties,
+	useEffect,
+	useContext,
+} from 'react';
 
 import {
 	Tooltip,
@@ -33,6 +39,7 @@ import { PriorityEnum } from '../../lib/userSettings';
 import { isDescendantOf } from '../../lib/utils';
 import useAutosizeTextArea from '../../lib/useAutosizeTextArea';
 import { DatePickerWithPresets } from '../ui/datepicker';
+import { UserContext } from '../../contexts/UserContext';
 
 const override: CSSProperties = {
 	display: 'block',
@@ -44,17 +51,18 @@ const override: CSSProperties = {
 export default function CreateModalTodo({
 	lists,
 	addTodo,
-	userInfo,
 }: CreateModalTodoProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
+	const user = useContext(UserContext);
 	const [newTodo, setNewTodo] = useState<todoType>({
 		title: '',
 		description: '',
 		priority: PriorityEnum.None,
 		dueDate: undefined,
-		list: userInfo.inboxListId.toString(),
+		list: user.inboxListId.toString(),
 	});
 	const [status, setStatus] = useState('typing');
+
 	const { toast } = useToast();
 
 	const textAreaTitle = useRef<HTMLTextAreaElement>(null);
@@ -136,7 +144,7 @@ export default function CreateModalTodo({
 			title: '',
 			description: '',
 			priority: PriorityEnum.None,
-			list: userInfo.inboxListId.toString(),
+			list: user.inboxListId.toString(),
 			dueDate: undefined,
 		});
 		setStatus('typing');

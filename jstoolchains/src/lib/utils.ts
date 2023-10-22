@@ -30,6 +30,11 @@ export function getPoint(t: string): number[] {
 	return [xTarget / xDoc, yTarget / yDoc];
 }
 
+/* Finds a random integer in the min-max range */
+export function randomInRange(min: number, max: number): number {
+	return Math.random() * (max - min) + min;
+}
+
 export function isDescendantOf(
 	element: HTMLElement | null,
 	parentTag: string,
