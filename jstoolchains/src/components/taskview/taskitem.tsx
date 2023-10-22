@@ -143,7 +143,7 @@ export default function TaskItem({
 											id='saveTitle-button'
 											className='flex justify-center'>
 											<div
-												className='text-fuchsia-500 hover:text-fuchsia-600'
+												className='text-violet-500 hover:text-violet-600'
 												onClick={(event) => {
 													handleSubmit(event, todo);
 												}}
@@ -151,7 +151,7 @@ export default function TaskItem({
 												<BookSaved size={'1.2rem'} />
 											</div>
 										</TooltipTrigger>
-										<TooltipContent className='bg-fuchsia-500'>
+										<TooltipContent className='bg-violet-500'>
 											<p className='font-bold text-white'>Save</p>
 										</TooltipContent>
 									</Tooltip>
@@ -216,6 +216,7 @@ export default function TaskItem({
 						parentId={`todo-${todo.id}`}
 						key={`edit-${todo.id}`}
 					/>
+					<span className='mr-2'></span>
 					<DeleteModal
 						deleteFunction={deleteTodo}
 						deleteEntity={'todo'}
