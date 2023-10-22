@@ -45,7 +45,6 @@ export default function App(): React.JSX.Element {
 		id: 0,
 		title: '',
 	});
-	const [newListEdit, setNewListEdit] = useState('');
 	const [showSidebar, setShowSidebar] = useState(true);
 
 	const [todos, setTodos]: todoModelFetch = useModelFetch(
@@ -390,25 +389,23 @@ export default function App(): React.JSX.Element {
 					<SideBar
 						lists={lists}
 						viewData={viewData}
-						changeCurrentView={changeCurrentView}
 						currentView={currentView}
+						changeCurrentView={changeCurrentView}
 						addList={addList}
 						deleteList={deleteList}
 						editList={editList}
-						newListEdit={newListEdit}
-						setNewListEdit={setNewListEdit}
 						showSidebar={showSidebar}
 					/>
 					<TaskView
 						todos={todos}
 						lists={lists}
-						showSidebar={showSidebar}
 						currentView={currentView}
 						addTodo={addTodo}
 						toggleTodo={toggleTodo}
 						deleteTodo={deleteTodo}
 						editTodo={editTodo}
 						editTodoFull={editTodoFull}
+						showSidebar={showSidebar}
 					/>
 				</div>
 				<Toaster />
