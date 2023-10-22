@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import type { TaskItemProps } from '../../lib/customTypes';
 
@@ -14,7 +14,7 @@ import { useToast } from '../ui/toast/use-toast';
 import { type Todo } from '../../../../todo-api-client/models';
 
 import DeleteModal from '../modals/deleteModal';
-import { Edit2, Calendar2, Task, Flag } from 'iconsax-react';
+import { Calendar2, Task, Flag, BookSaved } from 'iconsax-react';
 import EditModalTodo from '../modals/editModalTodo';
 
 export default function TaskItem({
@@ -31,6 +31,7 @@ export default function TaskItem({
 }: TaskItemProps): React.JSX.Element {
 	const { toast } = useToast();
 	const showEdit = (edit[0] as boolean) && edit[1] === todo.id;
+	const initialTitle = useRef<string>();
 
 	const handleSubmit = (
 		event:
@@ -39,21 +40,25 @@ export default function TaskItem({
 		todo: Todo,
 	): void => {
 		event.preventDefault();
-		editTodo(todo.id as number, newTodoEdit.title, setEdit)
-			.then(() => {
-				toast({
-					title: 'Task title was updated!',
-					description: '',
+		if (initialTitle.current !== newTodoEdit.title) {
+			editTodo(todo.id as number, newTodoEdit.title, setEdit)
+				.then(() => {
+					toast({
+						title: 'Task title was updated!',
+						description: '',
+					});
+				})
+				.catch((error) => {
+					console.log('There was an error updating task title: ', error);
+					toast({
+						variant: 'destructive',
+						title: 'There was an error updating task title: ',
+						description: error.message,
+					});
 				});
-			})
-			.catch((error) => {
-				console.log('There was an error updating task title: ', error);
-				toast({
-					variant: 'destructive',
-					title: 'There was an error updating task title: ',
-					description: error.message,
-				});
-			});
+		} else {
+			setEdit([false, 0]);
+		}
 	};
 
 	function toggleHandler(checked: boolean): void {
@@ -69,6 +74,13 @@ export default function TaskItem({
 				}
 			});
 	}
+
+	useEffect(() => {
+		if (showEdit) {
+			initialTitle.current = todo.title;
+		}
+	}, [showEdit]);
+
 	return (
 		<>
 			<div className='parent flex'>
@@ -98,13 +110,13 @@ export default function TaskItem({
 									setEdit([true, todo.id as number]);
 									setNewTodoEdit((old) => ({ ...old, title: todo.title }));
 								}}>
-								<span className='h-6'>{todo.title}</span>
+								{todo.title}
 							</div>
 						) : (
-							<div className='mr-2 flex flex-1 items-start justify-start border-0'>
+							<div className='flex flex-1 items-center'>
 								<input
 									type='text'
-									className='mb-1 mt-1 h-10 w-full bg-white text-base text-gray-700'
+									className='mb-1 mr-2 mt-1 h-10 w-full bg-white text-base text-gray-700'
 									name='title'
 									value={newTodoEdit.title}
 									onBlur={(event) => {
@@ -116,26 +128,24 @@ export default function TaskItem({
 											title: event.target.value,
 										}));
 									}}
-									autoFocus></input>
+									autoFocus
+								/>
+								<TooltipProvider>
+									<Tooltip>
+										<TooltipTrigger className='flex justify-center'>
+											<button
+												className='text-sky-500 hover:text-sky-600'
+												type='submit'
+												style={{ cursor: 'pointer' }}>
+												<BookSaved size={'1.2rem'} />
+											</button>
+										</TooltipTrigger>
+										<TooltipContent className='bg-sky-500'>
+											<p className='font-bold text-white'>Save</p>
+										</TooltipContent>
+									</Tooltip>
+								</TooltipProvider>
 							</div>
-						)}
-
-						{(edit[0] as boolean) && edit[1] === todo.id && (
-							<TooltipProvider>
-								<Tooltip>
-									<TooltipTrigger className=''>
-										<button
-											className='flex items-center justify-center text-sky-500 hover:text-sky-600'
-											type='submit'
-											style={{ cursor: 'pointer', display: 'inline' }}>
-											<Edit2 size={'1.4rem'} />
-										</button>
-									</TooltipTrigger>
-									<TooltipContent className='bg-sky-500'>
-										<p className='font-bold text-white'>Save</p>
-									</TooltipContent>
-								</Tooltip>
-							</TooltipProvider>
 						)}
 					</div>
 					<div className='mt-0 flex justify-start pb-2 pt-0 text-sm text-gray-400'>

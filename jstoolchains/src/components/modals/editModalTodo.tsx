@@ -203,8 +203,9 @@ export default function EditModalTodo({
 									e.target.value.length,
 									e.target.value.length,
 								);
-								(textAreaTitleCount.current as HTMLDivElement).style.display =
-									'block';
+								if (textAreaTitleCount.current !== null) {
+									textAreaTitleCount.current.style.display = 'block';
+								}
 							}}
 							onBlur={(e) => {
 								(textAreaTitleCount.current as HTMLDivElement).style.display =

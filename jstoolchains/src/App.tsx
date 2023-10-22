@@ -297,6 +297,7 @@ export default function App(): React.JSX.Element {
 			throw error;
 		}
 	};
+
 	const deleteTodo = async (id: number): Promise<void> => {
 		try {
 			await clientTodo.todosDestroy({ id });
