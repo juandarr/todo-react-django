@@ -34,9 +34,7 @@ export default function TaskItem({
 	const initialTitle = useRef<string>();
 
 	const handleSubmit = (
-		event:
-			| React.FormEvent<HTMLFormElement>
-			| React.FocusEvent<HTMLInputElement, Element>,
+		event: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLDivElement>,
 		todo: Todo,
 	): void => {
 		event.preventDefault();
@@ -96,6 +94,7 @@ export default function TaskItem({
 				</div>
 				<form
 					className='relative flex w-8/12 flex-col'
+					id='editTitle-form'
 					onSubmit={(event) => {
 						handleSubmit(event, todo);
 					}}>
@@ -126,7 +125,9 @@ export default function TaskItem({
 									name='editTitle'
 									value={newTodoEdit.title}
 									onBlur={(event) => {
-										handleSubmit(event, todo);
+										if (event.relatedTarget?.id !== 'saveTitle-button') {
+											setEdit([false, 0]);
+										}
 									}}
 									onChange={(event) => {
 										setNewTodoEdit((old) => ({
@@ -138,15 +139,19 @@ export default function TaskItem({
 								/>
 								<TooltipProvider>
 									<Tooltip>
-										<TooltipTrigger className='flex justify-center'>
-											<button
-												className='text-sky-500 hover:text-sky-600'
-												type='submit'
+										<TooltipTrigger
+											id='saveTitle-button'
+											className='flex justify-center'>
+											<div
+												className='text-fuchsia-500 hover:text-fuchsia-600'
+												onClick={(event) => {
+													handleSubmit(event, todo);
+												}}
 												style={{ cursor: 'pointer' }}>
 												<BookSaved size={'1.2rem'} />
-											</button>
+											</div>
 										</TooltipTrigger>
-										<TooltipContent className='bg-sky-500'>
+										<TooltipContent className='bg-fuchsia-500'>
 											<p className='font-bold text-white'>Save</p>
 										</TooltipContent>
 									</Tooltip>
