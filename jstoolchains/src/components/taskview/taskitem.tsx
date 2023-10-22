@@ -223,6 +223,7 @@ export default function TaskItem({
 						parentId={`todo-${todo.id}`}
 						id={todo.id as number}
 						key={`del-${todo.id}`}
+						size={1.6}
 					/>
 				</div>
 			</div>

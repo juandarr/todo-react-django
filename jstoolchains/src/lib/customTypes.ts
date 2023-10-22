@@ -156,6 +156,7 @@ export interface DeleteModalProps {
 	deleteEntity: string;
 	parentId: string;
 	id: number;
+	size: number;
 }
 
 export interface SideBarProps {

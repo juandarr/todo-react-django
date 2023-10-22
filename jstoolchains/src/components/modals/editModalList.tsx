@@ -98,7 +98,7 @@ export default function EditModalList({
 				<Tooltip>
 					<PopoverTrigger
 						asChild={true}
-						className='flex cursor-pointer justify-end pl-2 pr-2 text-2xl text-cyan-500 hover:text-cyan-600'
+						className='flex cursor-pointer justify-end text-2xl text-cyan-500 hover:text-cyan-600'
 						onClick={(event) => {
 							openPopover();
 						}}>

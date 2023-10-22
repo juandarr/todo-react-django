@@ -34,6 +34,7 @@ export default function DeleteModal({
 	deleteEntity,
 	parentId,
 	id,
+	size,
 }: DeleteModalProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
 	const [status, setStatus] = useState('viewing');
@@ -92,7 +93,7 @@ export default function DeleteModal({
 						}}>
 						<TooltipTrigger>
 							<a className='flex cursor-pointer justify-center text-rose-500 hover:text-rose-600'>
-								<Trash size={'1.6rem'} />
+								<Trash size={`${size}rem`} />
 							</a>
 						</TooltipTrigger>
 					</PopoverTrigger>

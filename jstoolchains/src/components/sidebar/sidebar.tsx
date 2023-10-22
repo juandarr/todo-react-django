@@ -36,16 +36,19 @@ export default function SideBar({
 				<div
 					id={`list-${list.id}`}
 					className='hidden-child flex items-center justify-end'>
+					<span className='ml-2'></span>
 					<EditModalList
 						editList={editList}
 						listData={{ id: list.id as number, title: list.title }}
 						parentId={`list-${list.id}`}
 					/>
+					<span className='mr-2'></span>
 					<DeleteModal
 						deleteFunction={deleteList}
 						deleteEntity='list'
 						parentId={`list-${list.id}`}
 						id={list.id as number}
+						size={1.4}
 					/>
 				</div>
 			</div>
