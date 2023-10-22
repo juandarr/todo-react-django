@@ -10,6 +10,13 @@ import {
 	SunFog,
 } from 'iconsax-react';
 
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from '../ui/tooltip';
+
 import { addDays, format } from 'date-fns';
 
 import { cn } from '../../lib/utils';
@@ -45,59 +52,107 @@ export function DatePickerWithPresets({
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent
+				onOpenAutoFocus={(e) => {
+					e.preventDefault();
+				}}
 				align='start'
 				className='flex w-auto flex-col space-y-2 p-2'>
 				<div className='flex justify-around'>
-					<button
-						className='text-green-400 hover:text-green-500'
-						onClick={() => {
-							setNewTodo((old) => ({
-								...old,
-								dueDate: addDays(new Date(), 0),
-							}));
-						}}>
-						<Calendar1 size='1.5rem' />
-					</button>
-					<button
-						className='text-amber-400 hover:text-amber-500'
-						onClick={() => {
-							setNewTodo((old) => ({
-								...old,
-								dueDate: addDays(new Date(), 1),
-							}));
-						}}>
-						<SunFog size='1.5rem' />
-					</button>
-					<button
-						className='text-sky-400 hover:text-sky-500'
-						onClick={() => {
-							setNewTodo((old) => ({
-								...old,
-								dueDate: addDays(new Date(), 3),
-							}));
-						}}>
-						<ArrowRight3 size='1.7rem' />
-					</button>
-					<button
-						className='text-rose-400 hover:text-rose-500'
-						onClick={() => {
-							setNewTodo((old) => ({
-								...old,
-								dueDate: addDays(new Date(), 7),
-							}));
-						}}>
-						<Forward size='1.5rem' />
-					</button>
-					<button
-						className='text-gray-400 hover:text-gray-500'
-						onClick={() => {
-							setNewTodo((old) => ({
-								...old,
-								dueDate: undefined,
-							}));
-						}}>
-						<CalendarRemove size='1.5rem' />
-					</button>
+					<TooltipProvider>
+						<Tooltip>
+							<TooltipTrigger asChild={true}>
+								<button
+									className='text-green-400 hover:text-green-500'
+									onClick={() => {
+										setNewTodo((old) => ({
+											...old,
+											dueDate: addDays(new Date(), 0),
+										}));
+									}}>
+									<Calendar1 size='1.5rem' />
+								</button>
+							</TooltipTrigger>
+							<TooltipContent className='bg-green-500'>
+								<p className='font-bold text-white'>Today</p>
+							</TooltipContent>
+						</Tooltip>
+					</TooltipProvider>
+					<TooltipProvider>
+						<Tooltip>
+							<TooltipTrigger asChild={true}>
+								<button
+									className='text-amber-400 hover:text-amber-500'
+									onClick={() => {
+										setNewTodo((old) => ({
+											...old,
+											dueDate: addDays(new Date(), 1),
+										}));
+									}}>
+									<SunFog size='1.5rem' />
+								</button>
+							</TooltipTrigger>
+							<TooltipContent className='bg-amber-500'>
+								<p className='font-bold text-white'>Tomorrow</p>
+							</TooltipContent>
+						</Tooltip>
+					</TooltipProvider>
+					<TooltipProvider>
+						<Tooltip>
+							<TooltipTrigger asChild={true}>
+								<button
+									className='text-sky-400 hover:text-sky-500'
+									onClick={() => {
+										setNewTodo((old) => ({
+											...old,
+											dueDate: addDays(new Date(), 3),
+										}));
+									}}>
+									<ArrowRight3 size='1.7rem' />
+								</button>
+							</TooltipTrigger>
+							<TooltipContent className='bg-sky-500'>
+								<p className='font-bold text-white'>In 3 days</p>
+							</TooltipContent>
+						</Tooltip>
+					</TooltipProvider>
+					<TooltipProvider>
+						<Tooltip>
+							<TooltipTrigger asChild={true}>
+								<button
+									className='text-rose-400 hover:text-rose-500'
+									onClick={() => {
+										setNewTodo((old) => ({
+											...old,
+											dueDate: addDays(new Date(), 7),
+										}));
+									}}>
+									<Forward size='1.5rem' />
+								</button>
+							</TooltipTrigger>
+							<TooltipContent className='bg-rose-500'>
+								<p className='font-bold text-white'>In a week</p>
+							</TooltipContent>
+						</Tooltip>
+					</TooltipProvider>
+					<TooltipProvider>
+						<Tooltip>
+							<TooltipTrigger asChild={true}>
+								<button
+									className='text-gray-400 hover:text-gray-500'
+									onClick={() => {
+										setNewTodo((old) => ({
+											...old,
+											dueDate: undefined,
+										}));
+									}}>
+									<CalendarRemove size='1.5rem' />
+								</button>
+							</TooltipTrigger>
+							<TooltipContent className='bg-gray-500'>
+								<p className='font-bold text-white'>No date</p>
+							</TooltipContent>
+						</Tooltip>
+					</TooltipProvider>
 				</div>
 				{/* <Select
 					onValueChange={(value) => {
