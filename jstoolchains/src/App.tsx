@@ -179,6 +179,16 @@ export default function App(): React.JSX.Element {
 		} else {
 			if (currentView.id === viewData.viewTags.get('today')) {
 				tmp.dueDate = new Date();
+			} else if (currentView.id === viewData.viewTags.get('upcoming')) {
+				const tmpD = new Date();
+				tmp.dueDate = new Date(
+					new Date(
+						tmpD.getFullYear(),
+						tmpD.getMonth(),
+						tmpD.getDate(),
+					).getTime() +
+						24 * 60 * 60 * 1000,
+				);
 			}
 		}
 		const todoFiltered: Todo = { ...todo, ...tmp };
