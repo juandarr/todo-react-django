@@ -101,23 +101,29 @@ export default function TaskItem({
 					}}>
 					<div className='flex items-center justify-center'>
 						{!showEdit ? (
-							<div
-								className={`mb-1 mr-2 mt-1 flex-1 truncate px-4 py-2 text-base ${
+							<input
+								type='text'
+								className={`mb-1 mr-2 mt-1 h-10 w-full bg-white text-base ${
 									(todo.complete as boolean) ? 'text-gray-400' : 'text-gray-700'
-								}`}
-								style={{ cursor: 'pointer' }}
+								}  focus-visible:outline-none`}
+								name='readTitle'
+								value={todo.title}
 								onClick={(e) => {
 									setEdit([true, todo.id as number]);
 									setNewTodoEdit((old) => ({ ...old, title: todo.title }));
-								}}>
-								{todo.title}
-							</div>
+								}}
+								readOnly
+							/>
 						) : (
 							<div className='flex flex-1 items-center'>
 								<input
 									type='text'
-									className='mb-1 mr-2 mt-1 h-10 w-full bg-white text-base text-gray-700'
-									name='title'
+									className={`mb-1 mr-2 mt-1 h-10 w-full bg-white text-base ${
+										(todo.complete as boolean)
+											? 'text-gray-400'
+											: 'text-gray-700'
+									} focus-visible:outline-dashed focus-visible:outline-2 focus-visible:outline-violet-400`}
+									name='editTitle'
 									value={newTodoEdit.title}
 									onBlur={(event) => {
 										handleSubmit(event, todo);
