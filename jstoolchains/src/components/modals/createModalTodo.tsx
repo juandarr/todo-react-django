@@ -1,4 +1,10 @@
-import React, { useState, useRef, type CSSProperties, useEffect } from 'react';
+import React, {
+	useState,
+	useRef,
+	type CSSProperties,
+	useEffect,
+	useContext,
+} from 'react';
 
 import {
 	Tooltip,
@@ -7,7 +13,7 @@ import {
 	TooltipTrigger,
 } from '../ui/tooltip';
 
-import { AddCircle } from 'iconsax-react';
+import { AddCircle, Flag } from 'iconsax-react';
 
 import {
 	Popover,
@@ -33,6 +39,7 @@ import { PriorityEnum } from '../../lib/userSettings';
 import { isDescendantOf } from '../../lib/utils';
 import useAutosizeTextArea from '../../lib/useAutosizeTextArea';
 import { DatePickerWithPresets } from '../ui/datepicker';
+import { UserContext } from '../../contexts/UserContext';
 
 const override: CSSProperties = {
 	display: 'block',
@@ -44,21 +51,24 @@ const override: CSSProperties = {
 export default function CreateModalTodo({
 	lists,
 	addTodo,
-	userInfo,
 }: CreateModalTodoProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
+	const user = useContext(UserContext);
 	const [newTodo, setNewTodo] = useState<todoType>({
 		title: '',
 		description: '',
 		priority: PriorityEnum.None,
 		dueDate: undefined,
-		list: userInfo.inboxListId.toString(),
+		list: user.inboxListId.toString(),
 	});
 	const [status, setStatus] = useState('typing');
+
 	const { toast } = useToast();
 
 	const textAreaTitle = useRef<HTMLTextAreaElement>(null);
 	const textAreaDescription = useRef<HTMLTextAreaElement>(null);
+	const textAreaTitleCount = useRef<HTMLDivElement>(null);
+	const textAreaDescriptionCount = useRef<HTMLDivElement>(null);
 
 	useAutosizeTextArea(textAreaTitle.current, newTodo.title);
 	useAutosizeTextArea(
@@ -134,7 +144,7 @@ export default function CreateModalTodo({
 			title: '',
 			description: '',
 			priority: PriorityEnum.None,
-			list: userInfo.inboxListId.toString(),
+			list: user.inboxListId.toString(),
 			dueDate: undefined,
 		});
 		setStatus('typing');
@@ -151,7 +161,7 @@ export default function CreateModalTodo({
 				<Tooltip>
 					<PopoverTrigger asChild={true}>
 						<TooltipTrigger asChild={true}>
-							<button className='text-emerald-400 hover:text-emerald-500'>
+							<button className='text-emerald-500 hover:text-emerald-600'>
 								<AddCircle
 									size='1.8rem'
 									className='cursor-pointer'
@@ -176,62 +186,102 @@ export default function CreateModalTodo({
 				className='w-80 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
 				<form
 					id='listform'
-					className='font-serif flex flex-col'
+					className='flex flex-col'
 					onSubmit={(e) => {
 						e.preventDefault();
 						createHandleSubmit()
 							.then(() => {})
 							.catch(() => {});
 					}}>
-					<textarea
-						id='todoTitle'
-						name='title'
-						value={newTodo.title}
-						ref={textAreaTitle}
-						placeholder='Name this todo'
-						className='mb-2 ml-4 mr-4 mt-4 rounded-lg bg-gray-300 px-4 py-3 text-base font-medium text-gray-900 placeholder:text-gray-500'
-						onChange={(event) => {
-							setNewTodo((old) => ({ ...old, title: event.target.value }));
-						}}
-						onFocus={(e) => {
-							e.target.setSelectionRange(
-								e.target.value.length,
-								e.target.value.length,
-							);
-						}}
-						onKeyDown={(e) => {
-							handleKeyDown(e);
-						}}
-						disabled={status === 'submitting'}
-						rows={1}
-						required
-					/>
-					<textarea
-						id='todoDescription'
-						name='description'
-						value={newTodo.description}
-						ref={textAreaDescription}
-						placeholder='Description'
-						className='mb-1 ml-4 mr-4 mt-1 rounded-lg bg-gray-300 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-500'
-						onChange={(event) => {
-							setNewTodo((old) => ({
-								...old,
-								description: event.target.value,
-							}));
-						}}
-						onFocus={(e) => {
-							e.target.setSelectionRange(
-								e.target.value.length,
-								e.target.value.length,
-							);
-						}}
-						onKeyDown={(e) => {
-							handleKeyDown(e);
-						}}
-						rows={1}
-						disabled={status === 'submitting'}
-					/>
-					<div className='mb-3 ml-4 mr-4 mt-2 flex items-center justify-around'>
+					<div className='relative flex flex-1 flex-col'>
+						<textarea
+							id='todoTitle'
+							name='title'
+							value={newTodo.title}
+							ref={textAreaTitle}
+							placeholder='Name this todo'
+							className='mb-3 ml-4 mr-4 mt-4 rounded-lg bg-gray-300 px-4 py-3 text-base font-medium text-gray-900 placeholder:text-gray-500'
+							onChange={(event) => {
+								setNewTodo((old) => ({ ...old, title: event.target.value }));
+							}}
+							onFocus={(e) => {
+								(textAreaTitleCount.current as HTMLDivElement).style.display =
+									'block';
+								e.target.setSelectionRange(
+									e.target.value.length,
+									e.target.value.length,
+								);
+							}}
+							onBlur={(e) => {
+								(textAreaTitleCount.current as HTMLDivElement).style.display =
+									'none';
+							}}
+							onKeyDown={(e) => {
+								handleKeyDown(e);
+							}}
+							disabled={status === 'submitting'}
+							rows={1}
+							maxLength={100}
+							required
+						/>
+						<div
+							id='todoTitleCount'
+							ref={textAreaTitleCount}
+							className={`absolute -bottom-1 right-6 hidden text-[10px] ${
+								newTodo.title.length < 50 ? 'text-gray-400' : 'text-amber-500'
+							}`}>
+							<span>{newTodo.title.length}</span>
+							<span>/100</span>
+						</div>
+					</div>
+					<div className='relative flex flex-1 flex-col'>
+						<textarea
+							id='todoDescription'
+							name='description'
+							value={newTodo.description}
+							ref={textAreaDescription}
+							placeholder='Description'
+							className='mb-2 ml-4 mr-4 mt-2 rounded-lg bg-gray-300 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-500'
+							onChange={(event) => {
+								setNewTodo((old) => ({
+									...old,
+									description: event.target.value,
+								}));
+							}}
+							onFocus={(e) => {
+								(
+									textAreaDescriptionCount.current as HTMLDivElement
+								).style.display = 'block';
+								e.target.setSelectionRange(
+									e.target.value.length,
+									e.target.value.length,
+								);
+							}}
+							onBlur={(e) => {
+								(
+									textAreaDescriptionCount.current as HTMLDivElement
+								).style.display = 'none';
+							}}
+							onKeyDown={(e) => {
+								handleKeyDown(e);
+							}}
+							rows={1}
+							maxLength={1000}
+							disabled={status === 'submitting'}
+						/>
+						<div
+							id='todoDescriptionCount'
+							ref={textAreaDescriptionCount}
+							className={`absolute -bottom-2 right-6 hidden text-[10px] ${
+								(newTodo.description as string).length < 500
+									? 'text-gray-400'
+									: 'text-amber-500'
+							}`}>
+							<span>{(newTodo.description as string).length}</span>
+							<span>/1000</span>
+						</div>
+					</div>
+					<div className='mb-3 ml-4 mr-4 mt-3 flex items-center justify-around'>
 						<Select
 							value={newTodo.priority}
 							onValueChange={(value) => {
@@ -254,7 +304,22 @@ export default function CreateModalTodo({
 								{Object.entries(PriorityEnum).map((item, idx) => {
 									return (
 										<SelectItem key={idx} value={item[1]}>
-											{item[0]}
+											<div className='flex items-center justify-start'>
+												<Flag
+													className={`mr-1.5 ${
+														idx === 3
+															? 'text-rose-400'
+															: idx === 2
+															? 'text-amber-400'
+															: idx === 1
+															? 'text-sky-400'
+															: 'text-gray-400'
+													}`}
+													size={'1rem'}
+													variant='Bold'
+												/>
+												<span>{item[0]}</span>
+											</div>
 										</SelectItem>
 									);
 								})}

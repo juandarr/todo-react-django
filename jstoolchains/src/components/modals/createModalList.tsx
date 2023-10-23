@@ -1,4 +1,4 @@
-import React, { useState, type CSSProperties } from 'react';
+import React, { useState, type CSSProperties, useRef } from 'react';
 
 import {
 	Tooltip,
@@ -36,6 +36,7 @@ export default function CreateModalList({
 
 	const [newList, setNewList] = useState('');
 	const [status, setStatus] = useState('typing');
+	const inputRefCount = useRef<HTMLDivElement>(null);
 	const { toast } = useToast();
 
 	const createHandleSubmit = async (
@@ -101,26 +102,46 @@ export default function CreateModalList({
 				className='data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
 				<form
 					id='listform'
-					className='font-serif flex flex-col'
+					className='flex flex-col'
 					onSubmit={(e) => {
 						createHandleSubmit(e)
 							.then(() => {})
 							.catch(() => {});
 					}}>
-					<input
-						id='listName'
-						name='title'
-						type='text'
-						value={newList}
-						placeholder='Name this list'
-						className='m-4 h-8 rounded-xl bg-gray-300 p-2 px-4 py-3 text-gray-900 placeholder:text-gray-500'
-						onChange={(event) => {
-							setNewList(event.target.value);
-						}}
-						disabled={status === 'submitting'}
-						required
-					/>
-					<div className='mb-4 ml-4 mr-4 flex items-center justify-between'>
+					<div className='relative flex flex-1 flex-col'>
+						<input
+							id='listName'
+							name='title'
+							type='text'
+							value={newList}
+							placeholder='Name this list'
+							className='m-4 h-8 rounded-xl bg-gray-300 p-2 px-4 py-3 text-gray-900 placeholder:text-gray-500'
+							onChange={(event) => {
+								setNewList(event.target.value);
+							}}
+							onFocus={(e) => {
+								(inputRefCount.current as HTMLDivElement).style.display =
+									'block';
+							}}
+							onBlur={(e) => {
+								(inputRefCount.current as HTMLDivElement).style.display =
+									'none';
+							}}
+							disabled={status === 'submitting'}
+							maxLength={75}
+							required
+						/>
+						<div
+							id='listTitleCount'
+							ref={inputRefCount}
+							className={`absolute bottom-0 right-6 text-[10px] ${
+								newList.length < 38 ? 'text-gray-400' : 'text-amber-500'
+							}`}>
+							<span id='current'>{newList.length}</span>
+							<span id='maximum'>/75</span>
+						</div>
+					</div>
+					<div className='mb-4 ml-4 mr-4 mt-1 flex items-center justify-between'>
 						<button
 							type='submit'
 							className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'

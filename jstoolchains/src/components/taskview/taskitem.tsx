@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import type { TaskItemProps } from '../../lib/customTypes';
 
@@ -13,10 +13,8 @@ import { useToast } from '../ui/toast/use-toast';
 
 import { type Todo } from '../../../../todo-api-client/models';
 
-import { Badge } from '../ui/badge';
-import { PriorityEnumRev } from '../../lib/userSettings';
 import DeleteModal from '../modals/deleteModal';
-import { Edit2, Calendar2 } from 'iconsax-react';
+import { Calendar2, Task, Flag, BookSaved } from 'iconsax-react';
 import EditModalTodo from '../modals/editModalTodo';
 
 export default function TaskItem({
@@ -33,27 +31,32 @@ export default function TaskItem({
 }: TaskItemProps): React.JSX.Element {
 	const { toast } = useToast();
 	const showEdit = (edit[0] as boolean) && edit[1] === todo.id;
+	const initialTitle = useRef<string>();
 
 	const handleSubmit = (
-		event: React.FormEvent<HTMLFormElement>,
+		event: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLDivElement>,
 		todo: Todo,
 	): void => {
 		event.preventDefault();
-		editTodo(todo.id as number, newTodoEdit.title, setEdit)
-			.then(() => {
-				toast({
-					title: 'Task title was updated!',
-					description: '',
+		if (initialTitle.current !== newTodoEdit.title) {
+			editTodo(todo.id as number, newTodoEdit.title, setEdit)
+				.then(() => {
+					toast({
+						title: 'Task title was updated!',
+						description: '',
+					});
+				})
+				.catch((error) => {
+					console.log('There was an error updating task title: ', error);
+					toast({
+						variant: 'destructive',
+						title: 'There was an error updating task title: ',
+						description: error.message,
+					});
 				});
-			})
-			.catch((error) => {
-				console.log('There was an error updating task title: ', error);
-				toast({
-					variant: 'destructive',
-					title: 'There was an error updating task title: ',
-					description: error.message,
-				});
-			});
+		} else {
+			setEdit([false, 0]);
+		}
 	};
 
 	function toggleHandler(checked: boolean): void {
@@ -70,6 +73,12 @@ export default function TaskItem({
 			});
 	}
 
+	useEffect(() => {
+		if (showEdit) {
+			initialTitle.current = todo.title;
+		}
+	}, [showEdit]);
+
 	return (
 		<>
 			<div className='parent flex'>
@@ -84,76 +93,94 @@ export default function TaskItem({
 					/>
 				</div>
 				<form
-					className='font-serif relative flex w-8/12 flex-col'
+					className='relative flex w-8/12 flex-col'
+					id='editTitle-form'
 					onSubmit={(event) => {
 						handleSubmit(event, todo);
 					}}>
-					<div className='flex justify-start'>
+					<div className='flex items-center justify-center'>
 						{!showEdit ? (
-							<div
-								className={`flex-1 truncate py-2 text-base ${
+							<input
+								type='text'
+								className={`mb-1 mr-2 mt-1 h-10 w-full bg-white text-base ${
 									(todo.complete as boolean) ? 'text-gray-400' : 'text-gray-700'
-								}`}
-								style={{ cursor: 'pointer' }}
+								}  focus-visible:outline-none`}
+								name='readTitle'
+								value={todo.title}
 								onClick={(e) => {
 									setEdit([true, todo.id as number]);
 									setNewTodoEdit((old) => ({ ...old, title: todo.title }));
-								}}>
-								{todo.title}
-							</div>
-						) : (
-							<input
-								type='text'
-								className='mr-2 flex-1 border-0 bg-white py-2 text-base text-gray-700'
-								name='title'
-								value={newTodoEdit.title}
-								onChange={(event) => {
-									setNewTodoEdit((old) => ({
-										...old,
-										title: event.target.value,
-									}));
 								}}
-								autoFocus></input>
-						)}
-
-						{(edit[0] as boolean) && edit[1] === todo.id && (
-							<TooltipProvider>
-								<Tooltip>
-									<TooltipTrigger className=''>
-										<button
-											className='flex items-center justify-center text-sky-500 hover:text-sky-600'
-											type='submit'
-											style={{ cursor: 'pointer', display: 'inline' }}>
-											<Edit2 size={'1.4rem'} />
-										</button>
-									</TooltipTrigger>
-									,
-									<TooltipContent className='bg-sky-500'>
-										<p className='font-bold text-white'>Save</p>
-									</TooltipContent>
-								</Tooltip>
-							</TooltipProvider>
+								readOnly
+							/>
+						) : (
+							<div className='flex flex-1 items-center'>
+								<input
+									type='text'
+									className={`mb-1 mr-2 mt-1 h-10 w-full bg-white text-base ${
+										(todo.complete as boolean)
+											? 'text-gray-400'
+											: 'text-gray-700'
+									} focus-visible:outline-dashed focus-visible:outline-2 focus-visible:outline-violet-400`}
+									name='editTitle'
+									value={newTodoEdit.title}
+									onBlur={(event) => {
+										if (event.relatedTarget?.id !== 'saveTitle-button') {
+											setEdit([false, 0]);
+										}
+									}}
+									onChange={(event) => {
+										setNewTodoEdit((old) => ({
+											...old,
+											title: event.target.value,
+										}));
+									}}
+									autoFocus
+								/>
+								<TooltipProvider>
+									<Tooltip>
+										<TooltipTrigger
+											id='saveTitle-button'
+											className='flex justify-center'>
+											<div
+												className='text-violet-500 hover:text-violet-600'
+												onClick={(event) => {
+													handleSubmit(event, todo);
+												}}
+												style={{ cursor: 'pointer' }}>
+												<BookSaved size={'1.2rem'} />
+											</div>
+										</TooltipTrigger>
+										<TooltipContent className='bg-violet-500'>
+											<p className='font-bold text-white'>Save</p>
+										</TooltipContent>
+									</Tooltip>
+								</TooltipProvider>
+							</div>
 						)}
 					</div>
 					<div className='mt-0 flex justify-start pb-2 pt-0 text-sm text-gray-400'>
-						<div className='mr-2 flex min-w-[20%] max-w-fit items-start justify-start'>
-							<Badge
-								variant='outline'
-								className={`auto font-regular py-0.5 text-xs ${
+						<div className='mr-2 flex items-center justify-start pl-4'>
+							<Flag
+								className={`mr-1 ${
 									todo.priority === 1
-										? 'bg-rose-200'
+										? 'text-rose-400'
 										: todo.priority === 2
-										? 'bg-amber-200'
+										? 'text-amber-400'
 										: todo.priority === 3
-										? 'bg-sky-200'
-										: 'bg-white'
-								} `}>
-								P: {PriorityEnumRev[todo.priority as number]}
-							</Badge>
+										? 'text-sky-400'
+										: 'text-gray-400'
+								}`}
+								size={'1rem'}
+								variant='Bold'
+							/>
 						</div>
-						<div className='w-fit text-center'>
+						<div className='mr-2 w-fit text-center'>
 							{todo.dueDate !== undefined ? (
-								<div className='flex items-start justify-start text-gray-600'>
+								<div
+									className={`flex items-center justify-start text-gray-600 ${
+										(todo.complete as boolean) ? 'line-through' : ''
+									}`}>
 									<Calendar2 className='mr-1' size={'1.2rem'} />
 									<div className='text-xs'>
 										{todo.dueDate !== undefined
@@ -165,6 +192,18 @@ export default function TaskItem({
 								<></>
 							)}
 						</div>
+						{(todo.complete as boolean) ? (
+							<div className='w-fit text-center'>
+								<div className='flex items-center justify-start text-gray-600'>
+									<Task className='mr-1' size={'1.2rem'} />
+									<div className='text-xs'>
+										{(todo.completedAt as Date).toDateString()}
+									</div>
+								</div>
+							</div>
+						) : (
+							<></>
+						)}
 					</div>
 				</form>
 				<div
@@ -177,12 +216,14 @@ export default function TaskItem({
 						parentId={`todo-${todo.id}`}
 						key={`edit-${todo.id}`}
 					/>
+					<span className='mr-2'></span>
 					<DeleteModal
 						deleteFunction={deleteTodo}
 						deleteEntity={'todo'}
 						parentId={`todo-${todo.id}`}
 						id={todo.id as number}
 						key={`del-${todo.id}`}
+						size={1.6}
 					/>
 				</div>
 			</div>

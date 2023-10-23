@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
+import { UserContext } from '../../contexts/UserContext';
 
 import {
 	Tooltip,
@@ -34,16 +35,16 @@ export default function NavBar({
 	changeCurrentView,
 	lists,
 	addTodo,
-	userInfo,
 	setShowSidebar,
 }: NavBarProps): React.JSX.Element {
 	const isOnline = useOnlineStatus();
+	const user = useContext(UserContext);
 
 	const homeCallback = (event: KeyboardEvent): void => {
 		if (!isDescendantOf(event.target as HTMLElement, 'form')) {
 			if (event.key === 'h') {
 				event.preventDefault();
-				changeCurrentView(userInfo.homeListId);
+				changeCurrentView(user.homeListId);
 			}
 		}
 	};
@@ -80,7 +81,7 @@ export default function NavBar({
 			<div
 				className='flex w-1/12 justify-start pl-3 text-2xl'
 				onClick={() => {
-					changeCurrentView(userInfo.homeListId);
+					changeCurrentView(user.homeListId);
 				}}>
 				<TooltipProvider>
 					<Tooltip>
@@ -96,7 +97,7 @@ export default function NavBar({
 				</TooltipProvider>
 			</div>
 			<div className='flex w-8/12 justify-center text-2xl'>
-				<CreateModalTodo lists={lists} addTodo={addTodo} userInfo={userInfo} />
+				<CreateModalTodo lists={lists} addTodo={addTodo} />
 			</div>
 			<div className='flex w-1/12 justify-end pl-3 pr-3 text-2xl '>
 				<TooltipProvider>

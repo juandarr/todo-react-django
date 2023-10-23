@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { type SideBarProps } from '../../lib/customTypes';
 
 import CreateModalList from '../modals/createModalList';
 import EditModalList from '../modals/editModalList';
 import DeleteModal from '../modals/deleteModal';
+import { UserContext } from '../../contexts/UserContext';
 
 export default function SideBar({
 	lists,
-	userInfo,
 	viewData,
 	currentView,
 	changeCurrentView,
@@ -17,8 +17,9 @@ export default function SideBar({
 	editList,
 	showSidebar,
 }: SideBarProps): React.JSX.Element {
+	const user = useContext(UserContext);
 	const otherLists = lists
-		.filter((list) => userInfo.inboxListId !== list.id)
+		.filter((list) => user.inboxListId !== list.id)
 		.map((list) => (
 			<div key={list.id} className='parent flex items-center justify-between'>
 				<button
@@ -35,22 +36,25 @@ export default function SideBar({
 				<div
 					id={`list-${list.id}`}
 					className='hidden-child flex items-center justify-end'>
+					<span className='ml-2'></span>
 					<EditModalList
 						editList={editList}
 						listData={{ id: list.id as number, title: list.title }}
 						parentId={`list-${list.id}`}
 					/>
+					<span className='mr-2'></span>
 					<DeleteModal
 						deleteFunction={deleteList}
 						deleteEntity='list'
 						parentId={`list-${list.id}`}
 						id={list.id as number}
+						size={1.4}
 					/>
 				</div>
 			</div>
 		));
-	const inbox = lists.find((list) => userInfo.inboxListId === list.id);
-	console.log('These are the lists: ', lists, userInfo.inboxListId);
+	const inbox = lists.find((list) => user.inboxListId === list.id);
+	console.log('These are the lists: ', lists, user.inboxListId);
 	const ViewLists = viewData.viewTagIds.map((value) => (
 		<button
 			key={value}
@@ -72,18 +76,18 @@ export default function SideBar({
 			} fill-mode-forwards`}
 			id='sidebar'>
 			<div className='absolute left-3 top-2 text-sm font-bold text-violet-600'>
-				Welcome, {userInfo.username} ;)
+				Welcome, {user.username} ;)
 			</div>
 			<div className='mb-1 flex flex-col'>
 				<div className='mb-2 text-xl font-bold'>Tareas</div>
 				<button
 					className={`flex cursor-pointer justify-start ${
-						currentView.id === userInfo.inboxListId
+						currentView.id === user.inboxListId
 							? 'rounded-md bg-cyan-200 font-semibold'
 							: ''
 					} rounded-xl p-1 pl-2 text-lg hover:underline hover:decoration-rose-500 hover:decoration-2`}
 					onClick={() => {
-						changeCurrentView(userInfo.inboxListId);
+						changeCurrentView(user.inboxListId);
 					}}>
 					{inbox !== undefined ? inbox.title : ''}
 				</button>

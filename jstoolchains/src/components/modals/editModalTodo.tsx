@@ -7,7 +7,7 @@ import {
 	TooltipTrigger,
 } from '../ui/tooltip';
 
-import { Edit } from 'iconsax-react';
+import { Edit, Flag } from 'iconsax-react';
 
 import {
 	Popover,
@@ -58,6 +58,8 @@ export default function EditModalTodo({
 
 	const textAreaRefTitle = useRef<HTMLTextAreaElement>(null);
 	const textAreaRefDescription = useRef<HTMLTextAreaElement>(null);
+	const textAreaTitleCount = useRef<HTMLDivElement>(null);
+	const textAreaDescriptionCount = useRef<HTMLDivElement>(null);
 
 	const resizeTextArea = (textArea: HTMLElement): void => {
 		if (textArea !== null) {
@@ -85,10 +87,13 @@ export default function EditModalTodo({
 			waitForElementToExist('#todoEditTitle')
 				.then((element) => {
 					adjustHeight();
+					(textAreaTitleCount.current as HTMLDivElement).style.display =
+						'block';
 				})
 				.catch(() => {});
 		}
 	}, [isOpen]);
+
 	const editHandleSubmit = async (): Promise<void> => {
 		if (newEditTodo.title === '') return;
 		setStatus('submitting');
@@ -151,8 +156,8 @@ export default function EditModalTodo({
 						onClick={(event) => {
 							openPopover();
 						}}>
-						<TooltipTrigger asChild={true}>
-							<a className='mr-2 flex cursor-pointer items-center text-2xl text-sky-500 hover:text-sky-600'>
+						<TooltipTrigger>
+							<a className='flex cursor-pointer items-center text-2xl text-sky-500 hover:text-sky-600'>
 								<Edit size={'1.6rem'} />
 							</a>
 						</TooltipTrigger>
@@ -172,63 +177,109 @@ export default function EditModalTodo({
 				className='w-80 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
 				<form
 					id='listform'
-					className='font-serif flex flex-col'
+					className='flex flex-col'
 					onSubmit={(e) => {
 						e.preventDefault();
 						editHandleSubmit()
 							.then(() => {})
 							.catch(() => {});
 					}}>
-					<textarea
-						id='todoEditTitle'
-						name='title'
-						value={newEditTodo.title}
-						placeholder='Name this todo'
-						className='mb-3 ml-4 mr-4 mt-4 overflow-y-hidden rounded-lg bg-gray-300 px-4 py-3 text-base font-medium text-gray-900 placeholder:text-gray-500'
-						onChange={(event) => {
-							adjustHeight();
-							setNewEditTodo((old) => ({ ...old, title: event.target.value }));
-						}}
-						onFocus={(e) => {
-							e.target.setSelectionRange(
-								e.target.value.length,
-								e.target.value.length,
-							);
-						}}
-						onKeyDown={handleKeyDown}
-						disabled={status === 'submitting'}
-						ref={textAreaRefTitle}
-						rows={1}
-						autoFocus
-						required
-					/>
-					<textarea
-						id='todoEditDescription'
-						name='description'
-						value={newEditTodo.description}
-						placeholder='Description'
-						className='mb-1 ml-4 mr-4 overflow-y-hidden rounded-lg bg-gray-300 px-4 py-3 text-sm  text-gray-900 placeholder:text-gray-500'
-						onChange={(event) => {
-							adjustHeight();
-							setNewEditTodo((old) => {
-								return {
+					<div className='relative flex flex-1 flex-col'>
+						<textarea
+							id='todoEditTitle'
+							name='title'
+							value={newEditTodo.title}
+							placeholder='Name this todo'
+							className='mb-3 ml-4 mr-4 mt-4 overflow-y-hidden rounded-lg bg-gray-300 px-4 py-3 text-base font-medium text-gray-900 placeholder:text-gray-500'
+							onChange={(event) => {
+								adjustHeight();
+								setNewEditTodo((old) => ({
 									...old,
-									description: event.target.value,
-								};
-							});
-						}}
-						onFocus={(e) => {
-							e.target.setSelectionRange(
-								e.target.value.length,
-								e.target.value.length,
-							);
-						}}
-						onKeyDown={handleKeyDown}
-						disabled={status === 'submitting'}
-						ref={textAreaRefDescription}
-						rows={1}
-					/>
-					<div className='mb-3 ml-4 mr-4 mt-2 flex items-center justify-between'>
+									title: event.target.value,
+								}));
+							}}
+							onFocus={(e) => {
+								e.target.setSelectionRange(
+									e.target.value.length,
+									e.target.value.length,
+								);
+								if (textAreaTitleCount.current !== null) {
+									textAreaTitleCount.current.style.display = 'block';
+								}
+							}}
+							onBlur={(e) => {
+								(textAreaTitleCount.current as HTMLDivElement).style.display =
+									'none';
+							}}
+							onKeyDown={handleKeyDown}
+							disabled={status === 'submitting'}
+							ref={textAreaRefTitle}
+							rows={1}
+							autoFocus
+							maxLength={100}
+							required
+						/>
+						<div
+							id='todoEditTitleCount'
+							ref={textAreaTitleCount}
+							className={`absolute -bottom-1 right-6 hidden text-[10px] ${
+								newEditTodo.title.length < 50
+									? 'text-gray-400'
+									: 'text-amber-500'
+							}`}>
+							<span>{newEditTodo.title.length}</span>
+							<span>/100</span>
+						</div>
+					</div>
+					<div className='relative flex flex-1 flex-col'>
+						<textarea
+							id='todoEditDescription'
+							name='description'
+							value={newEditTodo.description}
+							placeholder='Description'
+							className='mb-2 ml-4 mr-4 mt-2 overflow-y-hidden rounded-lg bg-gray-300 px-4 py-3 text-sm  text-gray-900 placeholder:text-gray-500'
+							onChange={(event) => {
+								adjustHeight();
+								setNewEditTodo((old) => {
+									return {
+										...old,
+										description: event.target.value,
+									};
+								});
+							}}
+							onFocus={(e) => {
+								e.target.setSelectionRange(
+									e.target.value.length,
+									e.target.value.length,
+								);
+								(
+									textAreaDescriptionCount.current as HTMLDivElement
+								).style.display = 'block';
+							}}
+							onBlur={(e) => {
+								(
+									textAreaDescriptionCount.current as HTMLDivElement
+								).style.display = 'none';
+							}}
+							onKeyDown={handleKeyDown}
+							disabled={status === 'submitting'}
+							ref={textAreaRefDescription}
+							rows={1}
+							maxLength={1000}
+						/>
+						<div
+							id='todoEditDescriptionCount'
+							ref={textAreaDescriptionCount}
+							className={`absolute -bottom-2 right-6 hidden text-[10px] ${
+								(newEditTodo.description as string).length < 500
+									? 'text-gray-400'
+									: 'text-amber-500'
+							}`}>
+							<span>{(newEditTodo.description as string).length}</span>
+							<span>/1000</span>
+						</div>
+					</div>
+					<div className='mb-3 ml-4 mr-4 mt-3 flex items-center justify-between'>
 						<Select
 							value={newEditTodo.priority}
 							onValueChange={(value) => {
@@ -251,7 +302,22 @@ export default function EditModalTodo({
 								{Object.entries(PriorityEnum).map((item, idx) => {
 									return (
 										<SelectItem key={idx} value={item[1]}>
-											{item[0]}
+											<div className='flex items-center justify-start'>
+												<Flag
+													className={`mr-1.5 ${
+														idx === 3
+															? 'text-rose-400'
+															: idx === 2
+															? 'text-amber-400'
+															: idx === 1
+															? 'text-sky-400'
+															: 'text-gray-400'
+													}`}
+													size={'1rem'}
+													variant='Bold'
+												/>
+												<span>{item[0]}</span>
+											</div>
 										</SelectItem>
 									);
 								})}

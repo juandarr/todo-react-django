@@ -8,7 +8,7 @@ export default function TaskListHeader({
 	fieldActions,
 }: TaskListHeaderProps): React.JSX.Element {
 	return (
-		<div className='text-md font-serif flex rounded-xl bg-gray-100 py-3 font-bold'>
+		<div className='text-md flex rounded-xl bg-gray-100 py-3 font-bold'>
 			<p className='w-2/12 px-6 text-center font-bold text-gray-700'>
 				{fieldDone}
 			</p>

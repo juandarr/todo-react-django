@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useReducer } from 'react';
 
 import { clientUser, clientTodo, clientList } from './lib/api';
 
-import { getPoint, isDescendantOf } from './lib/utils';
+import { getPoint, isDescendantOf, randomInRange } from './lib/utils';
 
 import NavBar from './components/navbar/navbar';
 import SideBar from './components/sidebar/sidebar';
@@ -19,18 +19,16 @@ import type {
 	EditionSetState,
 	viewType,
 	todoModelFetch,
-	listModelFetch,
 	userModelFetch,
+	listsType,
 } from './lib/customTypes';
 
 import type { Todo, List } from '../../todo-api-client/models';
 
 import { useModelFetch } from './hooks/useModelFetch';
 import TaskView from './components/taskview/taskview';
-
-function randomInRange(min: number, max: number): number {
-	return Math.random() * (max - min) + min;
-}
+import listsReducer from './reducers/listsReducer';
+import { UserContext } from './contexts/UserContext';
 
 let userInfo: userInfoType = {
 	id: 0,
@@ -39,13 +37,14 @@ let userInfo: userInfoType = {
 	inboxListId: 0,
 };
 
+const initialListsState: listsType = [];
+
 export default function App(): React.JSX.Element {
 	// Views can be lists or tags, such as today or upcoming
 	const [currentView, setCurrentView] = useState<viewType>({
 		id: 0,
 		title: '',
 	});
-	const [newListEdit, setNewListEdit] = useState('');
 	const [showSidebar, setShowSidebar] = useState(true);
 
 	const [todos, setTodos]: todoModelFetch = useModelFetch(
@@ -54,9 +53,8 @@ export default function App(): React.JSX.Element {
 
 	const [user]: userModelFetch = useModelFetch(clientUser.usersList());
 
-	const [lists, setLists]: listModelFetch = useModelFetch(
-		clientList.listsList(),
-	);
+	const [lists, dispatch] = useReducer(listsReducer, initialListsState);
+
 	const initializationCompleted = useRef(false);
 
 	// Initialization effects
@@ -72,6 +70,29 @@ export default function App(): React.JSX.Element {
 			};
 		}
 	}, [user]);
+	// Load lists - need to do this since changed from useState to useReducer
+	useEffect(() => {
+		let ignore = false;
+		clientList
+			.listsList()
+			.then((result: List[]) => {
+				if (!ignore) {
+					dispatch({
+						type: 'added',
+						payload: result,
+					});
+				}
+			})
+			.catch((error: Error) => {
+				if (error instanceof Error) {
+					console.log('There was an error retrieving data: ', error.message);
+				}
+			});
+
+		return () => {
+			ignore = true;
+		};
+	}, []);
 	// This effect initializes the currentView based on the homeList userInfo configuration and the initial list of List data. Runs only once
 	useEffect(() => {
 		if (
@@ -131,21 +152,6 @@ export default function App(): React.JSX.Element {
 		setCurrentView(newView);
 	};
 
-	const addList = async (title: string): Promise<List> => {
-		const list = {
-			title,
-		};
-		try {
-			const listCreated = await clientList.listsCreate({ list });
-			console.log('List was created!', listCreated);
-			setLists((oldLists) => [...oldLists, listCreated]);
-			return listCreated;
-		} catch (error) {
-			console.log('List creation failed with error: ', error);
-			throw error;
-		}
-	};
-
 	const addTodo = async (todo: todoType, origin: string): Promise<Todo> => {
 		const tmp: { priority: number; list: number; dueDate: Date | undefined } = {
 			priority: 4,
@@ -173,6 +179,16 @@ export default function App(): React.JSX.Element {
 		} else {
 			if (currentView.id === viewData.viewTags.get('today')) {
 				tmp.dueDate = new Date();
+			} else if (currentView.id === viewData.viewTags.get('upcoming')) {
+				const tmpD = new Date();
+				tmp.dueDate = new Date(
+					new Date(
+						tmpD.getFullYear(),
+						tmpD.getMonth(),
+						tmpD.getDate(),
+					).getTime() +
+						24 * 60 * 60 * 1000,
+				);
 			}
 		}
 		const todoFiltered: Todo = { ...todo, ...tmp };
@@ -183,81 +199,6 @@ export default function App(): React.JSX.Element {
 			return todoCreated;
 		} catch (error) {
 			console.log('Todo creation failed with error: ', error);
-			throw error;
-		}
-	};
-
-	const deleteTodo = async (id: number): Promise<void> => {
-		try {
-			await clientTodo.todosDestroy({ id });
-			setTodos((prevTodos) => {
-				return prevTodos.filter((todo) => todo.id !== id);
-			});
-			console.log('Todo was deleted');
-		} catch (error) {
-			console.log('Error deleting todo');
-			throw error;
-		}
-	};
-
-	const deleteList = async (id: number): Promise<void> => {
-		try {
-			await clientList.listsDestroy({ id });
-			setLists((prevLists) => {
-				return prevLists.filter((list) => list.id !== id);
-			});
-			// If current view is the one being deleted, default current view to the home view
-			if (id === currentView.id) {
-				setCurrentView(() => {
-					if (typeof userInfo.homeListId === 'number') {
-						const list = lists.find(
-							(list) => list.id === userInfo.homeListId,
-						) as List;
-						return { id: list.id as number, title: list.title };
-					} else {
-						return {
-							id: userInfo.homeListId,
-							title: viewData.viewTagDetails.get(userInfo.homeListId) as string,
-						};
-					}
-				});
-			}
-			console.log('List was deleted');
-		} catch (error) {
-			console.log('Error deleting list');
-			throw error;
-		}
-	};
-
-	const editList = async (id: number, title: string): Promise<List> => {
-		const list = {
-			title,
-		};
-
-		try {
-			const updatedList = await clientList.listsPartialUpdate({
-				id,
-				patchedList: list,
-			});
-			console.log('List was patched!');
-
-			setLists((prevLists) => {
-				return prevLists.map((list) => {
-					if (list.id === id) {
-						return { ...list, title };
-					} else {
-						return list;
-					}
-				});
-			});
-			// If the current view is the one being edited, update the current view
-			if (id === currentView.id) {
-				console.log('Patched list and current list match! ', title);
-				setCurrentView((oldCurrentView) => ({ ...oldCurrentView, title }));
-			}
-			return updatedList;
-		} catch (error) {
-			console.log('There was an error updating the field in List');
 			throw error;
 		}
 	};
@@ -357,42 +298,129 @@ export default function App(): React.JSX.Element {
 		}
 	};
 
+	const deleteTodo = async (id: number): Promise<void> => {
+		try {
+			await clientTodo.todosDestroy({ id });
+			setTodos((prevTodos) => {
+				return prevTodos.filter((todo) => todo.id !== id);
+			});
+			console.log('Todo was deleted');
+		} catch (error) {
+			console.log('Error deleting todo');
+			throw error;
+		}
+	};
+
+	const addList = async (title: string): Promise<List> => {
+		const list = {
+			title,
+		};
+		try {
+			const listCreated = await clientList.listsCreate({ list });
+			console.log('List was created!', listCreated);
+			dispatch({
+				type: 'added',
+				payload: listCreated,
+			});
+			return listCreated;
+		} catch (error) {
+			console.log('List creation failed with error: ', error);
+			throw error;
+		}
+	};
+
+	const editList = async (id: number, title: string): Promise<List> => {
+		const list = {
+			title,
+		};
+
+		try {
+			const updatedList = await clientList.listsPartialUpdate({
+				id,
+				patchedList: list,
+			});
+			console.log('List was patched!');
+
+			dispatch({
+				type: 'edited',
+				payload: updatedList,
+			});
+			// If the current view is the one being edited, update the current view
+			if (id === currentView.id) {
+				console.log('Patched list and current list match! ', title);
+				setCurrentView((oldCurrentView) => ({ ...oldCurrentView, title }));
+			}
+			return updatedList;
+		} catch (error) {
+			console.log('There was an error updating the field in List');
+			throw error;
+		}
+	};
+
+	const deleteList = async (id: number): Promise<void> => {
+		try {
+			await clientList.listsDestroy({ id });
+			dispatch({
+				type: 'deleted',
+				payload: { id },
+			});
+			// If current view is the one being deleted, default current view to the home view
+			if (id === currentView.id) {
+				setCurrentView(() => {
+					if (typeof userInfo.homeListId === 'number') {
+						const list = lists.find(
+							(list) => list.id === userInfo.homeListId,
+						) as List;
+						return { id: list.id as number, title: list.title };
+					} else {
+						return {
+							id: userInfo.homeListId,
+							title: viewData.viewTagDetails.get(userInfo.homeListId) as string,
+						};
+					}
+				});
+			}
+			console.log('List was deleted');
+		} catch (error) {
+			console.log('Error deleting list');
+			throw error;
+		}
+	};
+
 	return (
 		<>
-			<NavBar
-				changeCurrentView={changeCurrentView}
-				lists={lists}
-				addTodo={addTodo}
-				userInfo={userInfo}
-				setShowSidebar={setShowSidebar}
-			/>
-			<div className='font-serif relative mx-6 flex w-5/6 justify-end'>
-				<SideBar
-					lists={lists}
-					userInfo={userInfo}
-					viewData={viewData}
+			<UserContext.Provider value={userInfo}>
+				<NavBar
 					changeCurrentView={changeCurrentView}
-					currentView={currentView}
-					addList={addList}
-					deleteList={deleteList}
-					editList={editList}
-					newListEdit={newListEdit}
-					setNewListEdit={setNewListEdit}
-					showSidebar={showSidebar}
-				/>
-				<TaskView
-					todos={todos}
 					lists={lists}
-					showSidebar={showSidebar}
-					currentView={currentView}
 					addTodo={addTodo}
-					toggleTodo={toggleTodo}
-					deleteTodo={deleteTodo}
-					editTodo={editTodo}
-					editTodoFull={editTodoFull}
+					setShowSidebar={setShowSidebar}
 				/>
-			</div>
-			<Toaster />
+				<div className='relative mx-6 flex w-5/6 justify-end'>
+					<SideBar
+						lists={lists}
+						viewData={viewData}
+						currentView={currentView}
+						changeCurrentView={changeCurrentView}
+						addList={addList}
+						deleteList={deleteList}
+						editList={editList}
+						showSidebar={showSidebar}
+					/>
+					<TaskView
+						todos={todos}
+						lists={lists}
+						currentView={currentView}
+						addTodo={addTodo}
+						toggleTodo={toggleTodo}
+						deleteTodo={deleteTodo}
+						editTodo={editTodo}
+						editTodoFull={editTodoFull}
+						showSidebar={showSidebar}
+					/>
+				</div>
+				<Toaster />
+			</UserContext.Provider>
 		</>
 	);
 }

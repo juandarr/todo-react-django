@@ -133,7 +133,6 @@ export interface TaskListHeaderProps {
 export interface CreateModalTodoProps {
 	lists: Todo[];
 	addTodo: addTodoType;
-	userInfo: userInfoType;
 }
 
 export interface CreateModalListProps {
@@ -157,19 +156,17 @@ export interface DeleteModalProps {
 	deleteEntity: string;
 	parentId: string;
 	id: number;
+	size: number;
 }
 
 export interface SideBarProps {
 	lists: List[];
-	userInfo: userInfoType;
 	viewData: viewDataType;
-	changeCurrentView: (viewId: number | string) => void;
 	currentView: viewType;
+	changeCurrentView: (viewId: number | string) => void;
 	addList: addListType;
 	deleteList: (id: number) => Promise<void>;
 	editList: (id: number, title: string) => Promise<List>;
-	newListEdit: string;
-	setNewListEdit: React.Dispatch<React.SetStateAction<string>>;
 	showSidebar: boolean;
 }
 
@@ -177,7 +174,6 @@ export interface NavBarProps {
 	changeCurrentView: (viewId: number | string) => void;
 	lists: List[];
 	addTodo: addTodoType;
-	userInfo: userInfoType;
 	setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
