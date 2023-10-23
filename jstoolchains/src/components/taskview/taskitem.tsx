@@ -114,7 +114,7 @@ export default function TaskItem({
 								readOnly
 							/>
 						) : (
-							<div className='flex flex-1 items-center'>
+							<div className='relative flex flex-1 items-center'>
 								<input
 									type='text'
 									className={`mb-1 mr-2 mt-1 h-10 w-full bg-white text-base ${
@@ -135,8 +135,19 @@ export default function TaskItem({
 											title: event.target.value,
 										}));
 									}}
+									maxLength={100}
 									autoFocus
 								/>
+								<div
+									id='todoEditTextCount'
+									className={`absolute -bottom-3 right-9 text-[10px] ${
+										newTodoEdit.title.length < 50
+											? 'text-violet-400'
+											: 'text-amber-500'
+									}`}>
+									<span id='current'>{newTodoEdit.title.length}</span>
+									<span id='maximum'>/100</span>
+								</div>
 								<TooltipProvider>
 									<Tooltip>
 										<TooltipTrigger
