@@ -5,7 +5,5 @@ import App from './App';
 
 const container = createRoot(document.getElementById('root') as HTMLElement);
 container.render(
-	<StrictMode>
 		<App />
-	</StrictMode>,
 );
