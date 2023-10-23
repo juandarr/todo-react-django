@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'todo',
     'django_browser_reload',
-    'drf_spectacular'
+    'drf_spectacular',
+    'corsheaders'
 ]
 
 REST_FRAMEWORK = {
@@ -50,6 +51,7 @@ REST_FRAMEWORK = {
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -58,6 +60,11 @@ MIDDLEWARE = [
     'django_browser_reload.middleware.BrowserReloadMiddleware'
 ]
 
+CSRF_TRUSTED_ORIGINS = ['https://task.bitfusion.link']
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
 ROOT_URLCONF = 'todo_react_django.urls'
 
 TEMPLATES = [
@@ -132,6 +139,7 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_URL = 'static/'
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
