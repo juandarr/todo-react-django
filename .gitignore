@@ -1,5 +1,6 @@
 todo_react_django/__pycache__
 jstoolchains/node_modules
+database/
 static/css/output.css
 static/js/index-bundle.js
 todo/__pycache__
