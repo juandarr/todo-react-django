@@ -310,7 +310,7 @@ export default function CreateModalTodo({
 							id='todoDescription'
 							name='description'
 							className='editRegion mb-2 ml-4 mr-4 mt-2 rounded-lg bg-gray-300 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-500'
-							placeholder='Description'
+							// placeholder='Description'
 							value={newTodo.description}
 							onFocus={(e) => {
 								(
