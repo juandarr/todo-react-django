@@ -176,7 +176,7 @@
 }
 
 /* Input form style */
-input {
+.admin-form input {
   margin-top: 0.5rem;
   height: 2rem;
   border-radius: 0.75rem;
@@ -259,4 +259,42 @@ input {
   margin-left: 0.5rem;
   margin-top: 0.5rem;
   font-weight: 500;
+}
+
+ul[data-type="taskList"] {
+  list-style: none;
+  padding: 0;
+}
+ul[data-type="taskList"] p {
+  margin: 0;
+}
+ul[data-type="taskList"] li {
+  display: flex;
+}
+ul[data-type="taskList"] li > label {
+  flex: 0 0 auto;
+  margin-right: 0.5rem;
+  user-select: none;
+}
+ul[data-type="taskList"] li > div {
+  flex: 1 1 auto;
+}
+ul[data-type="taskList"] li ul li,
+ul[data-type="taskList"] li ol li {
+  display: list-item;
+}
+ul[data-type="taskList"] li ul[data-type="taskList"] > li {
+  display: flex;
+}
+
+.editRegion {
+  cursor: text;
+}
+
+.editRegion .ProseMirror:focus-visible {
+  outline: none;
+}
+
+.editRegion:focus-within {
+  outline: solid;
 }
