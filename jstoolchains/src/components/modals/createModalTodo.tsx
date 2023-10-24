@@ -39,6 +39,7 @@ import { PriorityEnum } from '../../lib/userSettings';
 import { isDescendantOf } from '../../lib/utils';
 import useAutosizeTextArea from '../../lib/useAutosizeTextArea';
 import { DatePickerWithPresets } from '../ui/datepicker';
+import TextEditor from '../ui/textEditor';
 import { UserContext } from '../../contexts/UserContext';
 
 const override: CSSProperties = {
@@ -280,6 +281,7 @@ export default function CreateModalTodo({
 							<span>{(newTodo.description as string).length}</span>
 							<span>/1000</span>
 						</div>
+						<TextEditor />
 					</div>
 					<div className='mb-3 ml-4 mr-4 mt-3 flex items-center justify-around'>
 						<Select
