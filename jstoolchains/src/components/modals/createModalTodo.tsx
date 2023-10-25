@@ -36,12 +36,13 @@ import Spinner from 'react-spinners/DotLoader';
 
 import type { CreateModalTodoProps, todoType } from '../../lib/customTypes';
 import { PriorityEnum } from '../../lib/userSettings';
-import { isDescendantOf, waitForElementToExist } from '../../lib/utils';
+import { isDescendantOf } from '../../lib/utils';
 import useAutosizeTextArea from '../../lib/useAutosizeTextArea';
 import { DatePickerWithPresets } from '../ui/datepicker';
 import { UserContext } from '../../contexts/UserContext';
 import useTextEditor from '../../hooks/useTextEditor';
-import { EditorContent } from '@tiptap/react';
+import TextEditor from '../ui/textEditor';
+// import { EditorContent } from '@tiptap/react';
 
 const override: CSSProperties = {
 	display: 'block',
@@ -63,22 +64,20 @@ export default function CreateModalTodo({
 		dueDate: undefined,
 		list: user.inboxListId.toString(),
 	});
-	const editorDesc = useTextEditor('');
-	editorDesc?.on('update', ({ editor }) => {
-		const updatedContent = editor?.getHTML();
-
-		setNewTodo((old) => ({
-			...old,
-			description: updatedContent,
-		}));
-	});
+	const editorDesc = useTextEditor('', 'Description', 1000);
+	// editorDesc?.on('update', ({ editor }) => {
+	// const updatedContent = editor?.getHTML();
+	// setNewTodo((old) => ({
+	// 	...old,
+	// 	description: updatedContent,
+	// }));
+	// });
 	const [status, setStatus] = useState('typing');
 
 	const { toast } = useToast();
 
 	const textAreaTitle = useRef<HTMLTextAreaElement>(null);
 	const textAreaTitleCount = useRef<HTMLDivElement>(null);
-	const textAreaDescriptionCount = useRef<HTMLDivElement>(null);
 
 	useAutosizeTextArea(textAreaTitle.current, newTodo.title);
 
@@ -106,33 +105,16 @@ export default function CreateModalTodo({
 		}
 	}, [status]);
 
-	useEffect(() => {
-		if (isOpen) {
-			// When element appears in the DOM, adjust height of textarea elements
-			waitForElementToExist('#todoDescription')
-				.then((element) => {
-					const el = document.getElementById('todoDescription');
-					el?.addEventListener('click', () => {
-						editorDesc?.commands.focus();
-					});
-
-					return () => {
-						el?.removeEventListener('click', () => {
-							editorDesc?.commands.focus();
-						});
-					};
-				})
-				.catch(() => {});
-		}
-	}, [isOpen]);
-
 	const createHandleSubmit = async (): Promise<void> => {
 		if (newTodo.title === '') return;
+		const updatedContent = editorDesc?.getHTML();
+		const tmpTodo = { ...newTodo };
+		tmpTodo.description = updatedContent;
 		setStatus('submitting');
 		editorDesc?.setOptions({ editable: false });
 
 		try {
-			await addTodo(newTodo, 'NavBar');
+			await addTodo(tmpTodo, 'NavBar');
 			setNewTodo((oldTodo) => ({
 				...oldTodo,
 				title: '',
@@ -187,9 +169,6 @@ export default function CreateModalTodo({
 		setIsOpen(true);
 	};
 
-	// const closePopover = (): void => {
-	// 	setIsOpen(false);
-	// };
 	console.log('Modal todo creation opened');
 	return (
 		<Popover modal={true} open={isOpen} onOpenChange={setIsOpen}>
@@ -270,13 +249,11 @@ export default function CreateModalTodo({
 							<span>/100</span>
 						</div>
 					</div>
-					<div className='relative flex flex-1 flex-col'>
-						{/* <textarea
+					{/* <textarea
 							id='todoDescription'
 							name='description'
 							value={newTodo.description}
 							ref={textAreaDescription}
-							placeholder='Description'
 							className='mb-2 ml-4 mr-4 mt-2 rounded-lg bg-gray-300 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-500'
 							onFocus={(e) => {
 								(
@@ -305,42 +282,37 @@ export default function CreateModalTodo({
 							maxLength={1000}
 							disabled={status === 'submitting'}
 						/> */}
-						<EditorContent
+					{/* <EditorContent
 							editor={editorDesc}
 							id='todoDescription'
-							name='description'
-							className='editRegion mb-2 ml-4 mr-4 mt-2 rounded-lg bg-gray-300 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-500'
-							// placeholder='Description'
-							value={newTodo.description}
-							onFocus={(e) => {
-								(
-									textAreaDescriptionCount.current as HTMLDivElement
-								).style.display = 'block';
-							}}
-							onBlur={(e) => {
-								(
-									textAreaDescriptionCount.current as HTMLDivElement
-								).style.display = 'none';
-							}}
+							className='editRegion mb-2 ml-4 mr-4 mt-2 max-h-[50vh] overflow-y-auto rounded-lg bg-gray-300 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-500'
+							// name='description'
+							// onFocus={(e) => {
+							// 	(
+							// 		textAreaDescriptionCount.current as HTMLDivElement
+							// 	).style.display = 'block';
+							// }}
+							// onBlur={(e) => {
+							// 	(
+							// 		textAreaDescriptionCount.current as HTMLDivElement
+							// 	).style.display = 'none';
+							// }}
 							onKeyDown={(e) => {
 								handleKeyDown(e);
 							}}
-							rows={1}
-							maxLength={1000}
-							disabled={status === 'submitting'}
-						/>
-						<div
-							id='todoDescriptionCount'
-							ref={textAreaDescriptionCount}
-							className={`absolute -bottom-2 right-6 hidden text-[10px] ${
-								(newTodo.description as string).length < 500
-									? 'text-gray-400'
-									: 'text-amber-500'
-							}`}>
-							<span>{(newTodo.description as string).length}</span>
-							<span>/1000</span>
-						</div>
-					</div>
+							// rows={1}
+							// maxLength={10000}
+							// disabled={status === 'submitting'}
+						/> */}
+					<TextEditor
+						editor={editorDesc}
+						id='todoDescription'
+						className='mb-2 ml-4 mr-4 mt-2 max-h-[50vh] overflow-y-auto rounded-lg bg-gray-300 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-500'
+						onKeyDown={(e) => {
+							handleKeyDown(e);
+						}}
+						disabled={status === 'submitting'}
+					/>
 					<div className='mb-3 ml-4 mr-4 mt-3 flex items-center justify-around'>
 						<Select
 							value={newTodo.priority}

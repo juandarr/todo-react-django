@@ -38,7 +38,7 @@ class List(models.Model):
 class Todo(models.Model):
     id = models.BigAutoField(primary_key=True,unique=True, blank=True)
     title = models.CharField(max_length=100)
-    description = models.CharField(max_length=1000, blank=True, default="")
+    description = models.CharField(max_length=10000, blank=True, default="")
     created_at = models.DateTimeField(editable=False, blank=True, default=now)
     complete = models.BooleanField(blank=True, default=False)
     completed_at = models.DateTimeField(blank=True, null=True)
