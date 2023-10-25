@@ -111,7 +111,6 @@ export default function CreateModalTodo({
 		const tmpTodo = { ...newTodo };
 		tmpTodo.description = updatedContent;
 		setStatus('submitting');
-		editorDesc?.setOptions({ editable: false });
 
 		try {
 			await addTodo(tmpTodo, 'NavBar');
@@ -123,7 +122,6 @@ export default function CreateModalTodo({
 				dueDate: undefined,
 			}));
 			setStatus('typing');
-			editorDesc?.setOptions({ editable: true });
 			editorDesc?.commands.clearContent();
 			toast({
 				title: 'Task was created!',
@@ -138,7 +136,6 @@ export default function CreateModalTodo({
 				});
 			}
 			setStatus('typing');
-			editorDesc?.setOptions({ editable: true });
 		}
 	};
 
@@ -163,7 +160,6 @@ export default function CreateModalTodo({
 			list: user.inboxListId.toString(),
 			dueDate: undefined,
 		});
-		editorDesc?.setOptions({ editable: true });
 		editorDesc?.commands.clearContent();
 		setStatus('typing');
 		setIsOpen(true);
@@ -198,7 +194,7 @@ export default function CreateModalTodo({
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
 				}}
-				className='w-80 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
+				className='max-h-[50vh] w-80 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
 				<form
 					id='listform'
 					className='flex flex-col'
@@ -249,69 +245,14 @@ export default function CreateModalTodo({
 							<span>/100</span>
 						</div>
 					</div>
-					{/* <textarea
-							id='todoDescription'
-							name='description'
-							value={newTodo.description}
-							ref={textAreaDescription}
-							className='mb-2 ml-4 mr-4 mt-2 rounded-lg bg-gray-300 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-500'
-							onFocus={(e) => {
-								(
-									textAreaDescriptionCount.current as HTMLDivElement
-								).style.display = 'block';
-								e.target.setSelectionRange(
-									e.target.value.length,
-									e.target.value.length,
-								);
-							}}
-							onBlur={(e) => {
-								(
-									textAreaDescriptionCount.current as HTMLDivElement
-								).style.display = 'none';
-							}}
-							onKeyDown={(e) => {
-								handleKeyDown(e);
-							}}
-							onChange={(event) => {
-								setNewTodo((old) => ({
-									...old,
-									description: event.target.value,
-								}));
-							}}
-							rows={1}
-							maxLength={1000}
-							disabled={status === 'submitting'}
-						/> */}
-					{/* <EditorContent
-							editor={editorDesc}
-							id='todoDescription'
-							className='editRegion mb-2 ml-4 mr-4 mt-2 max-h-[50vh] overflow-y-auto rounded-lg bg-gray-300 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-500'
-							// name='description'
-							// onFocus={(e) => {
-							// 	(
-							// 		textAreaDescriptionCount.current as HTMLDivElement
-							// 	).style.display = 'block';
-							// }}
-							// onBlur={(e) => {
-							// 	(
-							// 		textAreaDescriptionCount.current as HTMLDivElement
-							// 	).style.display = 'none';
-							// }}
-							onKeyDown={(e) => {
-								handleKeyDown(e);
-							}}
-							// rows={1}
-							// maxLength={10000}
-							// disabled={status === 'submitting'}
-						/> */}
 					<TextEditor
 						editor={editorDesc}
 						id='todoDescription'
-						className='mb-2 ml-4 mr-4 mt-2 max-h-[50vh] overflow-y-auto rounded-lg bg-gray-300 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-500'
+						className='mb-2 ml-4 mr-4 mt-2 max-h-[20vh] overflow-y-auto rounded-lg bg-gray-300 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-500'
 						onKeyDown={(e) => {
 							handleKeyDown(e);
 						}}
-						disabled={status === 'submitting'}
+						isDisabled={status === 'submitting'}
 					/>
 					<div className='mb-3 ml-4 mr-4 mt-3 flex items-center justify-around'>
 						<Select
@@ -378,7 +319,11 @@ export default function CreateModalTodo({
 						</Select>
 					</div>
 					<div className='mb-3 ml-4 mr-4 flex items-center justify-start'>
-						<DatePickerWithPresets newTodo={newTodo} setNewTodo={setNewTodo} />
+						<DatePickerWithPresets
+							newTodo={newTodo}
+							setNewTodo={setNewTodo}
+							isDisabled={status === 'submitting'}
+						/>
 					</div>
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-between'>
 						<button

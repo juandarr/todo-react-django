@@ -1,17 +1,19 @@
 import { type Editor, EditorContent } from '@tiptap/react';
-import React, { type HTMLProps, useEffect, useRef } from 'react';
+import React, { type HTMLProps, useEffect, useRef, useMemo } from 'react';
 import { cn } from '../../lib/utils';
 
 export interface TextEditorProps extends HTMLProps<HTMLDivElement> {
 	editor: Editor | null;
+	isDisabled: boolean;
 }
 
 export default function TextEditor({
 	editor,
 	className,
 	id,
+	isDisabled,
 	...props
-}: TextEditorProps): any {
+}: TextEditorProps): React.JSX.Element | null {
 	const textAreaDescriptionCount = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
@@ -48,8 +50,17 @@ export default function TextEditor({
 	if (editor === null) {
 		return null;
 	}
-	const characterCountExtension = editor.extensionManager.extensions.find(
-		(ext) => ext.name === 'characterCount',
+
+	useMemo(() => {
+		editor.setEditable(!isDisabled);
+	}, [isDisabled]);
+
+	const characterCountExtension = useMemo(
+		() =>
+			editor.extensionManager.extensions.find(
+				(ext) => ext.name === 'characterCount',
+			),
+		[],
 	);
 	return (
 		<div className='relative flex flex-1 flex-col'>

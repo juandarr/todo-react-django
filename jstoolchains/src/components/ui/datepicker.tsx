@@ -29,6 +29,7 @@ import { type DatePickerProps } from '../../lib/customTypes';
 export function DatePickerWithPresets({
 	newTodo,
 	setNewTodo,
+	isDisabled,
 }: DatePickerProps): React.JSX.Element {
 	if (newTodo.dueDate !== undefined) {
 		console.log('Current date: ', newTodo.dueDate);
@@ -42,7 +43,8 @@ export function DatePickerWithPresets({
 					className={cn(
 						'w-full justify-start text-left font-normal',
 						newTodo.dueDate === undefined && 'text-muted-foreground',
-					)}>
+					)}
+					disabled={isDisabled}>
 					<CalendarIconSax className='mr-2 h-6 w-6' />
 					{newTodo.dueDate !== undefined ? (
 						format(newTodo.dueDate as Date, 'E, MMM do')

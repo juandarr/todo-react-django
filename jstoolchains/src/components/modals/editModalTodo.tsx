@@ -100,7 +100,6 @@ export default function EditModalTodo({
 		const tmpEditTodo = { ...newEditTodo };
 		tmpEditTodo.description = updatedContent;
 		setStatus('submitting');
-		editorDesc?.setOptions({ editable: false });
 
 		try {
 			await editTodoFull(tmpEditTodo);
@@ -146,7 +145,6 @@ export default function EditModalTodo({
 			priority: todo.priority?.toString(),
 		};
 		setNewEditTodo(tmpTodo);
-		editorDesc?.setOptions({ editable: true });
 		editorDesc?.commands.setContent(tmpTodo.description as string);
 		setStatus('typing');
 		setIsOpen(true);
@@ -185,10 +183,10 @@ export default function EditModalTodo({
 					event.preventDefault();
 					toggleHidden();
 				}}
-				className='w-80 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
+				className='max-h-[50vh] w-80 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
 				<form
 					id='listform'
-					className='flex flex-col'
+					className='flex h-fit flex-col'
 					onSubmit={(e) => {
 						e.preventDefault();
 						editHandleSubmit()
@@ -246,11 +244,11 @@ export default function EditModalTodo({
 					<TextEditor
 						editor={editorDesc}
 						id='todoDescription'
-						className='mb-2 ml-4 mr-4 mt-2 max-h-[30vh] overflow-y-auto rounded-lg bg-gray-300 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-500'
+						className='mb-2 ml-4 mr-4 mt-2 max-h-[20vh] overflow-y-auto rounded-lg bg-gray-300 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-500'
 						onKeyDown={(e) => {
 							handleKeyDown(e);
 						}}
-						disabled={status === 'submitting'}
+						isDisabled={status === 'submitting'}
 					/>
 					<div className='mb-3 ml-4 mr-4 mt-3 flex items-center justify-between'>
 						<Select
@@ -321,6 +319,7 @@ export default function EditModalTodo({
 						<DatePickerWithPresets
 							newTodo={newEditTodo}
 							setNewTodo={setNewEditTodo}
+							isDisabled={status === 'submitting'}
 						/>
 					</div>
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-between'>
