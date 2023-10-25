@@ -244,9 +244,7 @@ export default function EditModalTodo({
 					<TextEditor
 						editor={editorDesc}
 						id='todoDescription'
-						className={
-							'x-4 mb-2 ml-4 mr-4 mt-2 max-h-[40vh] select-text overflow-y-auto rounded-lg bg-gray-300 text-sm text-gray-900 placeholder:text-gray-500'
-						}
+						className='mt-1 max-h-[40vh] overflow-y-auto rounded-b-lg bg-gray-300 text-sm text-gray-900 placeholder:text-gray-500'
 						onKeyDown={(e) => {
 							handleKeyDown(e);
 						}}

@@ -275,6 +275,7 @@ ul[data-type="taskList"] li > label {
   flex: 0 0 auto;
   margin-right: 0.5rem;
   user-select: none;
+  justify-content: center;
 }
 ul[data-type="taskList"] li > div {
   flex: 1 1 auto;
@@ -287,18 +288,6 @@ ul[data-type="taskList"] li ul[data-type="taskList"] > li {
   display: flex;
 }
 
-.editRegion {
-  cursor: text;
-}
-
-.editRegion .ProseMirror:focus-visible {
-  outline: none;
-}
-
-.editRegion:focus-within {
-  outline: solid;
-}
-
 input[type="checkbox"] {
   height: 1.25rem;
   width: 1.25rem;
@@ -309,6 +298,7 @@ input[type="checkbox"]:checked {
   accent-color: rgb(232 121 249);
 }
 input[type="checkbox"]:checked:hover {
+  /** **/
 }
 
 .tiptap {
@@ -316,6 +306,9 @@ input[type="checkbox"]:checked:hover {
   padding-right: 1rem;
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
+  cursor: text;
+  outline: none;
 }
-
-/* 'peer h-6 w-6 shrink-0 rounded-lg border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground', */
+.tiptap input[type="checkbox"] {
+  pointer-events: none;
+}
