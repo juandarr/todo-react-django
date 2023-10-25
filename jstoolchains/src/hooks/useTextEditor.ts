@@ -5,6 +5,7 @@ import CharacterCount from '@tiptap/extension-character-count';
 import Placeholder from '@tiptap/extension-placeholder';
 import { useEditor } from '@tiptap/react';
 import { type Editor } from '@tiptap/react';
+import Link from '@tiptap/extension-link';
 
 export default function useTextEditor(
 	initialContent: string,
@@ -36,6 +37,11 @@ export default function useTextEditor(
 			}),
 			CharacterCount.configure({
 				limit,
+			}),
+			Link.configure({
+				autolink: true,
+				openOnClick: true,
+				linkOnPaste: true,
 			}),
 		],
 		content: ``,
