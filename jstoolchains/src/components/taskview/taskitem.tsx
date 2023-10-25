@@ -102,7 +102,7 @@ export default function TaskItem({
 						{!showEdit ? (
 							<input
 								type='text'
-								className={`mb-1 mr-2 mt-1 h-10 w-full bg-white text-base ${
+								className={`mb-1 mr-2 mt-1 h-10 w-full bg-white px-4 py-3 text-base ${
 									(todo.complete as boolean) ? 'text-gray-400' : 'text-gray-700'
 								}  focus-visible:outline-none`}
 								name='readTitle'
@@ -117,7 +117,7 @@ export default function TaskItem({
 							<div className='relative flex flex-1 items-center'>
 								<input
 									type='text'
-									className={`mb-1 mr-2 mt-1 h-10 w-full bg-white text-base ${
+									className={`mb-1 mr-2 mt-1 h-10 w-full rounded-xl bg-white px-4 py-3 text-base ${
 										(todo.complete as boolean)
 											? 'text-gray-400'
 											: 'text-gray-700'
