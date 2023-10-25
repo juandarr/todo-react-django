@@ -10,24 +10,10 @@ export interface TextEditorProps extends HTMLProps<HTMLDivElement> {
 export default function TextEditor({
 	editor,
 	className,
-	id,
 	isDisabled,
 	...props
 }: TextEditorProps): React.JSX.Element | null {
 	const textAreaDescriptionCount = useRef<HTMLDivElement>(null);
-
-	useEffect(() => {
-		const editorRegion = document.getElementById(id as string);
-		editorRegion?.addEventListener('click', () => {
-			editor?.commands.focus();
-		});
-
-		return () => {
-			editorRegion?.removeEventListener('click', () => {
-				editor?.commands.focus();
-			});
-		};
-	}, []);
 
 	useEffect(() => {
 		const onBlur = (): void => {
@@ -65,7 +51,6 @@ export default function TextEditor({
 	return (
 		<div className='relative flex flex-1 flex-col'>
 			<EditorContent
-				id={id}
 				editor={editor}
 				className={cn('editRegion', className)}
 				{...props}

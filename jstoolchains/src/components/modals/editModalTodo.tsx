@@ -178,15 +178,16 @@ export default function EditModalTodo({
 			</TooltipProvider>
 			<PopoverContent
 				align={'center'}
+				side={'left'}
 				onOpenAutoFocus={(event) => {}}
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
 					toggleHidden();
 				}}
-				className='max-h-[50vh] w-80 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
+				className='max-h-[80vh] w-80 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
 				<form
 					id='listform'
-					className='flex h-fit flex-col'
+					className='flex flex-col'
 					onSubmit={(e) => {
 						e.preventDefault();
 						editHandleSubmit()
@@ -240,11 +241,12 @@ export default function EditModalTodo({
 							<span>/100</span>
 						</div>
 					</div>
-
 					<TextEditor
 						editor={editorDesc}
 						id='todoDescription'
-						className='mb-2 ml-4 mr-4 mt-2 max-h-[20vh] overflow-y-auto rounded-lg bg-gray-300 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-500'
+						className={
+							'x-4 mb-2 ml-4 mr-4 mt-2 max-h-[40vh] select-text overflow-y-auto rounded-lg bg-gray-300 text-sm text-gray-900 placeholder:text-gray-500'
+						}
 						onKeyDown={(e) => {
 							handleKeyDown(e);
 						}}

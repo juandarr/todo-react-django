@@ -194,7 +194,7 @@ export default function CreateModalTodo({
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
 				}}
-				className='max-h-[50vh] w-80 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
+				className='max-h-[80vh] w-80 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
 				<form
 					id='listform'
 					className='flex flex-col'
@@ -248,7 +248,7 @@ export default function CreateModalTodo({
 					<TextEditor
 						editor={editorDesc}
 						id='todoDescription'
-						className='mb-2 ml-4 mr-4 mt-2 max-h-[20vh] overflow-y-auto rounded-lg bg-gray-300 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-500'
+						className='mb-2 ml-4 mr-4 mt-2 max-h-[40vh] overflow-y-auto rounded-lg bg-gray-300 text-sm text-gray-900 placeholder:text-gray-500'
 						onKeyDown={(e) => {
 							handleKeyDown(e);
 						}}
