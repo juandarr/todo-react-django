@@ -180,4 +180,5 @@ export interface NavBarProps {
 export interface DatePickerProps {
 	newTodo: todoType;
 	setNewTodo: React.Dispatch<React.SetStateAction<todoType>>;
+	isDisabled: boolean;
 }

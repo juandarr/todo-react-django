@@ -34,6 +34,8 @@ import { PriorityEnum } from '../../lib/userSettings';
 
 import { waitForElementToExist } from '../../lib/utils';
 import { DatePickerWithPresets } from '../ui/datepicker';
+import useTextEditor from '../../hooks/useTextEditor';
+import TextEditor from '../ui/textEditor';
 
 const override: CSSProperties = {
 	display: 'block',
@@ -53,13 +55,12 @@ export default function EditModalTodo({
 		title: '',
 		description: '',
 	});
+	const editorDesc = useTextEditor('', 'Description', 1000);
 	const [status, setStatus] = useState('typing');
 	const { toast } = useToast();
 
 	const textAreaRefTitle = useRef<HTMLTextAreaElement>(null);
-	const textAreaRefDescription = useRef<HTMLTextAreaElement>(null);
 	const textAreaTitleCount = useRef<HTMLDivElement>(null);
-	const textAreaDescriptionCount = useRef<HTMLDivElement>(null);
 
 	const resizeTextArea = (textArea: HTMLElement): void => {
 		if (textArea !== null) {
@@ -69,7 +70,6 @@ export default function EditModalTodo({
 	};
 	function adjustHeight(): void {
 		resizeTextArea(textAreaRefTitle.current as HTMLElement);
-		resizeTextArea(textAreaRefDescription.current as HTMLElement);
 	}
 
 	useEffect(() => {
@@ -96,10 +96,13 @@ export default function EditModalTodo({
 
 	const editHandleSubmit = async (): Promise<void> => {
 		if (newEditTodo.title === '') return;
+		const updatedContent = editorDesc?.getHTML();
+		const tmpEditTodo = { ...newEditTodo };
+		tmpEditTodo.description = updatedContent;
 		setStatus('submitting');
 
 		try {
-			await editTodoFull(newEditTodo);
+			await editTodoFull(tmpEditTodo);
 			closePopover();
 			toast({
 				title: 'Task was updated!',
@@ -117,7 +120,11 @@ export default function EditModalTodo({
 		}
 	};
 
-	const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
+	const handleKeyDown = (
+		e:
+			| React.KeyboardEvent<HTMLTextAreaElement>
+			| React.KeyboardEvent<HTMLDivElement>,
+	): void => {
 		if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
 			// Submit the form when Ctrl (Windows/Linux) or Command (Mac) + Enter is pressed
 			editHandleSubmit()
@@ -138,6 +145,7 @@ export default function EditModalTodo({
 			priority: todo.priority?.toString(),
 		};
 		setNewEditTodo(tmpTodo);
+		editorDesc?.commands.setContent(tmpTodo.description as string);
 		setStatus('typing');
 		setIsOpen(true);
 	};
@@ -146,6 +154,7 @@ export default function EditModalTodo({
 		const el: HTMLElement = document.getElementById(parentId) as HTMLElement;
 		if (el !== null) el.classList.toggle('hidden-child');
 	};
+
 	console.log('Modal todo edition opened');
 	return (
 		<Popover modal={true} open={isOpen} onOpenChange={setIsOpen}>
@@ -169,12 +178,13 @@ export default function EditModalTodo({
 			</TooltipProvider>
 			<PopoverContent
 				align={'center'}
+				side={'left'}
 				onOpenAutoFocus={(event) => {}}
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
 					toggleHidden();
 				}}
-				className='w-80 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
+				className='max-h-[80vh] w-80 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
 				<form
 					id='listform'
 					className='flex flex-col'
@@ -231,54 +241,15 @@ export default function EditModalTodo({
 							<span>/100</span>
 						</div>
 					</div>
-					<div className='relative flex flex-1 flex-col'>
-						<textarea
-							id='todoEditDescription'
-							name='description'
-							value={newEditTodo.description}
-							placeholder='Description'
-							className='mb-2 ml-4 mr-4 mt-2 overflow-y-hidden rounded-lg bg-gray-300 px-4 py-3 text-sm  text-gray-900 placeholder:text-gray-500'
-							onChange={(event) => {
-								adjustHeight();
-								setNewEditTodo((old) => {
-									return {
-										...old,
-										description: event.target.value,
-									};
-								});
-							}}
-							onFocus={(e) => {
-								e.target.setSelectionRange(
-									e.target.value.length,
-									e.target.value.length,
-								);
-								(
-									textAreaDescriptionCount.current as HTMLDivElement
-								).style.display = 'block';
-							}}
-							onBlur={(e) => {
-								(
-									textAreaDescriptionCount.current as HTMLDivElement
-								).style.display = 'none';
-							}}
-							onKeyDown={handleKeyDown}
-							disabled={status === 'submitting'}
-							ref={textAreaRefDescription}
-							rows={1}
-							maxLength={1000}
-						/>
-						<div
-							id='todoEditDescriptionCount'
-							ref={textAreaDescriptionCount}
-							className={`absolute -bottom-2 right-6 hidden text-[10px] ${
-								(newEditTodo.description as string).length < 500
-									? 'text-gray-400'
-									: 'text-amber-500'
-							}`}>
-							<span>{(newEditTodo.description as string).length}</span>
-							<span>/1000</span>
-						</div>
-					</div>
+					<TextEditor
+						editor={editorDesc}
+						id='todoDescription'
+						className='mt-1 max-h-[40vh] overflow-y-auto rounded-b-lg bg-gray-300 text-sm text-gray-900 placeholder:text-gray-500'
+						onKeyDown={(e) => {
+							handleKeyDown(e);
+						}}
+						isDisabled={status === 'submitting'}
+					/>
 					<div className='mb-3 ml-4 mr-4 mt-3 flex items-center justify-between'>
 						<Select
 							value={newEditTodo.priority}
@@ -348,6 +319,7 @@ export default function EditModalTodo({
 						<DatePickerWithPresets
 							newTodo={newEditTodo}
 							setNewTodo={setNewEditTodo}
+							isDisabled={status === 'submitting'}
 						/>
 					</div>
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-between'>
