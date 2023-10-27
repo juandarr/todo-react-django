@@ -4,22 +4,22 @@ import { type viewDataType } from './customTypes';
 // TODO : come up with a way to include overdue tasks (task with a past due date) in Today view without including completed tasks
 export const viewData: viewDataType = {
 	viewTags: new Map([
-		['today', '0'],
-		['upcoming', '-1'],
+		['today', '1t'],
+		['upcoming', '2t'],
 	]),
-	viewTagIds: ['0', '-1'],
+	viewTagIds: ['1t', '2t'],
 	viewTagDetails: new Map([
-		['0', '🌻 Today'],
-		['-1', '🌝 Upcoming'],
+		['1t', '🌻 Today'],
+		['2t', '🌝 Upcoming'],
 	]),
 	viewTagFilters: new Map([
 		[
-			'0',
+			'1t',
 			(todo: Todo) =>
 				todo.dueDate?.toDateString() === new Date().toDateString(),
 		],
 		[
-			'-1',
+			'2t',
 			(todo: Todo) => {
 				const tmp = new Date();
 				const tomorrow =

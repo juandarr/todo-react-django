@@ -59,6 +59,7 @@ export default function App(): React.JSX.Element {
 
 	// Initialization effects
 	// This effect initializes the userInfo configuration
+	// tmp.inboxId as number
 	useEffect(() => {
 		if (user.length !== 0) {
 			const tmp = user[0];
@@ -66,7 +67,7 @@ export default function App(): React.JSX.Element {
 				id: tmp.id,
 				username: tmp.username,
 				inboxListId: tmp.inboxId as number,
-				homeListId: tmp.inboxId as number,
+				homeListId: '1t',
 			};
 		}
 	}, [user]);

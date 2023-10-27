@@ -86,7 +86,7 @@ def create_list_record(sender, instance, created, **kwargs):
 class Setting(models.Model):
     id = models.BigAutoField(primary_key=True,unique=True, blank=True)
     parameter = models.CharField(max_length=50)
-    value = models.CharField(blank=True, default=False)
+    value = models.CharField(max_length=50)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete =models.CASCADE, blank=True, related_name='settings')
 
     def __str__(self):
