@@ -2,8 +2,8 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.template import loader
 from rest_framework import viewsets
-from .models import Todo, List, User
-from .serializers import TodoSerializer, ListSerializer, UserSerializer
+from .models import Todo, List, User, Setting
+from .serializers import TodoSerializer, ListSerializer, UserSerializer, SettingSerializer
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
@@ -52,6 +52,18 @@ class ListApiView(viewsets.ModelViewSet):
     
     def get_queryset(self):
         return self.request.user.lists.all()
+
+class SettingApiView(viewsets.ModelViewSet):
+    queryset = Setting.objects.all() 
+    serializer_class = SettingSerializer
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+    
+    def get_queryset(self):
+        return self.request.user.settings.all()
 
 def signup_request(request):
 	if request.method == "POST":
