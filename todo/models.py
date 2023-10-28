@@ -69,19 +69,29 @@ class Todo(models.Model):
         ordering = ['created_at']
 
 @receiver(post_save, sender=User)
-def create_list_record(sender, instance, created, **kwargs):
+def create_records(sender, instance, created, **kwargs):
     '''
-    Create a new list associated to the new user, and its id 
+    Creates:
+    - A new list associated to the new user, and its id 
     is stored as the inbox id for the new user
+    - A new setting home_view with default value inbox id
+    - A new setting timezone with empty value     
     '''
-    from .models import List
+    from .models import List, Setting
     if created:
+        # Create and save default list: inbox
         new_model = List(title="📥 Inbox", user_id = instance.id)
         new_model.save()
 
         # Update the related User model to establish the relationship with new List
         instance.inbox_id = new_model.id
         instance.save()
+
+        new_setting = Setting(parameter="home_view", value=str(new_model.id), user_id = instance.id)
+        new_setting.save()
+
+        new_setting = Setting(parameter="timezone", value="", user_id = instance.id)
+        new_setting.save()
 
 class Setting(models.Model):
     id = models.BigAutoField(primary_key=True,unique=True, blank=True)

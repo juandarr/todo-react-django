@@ -11,4 +11,5 @@ router = routers.DefaultRouter()
 router.register('api/todos', views.TodoApiView, basename='TodoApi')
 router.register('api/lists', views.ListApiView, basename='ListApi')
 router.register('api/users', views.UserApiView, basename='UserApi')
+router.register('api/settings', views.SettingApiView, basename='SettingApi')
 urlpatterns += router.urls
