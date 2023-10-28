@@ -282,15 +282,15 @@
   color: #6318dd;
 }
 
-h1 {
+.tiptap h1 {
   font-size: large;
   font-weight: bold;
 }
-h2 {
+.tiptap h2 {
   font-size: larger;
   font-weight: bold;
 }
-h3 {
+.tiptap h3 {
   font-size: medium;
   font-weight: bold;
 }

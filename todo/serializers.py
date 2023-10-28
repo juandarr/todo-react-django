@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Todo, List, User
+from .models import Todo, List, User, Setting
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -20,3 +20,10 @@ class ListSerializer(serializers.ModelSerializer):
     class Meta:
         model = List
         fields = ('id','title','archived','user')
+
+class SettingSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField( read_only=True,
+                                              default=serializers.CurrentUserDefault())
+    class Meta:
+        model = Setting
+        fields = ('id','parameters','value', 'user')
