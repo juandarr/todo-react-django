@@ -21,7 +21,6 @@ import {
 	SidebarLeft,
 	House,
 	StatusUp,
-	Setting2,
 	PasswordCheck,
 	UserSquare,
 	Heart,
@@ -30,12 +29,14 @@ import {
 import type { NavBarProps } from '../../lib/customTypes';
 import { isDescendantOf } from '../../lib/utils';
 import { useOnlineStatus } from '../../hooks/useOnlineStatus';
+import SettingsModal from '../modals/settingsModal';
 
 export default function NavBar({
 	changeCurrentView,
 	lists,
 	addTodo,
 	setShowSidebar,
+	settings,
 }: NavBarProps): React.JSX.Element {
 	const isOnline = useOnlineStatus();
 	const user = useContext(UserContext);
@@ -138,12 +139,7 @@ export default function NavBar({
 							event.preventDefault();
 						}}>
 						<div className='flex flex-col'>
-							<a
-								href='/admin'
-								className='mb-2 flex items-center justify-start font-semibold text-cyan-500 hover:text-cyan-600'>
-								<Setting2 size='1.8rem' />
-								<p className='ml-4'>Settings</p>
-							</a>
+							<SettingsModal settings={settings} />
 							<a
 								href='/accounts/password_change'
 								className='mb-2 flex items-center justify-start font-semibold text-rose-500 hover:text-rose-600'>

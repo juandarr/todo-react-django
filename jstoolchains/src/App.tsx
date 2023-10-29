@@ -52,7 +52,7 @@ export default function App(): React.JSX.Element {
 		clientTodo.todosList(),
 	);
 
-	const [settings, setSettings]: settingModelFetch = useModelFetch(
+	const [settings]: settingModelFetch = useModelFetch(
 		clientSetting.settingsList(),
 	);
 
@@ -401,6 +401,7 @@ export default function App(): React.JSX.Element {
 					lists={lists}
 					addTodo={addTodo}
 					setShowSidebar={setShowSidebar}
+					settings={settings}
 				/>
 				<div className='relative mx-6 flex w-5/6 justify-end'>
 					<SideBar

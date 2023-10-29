@@ -168,6 +168,9 @@ export interface DeleteModalProps {
 	size: number;
 }
 
+export interface SettingsModalProps {
+	settings: Setting[];
+}
 export interface SideBarProps {
 	lists: List[];
 	viewData: viewDataType;
@@ -184,6 +187,7 @@ export interface NavBarProps {
 	lists: List[];
 	addTodo: addTodoType;
 	setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
+	settings: Setting[];
 }
 
 export interface DatePickerProps {
