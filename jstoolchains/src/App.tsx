@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useReducer } from 'react';
 
-import { clientUser, clientTodo, clientList } from './lib/api';
+import { clientUser, clientTodo, clientList, clientSetting } from './lib/api';
 
 import { getPoint, isDescendantOf, randomInRange } from './lib/utils';
 
@@ -20,6 +20,7 @@ import type {
 	viewType,
 	todoModelFetch,
 	userModelFetch,
+	settingModelFetch,
 	listsType,
 } from './lib/customTypes';
 
@@ -49,6 +50,10 @@ export default function App(): React.JSX.Element {
 
 	const [todos, setTodos]: todoModelFetch = useModelFetch(
 		clientTodo.todosList(),
+	);
+
+	const [settings, setSettings]: settingModelFetch = useModelFetch(
+		clientSetting.settingsList(),
 	);
 
 	const [user]: userModelFetch = useModelFetch(clientUser.usersList());

@@ -68,6 +68,15 @@ class Todo(models.Model):
     class Meta:
         ordering = ['created_at']
 
+class Setting(models.Model):
+    id = models.BigAutoField(primary_key=True,unique=True, blank=True)
+    parameter = models.CharField(max_length=50)
+    value = models.CharField(max_length=50)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete =models.CASCADE, blank=True, related_name='settings')
+
+    def __str__(self):
+        return self.parameter + ' : ' + self.value
+
 @receiver(post_save, sender=User)
 def create_records(sender, instance, created, **kwargs):
     '''
@@ -92,12 +101,3 @@ def create_records(sender, instance, created, **kwargs):
 
         new_setting = Setting(parameter="timezone", value="", user_id = instance.id)
         new_setting.save()
-
-class Setting(models.Model):
-    id = models.BigAutoField(primary_key=True,unique=True, blank=True)
-    parameter = models.CharField(max_length=50)
-    value = models.CharField(max_length=50)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete =models.CASCADE, blank=True, related_name='settings')
-
-    def __str__(self):
-        return self.parameter + ' : ' + self.value

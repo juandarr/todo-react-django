@@ -1,4 +1,9 @@
-import type { List, Todo, User } from '../../../todo-api-client/models';
+import type {
+	List,
+	Todo,
+	User,
+	Setting,
+} from '../../../todo-api-client/models';
 
 export type EditionSetState = React.Dispatch<
 	React.SetStateAction<[boolean, number]>
@@ -29,7 +34,7 @@ export type listsType = listType[];
 export type filterType = (todo: Todo) => boolean;
 
 export interface userInfoType {
-	id: number;
+	id: number | undefined;
 	username: string;
 	homeListId: number | string;
 	inboxListId: number;
@@ -65,6 +70,10 @@ export type listModelFetch = [
 	React.Dispatch<React.SetStateAction<List[]>>,
 ];
 
+export type settingModelFetch = [
+	Setting[],
+	React.Dispatch<React.SetStateAction<Setting[]>>,
+];
 export type userModelFetch = [
 	User[],
 	React.Dispatch<React.SetStateAction<User[]>>,

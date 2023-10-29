@@ -26,4 +26,4 @@ class SettingSerializer(serializers.ModelSerializer):
                                               default=serializers.CurrentUserDefault())
     class Meta:
         model = Setting
-        fields = ('id','parameters','value', 'user')
+        fields = ('id','parameter','value', 'user')
