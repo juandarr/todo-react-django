@@ -57,7 +57,7 @@ export default function SettingsModal({
 
 	console.log('Modal settings opened');
 	return (
-		<Popover modal={true} open={isOpen} onOpenChange={setIsOpen}>
+		<Popover modal={false} open={isOpen} onOpenChange={setIsOpen}>
 			<PopoverTrigger
 				asChild={true}
 				onClick={(event) => {
@@ -83,7 +83,10 @@ export default function SettingsModal({
 						e.preventDefault();
 					}}>
 					<div className='mb-3 ml-4 mr-4 mt-3 flex-col items-center justify-start'>
-						<h1 className='m-3'>Settings</h1>
+						<h1 className='m-3 text-cyan-500'>Settings</h1>
+						<p className='mb-2 ml-3 text-base'>
+							Customize the application settings.
+						</p>
 						<div className='flex items-center justify-around'>
 							<h3>Home view</h3>
 							<Select
@@ -120,11 +123,13 @@ export default function SettingsModal({
 									<SelectValue placeholder='Timezone' />
 								</SelectTrigger>
 								<SelectContent>
-									{timeZones.map((timeZone) => (
-										<SelectItem key={timeZone.name} value={timeZone.value}>
-											{timeZone.name}
-										</SelectItem>
-									))}
+									<div className='h-[30vh] overflow-y-auto'>
+										{timeZones.map((timeZone) => (
+											<SelectItem key={timeZone.name} value={timeZone.value}>
+												{timeZone.name}
+											</SelectItem>
+										))}
+									</div>
 								</SelectContent>
 							</Select>
 						</div>
