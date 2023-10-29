@@ -41,6 +41,7 @@ export interface userInfoType {
 }
 
 export interface viewDataType {
+	views: Array<{ id: string; title: string }>;
 	viewTags: Map<string, string>;
 	viewTagIds: string[];
 	viewTagDetails: Map<string, string>;
@@ -169,6 +170,7 @@ export interface DeleteModalProps {
 }
 
 export interface SettingsModalProps {
+	lists: List[];
 	settings: Setting[];
 }
 export interface SideBarProps {

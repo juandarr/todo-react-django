@@ -139,7 +139,7 @@ export default function NavBar({
 							event.preventDefault();
 						}}>
 						<div className='flex flex-col'>
-							<SettingsModal settings={settings} />
+							<SettingsModal lists={lists} settings={settings} />
 							<a
 								href='/accounts/password_change'
 								className='mb-2 flex items-center justify-start font-semibold text-rose-500 hover:text-rose-600'>
