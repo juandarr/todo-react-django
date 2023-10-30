@@ -52,7 +52,7 @@ export default function App(): React.JSX.Element {
 		clientTodo.todosList(),
 	);
 
-	const [settings]: settingModelFetch = useModelFetch(
+	const [settings, setSettings]: settingModelFetch = useModelFetch(
 		clientSetting.settingsList(),
 	);
 
@@ -393,6 +393,32 @@ export default function App(): React.JSX.Element {
 		}
 	};
 
+	const editSetting = async (id: number, value: string): Promise<void> => {
+		const setting = {
+			value,
+		};
+
+		try {
+			await clientSetting.settingsPartialUpdate({
+				id,
+				patchedSetting: setting,
+			});
+			console.log('Setting was updated!');
+			setSettings((prevSettings) => {
+				return prevSettings.map((setting) => {
+					if (setting.id === id) {
+						return { ...setting, value };
+					} else {
+						return setting;
+					}
+				});
+			});
+		} catch (error) {
+			console.log('There was an error updating the field in Setting');
+			throw error;
+		}
+	};
+
 	return (
 		<>
 			<UserContext.Provider value={userInfo}>
@@ -402,6 +428,7 @@ export default function App(): React.JSX.Element {
 					addTodo={addTodo}
 					setShowSidebar={setShowSidebar}
 					settings={settings}
+					editSetting={editSetting}
 				/>
 				<div className='relative mx-6 flex w-5/6 justify-end'>
 					<SideBar

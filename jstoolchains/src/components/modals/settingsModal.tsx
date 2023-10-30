@@ -25,13 +25,17 @@ import type { SettingsModalProps } from '../../lib/customTypes';
 export default function SettingsModal({
 	lists,
 	settings,
+	editSetting,
 }: SettingsModalProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const currentSettings = useMemo(() => {
-		const tmp: Record<string, string> = {};
+		const tmp: Record<string, { value: string; id: number }> = {};
 		settings.forEach((setting, index) => {
-			tmp[setting.parameter] = setting.value;
+			tmp[setting.parameter] = {
+				value: setting.value,
+				id: setting.id as number,
+			};
 		});
 		return tmp;
 	}, [settings]);
@@ -90,10 +94,16 @@ export default function SettingsModal({
 						<div className='flex items-center justify-around'>
 							<h3>Home view</h3>
 							<Select
-								value={editSettings.home_view}
+								value={editSettings.home_view.value}
 								onValueChange={(value) => {
 									console.log('New value: ', value);
-									setEditSettings((old) => ({ ...old, home_view: value }));
+									setEditSettings((old) => ({
+										...old,
+										home_view: { ...old.home_view, value },
+									}));
+									editSetting(editSettings.home_view.id, value)
+										.then(() => {})
+										.catch(() => {});
 								}}>
 								<SelectTrigger className={`m-3 h-2 w-6/12 p-3`}>
 									<SelectValue placeholder='Homeview' />
@@ -115,9 +125,12 @@ export default function SettingsModal({
 						<div className='flex items-center justify-around'>
 							<h3>Time zone</h3>
 							<Select
-								value={editSettings.timezone}
+								value={editSettings.timezone.value}
 								onValueChange={(value) => {
-									setEditSettings((old) => ({ ...old, timezone: value }));
+									setEditSettings((old) => ({
+										...old,
+										timezone: { ...old.timezone, value },
+									}));
 								}}>
 								<SelectTrigger className='m-3 h-2 w-6/12 p-3'>
 									<SelectValue placeholder='Timezone' />

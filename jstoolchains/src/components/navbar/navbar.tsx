@@ -37,6 +37,7 @@ export default function NavBar({
 	addTodo,
 	setShowSidebar,
 	settings,
+	editSetting,
 }: NavBarProps): React.JSX.Element {
 	const isOnline = useOnlineStatus();
 	const user = useContext(UserContext);
@@ -139,7 +140,11 @@ export default function NavBar({
 							event.preventDefault();
 						}}>
 						<div className='flex flex-col'>
-							<SettingsModal lists={lists} settings={settings} />
+							<SettingsModal
+								lists={lists}
+								settings={settings}
+								editSetting={editSetting}
+							/>
 							<a
 								href='/accounts/password_change'
 								className='mb-2 flex items-center justify-start font-semibold text-rose-500 hover:text-rose-600'>
