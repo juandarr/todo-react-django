@@ -31,7 +31,7 @@ import TaskView from './components/taskview/taskview';
 import listsReducer from './reducers/listsReducer';
 import { UserContext } from './contexts/UserContext';
 
-let userInfo: userInfoType = {
+const userInfoInitial: userInfoType = {
 	id: 0,
 	username: '',
 	homeListId: 0,
@@ -57,7 +57,7 @@ export default function App(): React.JSX.Element {
 	);
 
 	const [user]: userModelFetch = useModelFetch(clientUser.usersList());
-
+	const [userInfo, setUserInfo] = useState(userInfoInitial);
 	const [lists, dispatch] = useReducer(listsReducer, initialListsState);
 
 	const initializationCompleted = useRef(false);
@@ -66,16 +66,24 @@ export default function App(): React.JSX.Element {
 	// This effect initializes the userInfo configuration
 	// tmp.inboxId as number
 	useEffect(() => {
-		if (user.length !== 0) {
+		if (user.length !== 0 && settings.length !== 0) {
 			const tmp = user[0];
-			userInfo = {
+			const homeView = settings.find(
+				(setting) => setting.parameter === 'home_view',
+			);
+			setUserInfo({
 				id: tmp.id,
 				username: tmp.username,
 				inboxListId: tmp.inboxId as number,
-				homeListId: '1t',
-			};
+				homeListId:
+					homeView?.value[homeView?.value.length - 1] === 't'
+						? homeView?.value
+						: parseInt(homeView?.value as string),
+			});
+			console.log('This is the homeView: ', homeView, ' with user: ', userInfo);
 		}
-	}, [user]);
+	}, [user, settings]);
+
 	// Load lists - need to do this since changed from useState to useReducer
 	useEffect(() => {
 		let ignore = false;
@@ -106,6 +114,7 @@ export default function App(): React.JSX.Element {
 			userInfo.id !== 0 &&
 			lists.length !== 0
 		) {
+			console.log('Setting currentView');
 			setCurrentView((oldView) => {
 				let tmp: viewType;
 				if (typeof userInfo.homeListId === 'number') {
@@ -125,7 +134,7 @@ export default function App(): React.JSX.Element {
 			});
 			initializationCompleted.current = true;
 		}
-	}, [user, lists]);
+	}, [userInfo, lists]);
 
 	// Toggles sidebar using 's' key as long as the focus is not on an
 	// HTMLElement with a form as an ancestor
@@ -397,7 +406,7 @@ export default function App(): React.JSX.Element {
 		const setting = {
 			value,
 		};
-
+		console.log('Updating new setting');
 		try {
 			await clientSetting.settingsPartialUpdate({
 				id,

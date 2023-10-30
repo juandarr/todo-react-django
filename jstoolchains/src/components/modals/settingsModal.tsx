@@ -96,7 +96,6 @@ export default function SettingsModal({
 							<Select
 								value={editSettings.home_view.value}
 								onValueChange={(value) => {
-									console.log('New value: ', value);
 									setEditSettings((old) => ({
 										...old,
 										home_view: { ...old.home_view, value },
@@ -131,6 +130,9 @@ export default function SettingsModal({
 										...old,
 										timezone: { ...old.timezone, value },
 									}));
+									editSetting(editSettings.timezone.id, value)
+										.then(() => {})
+										.catch(() => {});
 								}}>
 								<SelectTrigger className='m-3 h-2 w-6/12 p-3'>
 									<SelectValue placeholder='Timezone' />
