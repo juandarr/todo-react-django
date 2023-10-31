@@ -21,6 +21,7 @@ import {
 
 import { viewData, timeZones } from '../../lib/userSettings';
 import type { SettingsModalProps } from '../../lib/customTypes';
+import { useToast } from '../ui/toast/use-toast';
 
 export default function SettingsModal({
 	lists,
@@ -49,8 +50,25 @@ export default function SettingsModal({
 	}, [lists]);
 
 	const [editSettings, setEditSettings] = useState(currentSettings);
-	// const { toast } = useToast();
 
+	const { toast } = useToast();
+	const editHandleSubmit = async (id: number, value: string): Promise<void> => {
+		try {
+			await editSetting(id, value);
+			toast({
+				title: 'Setting was updated!',
+				description: '',
+			});
+		} catch (error) {
+			if (error instanceof Error) {
+				toast({
+					variant: 'destructive',
+					title: 'There was an error updating the setting: ',
+					description: error.toString(),
+				});
+			}
+		}
+	};
 	// const closePopover = (): void => {
 	// 	setIsOpen(false);
 	// };
@@ -100,7 +118,7 @@ export default function SettingsModal({
 										...old,
 										home_view: { ...old.home_view, value },
 									}));
-									editSetting(editSettings.home_view.id, value)
+									editHandleSubmit(editSettings.home_view.id, value)
 										.then(() => {})
 										.catch(() => {});
 								}}>
@@ -130,7 +148,7 @@ export default function SettingsModal({
 										...old,
 										timezone: { ...old.timezone, value },
 									}));
-									editSetting(editSettings.timezone.id, value)
+									editHandleSubmit(editSettings.timezone.id, value)
 										.then(() => {})
 										.catch(() => {});
 								}}>
