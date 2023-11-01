@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-
+import WindowedSelect from 'react-windowed-select';
 import { Setting2 } from 'iconsax-react';
 
 import {
@@ -75,6 +75,10 @@ export default function SettingsModal({
 		setIsOpen(true);
 	};
 
+	const timeZonesTmp: Array<{ label: string; value: string }> = [];
+	for (let i = 0; i < timeZones.length; i += 1) {
+		timeZonesTmp.push({ label: timeZones[i], value: timeZones[i] });
+	}
 	console.log('Modal settings opened');
 	return (
 		<Popover modal={false} open={isOpen} onOpenChange={setIsOpen}>
@@ -139,7 +143,38 @@ export default function SettingsModal({
 
 						<div className='flex items-center justify-around'>
 							<h3>Time zone</h3>
-							<Select
+							<WindowedSelect
+								defaultValue={{
+									label: editSettings.timezone.value,
+									value: editSettings.timezone.value,
+								}}
+								className='mb-3 mt-3 w-6/12 text-sm'
+								// styles={{
+								// 	option: (base) => ({
+								// 		...base,
+
+								// 		height: 30,
+								// 		padding: '5px 5px',
+								// 	}),
+								// }}
+								onChange={(option) => {
+									const selection = option as { label: string; value: string };
+									setEditSettings((old) => ({
+										...old,
+										timezone: {
+											...old.timezone,
+											value: selection.value,
+										},
+									}));
+									editHandleSubmit(editSettings.timezone.id, selection.value)
+										.then(() => {})
+										.catch(() => {});
+								}}
+								options={timeZonesTmp}
+								isMulti={false}
+								windowThreshold={0}
+							/>
+							{/* <Select
 								value={editSettings.timezone.value}
 								onValueChange={(value) => {
 									setEditSettings((old) => ({
@@ -162,7 +197,7 @@ export default function SettingsModal({
 										))}
 									</div>
 								</SelectContent>
-							</Select>
+							</Select> */}
 						</div>
 					</div>
 				</form>
