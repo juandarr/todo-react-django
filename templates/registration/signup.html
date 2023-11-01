@@ -6,9 +6,10 @@
 {% block content %}
 
 <div class="flex justify-center items-center">
-    <div class="flex flex-col items-center justify-center bg-white w-fit rounded-xl mt-10 m-4 p-8">
+    <div
+        class="flex flex-col items-center justify-center bg-white w-fit rounded-xl mt-10 m-4 p-8">
         <h2 class="text-xl mb-2 font-bold">Sign up</h2>
-        <form class="ml-2 mr-2" method="post">
+        <form class="ml-2 mr-2 admin-form" method="post" id="signup-form">
             {% csrf_token %}
             <div class="mb-4">
                 <label for="{{ form.username.id_for_label }}"
@@ -21,12 +22,14 @@
                 {{ signup_form.password1 }}
             </div>
             <div class="mb-4">
-                <label for="{{ form.password.id_for_label }}" class="block text-gray-700 font-semibold">Password
+                <label for="{{ form.password.id_for_label }}"
+                    class="block text-gray-700 font-semibold">Password
                     confirmation:</label>
                 {{ signup_form.password2 }}
             </div>
             <div class="flex justify-center">
-                <button class="mt-2 mb-4 bg-cyan-500 p-3 w-fit rounded-md font-semibold text-lg hover:bg-cyan-600"
+                <button
+                    class="mt-2 mb-4 bg-cyan-500 p-3 w-fit rounded-md font-semibold text-lg hover:bg-cyan-600"
                     type="submit">
                     Sign up
                 </button>
@@ -34,12 +37,4 @@
         </form>
     </div>
 </div>
-<!-- <div class="p-3 flex flex-col items-start">
-    <h2 class="text-xl mb-2">Sign up</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button class="bg-white p-3 mt-2 w-fit hover:bg-gray-200 rounded-md" type="submit">Sign Up</button>
-    </form>
-</div> -->
 {% endblock %}

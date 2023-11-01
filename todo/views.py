@@ -66,8 +66,11 @@ class SettingApiView(viewsets.ModelViewSet):
         return self.request.user.settings.all()
 
 def signup_request(request):
+	print("Request received!")
+	print(request)
 	if request.method == "POST":
 		form = CustomUserCreationForm(request.POST)
+		print(form.is_valid())
 		if form.is_valid():
 			username = form.cleaned_data.get('username')
 			user = form.save()

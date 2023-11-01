@@ -104,7 +104,7 @@ export default function SettingsModal({
 					}}>
 					<div className='m-3 flex-col items-center justify-start'>
 						<h1 className='m-3 text-xl font-bold text-cyan-500'>Settings</h1>
-						<p className='mb-2 mb-3 ml-3 text-base'>
+						<p className='mb-3 ml-3 text-base'>
 							Customize the application settings.
 						</p>
 						<div className='flex items-center justify-around'>

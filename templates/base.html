@@ -18,6 +18,41 @@
 
 
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const signupForm = document.getElementById('signup-form');
+
+            if (signupForm) {
+                signupForm.addEventListener('submit', function (event) {
+                    // Prevent the default form submission behavior
+                    event.preventDefault();
+
+                    // Get the user's timezone
+                    const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+                    // Create a FormData object from the form
+                    const formData = new FormData(signupForm);
+
+                    // Append the user's timezone to the form data
+                    formData.append('timezone', userTimezone);
+                    console.log("Appending timezone: ", userTimezone)
+                    console.log(event)
+                    // Send the form data to your Django backend using fetch or any other method
+                    fetch('', {
+                        method: 'POST',
+                        body: formData,
+                    })
+                        .then(response => {
+                            // Handle the response from the server, e.g., redirect to a success page.
+                            console.log("Everything worked")
+                        })
+                        .catch(error => {
+                            // Handle errors, e.g., display an error message to the user.
+                            console.log("Error locating endpoint")
+                        });
+                });
+            }
+        });</script>
     {% block js_script %}
 
     {% endblock %}

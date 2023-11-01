@@ -23,7 +23,7 @@ urlpatterns = [
     path('', include('todo.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
-    path("signup", signup_request, name="signup"),
+    path('signup/', signup_request, name="signup"),
     path("login", login_request, name="login"),
     path("logout", logout_request , name="logout"),
     path('api-auth/', include('rest_framework.urls')),

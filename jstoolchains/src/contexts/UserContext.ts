@@ -6,4 +6,5 @@ export const UserContext = createContext<userInfoType>({
 	username: '',
 	inboxListId: 0,
 	homeListId: 0,
+	timeZone: '',
 });
