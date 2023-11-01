@@ -2,8 +2,6 @@ from django.db import models
 from django.utils.timezone import now
 from todo_react_django import settings
 from django.contrib.auth.models import AbstractUser, BaseUserManager, PermissionsMixin
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 class UserManager(BaseUserManager):
     def create_user(self, password=None, **extra_fields):
@@ -76,28 +74,3 @@ class Setting(models.Model):
 
     def __str__(self):
         return self.parameter + ' : ' + self.value
-
-@receiver(post_save, sender=User)
-def create_records(sender, instance, created, **kwargs):
-    '''
-    Creates:
-    - A new list associated to the new user, and its id 
-    is stored as the inbox id for the new user
-    - A new setting home_view with default value inbox id
-    - A new setting timezone with empty value     
-    '''
-    from .models import List, Setting
-    if created:
-        # Create and save default list: inbox
-        new_model = List(title="📥 Inbox", user_id = instance.id)
-        new_model.save()
-
-        # Update the related User model to establish the relationship with new List
-        instance.inbox_id = new_model.id
-        instance.save()
-
-        new_setting = Setting(parameter="home_view", value=str(new_model.id), user_id = instance.id)
-        new_setting.save()
-
-        new_setting = Setting(parameter="timezone", value="", user_id = instance.id)
-        new_setting.save()
