@@ -24,7 +24,7 @@ import type {
 	listsType,
 } from './lib/customTypes';
 
-import type { Todo, List } from '../../todo-api-client/models';
+import type { Todo, List, Setting } from '../../todo-api-client/models';
 
 import { useModelFetch } from './hooks/useModelFetch';
 import TaskView from './components/taskview/taskview';
@@ -34,8 +34,8 @@ import { UserContext } from './contexts/UserContext';
 const userInfoInitial: userInfoType = {
 	id: 0,
 	username: '',
-	homeListId: 0,
 	inboxListId: 0,
+	homeListId: 0,
 };
 
 const initialListsState: listsType = [];
@@ -70,15 +70,15 @@ export default function App(): React.JSX.Element {
 			const tmp = user[0];
 			const homeView = settings.find(
 				(setting) => setting.parameter === 'home_view',
-			);
+			) as Setting;
 			setUserInfo({
 				id: tmp.id,
 				username: tmp.username,
 				inboxListId: tmp.inboxId as number,
 				homeListId:
-					homeView?.value[homeView?.value.length - 1] === 't'
-						? homeView?.value
-						: parseInt(homeView?.value as string),
+					homeView.value[homeView.value.length - 1] === 't'
+						? homeView.value
+						: parseInt(homeView.value),
 			});
 			console.log('This is the homeView: ', homeView, ' with user: ', userInfo);
 		}
