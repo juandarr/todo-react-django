@@ -36,6 +36,7 @@ const userInfoInitial: userInfoType = {
 	username: '',
 	inboxListId: 0,
 	homeListId: 0,
+	timeZone: '',
 };
 
 const initialListsState: listsType = [];
@@ -71,6 +72,9 @@ export default function App(): React.JSX.Element {
 			const homeView = settings.find(
 				(setting) => setting.parameter === 'home_view',
 			) as Setting;
+			const timeZone = settings.find(
+				(setting) => setting.parameter === 'timezone',
+			) as Setting;
 			setUserInfo({
 				id: tmp.id,
 				username: tmp.username,
@@ -79,6 +83,7 @@ export default function App(): React.JSX.Element {
 					homeView.value[homeView.value.length - 1] === 't'
 						? homeView.value
 						: parseInt(homeView.value),
+				timeZone: timeZone.value,
 			});
 			console.log('This is the homeView: ', homeView, ' with user: ', userInfo);
 		}

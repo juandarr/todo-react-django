@@ -17,8 +17,6 @@ import {
 	SelectValue,
 } from '../ui/select';
 
-// import { useToast } from '../ui/toast/use-toast';
-
 import { viewData, timeZones } from '../../lib/userSettings';
 import type { SettingsModalProps } from '../../lib/customTypes';
 import { useToast } from '../ui/toast/use-toast';
@@ -97,16 +95,16 @@ export default function SettingsModal({
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
 				}}
-				className='max-h-[80vh] w-96 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
+				className='my-6 max-h-[80vh] w-96 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
 				<form
 					id='listform'
 					className='flex flex-col'
 					onSubmit={(e) => {
 						e.preventDefault();
 					}}>
-					<div className='mb-3 ml-4 mr-4 mt-3 flex-col items-center justify-start'>
-						<h1 className='m-3 text-cyan-500'>Settings</h1>
-						<p className='mb-2 ml-3 text-base'>
+					<div className='m-3 flex-col items-center justify-start'>
+						<h1 className='m-3 text-xl font-bold text-cyan-500'>Settings</h1>
+						<p className='mb-2 mb-3 ml-3 text-base'>
 							Customize the application settings.
 						</p>
 						<div className='flex items-center justify-around'>
