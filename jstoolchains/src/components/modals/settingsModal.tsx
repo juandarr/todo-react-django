@@ -157,9 +157,9 @@ export default function SettingsModal({
 								</SelectTrigger>
 								<SelectContent>
 									<div className='h-[30vh] overflow-y-auto'>
-										{timeZones.map((timeZone) => (
-											<SelectItem key={timeZone.name} value={timeZone.value}>
-												{timeZone.name}
+										{timeZones.map((timeZone, idx) => (
+											<SelectItem key={idx} value={timeZone}>
+												{timeZone}
 											</SelectItem>
 										))}
 									</div>

@@ -36,8 +36,9 @@ export type filterType = (todo: Todo) => boolean;
 export interface userInfoType {
 	id: number | undefined;
 	username: string;
-	homeListId: number | string;
 	inboxListId: number;
+	homeListId: number | string;
+	timeZone: string;
 }
 
 export interface viewDataType {
