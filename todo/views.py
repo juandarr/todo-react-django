@@ -70,20 +70,23 @@ def signup_request(request):
 	print(request)
 	if request.method == "POST":
 		form = CustomUserCreationForm(request.POST)
-		print(form.is_valid())
+		print(request.POST, form.is_valid())
 		if form.is_valid():
 			username = form.cleaned_data.get('username')
 			user = form.save()
-			login(request, user)
+			#login(request, user)
 			messages.success(request, f'User {username} was created succesfully')
 			return redirect("login")
 		else:
+			print("Running else branch")
 			username = request.POST.get('username')
 			password1 = form.cleaned_data.get('password1')
 			password2 = form.cleaned_data.get('password2')
+			print(username, password1, password2)
 			if User.objects.filter(username=username).exists():
 				messages.error(request, "This username is already in use. Please choose another")
 			elif (password1 != password2):
+				print("this should trigger when passwords don't match")
 				messages.error(request, "Unsuccesful registration. Passwords don't match")
 			else:
 				messages.error(request, "Unsuccessful registration. Invalid information")

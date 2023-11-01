@@ -6,7 +6,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock %}</title>
-
+    <link rel=" shortcut icon" type="image/x-icon"
+        href="{% static 'images/favicon.ico' %}">
     <link rel="stylesheet" href="{% static 'css/output.css' %}">
 </head>
 
@@ -33,14 +34,22 @@
                     // Create a FormData object from the form
                     const formData = new FormData(signupForm);
 
+                    // Get the CSRF token value from the hidden input field
+                    const csrfToken = formData.get('csrfmiddlewaretoken');
+
+                    // Add the CSRF token to the headers
+                    const headers = new Headers({
+                        'X-CSRFToken': csrfToken,
+                    });
                     // Append the user's timezone to the form data
                     formData.append('timezone', userTimezone);
                     console.log("Appending timezone: ", userTimezone)
                     console.log(event)
                     // Send the form data to your Django backend using fetch or any other method
-                    fetch('', {
+                    fetch('/signup/', {
                         method: 'POST',
                         body: formData,
+                        headers, // Include the CSRF token in the headers
                     })
                         .then(response => {
                             // Handle the response from the server, e.g., redirect to a success page.
