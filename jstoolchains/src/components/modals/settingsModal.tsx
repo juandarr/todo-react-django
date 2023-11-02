@@ -99,19 +99,21 @@ export default function SettingsModal({
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
 				}}
-				className='my-6 max-h-[80vh] w-96 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
+				className='max-h-[80vh] w-96 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
 				<form
 					id='listform'
 					className='flex flex-col'
 					onSubmit={(e) => {
 						e.preventDefault();
 					}}>
-					<div className='m-3 flex-col items-center justify-start'>
-						<h1 className='m-3 text-xl font-bold text-cyan-500'>Settings</h1>
+					<div className='flex-col items-center justify-start'>
+						<h1 className='mb-3 ml-3 mr-3 mt-3 text-xl font-bold text-cyan-500'>
+							Settings
+						</h1>
 						<p className='mb-3 ml-3 text-base'>
 							Customize the application settings.
 						</p>
-						<div className='flex items-center justify-around'>
+						<div className='ml-3 mr-3 flex items-center justify-between'>
 							<h3>Home view</h3>
 							<Select
 								value={editSettings.home_view.value}
@@ -124,7 +126,7 @@ export default function SettingsModal({
 										.then(() => {})
 										.catch(() => {});
 								}}>
-								<SelectTrigger className={`m-3 h-2 w-6/12 p-3`}>
+								<SelectTrigger className='select__control mb-3 mt-3 h-2 w-6/12 px-2 py-4'>
 									<SelectValue placeholder='Homeview' />
 								</SelectTrigger>
 								<SelectContent>
@@ -141,7 +143,7 @@ export default function SettingsModal({
 							</Select>
 						</div>
 
-						<div className='flex items-center justify-around'>
+						<div className='ml-3 mr-3 flex items-center justify-between'>
 							<h3>Time zone</h3>
 							<WindowedSelect
 								defaultValue={{
