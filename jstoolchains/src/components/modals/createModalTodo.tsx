@@ -65,13 +65,7 @@ export default function CreateModalTodo({
 		list: user.inboxListId.toString(),
 	});
 	const editorDesc = useTextEditor('', 'Description', 1000);
-	// editorDesc?.on('update', ({ editor }) => {
-	// const updatedContent = editor?.getHTML();
-	// setNewTodo((old) => ({
-	// 	...old,
-	// 	description: updatedContent,
-	// }));
-	// });
+
 	const [status, setStatus] = useState('typing');
 
 	const { toast } = useToast();

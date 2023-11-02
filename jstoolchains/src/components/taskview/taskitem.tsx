@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 
 import type { TaskItemProps } from '../../lib/customTypes';
 
@@ -16,6 +16,7 @@ import { type Todo } from '../../../../todo-api-client/models';
 import DeleteModal from '../modals/deleteModal';
 import { Calendar2, Task, Flag, BookSaved } from 'iconsax-react';
 import EditModalTodo from '../modals/editModalTodo';
+import { UserContext } from '../../contexts/UserContext';
 
 export default function TaskItem({
 	todo,
@@ -29,6 +30,7 @@ export default function TaskItem({
 	newTodoEdit,
 	setNewTodoEdit,
 }: TaskItemProps): React.JSX.Element {
+	const user = useContext(UserContext);
 	const { toast } = useToast();
 	const showEdit = (edit[0] as boolean) && edit[1] === todo.id;
 	const initialTitle = useRef<string>();
@@ -195,7 +197,9 @@ export default function TaskItem({
 									<Calendar2 className='mr-1' size={'1.2rem'} />
 									<div className='text-xs'>
 										{todo.dueDate !== undefined
-											? (todo.dueDate as Date).toDateString()
+											? (todo.dueDate as Date).toLocaleString('en-US', {
+													timeZone: user.timeZone,
+											  })
 											: ''}
 									</div>
 								</div>

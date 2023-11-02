@@ -149,14 +149,6 @@ export default function SettingsModal({
 									value: editSettings.timezone.value,
 								}}
 								className='mb-3 mt-3 w-6/12 text-sm'
-								// styles={{
-								// 	option: (base) => ({
-								// 		...base,
-
-								// 		height: 30,
-								// 		padding: '5px 5px',
-								// 	}),
-								// }}
 								onChange={(option) => {
 									const selection = option as { label: string; value: string };
 									setEditSettings((old) => ({
@@ -172,6 +164,7 @@ export default function SettingsModal({
 								}}
 								options={timeZonesTmp}
 								isMulti={false}
+								classNamePrefix='select'
 								windowThreshold={0}
 							/>
 							{/* <Select
