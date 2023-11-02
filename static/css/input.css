@@ -389,3 +389,37 @@ input[type="checkbox"]:checked:hover {
 .tiptap input[type="checkbox"] {
   pointer-events: none;
 }
+
+.select__control {
+  border-radius: 0.75rem !important;
+  height: 2rem;
+  box-shadow: 0 0 0 0 !important;
+  border-color: inherit !important;
+}
+
+.select__control:focus-within {
+  border-color: rgb(6 182 212) !important;
+  box-shadow: 0 0 0 1px rgb(6 182 212) !important;
+}
+.select__control:hover {
+  border-color: rgb(6 182 212) !important;
+  box-shadow: 0 0 0 1.5px rgb(6 182 212) !important;
+}
+
+.select__indicator svg {
+  height: 1rem;
+  width: 2rem;
+}
+
+.select__indicator {
+  width: 2rem;
+}
+
+.select__control:focus svg {
+  fill: none !important;
+  stroke: rgb(6 182 212);
+  stroke-width: 3px;
+}
+.select__control:focus-within svg {
+  fill: rgb(6 182 212);
+}
