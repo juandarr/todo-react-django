@@ -404,22 +404,29 @@ input[type="checkbox"]:checked:hover {
 .select__control:hover {
   border-color: rgb(6 182 212) !important;
   box-shadow: 0 0 0 1.5px rgb(6 182 212) !important;
+  cursor: pointer;
+}
+
+.select__control[data-state="open"] {
+  border-color: rgb(6 182 212) !important;
+  box-shadow: 0 0 0 1.5px rgb(6 182 212) !important;
+}
+
+.select__control[data-state="open"] svg {
+  fill: none !important;
+  stroke: rgb(6 182 212);
 }
 
 .select__indicator svg {
   height: 1rem;
   width: 2rem;
+  color: hsl(0, 0%, 80%);
 }
 
 .select__indicator {
   width: 2rem;
 }
 
-.select__control:focus svg {
-  fill: none !important;
-  stroke: rgb(6 182 212);
-  stroke-width: 3px;
-}
-.select__control:focus-within svg {
+.select__control--menu-is-open svg {
   fill: rgb(6 182 212);
 }
