@@ -110,7 +110,7 @@ export default function SettingsModal({
 						<h1 className='mb-3 ml-3 mr-3 mt-3 text-xl font-bold text-cyan-500'>
 							Settings
 						</h1>
-						<p className='mb-3 ml-3 text-base'>
+						<p className='mb-3 ml-3 text-sm'>
 							Customize the application settings.
 						</p>
 						<div className='ml-3 mr-3 flex items-center justify-between'>
@@ -169,30 +169,6 @@ export default function SettingsModal({
 								classNamePrefix='select'
 								windowThreshold={0}
 							/>
-							{/* <Select
-								value={editSettings.timezone.value}
-								onValueChange={(value) => {
-									setEditSettings((old) => ({
-										...old,
-										timezone: { ...old.timezone, value },
-									}));
-									editHandleSubmit(editSettings.timezone.id, value)
-										.then(() => {})
-										.catch(() => {});
-								}}>
-								<SelectTrigger className='m-3 h-2 w-6/12 p-3'>
-									<SelectValue placeholder='Timezone' />
-								</SelectTrigger>
-								<SelectContent>
-									<div className='h-[30vh] overflow-y-auto'>
-										{timeZones.map((timeZone, idx) => (
-											<SelectItem key={idx} value={timeZone}>
-												{timeZone}
-											</SelectItem>
-										))}
-									</div>
-								</SelectContent>
-							</Select> */}
 						</div>
 					</div>
 				</form>

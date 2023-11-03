@@ -175,6 +175,9 @@ export interface SettingsModalProps {
 	settings: Setting[];
 	editSetting: (id: number, value: string) => Promise<void>;
 }
+export interface GoalsModalProps {
+	todos: Todo[];
+}
 export interface SideBarProps {
 	lists: List[];
 	viewData: viewDataType;
@@ -189,6 +192,7 @@ export interface SideBarProps {
 export interface NavBarProps {
 	changeCurrentView: (viewId: number | string) => void;
 	lists: List[];
+	todos: Todo[];
 	addTodo: addTodoType;
 	setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
 	settings: Setting[];

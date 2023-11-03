@@ -439,6 +439,7 @@ export default function App(): React.JSX.Element {
 				<NavBar
 					changeCurrentView={changeCurrentView}
 					lists={lists}
+					todos={todos}
 					addTodo={addTodo}
 					setShowSidebar={setShowSidebar}
 					settings={settings}

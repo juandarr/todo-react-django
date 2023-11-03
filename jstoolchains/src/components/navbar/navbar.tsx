@@ -20,7 +20,6 @@ import {
 	Logout,
 	SidebarLeft,
 	House,
-	StatusUp,
 	PasswordCheck,
 	UserSquare,
 	Heart,
@@ -30,10 +29,12 @@ import type { NavBarProps } from '../../lib/customTypes';
 import { isDescendantOf } from '../../lib/utils';
 import { useOnlineStatus } from '../../hooks/useOnlineStatus';
 import SettingsModal from '../modals/settingsModal';
+import GoalsModal from '../modals/goalsModal';
 
 export default function NavBar({
 	changeCurrentView,
 	lists,
+	todos,
 	addTodo,
 	setShowSidebar,
 	settings,
@@ -102,18 +103,7 @@ export default function NavBar({
 				<CreateModalTodo lists={lists} addTodo={addTodo} />
 			</div>
 			<div className='flex w-1/12 justify-end pl-3 pr-3 text-2xl '>
-				<TooltipProvider>
-					<Tooltip>
-						<TooltipTrigger asChild={true}>
-							<button className='text-fuchsia-500 hover:text-fuchsia-600'>
-								<StatusUp size='1.8rem' />
-							</button>
-						</TooltipTrigger>
-						<TooltipContent className='bg-fuchsia-500'>
-							<p className='font-bold text-white'>Progress</p>
-						</TooltipContent>
-					</Tooltip>
-				</TooltipProvider>
+				<GoalsModal todos={todos} />
 			</div>
 			<div className='flex w-1/12 justify-end pl-3 pr-3 text-2xl '>
 				<Popover modal={true}>
