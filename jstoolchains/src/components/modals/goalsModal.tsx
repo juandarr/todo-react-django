@@ -41,19 +41,87 @@ export default function GoalsModal({
 
 	const openPopover = (): void => {
 		setIsOpen(true);
-		toast({ title: 'Modal opened!', description: '' });
+		// toast({ title: 'Modal opened!', description: '' });
 	};
 
 	const options: Intl.DateTimeFormatOptions = {
 		month: 'long',
 		timeZone: user.timeZone,
 	};
-	const tmpMonth = useMemo(() => {
+
+	const monthLabel = useMemo(() => {
 		if (user.timeZone !== '') {
 			return new Date().toLocaleDateString('en-US', options);
 		}
 		return 'dummy';
 	}, [user.timeZone]);
+
+	const completedCounter = useMemo(() => {
+		if (user.timeZone !== '') {
+			// todos in day
+			const today = new Date().toLocaleDateString('en-US', {
+				timeZone: user.timeZone,
+			});
+			const day = todos.reduce((accum, todo) => {
+				if (
+					todo.completedAt?.toLocaleDateString('en-US', {
+						timeZone: user.timeZone,
+					}) === today
+				) {
+					return accum + 1;
+				}
+				return accum;
+			}, 0);
+
+			// todos in week
+			const tmp = new Date();
+			const first = new Date(
+				tmp.getFullYear(),
+				tmp.getMonth(),
+				tmp.getDate() - tmp.getDay() + 1,
+			);
+			const last = new Date(
+				tmp.getFullYear(),
+				tmp.getMonth(),
+				tmp.getDate() - tmp.getDay() + 7,
+				23,
+				59,
+				59,
+			);
+			const week = todos.reduce((accum, todo) => {
+				if (todo.completedAt !== null && todo.completedAt !== undefined) {
+					const tmpWeek = todo.completedAt;
+					if (tmpWeek >= first && tmpWeek <= last) {
+						return accum + 1;
+					}
+				}
+				return accum;
+			}, 0);
+
+			// todos in month
+			const thisMonth = new Date()
+				.toLocaleDateString('en-US', {
+					timeZone: user.timeZone,
+				})
+				.split('/');
+			const month = todos.reduce((accum, todo) => {
+				let tmpMonth;
+				if (todo.completedAt !== null && todo.completedAt !== undefined) {
+					tmpMonth = todo.completedAt
+						.toLocaleDateString('en-US', {
+							timeZone: user.timeZone,
+						})
+						.split('/');
+					if (thisMonth[0] === tmpMonth[0] && thisMonth[2] === tmpMonth[2]) {
+						return accum + 1;
+					}
+				}
+				return accum;
+			}, 0);
+			return { day, week, month };
+		}
+		return { day: 0, week: 0, month: 0 };
+	}, [todos, user.timeZone]);
 
 	console.log('Modal goals opened');
 	return (
@@ -100,7 +168,7 @@ export default function GoalsModal({
 						<div className='relative mb-6 ml-3 mr-3 text-lg font-bold text-sky-500'>
 							Todos completed
 							<div className='absolute -bottom-2 left-44 text-xs text-emerald-500'>
-								* {options.timeZone !== '' ? tmpMonth : 'dummy'}
+								* {options.timeZone !== '' ? monthLabel : 'dummy'}
 							</div>
 						</div>
 						<div className='mb-6 ml-3 mr-3 flex items-center justify-around'>
@@ -108,19 +176,19 @@ export default function GoalsModal({
 								<Sun1 size='2rem' />
 
 								<div className='absolute -bottom-3 left-[65%] text-xl font-bold'>
-									3
+									{completedCounter.day}
 								</div>
 							</div>
 							<div className='relative flex w-1/3 items-center justify-center text-violet-500'>
 								<CardEdit size='2rem' />
 								<div className='absolute -bottom-3 left-[65%] text-xl font-bold'>
-									10
+									{completedCounter.week}
 								</div>
 							</div>
 							<div className='relative flex w-1/3 items-center justify-center text-orange-500'>
 								<CalendarTick size='2rem' />
 								<div className='absolute -bottom-3 left-[65%] text-xl font-bold'>
-									22
+									{completedCounter.month}
 								</div>
 							</div>
 						</div>
