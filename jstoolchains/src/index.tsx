@@ -10,6 +10,6 @@ if (root !== null) {
 	container.render(
 		<StrictMode>
 			<App />
-		</StrictMode>,
+		</StrictMode>
 	);
 }
