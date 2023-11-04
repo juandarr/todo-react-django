@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useReducer } from 'react';
 
-import { clientUser, clientTodo, clientList } from './lib/api';
+import { clientUser, clientTodo, clientList, clientSetting } from './lib/api';
 
 import { getPoint, isDescendantOf, randomInRange } from './lib/utils';
 
@@ -20,21 +20,23 @@ import type {
 	viewType,
 	todoModelFetch,
 	userModelFetch,
+	settingModelFetch,
 	listsType,
 } from './lib/customTypes';
 
-import type { Todo, List } from '../../todo-api-client/models';
+import type { Todo, List, Setting } from '../../todo-api-client/models';
 
 import { useModelFetch } from './hooks/useModelFetch';
 import TaskView from './components/taskview/taskview';
 import listsReducer from './reducers/listsReducer';
 import { UserContext } from './contexts/UserContext';
 
-let userInfo: userInfoType = {
+const userInfoInitial: userInfoType = {
 	id: 0,
 	username: '',
-	homeListId: 0,
 	inboxListId: 0,
+	homeListId: 0,
+	timeZone: '',
 };
 
 const initialListsState: listsType = [];
@@ -51,25 +53,42 @@ export default function App(): React.JSX.Element {
 		clientTodo.todosList(),
 	);
 
-	const [user]: userModelFetch = useModelFetch(clientUser.usersList());
+	const [settings, setSettings]: settingModelFetch = useModelFetch(
+		clientSetting.settingsList(),
+	);
 
+	const [user]: userModelFetch = useModelFetch(clientUser.usersList());
+	const [userInfo, setUserInfo] = useState(userInfoInitial);
 	const [lists, dispatch] = useReducer(listsReducer, initialListsState);
 
 	const initializationCompleted = useRef(false);
 
 	// Initialization effects
 	// This effect initializes the userInfo configuration
+	// tmp.inboxId as number
 	useEffect(() => {
-		if (user.length !== 0) {
+		if (user.length !== 0 && settings.length !== 0) {
 			const tmp = user[0];
-			userInfo = {
+			const homeView = settings.find(
+				(setting) => setting.parameter === 'home_view',
+			) as Setting;
+			const timeZone = settings.find(
+				(setting) => setting.parameter === 'timezone',
+			) as Setting;
+			setUserInfo({
 				id: tmp.id,
 				username: tmp.username,
 				inboxListId: tmp.inboxId as number,
-				homeListId: tmp.inboxId as number,
-			};
+				homeListId:
+					homeView.value[homeView.value.length - 1] === 't'
+						? homeView.value
+						: parseInt(homeView.value),
+				timeZone: timeZone.value,
+			});
+			console.log('This is the homeView: ', homeView, ' with user: ', userInfo);
 		}
-	}, [user]);
+	}, [user, settings]);
+
 	// Load lists - need to do this since changed from useState to useReducer
 	useEffect(() => {
 		let ignore = false;
@@ -100,6 +119,7 @@ export default function App(): React.JSX.Element {
 			userInfo.id !== 0 &&
 			lists.length !== 0
 		) {
+			console.log('Setting currentView');
 			setCurrentView((oldView) => {
 				let tmp: viewType;
 				if (typeof userInfo.homeListId === 'number') {
@@ -119,7 +139,7 @@ export default function App(): React.JSX.Element {
 			});
 			initializationCompleted.current = true;
 		}
-	}, [user, lists]);
+	}, [userInfo, lists]);
 
 	// Toggles sidebar using 's' key as long as the focus is not on an
 	// HTMLElement with a form as an ancestor
@@ -387,14 +407,43 @@ export default function App(): React.JSX.Element {
 		}
 	};
 
+	const editSetting = async (id: number, value: string): Promise<void> => {
+		const setting = {
+			value,
+		};
+		console.log('Updating new setting');
+		try {
+			await clientSetting.settingsPartialUpdate({
+				id,
+				patchedSetting: setting,
+			});
+			console.log('Setting was updated!');
+			setSettings((prevSettings) => {
+				return prevSettings.map((setting) => {
+					if (setting.id === id) {
+						return { ...setting, value };
+					} else {
+						return setting;
+					}
+				});
+			});
+		} catch (error) {
+			console.log('There was an error updating the field in Setting');
+			throw error;
+		}
+	};
+
 	return (
 		<>
 			<UserContext.Provider value={userInfo}>
 				<NavBar
 					changeCurrentView={changeCurrentView}
 					lists={lists}
+					todos={todos}
 					addTodo={addTodo}
 					setShowSidebar={setShowSidebar}
+					settings={settings}
+					editSetting={editSetting}
 				/>
 				<div className='relative mx-6 flex w-5/6 justify-end'>
 					<SideBar

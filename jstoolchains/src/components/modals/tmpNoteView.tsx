@@ -1,10 +1,4 @@
-import React, {
-	useState,
-	useRef,
-	type CSSProperties,
-	useEffect,
-	useContext,
-} from 'react';
+import React, { useState, useRef, type CSSProperties, useEffect } from 'react';
 
 import {
 	Tooltip,
@@ -13,7 +7,7 @@ import {
 	TooltipTrigger,
 } from '../ui/tooltip';
 
-import { AddCircle, Flag } from 'iconsax-react';
+import { Edit, Flag, Send } from 'iconsax-react';
 
 import {
 	Popover,
@@ -30,19 +24,18 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '../ui/select';
+
 import { useToast } from '../ui/toast/use-toast';
 
 import Spinner from 'react-spinners/DotLoader';
 
-import type { CreateModalTodoProps, todoType } from '../../lib/customTypes';
+import type { EditModalTodoProps, todoType } from '../../lib/customTypes';
 import { PriorityEnum } from '../../lib/userSettings';
-import { isDescendantOf } from '../../lib/utils';
-import useAutosizeTextArea from '../../lib/useAutosizeTextArea';
+
+import { waitForElementToExist } from '../../lib/utils';
 import { DatePickerWithPresets } from '../ui/datepicker';
-import { UserContext } from '../../contexts/UserContext';
 import useTextEditor from '../../hooks/useTextEditor';
 import TextEditor from '../ui/textEditor';
-// import { EditorContent } from '@tiptap/react';
 
 const override: CSSProperties = {
 	display: 'block',
@@ -51,82 +44,76 @@ const override: CSSProperties = {
 	alignSelf: 'center',
 };
 
-export default function CreateModalTodo({
+export default function EditModalTodo({
+	editTodoFull,
+	todo,
 	lists,
-	addTodo,
-}: CreateModalTodoProps): React.JSX.Element {
+	parentId,
+}: EditModalTodoProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
-	const user = useContext(UserContext);
-	const [newTodo, setNewTodo] = useState<todoType>({
+	const [newEditTodo, setNewEditTodo] = useState<todoType>({
 		title: '',
 		description: '',
-		priority: PriorityEnum.None,
-		dueDate: undefined,
-		list: user.inboxListId.toString(),
 	});
 	const editorDesc = useTextEditor('', 'Description', 1000);
-
 	const [status, setStatus] = useState('typing');
-
 	const { toast } = useToast();
 
-	const textAreaTitle = useRef<HTMLTextAreaElement>(null);
+	const textAreaRefTitle = useRef<HTMLTextAreaElement>(null);
 	const textAreaTitleCount = useRef<HTMLDivElement>(null);
 
-	useAutosizeTextArea(textAreaTitle.current, newTodo.title);
-
-	const openModalCallback = (event: KeyboardEvent): void => {
-		if (!isDescendantOf(event.target as HTMLElement, 'form')) {
-			if (event.key === 'q' && !isOpen) {
-				event.preventDefault();
-				openPopover();
-			}
+	const resizeTextArea = (textArea: HTMLElement): void => {
+		if (textArea !== null) {
+			textArea.style.height = 'auto';
+			textArea.style.height = `${textArea.scrollHeight}px`;
 		}
 	};
-
-	useEffect(() => {
-		document.addEventListener('keydown', openModalCallback);
-		return () => {
-			document.removeEventListener('keydown', openModalCallback);
-		};
-	}, []);
+	function adjustHeight(): void {
+		resizeTextArea(textAreaRefTitle.current as HTMLElement);
+	}
 
 	useEffect(() => {
 		if (status === 'typing') {
-			if (textAreaTitle.current !== null) {
-				textAreaTitle.current.focus();
+			if (textAreaRefTitle.current !== null) {
+				textAreaRefTitle.current.focus();
 			}
 		}
 	}, [status]);
 
-	const createHandleSubmit = async (): Promise<void> => {
-		if (newTodo.title === '') return;
+	useEffect(() => {
+		// Apply adjust to height only when opening the popover
+		if (isOpen) {
+			// When element appears in the DOM, adjust height of textarea elements
+			waitForElementToExist('#todoEditTitle')
+				.then((element) => {
+					adjustHeight();
+					(textAreaTitleCount.current as HTMLDivElement).style.display =
+						'block';
+				})
+				.catch(() => {});
+		}
+	}, [isOpen]);
+
+	const editHandleSubmit = async (): Promise<void> => {
+		if (newEditTodo.title === '') return;
 		const updatedContent = editorDesc?.getHTML();
-		const tmpTodo = { ...newTodo };
-		tmpTodo.description = updatedContent;
+		const tmpEditTodo = { ...newEditTodo };
+		tmpEditTodo.description = updatedContent;
 		setStatus('submitting');
 
 		try {
-			await addTodo(tmpTodo, 'NavBar');
-			setNewTodo((oldTodo) => ({
-				...oldTodo,
-				title: '',
-				description: '',
-				priority: PriorityEnum.None,
-				dueDate: undefined,
-			}));
-			setStatus('typing');
-			editorDesc?.commands.clearContent();
+			await editTodoFull(tmpEditTodo);
+			closePopover();
 			toast({
-				title: 'Task was created!',
+				title: 'Task was updated!',
 				description: '',
 			});
 		} catch (error) {
 			if (error instanceof Error) {
 				toast({
 					variant: 'destructive',
-					title: 'There was an error creating the task: ',
-					description: error.message,
+					title: 'There was an error updating the task: ',
+					description: error.toString(),
 				});
 			}
 			setStatus('typing');
@@ -140,53 +127,62 @@ export default function CreateModalTodo({
 	): void => {
 		if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
 			// Submit the form when Ctrl (Windows/Linux) or Command (Mac) + Enter is pressed
-			createHandleSubmit()
+			editHandleSubmit()
 				.then(() => {})
 				.catch(() => {});
 		}
 	};
 
+	const closePopover = (): void => {
+		setIsOpen(false);
+	};
+
 	const openPopover = (): void => {
-		setNewTodo({
-			title: '',
-			description: '',
-			priority: PriorityEnum.None,
-			list: user.inboxListId.toString(),
-			dueDate: undefined,
-		});
-		// editorDesc?.commands.clearContent();
+		toggleHidden();
+		const tmpTodo: todoType = {
+			...todo,
+			list: todo.list?.toString(),
+			priority: todo.priority?.toString(),
+		};
+		setNewEditTodo(tmpTodo);
+		editorDesc?.commands.setContent(tmpTodo.description as string);
 		setStatus('typing');
 		setIsOpen(true);
 	};
 
-	console.log('Modal todo creation opened');
+	const toggleHidden = (): void => {
+		const el: HTMLElement = document.getElementById(parentId) as HTMLElement;
+		if (el !== null) el.classList.toggle('hidden-child');
+	};
+
+	console.log('Modal todo edition opened');
 	return (
 		<Popover modal={true} open={isOpen} onOpenChange={setIsOpen}>
 			<TooltipProvider>
 				<Tooltip>
-					<PopoverTrigger asChild={true}>
-						<TooltipTrigger asChild={true}>
-							<button className='text-emerald-500 hover:text-emerald-600'>
-								<AddCircle
-									size='1.8rem'
-									className='cursor-pointer'
-									onClick={() => {
-										openPopover();
-									}}
-								/>
-							</button>
+					<PopoverTrigger
+						asChild={true}
+						onClick={(event) => {
+							openPopover();
+						}}>
+						<TooltipTrigger>
+							<a className='flex cursor-pointer items-center text-2xl text-sky-500 hover:text-sky-600'>
+								<Edit size={'1.6rem'} />
+							</a>
 						</TooltipTrigger>
 					</PopoverTrigger>
-					<TooltipContent className='bg-emerald-500'>
-						<p className='font-bold text-white'>Add todo</p>
+					<TooltipContent className='bg-sky-500'>
+						<p className='font-bold text-white'>Edit todo</p>
 					</TooltipContent>
 				</Tooltip>
 			</TooltipProvider>
 			<PopoverContent
 				align={'center'}
-				onOpenAutoFocus={() => {}}
+				side={'left'}
+				onOpenAutoFocus={(event) => {}}
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
+					toggleHidden();
 				}}
 				className='max-h-[80vh] w-80 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
 				<form
@@ -194,48 +190,54 @@ export default function CreateModalTodo({
 					className='flex flex-col'
 					onSubmit={(e) => {
 						e.preventDefault();
-						createHandleSubmit()
+						editHandleSubmit()
 							.then(() => {})
 							.catch(() => {});
 					}}>
 					<div className='relative flex flex-1 flex-col'>
 						<textarea
-							id='todoTitle'
+							id='todoEditTitle'
 							name='title'
-							value={newTodo.title}
-							ref={textAreaTitle}
+							value={newEditTodo.title}
 							placeholder='Name this todo'
-							className='mb-3 ml-4 mr-4 mt-4 rounded-lg bg-gray-300 px-4 py-3 text-base font-medium text-gray-900 placeholder:text-gray-500'
+							className='mb-3 ml-4 mr-4 mt-4 overflow-y-hidden rounded-lg bg-gray-300 px-4 py-3 text-base font-medium text-gray-900 placeholder:text-gray-500'
 							onChange={(event) => {
-								setNewTodo((old) => ({ ...old, title: event.target.value }));
+								adjustHeight();
+								setNewEditTodo((old) => ({
+									...old,
+									title: event.target.value,
+								}));
 							}}
 							onFocus={(e) => {
-								(textAreaTitleCount.current as HTMLDivElement).style.display =
-									'block';
 								e.target.setSelectionRange(
 									e.target.value.length,
 									e.target.value.length,
 								);
+								if (textAreaTitleCount.current !== null) {
+									textAreaTitleCount.current.style.display = 'block';
+								}
 							}}
 							onBlur={(e) => {
 								(textAreaTitleCount.current as HTMLDivElement).style.display =
 									'none';
 							}}
-							onKeyDown={(e) => {
-								handleKeyDown(e);
-							}}
+							onKeyDown={handleKeyDown}
 							disabled={status === 'submitting'}
+							ref={textAreaRefTitle}
 							rows={1}
+							autoFocus
 							maxLength={100}
 							required
 						/>
 						<div
-							id='todoTitleCount'
+							id='todoEditTitleCount'
 							ref={textAreaTitleCount}
 							className={`absolute -bottom-1 right-6 hidden text-[10px] ${
-								newTodo.title.length < 50 ? 'text-gray-400' : 'text-amber-500'
+								newEditTodo.title.length < 50
+									? 'text-gray-400'
+									: 'text-amber-500'
 							}`}>
-							<span>{newTodo.title.length}</span>
+							<span>{newEditTodo.title.length}</span>
 							<span>/100</span>
 						</div>
 					</div>
@@ -248,20 +250,20 @@ export default function CreateModalTodo({
 						}}
 						isDisabled={status === 'submitting'}
 					/>
-					<div className='mb-3 ml-4 mr-4 mt-3 flex items-center justify-around'>
+					{/* <div className='mb-3 ml-4 mr-4 mt-3 flex items-center justify-between'>
 						<Select
-							value={newTodo.priority}
+							value={newEditTodo.priority}
 							onValueChange={(value) => {
-								setNewTodo((old) => ({ ...old, priority: value }));
+								setNewEditTodo((old) => ({ ...old, priority: value }));
 							}}
 							disabled={status === 'submitting'}>
 							<SelectTrigger
 								className={`mr-3 h-2 w-5/12 p-3 ${
-									newTodo.priority === '1'
+									newEditTodo.priority === '1'
 										? 'bg-rose-200'
-										: newTodo.priority === '2'
+										: newEditTodo.priority === '2'
 										? 'bg-amber-200'
-										: newTodo.priority === '3'
+										: newEditTodo.priority === '3'
 										? 'bg-sky-200'
 										: 'bg-white'
 								} `}>
@@ -293,9 +295,9 @@ export default function CreateModalTodo({
 							</SelectContent>
 						</Select>
 						<Select
-							value={newTodo.list}
+							value={newEditTodo.list}
 							onValueChange={(value) => {
-								setNewTodo((old) => ({ ...old, list: value }));
+								setNewEditTodo((old) => ({ ...old, list: value }));
 							}}
 							disabled={status === 'submitting'}>
 							<SelectTrigger className='h-2 w-6/12 p-3'>
@@ -312,10 +314,11 @@ export default function CreateModalTodo({
 							</SelectContent>
 						</Select>
 					</div>
-					<div className='mb-3 ml-4 mr-4 flex items-center justify-start'>
+
+					<div className='mb-3 ml-4 mr-4 flex items-center justify-between'>
 						<DatePickerWithPresets
-							newTodo={newTodo}
-							setNewTodo={setNewTodo}
+							newTodo={newEditTodo}
+							setNewTodo={setNewEditTodo}
 							isDisabled={status === 'submitting'}
 						/>
 					</div>
@@ -324,7 +327,7 @@ export default function CreateModalTodo({
 							type='submit'
 							className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'
 							disabled={
-								!!(status === 'submitting' || newTodo.title.length === 0)
+								!!(status === 'submitting' || newEditTodo.title.length === 0)
 							}>
 							<Spinner
 								color='rgb(8 145 178)'
@@ -335,7 +338,7 @@ export default function CreateModalTodo({
 								data-testid='loader'
 							/>
 							<span className={status === 'submitting' ? 'invisible' : 'block'}>
-								Create
+								Save
 							</span>
 						</button>
 						<PopoverClose asChild={true}>
@@ -345,9 +348,16 @@ export default function CreateModalTodo({
 								Cancel
 							</button>
 						</PopoverClose>
+					</div> */}
+					<div className='mb-4 ml-4 mr-4 flex items-center justify-end'>
+						<a
+							type='submit'
+							className='flex h-10 w-fit items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'>
+							<Send className='' size={'1rem'} variant='Bold' />
+						</a>
 					</div>
 				</form>
-				<PopoverArrow className='fill-emerald-500' />
+				<PopoverArrow className='fill-sky-500' />
 			</PopoverContent>
 		</Popover>
 	);

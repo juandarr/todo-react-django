@@ -1,4 +1,9 @@
-import type { List, Todo, User } from '../../../todo-api-client/models';
+import type {
+	List,
+	Todo,
+	User,
+	Setting,
+} from '../../../todo-api-client/models';
 
 export type EditionSetState = React.Dispatch<
 	React.SetStateAction<[boolean, number]>
@@ -29,13 +34,15 @@ export type listsType = listType[];
 export type filterType = (todo: Todo) => boolean;
 
 export interface userInfoType {
-	id: number;
+	id: number | undefined;
 	username: string;
-	homeListId: number | string;
 	inboxListId: number;
+	homeListId: number | string;
+	timeZone: string;
 }
 
 export interface viewDataType {
+	views: Array<{ id: string; title: string }>;
 	viewTags: Map<string, string>;
 	viewTagIds: string[];
 	viewTagDetails: Map<string, string>;
@@ -65,6 +72,10 @@ export type listModelFetch = [
 	React.Dispatch<React.SetStateAction<List[]>>,
 ];
 
+export type settingModelFetch = [
+	Setting[],
+	React.Dispatch<React.SetStateAction<Setting[]>>,
+];
 export type userModelFetch = [
 	User[],
 	React.Dispatch<React.SetStateAction<User[]>>,
@@ -159,6 +170,14 @@ export interface DeleteModalProps {
 	size: number;
 }
 
+export interface SettingsModalProps {
+	lists: List[];
+	settings: Setting[];
+	editSetting: (id: number, value: string) => Promise<void>;
+}
+export interface GoalsModalProps {
+	todos: Todo[];
+}
 export interface SideBarProps {
 	lists: List[];
 	viewData: viewDataType;
@@ -173,8 +192,11 @@ export interface SideBarProps {
 export interface NavBarProps {
 	changeCurrentView: (viewId: number | string) => void;
 	lists: List[];
+	todos: Todo[];
 	addTodo: addTodoType;
 	setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
+	settings: Setting[];
+	editSetting: (id: number, value: string) => Promise<void>;
 }
 
 export interface DatePickerProps {

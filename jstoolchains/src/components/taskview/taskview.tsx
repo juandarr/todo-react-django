@@ -24,7 +24,15 @@ export default function TaskView({
 				showSidebar ? 'w-65%' : 'w-full'
 			} rounded-xl border-2 border-black bg-white p-10 fill-mode-forwards`}>
 			<div className='absolute left-3 top-2 text-sm font-bold text-violet-600'>
-				{currentView.title}
+				{currentView.title +
+					(currentView.id === '1t'
+						? ': ' +
+						  new Date().toLocaleDateString('en-US', {
+								weekday: 'short',
+								month: 'short',
+								day: 'numeric',
+						  })
+						: '')}
 			</div>
 			<TaskForm addTodo={addTodo} key={currentView.id} />
 			<TaskListHeader

@@ -1,4 +1,3 @@
-<!-- templates/registration/signup.html -->
 {% extends "base.html" %}
 
 {% block title %}Sign Up{% endblock %}
@@ -6,27 +5,30 @@
 {% block content %}
 
 <div class="flex justify-center items-center">
-    <div class="flex flex-col items-center justify-center bg-white w-fit rounded-xl mt-10 m-4 p-8">
+    <div
+        class="flex flex-col items-center justify-center bg-white w-fit rounded-xl mt-10 m-4 p-8">
         <h2 class="text-xl mb-2 font-bold">Sign up</h2>
-        <form class="ml-2 mr-2" method="post">
+        <form class="ml-2 mr-2 admin-form" method="post" id="signup-form">
             {% csrf_token %}
             <div class="mb-4">
-                <label for="{{ form.username.id_for_label }}"
+                <label for="{{ signup_form.username.id_for_label }}"
                     class="block text-gray-700 font-semibold">Username:</label>
                 {{ signup_form.username }}
             </div>
             <div class="mb-4">
-                <label for="{{ form.password.id_for_label }}"
+                <label for="{{ signup_form.password1.id_for_label }}"
                     class="block text-gray-700 font-semibold">Password:</label>
                 {{ signup_form.password1 }}
             </div>
             <div class="mb-4">
-                <label for="{{ form.password.id_for_label }}" class="block text-gray-700 font-semibold">Password
+                <label for="{{ signup_form.password2.id_for_label }}"
+                    class="block text-gray-700 font-semibold">Password
                     confirmation:</label>
                 {{ signup_form.password2 }}
             </div>
             <div class="flex justify-center">
-                <button class="mt-2 mb-4 bg-cyan-500 p-3 w-fit rounded-md font-semibold text-lg hover:bg-cyan-600"
+                <button
+                    class="mt-2 mb-4 bg-cyan-500 p-3 w-fit rounded-md font-semibold text-lg hover:bg-cyan-600"
                     type="submit">
                     Sign up
                 </button>
@@ -34,12 +36,49 @@
         </form>
     </div>
 </div>
-<!-- <div class="p-3 flex flex-col items-start">
-    <h2 class="text-xl mb-2">Sign up</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button class="bg-white p-3 mt-2 w-fit hover:bg-gray-200 rounded-md" type="submit">Sign Up</button>
-    </form>
-</div> -->
+{% endblock %}
+
+{% block js_script %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const signupForm = document.getElementById('signup-form');
+
+        if (signupForm) {
+            signupForm.addEventListener('submit', function (event) {
+                // Prevent the default form submission behavior
+                event.preventDefault();
+
+                // Get the user's timezone
+                const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+                // Create a FormData object from the form
+                const formData = new FormData(signupForm);
+
+                // Get the CSRF token value from the hidden input field
+                const csrfToken = formData.get('csrfmiddlewaretoken');
+
+                // Add the CSRF token to the headers
+                const headers = new Headers({
+                    'X-CSRFToken': csrfToken,
+                });
+                // Append the user's timezone to the form data
+                formData.append('timezone', userTimezone);
+                // Send the form data to your Django backend using fetch or any other method
+                fetch('', {
+                    method: 'POST',
+                    body: formData,
+                    headers: headers, // Include the CSRF token in the headers
+                }).then(response => {
+                    // Handle the response from the server, e.g., redirect to a success page.
+                    console.log(response)
+                    console.log("Request was sent from the frontend")
+                    window.location.href = "/"
+                })
+                    .catch(error => {
+                        // Handle errors, e.g., display an error message to the user.
+                        console.log("Error locating endpoint, could't send request")
+                    });
+            });
+        }
+    });</script>
 {% endblock %}

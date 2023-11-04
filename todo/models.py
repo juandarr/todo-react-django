@@ -2,8 +2,6 @@ from django.db import models
 from django.utils.timezone import now
 from todo_react_django import settings
 from django.contrib.auth.models import AbstractUser, BaseUserManager, PermissionsMixin
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 class UserManager(BaseUserManager):
     def create_user(self, password=None, **extra_fields):
@@ -68,17 +66,11 @@ class Todo(models.Model):
     class Meta:
         ordering = ['created_at']
 
-@receiver(post_save, sender=User)
-def create_list_record(sender, instance, created, **kwargs):
-    '''
-    Create a new list associated to the new user, and its id 
-    is stored as the inbox id for the new user
-    '''
-    from .models import List
-    if created:
-        new_model = List(title="📥 Inbox", user_id = instance.id)
-        new_model.save()
+class Setting(models.Model):
+    id = models.BigAutoField(primary_key=True,unique=True, blank=True)
+    parameter = models.CharField(max_length=50)
+    value = models.CharField(max_length=50)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete =models.CASCADE, blank=True, related_name='settings')
 
-        # Update the related User model to establish the relationship with new List
-        instance.inbox_id = new_model.id
-        instance.save()
+    def __str__(self):
+        return self.parameter + ' : ' + self.value
