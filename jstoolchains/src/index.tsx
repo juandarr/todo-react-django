@@ -3,7 +3,11 @@ import { createRoot } from 'react-dom/client';
 
 import App from './App';
 
-const container = createRoot(document.getElementById('root') as HTMLElement);
-container.render(
-		<App />
-);
+const root = document.getElementById('root');
+
+if (root !== null) {
+	const container = createRoot(root);
+	container.render(
+			<App />
+	);
+}
