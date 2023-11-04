@@ -1,12 +1,5 @@
 import React, { useContext, useMemo, useState } from 'react';
-import {
-	CalendarTick,
-	CardEdit,
-	Link21,
-	NotificationCircle,
-	StatusUp,
-	Sun1,
-} from 'iconsax-react';
+import { CalendarTick, CardEdit, Link21, StatusUp, Sun1 } from 'iconsax-react';
 
 import {
 	Tooltip,
@@ -123,7 +116,48 @@ export default function GoalsModal({
 		return { day: 0, week: 0, month: 0 };
 	}, [todos, user.timeZone]);
 
-	console.log('Modal goals opened');
+	const streakCounter = useMemo(() => {
+		if (user.timeZone !== '') {
+			let date = new Date();
+			const previousDays: Array<Record<string, boolean>> = [];
+			for (let i = 0; i < 7; i += 1) {
+				previousDays.push({ [date.getDate()]: false });
+				date.setDate(date.getDate() - 1);
+			}
+			console.log(previousDays, 'here are the days');
+			// streak before today
+			let idx = 0;
+			let streak = 0;
+			date = new Date();
+			let tmp = todos.find(
+				(todo) =>
+					todo.complete === true &&
+					todo.completedAt?.toDateString() === date.toDateString(),
+			);
+			if (tmp !== undefined) {
+				previousDays[idx][date.getDate()] = true;
+				streak += 1;
+			}
+			do {
+				idx += 1;
+				date.setDate(date.getDate() - 1);
+				tmp = todos.find(
+					(todo) =>
+						todo.complete === true &&
+						todo.completedAt?.toDateString() === date.toDateString(),
+				);
+				if (tmp !== undefined) {
+					previousDays[idx][date.getDate()] = true;
+					streak += 1;
+				}
+			} while (tmp !== undefined);
+			console.log('Array before reverse: ', previousDays);
+			return { streak, previousDays: previousDays.reverse() };
+		}
+		return { streak: 0, previousDays: [] };
+	}, [todos, user.timeZone]);
+
+	console.log('Modal goals opened', streakCounter.previousDays);
 	return (
 		<Popover modal={false} open={isOpen} onOpenChange={setIsOpen}>
 			<TooltipProvider>
@@ -202,11 +236,21 @@ export default function GoalsModal({
 							<div className='relative flex w-1/3 items-center justify-center text-rose-500'>
 								<Link21 size='2rem' />
 								<div className='absolute -bottom-3 left-[65%] text-xl font-bold'>
-									5
+									{streakCounter.streak}
 								</div>
 							</div>
-							<div className='flex w-2/3 items-center justify-center text-lime-500'>
-								<NotificationCircle size='2rem' />
+							<div className='flex w-2/3 flex-row items-center justify-evenly text-rose-500'>
+								{streakCounter.previousDays.map((previousDay, idx) => (
+									<div
+										key={idx}
+										className={`px-1.5 text-sm font-semibold ${
+											Object.entries(previousDay)[0][1]
+												? 'rounded-full border-2 border-lime-500 text-lime-500'
+												: ''
+										}`}>
+										{Object.entries(previousDay)[0][0]}
+									</div>
+								))}
 							</div>
 						</div>
 					</div>
