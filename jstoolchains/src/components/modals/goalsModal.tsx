@@ -16,7 +16,7 @@ import {
 } from '../ui/popover';
 
 import type { GoalsModalProps } from '../../lib/customTypes';
-import { useToast } from '../ui/toast/use-toast';
+// import { useToast } from '../ui/toast/use-toast';
 import { UserContext } from '../../contexts/UserContext';
 
 export default function GoalsModal({
@@ -26,7 +26,7 @@ export default function GoalsModal({
 
 	const user = useContext(UserContext);
 
-	const { toast } = useToast();
+	// const { toast } = useToast();
 
 	// const closePopover = (): void => {
 	// 	setIsOpen(false);
@@ -166,7 +166,7 @@ export default function GoalsModal({
 				} else {
 					penalty += 1;
 				}
-			} while (penalty < 2 || idx > 6);
+			} while (penalty < 2 || idx > 6); // Allow gaps (penalty < 2) or not (penalty < 1)
 			console.log('Array before reverse: ', previousDays);
 			return { streak, previousDays: previousDays.reverse() };
 		}
@@ -210,7 +210,7 @@ export default function GoalsModal({
 					}}>
 					<div className='flex-col items-center justify-start'>
 						<h1 className='mb-2 ml-3 mr-3 mt-3 text-xl font-bold text-fuchsia-500'>
-							Metrics and statistics
+							Your progress
 						</h1>
 						<p className='mb-3 ml-3 text-sm'>
 							The home of your goals and progress.
@@ -264,7 +264,7 @@ export default function GoalsModal({
 											{Object.entries(previousDay)[0][0].split('-')[1][0]}
 										</div>
 										<div
-											className={`rounded-xl border-2 px-1 text-xs font-semibold ${
+											className={`flex w-6 items-center justify-center rounded-[50%] border-2 text-xs font-semibold leading-5 ${
 												Object.entries(previousDay)[0][1]
 													? 'border-emerald-500 text-emerald-500'
 													: 'border-transparent'
