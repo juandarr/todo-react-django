@@ -121,7 +121,11 @@ export default function GoalsModal({
 			let date = new Date();
 			const previousDays: Array<Record<string, boolean>> = [];
 			for (let i = 0; i < 7; i += 1) {
-				previousDays.push({ [date.getDate()]: false });
+				previousDays.push({
+					[date.getDate() +
+					'-' +
+					date.toLocaleDateString('en-US', { weekday: 'short' })]: false,
+				});
 				date.setDate(date.getDate() - 1);
 			}
 			console.log(previousDays, 'here are the days');
@@ -135,9 +139,14 @@ export default function GoalsModal({
 					todo.completedAt?.toDateString() === date.toDateString(),
 			);
 			if (tmp !== undefined) {
-				previousDays[idx][date.getDate()] = true;
+				previousDays[idx][
+					date.getDate() +
+						'-' +
+						date.toLocaleDateString('en-US', { weekday: 'short' })
+				] = true;
 				streak += 1;
 			}
+			let penalty = 0;
 			do {
 				idx += 1;
 				date.setDate(date.getDate() - 1);
@@ -147,10 +156,17 @@ export default function GoalsModal({
 						todo.completedAt?.toDateString() === date.toDateString(),
 				);
 				if (tmp !== undefined) {
-					previousDays[idx][date.getDate()] = true;
+					previousDays[idx][
+						date.getDate() +
+							'-' +
+							date.toLocaleDateString('en-US', { weekday: 'short' })
+					] = true;
 					streak += 1;
+					penalty = 0;
+				} else {
+					penalty += 1;
 				}
-			} while (tmp !== undefined);
+			} while (penalty < 2 || idx > 6);
 			console.log('Array before reverse: ', previousDays);
 			return { streak, previousDays: previousDays.reverse() };
 		}
@@ -243,12 +259,18 @@ export default function GoalsModal({
 								{streakCounter.previousDays.map((previousDay, idx) => (
 									<div
 										key={idx}
-										className={`px-1.5 text-sm font-semibold ${
-											Object.entries(previousDay)[0][1]
-												? 'rounded-full border-2 border-lime-500 text-lime-500'
-												: ''
-										}`}>
-										{Object.entries(previousDay)[0][0]}
+										className='flex flex-col items-center justify-start'>
+										<div className='px-1.5 text-xs  font-semibold italic text-cyan-500'>
+											{Object.entries(previousDay)[0][0].split('-')[1][0]}
+										</div>
+										<div
+											className={`rounded-xl border-2 px-1 text-xs font-semibold ${
+												Object.entries(previousDay)[0][1]
+													? 'border-emerald-500 text-emerald-500'
+													: 'border-transparent'
+											}`}>
+											{Object.entries(previousDay)[0][0].split('-')[0]}
+										</div>
 									</div>
 								))}
 							</div>
