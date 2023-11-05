@@ -22,7 +22,6 @@ export default function TaskView({
 		const coll = document.getElementsByClassName('collapsible');
 
 		const handleClick = (event: any): void => {
-			console.log(event, event.target instanceof HTMLElement);
 			if (event.target instanceof Element) {
 				let el = event.target;
 				while (!(el.classList.contains('collapsible') as boolean)) {
@@ -31,19 +30,10 @@ export default function TaskView({
 				el.classList.toggle('active');
 				const content = el.parentElement.parentElement
 					.nextElementSibling as HTMLElement;
-				// console.log('Adding new class to target element!', el.classList);
 				if (content.style.maxHeight !== '') {
 					content.style.maxHeight = '';
-					console.log(
-						'Changing style of content element!',
-						content.style.maxHeight,
-					);
 				} else {
 					content.style.maxHeight = content.scrollHeight + 'px';
-					console.log(
-						'Changing style of content element!',
-						content.style.maxHeight,
-					);
 				}
 			}
 		};
@@ -57,6 +47,16 @@ export default function TaskView({
 			}
 		};
 	}, []);
+
+	useEffect(() => {
+		const contents = document.getElementsByClassName('content');
+		for (let i = 0; i < contents.length; i++) {
+			if ((contents[i] as HTMLElement).style.maxHeight !== '') {
+				(contents[i] as HTMLElement).style.maxHeight =
+					contents[i].scrollHeight + 'px';
+			}
+		}
+	}, [currentView]);
 
 	return (
 		<div
