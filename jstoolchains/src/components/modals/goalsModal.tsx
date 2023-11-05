@@ -57,6 +57,7 @@ export default function GoalsModal({
 			});
 			const day = todos.reduce((accum, todo) => {
 				if (
+					todo.complete === true &&
 					todo.completedAt?.toLocaleDateString('en-US', {
 						timeZone: user.timeZone,
 					}) === today
@@ -82,7 +83,11 @@ export default function GoalsModal({
 				59,
 			);
 			const week = todos.reduce((accum, todo) => {
-				if (todo.completedAt !== null && todo.completedAt !== undefined) {
+				if (
+					todo.complete === true &&
+					todo.completedAt !== null &&
+					todo.completedAt !== undefined
+				) {
 					const tmpWeek = todo.completedAt;
 					if (tmpWeek >= first && tmpWeek <= last) {
 						return accum + 1;
@@ -99,7 +104,11 @@ export default function GoalsModal({
 				.split('/');
 			const month = todos.reduce((accum, todo) => {
 				let tmpMonth;
-				if (todo.completedAt !== null && todo.completedAt !== undefined) {
+				if (
+					todo.complete === true &&
+					todo.completedAt !== null &&
+					todo.completedAt !== undefined
+				) {
 					tmpMonth = todo.completedAt
 						.toLocaleDateString('en-US', {
 							timeZone: user.timeZone,
