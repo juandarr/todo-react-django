@@ -64,5 +64,5 @@ export default function TaskList({
 		);
 	});
 
-	return <ul className='divide-gray-150 divide-y'>{taskList}</ul>;
+	return <ul className='content divide-gray-150 divide-y'>{taskList}</ul>;
 }

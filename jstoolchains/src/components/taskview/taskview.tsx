@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TaskForm from './taskform';
 import TaskListHeader from './taskheader';
 import TaskList from './tasklist';
@@ -17,6 +17,45 @@ export default function TaskView({
 	editTodoFull,
 }: TaskViewProps): React.JSX.Element {
 	const [newTodoEdit, setNewTodoEdit] = useState<Todo>({ title: '' });
+
+	useEffect(() => {
+		const coll = document.getElementsByClassName('collapsible');
+
+		const handleClick = (event: any): void => {
+			console.log(event);
+			if (event.target instanceof HTMLElement) {
+				let el = event.target;
+				while (!(el.classList.contains('collapsible') as boolean)) {
+					el = el.parentElement;
+				}
+				el.classList.toggle('active');
+				const content = el.nextElementSibling as HTMLElement;
+				console.log('Adding new class to target element!', el.classList);
+				if (content.style.maxHeight !== '') {
+					content.style.maxHeight = '';
+					console.log(
+						'Changing style of content element!',
+						content.style.maxHeight,
+					);
+				} else {
+					content.style.maxHeight = content.scrollHeight + 'px';
+					console.log(
+						'Changing style of content element!',
+						content.style.maxHeight,
+					);
+				}
+			}
+		};
+
+		for (let i = 0; i < coll.length; i++) {
+			coll[i].addEventListener('click', handleClick);
+		}
+		return () => {
+			for (let i = 0; i < coll.length; i++) {
+				coll[i].removeEventListener('click', handleClick);
+			}
+		};
+	}, []);
 
 	return (
 		<div
