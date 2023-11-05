@@ -22,15 +22,16 @@ export default function TaskView({
 		const coll = document.getElementsByClassName('collapsible');
 
 		const handleClick = (event: any): void => {
-			console.log(event);
-			if (event.target instanceof HTMLElement) {
+			console.log(event, event.target instanceof HTMLElement);
+			if (event.target instanceof Element) {
 				let el = event.target;
 				while (!(el.classList.contains('collapsible') as boolean)) {
 					el = el.parentElement;
 				}
 				el.classList.toggle('active');
-				const content = el.nextElementSibling as HTMLElement;
-				console.log('Adding new class to target element!', el.classList);
+				const content = el.parentElement.parentElement
+					.nextElementSibling as HTMLElement;
+				// console.log('Adding new class to target element!', el.classList);
 				if (content.style.maxHeight !== '') {
 					content.style.maxHeight = '';
 					console.log(

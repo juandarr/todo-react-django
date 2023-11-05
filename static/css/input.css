@@ -438,22 +438,14 @@ input[type="checkbox"]:checked:hover {
 /* Collasible element styles */
 .collapsible {
   cursor: pointer;
-  width: 100%;
+  /* width: 100%; */
+  transform: rotateZ(0deg);
+  transition: all 0.35s ease-in-out 0s;
 }
 
-.collapsible:after {
-  content: "\002B";
-  --tw-bg-opacity: 1;
-  color: rgb(16 185 129 / var(--tw-bg-opacity));
-  font-weight: bold;
-  float: right;
-  margin-right: 15px;
-}
-
-.active:after {
-  content: "\2212";
-  --tw-bg-opacity: 1;
-  color: rgb(244 63 94 / var(--tw-bg-opacity));
+.active {
+  transition: all 0.35s ease-in-out 0s;
+  transform: rotateZ(-180deg);
 }
 
 .content {
