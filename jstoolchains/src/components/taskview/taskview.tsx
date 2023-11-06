@@ -76,7 +76,7 @@ export default function TaskView({
 			</div>
 			<TaskForm addTodo={addTodo} key={currentView.id} />
 			<TaskListHeader
-				fieldDone={'Done?'}
+				fieldDone={'Todo'}
 				fieldTask={'Task'}
 				fieldActions={'Actions'}
 			/>
