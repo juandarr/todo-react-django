@@ -18,6 +18,22 @@ export default function SideBar({
 	showSidebar,
 }: SideBarProps): React.JSX.Element {
 	const user = useContext(UserContext);
+
+	const inbox = lists.find((list) => user.inboxListId === list.id);
+
+	const ViewLists = viewData.viewTagIds.map((value) => (
+		<button
+			key={value}
+			className={`flex cursor-pointer justify-start ${
+				currentView.id === value ? 'rounded-md bg-cyan-200 font-semibold' : ''
+			} rounded-xl p-1 pl-2 text-lg hover:underline hover:decoration-rose-500 hover:decoration-2 hover:underline-offset-4`}
+			onClick={() => {
+				changeCurrentView(value);
+			}}>
+			{viewData.viewTagDetails.get(value)}
+		</button>
+	));
+
 	const otherLists = lists
 		.filter((list) => user.inboxListId !== list.id)
 		.map((list) => (
@@ -27,7 +43,7 @@ export default function SideBar({
 						currentView.id === list.id
 							? 'rounded-md bg-cyan-200 font-semibold'
 							: ''
-					} truncate rounded-xl p-1 pl-2 text-lg hover:underline hover:decoration-rose-500 hover:decoration-2`}
+					} truncate rounded-xl p-1 pl-2 text-lg hover:underline hover:decoration-rose-500 hover:decoration-2 hover:underline-offset-4`}
 					onClick={() => {
 						changeCurrentView(list.id as number);
 					}}>
@@ -53,20 +69,7 @@ export default function SideBar({
 				</div>
 			</div>
 		));
-	const inbox = lists.find((list) => user.inboxListId === list.id);
-	console.log('These are the lists: ', lists, user.inboxListId);
-	const ViewLists = viewData.viewTagIds.map((value) => (
-		<button
-			key={value}
-			className={`flex cursor-pointer justify-start ${
-				currentView.id === value ? 'rounded-md bg-cyan-200 font-semibold' : ''
-			} rounded-xl p-1 pl-2 text-lg hover:underline hover:decoration-rose-500 hover:decoration-2`}
-			onClick={() => {
-				changeCurrentView(value);
-			}}>
-			{viewData.viewTagDetails.get(value)}
-		</button>
-	));
+
 	return (
 		<div
 			className={`flexflex-col absolute left-0 top-0 my-6 w-30%  rounded-xl border-2 border-black bg-white p-10 ${
@@ -85,7 +88,7 @@ export default function SideBar({
 						currentView.id === user.inboxListId
 							? 'rounded-md bg-cyan-200 font-semibold'
 							: ''
-					} rounded-xl p-1 pl-2 text-lg hover:underline hover:decoration-rose-500 hover:decoration-2`}
+					} rounded-xl p-1 pl-2 text-lg hover:underline hover:decoration-rose-500 hover:decoration-2 hover:underline-offset-4`}
 					onClick={() => {
 						changeCurrentView(user.inboxListId);
 					}}>
