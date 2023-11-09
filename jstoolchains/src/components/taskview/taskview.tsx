@@ -56,7 +56,8 @@ export default function TaskView({
 					contents[i].scrollHeight + 'px';
 			}
 		}
-	}, [currentView]);
+		console.log('Triggered because current view or todos changed!');
+	}, [currentView, todos]);
 
 	return (
 		<div
@@ -93,7 +94,7 @@ export default function TaskView({
 				setNewTodoEdit={setNewTodoEdit}
 			/>
 			<TaskListHeader
-				fieldDone={'Completed'}
+				fieldDone={`Completed`}
 				fieldTask={''}
 				fieldActions={''}
 			/>
