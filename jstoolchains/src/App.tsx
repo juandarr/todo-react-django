@@ -169,6 +169,11 @@ export default function App(): React.JSX.Element {
 				title: viewData.viewTagDetails.get(newViewId) as string,
 			};
 		}
+		const e = document.getElementById('currentView-title');
+		e?.classList.remove('fade-in');
+		// eslint-disable-next-line @typescript-eslint/no-unused-expressions
+		e?.offsetWidth;
+		e?.classList.add('fade-in');
 		setCurrentView(newView);
 	};
 

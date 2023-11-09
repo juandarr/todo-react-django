@@ -56,7 +56,6 @@ export default function TaskView({
 					contents[i].scrollHeight + 'px';
 			}
 		}
-		console.log('Triggered because current view or todos changed!');
 	}, [currentView, todos]);
 
 	return (
@@ -64,7 +63,9 @@ export default function TaskView({
 			className={`relative my-6 duration-300 ease-in-out ${
 				showSidebar ? 'w-65%' : 'w-full'
 			} rounded-xl border-2 border-black bg-white p-10 fill-mode-forwards`}>
-			<div className='absolute left-3 top-2 text-sm font-bold text-violet-600'>
+			<div
+				className='absolute left-3 top-2 text-sm font-bold text-violet-600'
+				id='currentView-title'>
 				{currentView.title +
 					(currentView.id === '1t'
 						? ': ' +

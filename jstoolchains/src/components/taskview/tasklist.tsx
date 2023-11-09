@@ -41,7 +41,7 @@ export default function TaskList({
 
 	const taskList = filteredTodos.map((todo, idx: number) => {
 		return (
-			<li key={todo.id}>
+			<li key={todo.id} id={`item-${todo.id}`}>
 				<TaskItem
 					todo={todo}
 					lists={lists}

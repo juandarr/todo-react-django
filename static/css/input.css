@@ -135,7 +135,7 @@
 }
 
 /* Body style */
-.body-style {
+.body-overflow {
   overflow-y: scroll;
   overflow-x: hidden;
   width: 100vw;
@@ -504,4 +504,36 @@ input[type="checkbox"]:checked:hover {
 /* Make the scrollbar appear on hover */
 ::-moz-scrollbar-thumb:hover {
   background: #8b5cf6;
+}
+
+/* Animation when todo is completed */
+.fade-out {
+  animation: 0.2s fadeOut;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Transition to a different view */
+.fade-in {
+  animation: 0.2s fadeIn;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }

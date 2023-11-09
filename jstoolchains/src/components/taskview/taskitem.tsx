@@ -97,6 +97,8 @@ export default function TaskItem({
 						id={'checkbox-' + todo.id}
 						checked={todo.complete}
 						onCheckedChange={(checked) => {
+							const s = document.getElementById(`item-${todo.id}`);
+							s?.classList.toggle('fade-out');
 							toggleHandler(checked as boolean);
 						}}
 						className='border-2 border-black'
