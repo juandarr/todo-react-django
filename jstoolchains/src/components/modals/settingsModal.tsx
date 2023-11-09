@@ -44,7 +44,7 @@ export default function SettingsModal({
 			...list,
 			id: list.id?.toString(),
 		}));
-		return [...viewData.views, ...tmpLists];
+		return [tmpLists[0], ...viewData.views, ...tmpLists.slice(1)];
 	}, [lists]);
 
 	const [editSettings, setEditSettings] = useState(currentSettings);
@@ -67,9 +67,6 @@ export default function SettingsModal({
 			}
 		}
 	};
-	// const closePopover = (): void => {
-	// 	setIsOpen(false);
-	// };
 
 	const openPopover = (): void => {
 		setIsOpen(true);

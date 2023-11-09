@@ -19,6 +19,14 @@
 
 
     </script>
+    <script>
+        document.body.addEventListener('mousedown', event => {
+            if (event.detail > 1) {
+                event.preventDefault();
+            }
+        });
+
+    </script>
     {% block js_script %}
 
     {% endblock %}

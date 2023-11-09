@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TaskForm from './taskform';
 import TaskListHeader from './taskheader';
 import TaskList from './tasklist';
@@ -18,6 +18,46 @@ export default function TaskView({
 }: TaskViewProps): React.JSX.Element {
 	const [newTodoEdit, setNewTodoEdit] = useState<Todo>({ title: '' });
 
+	useEffect(() => {
+		const coll = document.getElementsByClassName('collapsible');
+
+		const handleClick = (event: any): void => {
+			if (event.target instanceof Element) {
+				let el = event.target;
+				while (!(el.classList.contains('collapsible') as boolean)) {
+					el = el.parentElement;
+				}
+				el.classList.toggle('active');
+				const content = el.parentElement.parentElement
+					.nextElementSibling as HTMLElement;
+				if (content.style.maxHeight !== '') {
+					content.style.maxHeight = '';
+				} else {
+					content.style.maxHeight = content.scrollHeight + 'px';
+				}
+			}
+		};
+
+		for (let i = 0; i < coll.length; i++) {
+			coll[i].addEventListener('click', handleClick);
+		}
+		return () => {
+			for (let i = 0; i < coll.length; i++) {
+				coll[i].removeEventListener('click', handleClick);
+			}
+		};
+	}, []);
+
+	useEffect(() => {
+		const contents = document.getElementsByClassName('content');
+		for (let i = 0; i < contents.length; i++) {
+			if ((contents[i] as HTMLElement).style.maxHeight !== '') {
+				(contents[i] as HTMLElement).style.maxHeight =
+					contents[i].scrollHeight + 'px';
+			}
+		}
+	}, [currentView]);
+
 	return (
 		<div
 			className={`relative my-6 duration-300 ease-in-out ${
@@ -36,7 +76,7 @@ export default function TaskView({
 			</div>
 			<TaskForm addTodo={addTodo} key={currentView.id} />
 			<TaskListHeader
-				fieldDone={'Done?'}
+				fieldDone={'Todo'}
 				fieldTask={'Task'}
 				fieldActions={'Actions'}
 			/>

@@ -103,7 +103,7 @@ export default function TaskItem({
 					/>
 				</div>
 				<form
-					className='relative flex w-8/12 flex-col'
+					className='relative flex flex-1 flex-col'
 					id='editTitle-form'
 					onSubmit={(event) => {
 						handleSubmit(event, todo);
@@ -236,7 +236,7 @@ export default function TaskItem({
 				</form>
 				<div
 					id={`todo-${todo.id}`}
-					className='hidden-child mt-3 flex w-2/12 items-start justify-center'>
+					className='hidden-child mt-3 flex w-2/12 items-start justify-end px-3'>
 					<EditModalTodo
 						editTodoFull={editTodoFull}
 						todo={todo}
@@ -254,6 +254,7 @@ export default function TaskItem({
 						size={1.6}
 					/>
 				</div>
+				<div className='w-[5%]'></div>
 			</div>
 		</>
 	);

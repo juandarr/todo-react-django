@@ -154,7 +154,7 @@ export default function CreateModalTodo({
 			list: user.inboxListId.toString(),
 			dueDate: undefined,
 		});
-		// editorDesc?.commands.clearContent();
+		editorDesc?.commands.clearContent();
 		setStatus('typing');
 		setIsOpen(true);
 	};
@@ -312,7 +312,7 @@ export default function CreateModalTodo({
 							</SelectContent>
 						</Select>
 					</div>
-					<div className='mb-3 ml-4 mr-4 flex items-center justify-start'>
+					<div className='mb-4 ml-4 mr-4 flex items-center justify-start'>
 						<DatePickerWithPresets
 							newTodo={newTodo}
 							setNewTodo={setNewTodo}
