@@ -16,7 +16,6 @@ import {
 } from '../ui/popover';
 
 import type { GoalsModalProps } from '../../lib/customTypes';
-// import { useToast } from '../ui/toast/use-toast';
 import { UserContext } from '../../contexts/UserContext';
 
 export default function GoalsModal({
@@ -26,15 +25,8 @@ export default function GoalsModal({
 
 	const user = useContext(UserContext);
 
-	// const { toast } = useToast();
-
-	// const closePopover = (): void => {
-	// 	setIsOpen(false);
-	// };
-
 	const openPopover = (): void => {
 		setIsOpen(true);
-		// toast({ title: 'Modal opened!', description: '' });
 	};
 
 	const options: Intl.DateTimeFormatOptions = {
@@ -224,34 +216,34 @@ export default function GoalsModal({
 						<p className='mb-3 ml-3 text-sm'>
 							The home of your goals and progress.
 						</p>
-						<div className='relative mb-6 ml-3 mr-3 text-lg font-bold text-sky-500'>
+						<div className='relative mb-6 ml-3 mr-3 text-lg font-bold text-cyan-500'>
 							Todos completed
-							<div className='absolute -bottom-2 left-44 text-xs text-emerald-500'>
+							<div className='absolute -bottom-2 left-40 text-xs text-cyan-500'>
 								* {options.timeZone !== '' ? monthLabel : 'dummy'}
 							</div>
 						</div>
 						<div className='mb-6 ml-3 mr-3 flex items-center justify-around'>
 							<div className=' relative flex w-1/3 items-center justify-center text-yellow-500'>
-								<Sun1 size='2rem' />
+								<Sun1 size='2rem' variant='Broken' />
 
-								<div className='absolute -bottom-3 left-[65%] text-xl font-bold'>
+								<div className='absolute -bottom-3 left-[68%] font-Maple text-2xl'>
 									{completedCounter.day}
 								</div>
 							</div>
-							<div className='relative flex w-1/3 items-center justify-center text-violet-500'>
-								<CardEdit size='2rem' />
-								<div className='absolute -bottom-3 left-[65%] text-xl font-bold'>
+							<div className='relative flex w-1/3 items-center justify-center text-emerald-500'>
+								<CardEdit size='2rem' variant='Broken' />
+								<div className='absolute -bottom-3 left-[68%] font-Maple text-2xl'>
 									{completedCounter.week}
 								</div>
 							</div>
 							<div className='relative flex w-1/3 items-center justify-center text-orange-500'>
-								<CalendarTick size='2rem' />
-								<div className='absolute -bottom-3 left-[65%] text-xl font-bold'>
+								<CalendarTick size='2rem' variant='Broken' />
+								<div className='absolute -bottom-3 left-[68%] font-Maple text-2xl'>
 									{completedCounter.month}
 								</div>
 							</div>
 						</div>
-						<div className='relative mb-6 ml-3 mr-3 mt-2 text-lg font-bold text-emerald-500'>
+						<div className='relative mb-6 ml-3 mr-3 mt-2 text-lg font-bold text-violet-500'>
 							Streak
 							<div className='absolute -bottom-2 left-16 text-xs text-violet-500'>
 								* Don&apos;t break the chain
@@ -259,8 +251,8 @@ export default function GoalsModal({
 						</div>
 						<div className='mb-4 ml-3 mr-3 flex items-center justify-around'>
 							<div className='relative flex w-1/3 items-center justify-center text-rose-500'>
-								<Link21 size='2rem' />
-								<div className='absolute -bottom-3 left-[65%] text-xl font-bold'>
+								<Link21 size='2rem' variant='Broken' />
+								<div className='absolute -bottom-3 left-[68%] font-Maple text-2xl'>
 									{streakCounter.streak}
 								</div>
 							</div>

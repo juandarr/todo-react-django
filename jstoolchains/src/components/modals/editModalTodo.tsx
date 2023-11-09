@@ -315,7 +315,7 @@ export default function EditModalTodo({
 						</Select>
 					</div>
 
-					<div className='mb-3 ml-4 mr-4 flex items-center justify-between'>
+					<div className='mb-4 ml-4 mr-4 flex items-center justify-between'>
 						<DatePickerWithPresets
 							newTodo={newEditTodo}
 							setNewTodo={setNewEditTodo}

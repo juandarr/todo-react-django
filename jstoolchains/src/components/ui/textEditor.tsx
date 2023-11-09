@@ -51,13 +51,13 @@ export default function TextEditor({
 	);
 	return (
 		<div className='relative mb-2 ml-4 mr-4 mt-2 flex flex-1 flex-col focus-within:rounded-lg focus-within:outline'>
-			<div className='flex max-h-[40vh] justify-start overflow-y-auto rounded-t-lg bg-violet-100 px-1 py-1 text-sm text-gray-900'>
+			<div className='flex max-h-[20vh] items-center justify-start overflow-y-auto rounded-t-lg bg-sky-50 px-1 py-1 text-sm text-gray-900'>
 				<div
 					onClick={() => editor.chain().focus().toggleTaskList().run()}
-					className={`${
+					className={`pl-3 ${
 						editor.isActive('taskList') ? 'is-active' : ''
-					} cursor-pointer text-rose-500 `}>
-					<TaskSquare size='22' variant='Broken' />
+					} glowing cursor-pointer  text-violet-500 hover:text-violet-600`}>
+					<TaskSquare size='18' variant='Broken' />
 				</div>
 			</div>
 			<EditorContent
