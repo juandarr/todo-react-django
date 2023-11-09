@@ -447,12 +447,33 @@ input[type="checkbox"]:checked:hover {
 }
 
 .active {
-  transition: all 0.35s ease-in-out 0s;
   transform: rotateZ(-180deg);
+  transition: all 0.35s ease-in-out 0s;
 }
 
 .content {
   overflow: hidden;
   max-height: 0;
   transition: max-height 0.2s ease-out;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  overflow-y: overlay;
+}
+
+/* Style the custom scrollbar */
+::-webkit-scrollbar-track {
+  background: white;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #555; /* Change the color of the scrollbar thumb */
+  border-radius: 8px; /* Adjust the border radius as needed */
+}
+
+/* Make the scrollbar appear on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #8b5cf6;
 }

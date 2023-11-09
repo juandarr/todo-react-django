@@ -38,15 +38,7 @@ export default function TaskList({
 			(a, b) => (a.priority as number) - (b.priority as number),
 		);
 	}
-	if (filteredTodos.length === 0) {
-		return (
-			<div className='content mb-3 '>
-				<div className='text-md flex-1 px-6 py-6 font-bold text-violet-600'>
-					No todos {condition ? 'completed yet' : 'at the moment'}
-				</div>
-			</div>
-		);
-	}
+
 	const taskList = filteredTodos.map((todo, idx: number) => {
 		return (
 			<li key={todo.id}>
@@ -67,8 +59,14 @@ export default function TaskList({
 	});
 
 	return (
-		<div className='content mb-3 '>
-			<ul className='divide-gray-150 divide-y'>{taskList}</ul>
+		<div className='content mb-3'>
+			{filteredTodos.length === 0 ? (
+				<div className='text-md flex-1 px-6 py-6 font-bold text-violet-600'>
+					No todos {condition ? 'completed yet' : 'at the moment'}
+				</div>
+			) : (
+				<ul className='divide-gray-150 divide-y'>{taskList}</ul>
+			)}
 		</div>
 	);
 }
