@@ -457,7 +457,7 @@ input[type="checkbox"]:checked:hover {
   transition: max-height 0.2s ease-out;
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar  for webkit browsers (safari and chrome)*/
 ::-webkit-scrollbar {
   width: 8px;
   overflow-y: overlay;
@@ -475,5 +475,26 @@ input[type="checkbox"]:checked:hover {
 
 /* Make the scrollbar appear on hover */
 ::-webkit-scrollbar-thumb:hover {
+  background: #8b5cf6;
+}
+
+/* Custom scrollbar for mozilla browser */
+::-moz-scrollbar {
+  width: 8px;
+  overflow-y: overlay;
+}
+
+/* Style the custom scrollbar */
+::-moz-scrollbar-track {
+  background: white;
+}
+
+::-moz-scrollbar-thumb {
+  background: #555; /* Change the color of the scrollbar thumb */
+  border-radius: 8px; /* Adjust the border radius as needed */
+}
+
+/* Make the scrollbar appear on hover */
+::-moz-scrollbar-thumb:hover {
   background: #8b5cf6;
 }
