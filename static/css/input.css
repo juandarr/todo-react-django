@@ -134,6 +134,13 @@
   }
 }
 
+/* Body style */
+.body-style {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 100vw;
+}
+
 /*Show child element when hovering on parent element */
 .parent .hidden-child {
   visibility: hidden;
