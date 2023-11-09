@@ -261,11 +261,11 @@ export default function GoalsModal({
 									<div
 										key={idx}
 										className='flex flex-col items-center justify-start'>
-										<div className='px-1.5 text-xs  font-semibold italic text-cyan-500'>
+										<div className='px-1.5 font-Maple  text-xs font-semibold text-cyan-500'>
 											{Object.entries(previousDay)[0][0].split('-')[1][0]}
 										</div>
 										<div
-											className={`flex w-6 items-center justify-center rounded-[50%] border-2 text-xs font-semibold leading-5 ${
+											className={`flex w-6 items-center justify-center rounded-[50%] border-2 font-Maple text-xs font-semibold leading-5 ${
 												Object.entries(previousDay)[0][1]
 													? 'border-emerald-500 text-emerald-500'
 													: 'border-transparent'
