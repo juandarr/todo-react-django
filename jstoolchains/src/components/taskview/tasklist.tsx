@@ -11,7 +11,7 @@ export default function TaskList({
 	deleteTodo,
 	editTodo,
 	editTodoFull,
-	condition,
+	isComplete,
 	currentView,
 	newTodoEdit,
 	setNewTodoEdit,
@@ -26,8 +26,8 @@ export default function TaskList({
 		listTodos = todos.filter(customFilter as filterType);
 	}
 
-	let filteredTodos = listTodos.filter((todo) => todo.complete === condition);
-	if (condition) {
+	let filteredTodos = listTodos.filter((todo) => todo.complete === isComplete);
+	if (isComplete) {
 		filteredTodos = filteredTodos.sort(
 			(a, b) =>
 				new Date(b.completedAt as Date).valueOf() -
@@ -38,18 +38,10 @@ export default function TaskList({
 			(a, b) => (a.priority as number) - (b.priority as number),
 		);
 	}
-	if (filteredTodos.length === 0) {
-		return (
-			<div className='content mb-3 '>
-				<div className='text-md flex-1 px-6 py-6 font-bold text-violet-600'>
-					No todos {condition ? 'completed yet' : 'at the moment'}
-				</div>
-			</div>
-		);
-	}
+
 	const taskList = filteredTodos.map((todo, idx: number) => {
 		return (
-			<li key={todo.id}>
+			<li key={todo.id} id={`item-${todo.id}`}>
 				<TaskItem
 					todo={todo}
 					lists={lists}
@@ -67,8 +59,14 @@ export default function TaskList({
 	});
 
 	return (
-		<div className='content mb-3 '>
-			<ul className='divide-gray-150 divide-y'>{taskList}</ul>
+		<div className={`content mb-3 ${isComplete ? 'inactive max-h-0' : ''}`}>
+			{filteredTodos.length === 0 ? (
+				<div className='text-md flex-1 px-6 py-6 font-bold text-violet-600'>
+					No todos {isComplete ? 'completed yet' : 'at the moment'}
+				</div>
+			) : (
+				<ul className='divide-gray-150 divide-y'>{taskList}</ul>
+			)}
 		</div>
 	);
 }

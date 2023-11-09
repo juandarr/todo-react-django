@@ -30,8 +30,9 @@ export default function TaskView({
 				el.classList.toggle('active');
 				const content = el.parentElement.parentElement
 					.nextElementSibling as HTMLElement;
-				if (content.style.maxHeight !== '') {
-					content.style.maxHeight = '';
+				content.classList.toggle('inactive');
+				if (content.classList.contains('inactive')) {
+					content.style.maxHeight = '0px';
 				} else {
 					content.style.maxHeight = content.scrollHeight + 'px';
 				}
@@ -51,19 +52,21 @@ export default function TaskView({
 	useEffect(() => {
 		const contents = document.getElementsByClassName('content');
 		for (let i = 0; i < contents.length; i++) {
-			if ((contents[i] as HTMLElement).style.maxHeight !== '') {
+			if (!contents[i].classList.contains('inactive')) {
 				(contents[i] as HTMLElement).style.maxHeight =
 					contents[i].scrollHeight + 'px';
 			}
 		}
-	}, [currentView]);
+	}, [currentView, todos]);
 
 	return (
 		<div
 			className={`relative my-6 duration-300 ease-in-out ${
 				showSidebar ? 'w-65%' : 'w-full'
 			} rounded-xl border-2 border-black bg-white p-10 fill-mode-forwards`}>
-			<div className='absolute left-3 top-2 text-sm font-bold text-violet-600'>
+			<div
+				className='absolute left-3 top-2 text-sm font-bold text-violet-600'
+				id='currentView-title'>
 				{currentView.title +
 					(currentView.id === '1t'
 						? ': ' +
@@ -79,6 +82,7 @@ export default function TaskView({
 				fieldDone={'Todo'}
 				fieldTask={'Task'}
 				fieldActions={'Actions'}
+				isComplete={true}
 			/>
 			<TaskList
 				todos={todos}
@@ -87,15 +91,16 @@ export default function TaskView({
 				deleteTodo={deleteTodo}
 				editTodo={editTodo}
 				editTodoFull={editTodoFull}
-				condition={false}
+				isComplete={false}
 				currentView={currentView}
 				newTodoEdit={newTodoEdit}
 				setNewTodoEdit={setNewTodoEdit}
 			/>
 			<TaskListHeader
-				fieldDone={'Completed'}
+				fieldDone={`Completed`}
 				fieldTask={''}
 				fieldActions={''}
+				isComplete={false}
 			/>
 			<TaskList
 				todos={todos}
@@ -104,7 +109,7 @@ export default function TaskView({
 				deleteTodo={deleteTodo}
 				editTodo={editTodo}
 				editTodoFull={editTodoFull}
-				condition={true}
+				isComplete={true}
 				currentView={currentView}
 				newTodoEdit={newTodoEdit}
 				setNewTodoEdit={setNewTodoEdit}

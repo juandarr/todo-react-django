@@ -129,7 +129,7 @@ export interface TaskListProps {
 		setEdit: EditionSetState,
 	) => Promise<void>;
 	editTodoFull: (todo: todoType) => Promise<Todo>;
-	condition: boolean;
+	isComplete: boolean;
 	currentView: viewType;
 	newTodoEdit: Todo;
 	setNewTodoEdit: React.Dispatch<React.SetStateAction<Todo>>;
@@ -139,6 +139,7 @@ export interface TaskListHeaderProps {
 	fieldDone: string;
 	fieldTask: string;
 	fieldActions: string;
+	isComplete: boolean;
 }
 
 export interface CreateModalTodoProps {
