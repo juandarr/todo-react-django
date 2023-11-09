@@ -7,6 +7,7 @@ export default function TaskListHeader({
 	fieldDone,
 	fieldTask,
 	fieldActions,
+	isComplete,
 }: TaskListHeaderProps): React.JSX.Element {
 	return (
 		<div className={`text-md flex rounded-xl bg-gray-100 py-3 font-bold`}>
@@ -18,7 +19,10 @@ export default function TaskListHeader({
 				{fieldActions}
 			</p>
 			<div className='flex w-[5%] items-center justify-center text-rose-500 hover:text-rose-600'>
-				<ArrowDown3 className='collapsible' size='1.5rem' />
+				<ArrowDown3
+					className={`collapsible ${isComplete ? 'active' : ''}`}
+					size='1.5rem'
+				/>
 			</div>
 		</div>
 	);

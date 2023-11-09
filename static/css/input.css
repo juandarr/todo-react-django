@@ -460,7 +460,6 @@ input[type="checkbox"]:checked:hover {
 
 .content {
   overflow: hidden;
-  max-height: 0;
   transition: max-height 0.2s ease-out;
 }
 
