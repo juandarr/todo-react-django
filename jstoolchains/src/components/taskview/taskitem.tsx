@@ -183,7 +183,7 @@ export default function TaskItem({
 										<Tooltip>
 											<TooltipTrigger
 												id='saveTitle-button'
-												className='absolute -right-4 top-2 flex justify-center'>
+												className='absolute -right-4 bottom-0 top-0 flex items-center justify-center'>
 												<div
 													className='text-violet-500 hover:text-violet-600'
 													onClick={(event) => {
