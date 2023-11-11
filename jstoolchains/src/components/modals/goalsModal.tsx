@@ -213,9 +213,9 @@ export default function GoalsModal({
 						<h1 className='mb-2 ml-3 mr-3 mt-3 text-xl font-bold text-fuchsia-500'>
 							Your progress
 						</h1>
-						<p className='mb-3 ml-3 text-sm'>
+						<div className='mb-3 ml-3 text-sm'>
 							The home of your goals and progress.
-						</p>
+						</div>
 						<div className='relative mb-6 ml-3 mr-3 text-lg font-bold text-cyan-500'>
 							Todos completed
 							<div className='absolute -bottom-2 left-40 text-xs text-cyan-500'>

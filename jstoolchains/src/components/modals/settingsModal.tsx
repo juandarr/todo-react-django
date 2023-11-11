@@ -107,9 +107,9 @@ export default function SettingsModal({
 						<h1 className='mb-3 ml-3 mr-3 mt-3 text-xl font-bold text-cyan-500'>
 							Settings
 						</h1>
-						<p className='mb-3 ml-3 text-sm'>
+						<div className='mb-3 ml-3 text-sm'>
 							Customize the application settings.
-						</p>
+						</div>
 						<div className='ml-3 mr-3 flex items-center justify-between'>
 							<h3>Home view</h3>
 							<Select
