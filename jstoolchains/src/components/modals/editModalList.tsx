@@ -140,8 +140,9 @@ export default function EditModalList({
 								setListEdit(event.target.value);
 							}}
 							onFocus={(e) => {
-								(inputTitleCount.current as HTMLDivElement).style.display =
-									'block';
+								if (inputTitleCount.current instanceof HTMLDivElement) {
+									inputTitleCount.current.style.display = 'block';
+								}
 							}}
 							onBlur={(e) => {
 								(inputTitleCount.current as HTMLDivElement).style.display =
