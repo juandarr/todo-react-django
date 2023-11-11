@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useRef, useState, useEffect } from 'react';
 
 import type { TaskItemProps } from '../../lib/customTypes';
 
@@ -17,6 +17,8 @@ import DeleteModal from '../modals/deleteModal';
 import { Calendar2, Task, Flag, BookSaved } from 'iconsax-react';
 import EditModalTodo from '../modals/editModalTodo';
 import { UserContext } from '../../contexts/UserContext';
+import { waitForElementToExist } from '../../lib/utils';
+import useAutosizeTextArea from '../../hooks/useAutosizeTextArea';
 
 export default function TaskItem({
 	todo,
@@ -25,15 +27,20 @@ export default function TaskItem({
 	editTodo,
 	editTodoFull,
 	deleteTodo,
-	edit,
-	setEdit,
-	newTodoEdit,
-	setNewTodoEdit,
 }: TaskItemProps): React.JSX.Element {
 	const user = useContext(UserContext);
 	const { toast } = useToast();
-	const showEdit = (edit[0] as boolean) && edit[1] === todo.id;
-	const initialTitle = useRef<string>();
+	const [inFocus, setInFocus] = useState(false);
+
+	const [newTodoEdit, setNewTodoEdit] = useState<Todo>(todo);
+
+	const textAreaTitle = useRef<HTMLTextAreaElement>(null);
+
+	useAutosizeTextArea(
+		textAreaTitle.current,
+		`#todoTitle-${todo.id}`,
+		newTodoEdit.title,
+	);
 
 	const options: Intl.DateTimeFormatOptions = {
 		weekday: 'short',
@@ -43,13 +50,16 @@ export default function TaskItem({
 		timeZone: user.timeZone,
 	};
 
-	const handleSubmit = (
-		event: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLDivElement>,
+	const editHandler = (
+		event:
+			| React.MouseEvent<HTMLDivElement>
+			| React.KeyboardEvent<HTMLTextAreaElement>
+			| React.KeyboardEvent<HTMLDivElement>,
 		todo: Todo,
 	): void => {
 		event.preventDefault();
-		if (initialTitle.current !== newTodoEdit.title) {
-			editTodo(todo.id as number, newTodoEdit.title, setEdit)
+		if (todo.title !== newTodoEdit.title) {
+			editTodo(todo.id as number, newTodoEdit.title, setInFocus)
 				.then(() => {
 					toast({
 						title: 'Task title was updated!',
@@ -65,7 +75,19 @@ export default function TaskItem({
 					});
 				});
 		} else {
-			setEdit([false, 0]);
+			setInFocus(false);
+		}
+	};
+
+	const handleKeyDown = (
+		e:
+			| React.KeyboardEvent<HTMLTextAreaElement>
+			| React.KeyboardEvent<HTMLDivElement>,
+		todo: Todo,
+	): void => {
+		if (e.key === 'Enter') {
+			// Submit the form when Enter is pressed
+			editHandler(e, todo);
 		}
 	};
 
@@ -83,11 +105,17 @@ export default function TaskItem({
 			});
 	}
 
+	/* Resize textArea element on component mount */
 	useEffect(() => {
-		if (showEdit) {
-			initialTitle.current = todo.title;
-		}
-	}, [showEdit]);
+		waitForElementToExist(`#todoTitle-${todo.id}`)
+			.then((element) => {
+				(textAreaTitle.current as HTMLElement).style.height = '0px';
+				(textAreaTitle.current as HTMLElement).style.height = `${
+					(textAreaTitle.current as HTMLElement).scrollHeight
+				}px`;
+			})
+			.catch(() => {});
+	}, []);
 
 	return (
 		<>
@@ -104,83 +132,80 @@ export default function TaskItem({
 						className='border-2 border-black'
 					/>
 				</div>
-				<form
-					className='relative flex flex-1 flex-col'
-					id='editTitle-form'
-					onSubmit={(event) => {
-						handleSubmit(event, todo);
-					}}>
+				<form className='relative flex flex-1 flex-col' id='editTitle-form'>
 					<div className='flex items-center justify-center'>
-						{!showEdit ? (
-							<input
-								type='text'
-								className={`mb-1 mr-2 mt-1 h-10 w-full bg-white px-4 py-3 text-base ${
+						<div className='relative flex flex-1 items-center'>
+							<textarea
+								className={`taskitem mb-1 mr-2 mt-1 h-fit w-full rounded-xl bg-white px-4 py-1 text-sm font-medium ${
 									(todo.complete as boolean) ? 'text-gray-400' : 'text-gray-700'
-								}  focus-visible:outline-none`}
-								name='readTitle'
-								value={todo.title}
-								onClick={(e) => {
-									setEdit([true, todo.id as number]);
-									setNewTodoEdit((old) => ({ ...old, title: todo.title }));
+								} focus-visible:outline-dashed focus-visible:outline-2 focus-visible:outline-violet-400`}
+								name='editTitle'
+								id={`todoTitle-${todo.id}`}
+								ref={textAreaTitle}
+								placeholder='Enter title'
+								value={newTodoEdit.title}
+								onFocus={(event) => {
+									setInFocus(true);
 								}}
-								readOnly
+								onBlur={(event) => {
+									if (event.relatedTarget?.id !== 'saveTitle-button') {
+										// flushSync(() => {
+										setInFocus(false);
+										setNewTodoEdit(todo);
+										// });
+										// adjustHeight(textAreaTitle.current as HTMLElement);
+									}
+								}}
+								onChange={(event) => {
+									setNewTodoEdit((old) => ({
+										...old,
+										title: event.target.value,
+									}));
+
+									// adjustHeight(textAreaTitle.current as HTMLElement);
+								}}
+								onKeyDown={(e) => {
+									handleKeyDown(e, todo);
+								}}
+								maxLength={100}
+								rows={1}
 							/>
-						) : (
-							<div className='relative flex flex-1 items-center'>
-								<input
-									type='text'
-									className={`mb-1 mr-2 mt-1 h-10 w-full rounded-xl bg-white px-4 py-3 text-base ${
-										(todo.complete as boolean)
-											? 'text-gray-400'
-											: 'text-gray-700'
-									} focus-visible:outline-dashed focus-visible:outline-2 focus-visible:outline-violet-400`}
-									name='editTitle'
-									value={newTodoEdit.title}
-									onBlur={(event) => {
-										if (event.relatedTarget?.id !== 'saveTitle-button') {
-											setEdit([false, 0]);
-										}
-									}}
-									onChange={(event) => {
-										setNewTodoEdit((old) => ({
-											...old,
-											title: event.target.value,
-										}));
-									}}
-									maxLength={100}
-									autoFocus
-								/>
-								<div
-									id='todoEditTextCount'
-									className={`absolute -bottom-3 right-9 text-[10px] ${
-										newTodoEdit.title.length < 50
-											? 'text-violet-400'
-											: 'text-amber-500'
-									}`}>
-									<span id='current'>{newTodoEdit.title.length}</span>
-									<span id='maximum'>/100</span>
-								</div>
-								<TooltipProvider>
-									<Tooltip>
-										<TooltipTrigger
-											id='saveTitle-button'
-											className='flex justify-center'>
-											<div
-												className='text-violet-500 hover:text-violet-600'
-												onClick={(event) => {
-													handleSubmit(event, todo);
-												}}
-												style={{ cursor: 'pointer' }}>
-												<BookSaved size={'1.2rem'} />
-											</div>
-										</TooltipTrigger>
-										<TooltipContent className='bg-violet-500'>
-											<p className='font-bold text-white'>Save</p>
-										</TooltipContent>
-									</Tooltip>
-								</TooltipProvider>
-							</div>
-						)}
+							{inFocus ? (
+								<>
+									<div
+										id='todoEditTextCount'
+										className={`absolute -bottom-3 right-9 text-[10px] ${
+											newTodoEdit.title.length < 50
+												? 'text-violet-400'
+												: 'text-amber-500'
+										}`}>
+										<span id='current'>{newTodoEdit.title.length}</span>
+										<span id='maximum'>/100</span>
+									</div>
+									<TooltipProvider>
+										<Tooltip>
+											<TooltipTrigger
+												id='saveTitle-button'
+												className='absolute -right-4 bottom-0 top-0 flex items-center justify-center'>
+												<div
+													className='text-violet-500 hover:text-violet-600'
+													onClick={(event) => {
+														editHandler(event, todo);
+													}}
+													style={{ cursor: 'pointer' }}>
+													<BookSaved size={'1.2rem'} />
+												</div>
+											</TooltipTrigger>
+											<TooltipContent className='bg-violet-500'>
+												<p className='font-bold text-white'>Save</p>
+											</TooltipContent>
+										</Tooltip>
+									</TooltipProvider>
+								</>
+							) : (
+								<></>
+							)}
+						</div>
 					</div>
 					<div className='mt-0 flex justify-start pb-2 pt-0 text-sm text-gray-400'>
 						<div className='mr-2 flex items-center justify-start pl-4'>
@@ -238,7 +263,7 @@ export default function TaskItem({
 				</form>
 				<div
 					id={`todo-${todo.id}`}
-					className='hidden-child mt-3 flex w-2/12 items-start justify-end px-3'>
+					className='hidden-child mt-3 flex w-[14%] items-start justify-end px-3'>
 					<EditModalTodo
 						editTodoFull={editTodoFull}
 						todo={todo}

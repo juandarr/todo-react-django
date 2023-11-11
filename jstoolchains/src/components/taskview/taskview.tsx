@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import TaskForm from './taskform';
 import TaskListHeader from './taskheader';
 import TaskList from './tasklist';
-import { type Todo } from '../../../../todo-api-client/models';
-import type { TaskViewProps } from '../../lib/customTypes';
+import type { TaskViewProps, filterType } from '../../lib/customTypes';
+import { viewData } from '../../lib/userSettings';
 
 export default function TaskView({
 	todos,
@@ -16,8 +16,6 @@ export default function TaskView({
 	editTodo,
 	editTodoFull,
 }: TaskViewProps): React.JSX.Element {
-	const [newTodoEdit, setNewTodoEdit] = useState<Todo>({ title: '' });
-
 	useEffect(() => {
 		const coll = document.getElementsByClassName('collapsible');
 
@@ -30,12 +28,7 @@ export default function TaskView({
 				el.classList.toggle('active');
 				const content = el.parentElement.parentElement
 					.nextElementSibling as HTMLElement;
-				content.classList.toggle('inactive');
-				if (content.classList.contains('inactive')) {
-					content.style.maxHeight = '0px';
-				} else {
-					content.style.maxHeight = content.scrollHeight + 'px';
-				}
+				content.classList.toggle('is-open');
 			}
 		};
 
@@ -49,15 +42,32 @@ export default function TaskView({
 		};
 	}, []);
 
-	useEffect(() => {
-		const contents = document.getElementsByClassName('content');
-		for (let i = 0; i < contents.length; i++) {
-			if (!contents[i].classList.contains('inactive')) {
-				(contents[i] as HTMLElement).style.maxHeight =
-					contents[i].scrollHeight + 'px';
-			}
+	const listTodos = useMemo(() => {
+		if (typeof currentView.id === 'number') {
+			return todos.filter((todo) => todo.list === currentView.id);
+		} else {
+			const customFilter = viewData.viewTagFilters.get(currentView.id);
+			return todos.filter(customFilter as filterType);
 		}
-	}, [currentView, todos]);
+	}, [todos, currentView]);
+
+	const todosTodo = useMemo(() => {
+		const filteredTodos = listTodos.filter((todo) => todo.complete === false);
+
+		return filteredTodos.sort(
+			(a, b) => (a.priority as number) - (b.priority as number),
+		);
+	}, [todos, currentView]);
+
+	const todosCompleted = useMemo(() => {
+		const filteredTodos = listTodos.filter((todo) => todo.complete === true);
+
+		return filteredTodos.sort(
+			(a, b) =>
+				new Date(b.completedAt as Date).valueOf() -
+				new Date(a.completedAt as Date).valueOf(),
+		);
+	}, [todos, currentView]);
 
 	return (
 		<div
@@ -83,36 +93,32 @@ export default function TaskView({
 				fieldTask={'Task'}
 				fieldActions={'Actions'}
 				isComplete={true}
+				items={todosTodo.length}
 			/>
 			<TaskList
-				todos={todos}
+				todos={todosTodo}
 				lists={lists}
 				toggleTodo={toggleTodo}
 				deleteTodo={deleteTodo}
 				editTodo={editTodo}
 				editTodoFull={editTodoFull}
 				isComplete={false}
-				currentView={currentView}
-				newTodoEdit={newTodoEdit}
-				setNewTodoEdit={setNewTodoEdit}
 			/>
 			<TaskListHeader
 				fieldDone={`Completed`}
 				fieldTask={''}
 				fieldActions={''}
 				isComplete={false}
+				items={todosCompleted.length}
 			/>
 			<TaskList
-				todos={todos}
+				todos={todosCompleted}
 				lists={lists}
 				toggleTodo={toggleTodo}
 				deleteTodo={deleteTodo}
 				editTodo={editTodo}
 				editTodoFull={editTodoFull}
 				isComplete={true}
-				currentView={currentView}
-				newTodoEdit={newTodoEdit}
-				setNewTodoEdit={setNewTodoEdit}
 			/>
 		</div>
 	);
