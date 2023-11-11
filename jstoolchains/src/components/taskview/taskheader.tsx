@@ -21,7 +21,7 @@ export default function TaskListHeader({
 				</span>
 			</p>
 			<p className='flex-1 px-4 font-bold text-gray-700'>{fieldTask}</p>
-			<p className='w-2/12 px-3 text-right text-gray-700 md:block'>
+			<p className='w-[14%] px-3 text-right text-gray-700 md:block'>
 				{fieldActions}
 			</p>
 			<div className='flex w-[5%] items-center justify-center text-rose-500 hover:text-rose-600'>

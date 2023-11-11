@@ -62,15 +62,12 @@ export default function EditModalTodo({
 	const textAreaRefTitle = useRef<HTMLTextAreaElement>(null);
 	const textAreaTitleCount = useRef<HTMLDivElement>(null);
 
-	const resizeTextArea = (textArea: HTMLElement): void => {
+	const adjustHeight = (textArea: HTMLElement): void => {
 		if (textArea !== null) {
 			textArea.style.height = 'auto';
 			textArea.style.height = `${textArea.scrollHeight}px`;
 		}
 	};
-	function adjustHeight(): void {
-		resizeTextArea(textAreaRefTitle.current as HTMLElement);
-	}
 
 	useEffect(() => {
 		if (status === 'typing') {
@@ -86,7 +83,7 @@ export default function EditModalTodo({
 			// When element appears in the DOM, adjust height of textarea elements
 			waitForElementToExist('#todoEditTitle')
 				.then((element) => {
-					adjustHeight();
+					adjustHeight(textAreaRefTitle.current as HTMLElement);
 					(textAreaTitleCount.current as HTMLDivElement).style.display =
 						'block';
 				})
@@ -197,12 +194,13 @@ export default function EditModalTodo({
 					<div className='relative flex flex-1 flex-col'>
 						<textarea
 							id='todoEditTitle'
+							ref={textAreaRefTitle}
 							name='title'
 							value={newEditTodo.title}
 							placeholder='Name this todo'
 							className='mb-3 ml-4 mr-4 mt-4 overflow-y-hidden rounded-lg bg-gray-300 px-4 py-3 text-base font-medium text-gray-900 placeholder:text-gray-500'
 							onChange={(event) => {
-								adjustHeight();
+								adjustHeight(textAreaRefTitle.current as HTMLElement);
 								setNewEditTodo((old) => ({
 									...old,
 									title: event.target.value,
@@ -223,7 +221,6 @@ export default function EditModalTodo({
 							}}
 							onKeyDown={handleKeyDown}
 							disabled={status === 'submitting'}
-							ref={textAreaRefTitle}
 							rows={1}
 							autoFocus
 							maxLength={100}
