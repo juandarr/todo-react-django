@@ -56,8 +56,8 @@ export async function waitForElementToExist(selector: string): Promise<void> {
 
 		const observer = new MutationObserver(() => {
 			if (document.querySelector(selector) !== null) {
-				resolve(document.querySelector(selector));
 				observer.disconnect();
+				resolve(document.querySelector(selector));
 			}
 		});
 

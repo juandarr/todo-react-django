@@ -178,6 +178,12 @@
   color: rgb(17 24 39);
 }
 
+/* Text area of taskitem */
+.taskitem,
+textarea {
+  resize: none;
+}
+
 /* Message duration */
 .messages {
   /* Add animation and transition properties */

@@ -5,10 +5,6 @@ import type {
 	Setting,
 } from '../../../todo-api-client/models';
 
-export type EditionSetState = React.Dispatch<
-	React.SetStateAction<[boolean, number]>
->;
-
 export interface todoType {
 	id?: number;
 	title: string;
@@ -92,7 +88,7 @@ export interface TaskViewProps {
 	editTodo: (
 		id: number,
 		title: string,
-		setEdit: EditionSetState,
+		setInFocus: React.Dispatch<React.SetStateAction<boolean>>,
 	) => Promise<void>;
 	editTodoFull: (todo: todoType) => Promise<Todo>;
 }
@@ -108,14 +104,10 @@ export interface TaskItemProps {
 	editTodo: (
 		id: number,
 		title: string,
-		setEdit: EditionSetState,
+		setInFocus: React.Dispatch<React.SetStateAction<boolean>>,
 	) => Promise<void>;
 	editTodoFull: (todo: todoType) => Promise<Todo>;
 	deleteTodo: (id: number) => Promise<void>;
-	edit: Array<number | boolean>;
-	setEdit: EditionSetState;
-	newTodoEdit: Todo;
-	setNewTodoEdit: React.Dispatch<React.SetStateAction<Todo>>;
 }
 
 export interface TaskListProps {
@@ -126,13 +118,10 @@ export interface TaskListProps {
 	editTodo: (
 		id: number,
 		title: string,
-		setEdit: EditionSetState,
+		setInFocus: React.Dispatch<React.SetStateAction<boolean>>,
 	) => Promise<void>;
 	editTodoFull: (todo: todoType) => Promise<Todo>;
 	isComplete: boolean;
-	currentView: viewType;
-	newTodoEdit: Todo;
-	setNewTodoEdit: React.Dispatch<React.SetStateAction<Todo>>;
 }
 
 export interface TaskListHeaderProps {
@@ -140,6 +129,7 @@ export interface TaskListHeaderProps {
 	fieldTask: string;
 	fieldActions: string;
 	isComplete: boolean;
+	items: number;
 }
 
 export interface CreateModalTodoProps {

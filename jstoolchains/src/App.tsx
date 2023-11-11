@@ -16,7 +16,6 @@ import type {
 	todoType,
 	listType,
 	userInfoType,
-	EditionSetState,
 	viewType,
 	todoModelFetch,
 	userModelFetch,
@@ -298,7 +297,7 @@ export default function App(): React.JSX.Element {
 	const editTodo = async (
 		id: number,
 		title: string,
-		setEdit: EditionSetState,
+		setInFocus: React.Dispatch<React.SetStateAction<boolean>>,
 	): Promise<void> => {
 		const todo = {
 			title,
@@ -316,7 +315,7 @@ export default function App(): React.JSX.Element {
 					}
 				});
 			});
-			setEdit([false, 0]);
+			setInFocus(false);
 		} catch (error) {
 			console.log('There was an error updating the field in Todo');
 			throw error;

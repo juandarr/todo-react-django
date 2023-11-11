@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 
 import type { TaskItemProps } from '../../lib/customTypes';
 
@@ -17,6 +17,7 @@ import DeleteModal from '../modals/deleteModal';
 import { Calendar2, Task, Flag, BookSaved } from 'iconsax-react';
 import EditModalTodo from '../modals/editModalTodo';
 import { UserContext } from '../../contexts/UserContext';
+import useAutosizeTextArea from '../../lib/useAutosizeTextArea';
 
 export default function TaskItem({
 	todo,
@@ -25,16 +26,14 @@ export default function TaskItem({
 	editTodo,
 	editTodoFull,
 	deleteTodo,
-	edit,
-	setEdit,
-	newTodoEdit,
-	setNewTodoEdit,
 }: TaskItemProps): React.JSX.Element {
 	const user = useContext(UserContext);
 	const { toast } = useToast();
-	const showEdit = (edit[0] as boolean) && edit[1] === todo.id;
+	const [inFocus, setInFocus] = useState(false);
 	const initialTitle = useRef<string>();
 
+	const [newTodoEdit, setNewTodoEdit] = useState<Todo>(todo);
+	const textAreaTitle = useRef<HTMLTextAreaElement>(null);
 	const options: Intl.DateTimeFormatOptions = {
 		weekday: 'short',
 		year: 'numeric',
@@ -49,7 +48,7 @@ export default function TaskItem({
 	): void => {
 		event.preventDefault();
 		if (initialTitle.current !== newTodoEdit.title) {
-			editTodo(todo.id as number, newTodoEdit.title, setEdit)
+			editTodo(todo.id as number, newTodoEdit.title, setInFocus)
 				.then(() => {
 					toast({
 						title: 'Task title was updated!',
@@ -65,7 +64,7 @@ export default function TaskItem({
 					});
 				});
 		} else {
-			setEdit([false, 0]);
+			setInFocus(false);
 		}
 	};
 
@@ -83,11 +82,7 @@ export default function TaskItem({
 			});
 	}
 
-	useEffect(() => {
-		if (showEdit) {
-			initialTitle.current = todo.title;
-		}
-	}, [showEdit]);
+	useAutosizeTextArea(textAreaTitle.current, newTodoEdit.title);
 
 	return (
 		<>
@@ -111,76 +106,70 @@ export default function TaskItem({
 						handleSubmit(event, todo);
 					}}>
 					<div className='flex items-center justify-center'>
-						{!showEdit ? (
-							<input
-								type='text'
-								className={`mb-1 mr-2 mt-1 h-10 w-full bg-white px-4 py-3 text-sm font-medium ${
+						<div className='relative flex flex-1 items-center'>
+							<textarea
+								className={`taskitem mb-1 mr-2 mt-1 max-h-min w-full rounded-xl bg-white px-4 py-1 text-sm font-medium ${
 									(todo.complete as boolean) ? 'text-gray-400' : 'text-gray-700'
-								}  focus-visible:outline-none`}
-								name='readTitle'
-								value={todo.title}
-								onClick={(e) => {
-									setEdit([true, todo.id as number]);
-									setNewTodoEdit((old) => ({ ...old, title: todo.title }));
+								} focus-visible:outline-dashed focus-visible:outline-2 focus-visible:outline-violet-400`}
+								name='editTitle'
+								ref={textAreaTitle}
+								placeholder='Enter title'
+								value={newTodoEdit.title}
+								onFocus={(event) => {
+									setInFocus(true);
 								}}
-								readOnly
+								onBlur={(event) => {
+									if (event.relatedTarget?.id !== 'saveTitle-button') {
+										setInFocus(false);
+									}
+								}}
+								onChange={(event) => {
+									setNewTodoEdit((old) => ({
+										...old,
+										title: event.target.value,
+									}));
+								}}
+								maxLength={100}
+								autoFocus
+								rows={1}
 							/>
-						) : (
-							<div className='relative flex flex-1 items-center'>
-								<input
-									type='text'
-									className={`mb-1 mr-2 mt-1 h-10 w-full rounded-xl bg-white px-4 py-3 text-sm font-medium ${
-										(todo.complete as boolean)
-											? 'text-gray-400'
-											: 'text-gray-700'
-									} focus-visible:outline-dashed focus-visible:outline-2 focus-visible:outline-violet-400`}
-									name='editTitle'
-									value={newTodoEdit.title}
-									onBlur={(event) => {
-										if (event.relatedTarget?.id !== 'saveTitle-button') {
-											setEdit([false, 0]);
-										}
-									}}
-									onChange={(event) => {
-										setNewTodoEdit((old) => ({
-											...old,
-											title: event.target.value,
-										}));
-									}}
-									maxLength={100}
-									autoFocus
-								/>
-								<div
-									id='todoEditTextCount'
-									className={`absolute -bottom-3 right-9 text-[10px] ${
-										newTodoEdit.title.length < 50
-											? 'text-violet-400'
-											: 'text-amber-500'
-									}`}>
-									<span id='current'>{newTodoEdit.title.length}</span>
-									<span id='maximum'>/100</span>
-								</div>
-								<TooltipProvider>
-									<Tooltip>
-										<TooltipTrigger
-											id='saveTitle-button'
-											className='flex justify-center'>
-											<div
-												className='text-violet-500 hover:text-violet-600'
-												onClick={(event) => {
-													handleSubmit(event, todo);
-												}}
-												style={{ cursor: 'pointer' }}>
-												<BookSaved size={'1.2rem'} />
-											</div>
-										</TooltipTrigger>
-										<TooltipContent className='bg-violet-500'>
-											<p className='font-bold text-white'>Save</p>
-										</TooltipContent>
-									</Tooltip>
-								</TooltipProvider>
-							</div>
-						)}
+							{inFocus ? (
+								<>
+									<div
+										id='todoEditTextCount'
+										className={`absolute -bottom-3 right-9 text-[10px] ${
+											newTodoEdit.title.length < 50
+												? 'text-violet-400'
+												: 'text-amber-500'
+										}`}>
+										<span id='current'>{newTodoEdit.title.length}</span>
+										<span id='maximum'>/100</span>
+									</div>
+									<TooltipProvider>
+										<Tooltip>
+											<TooltipTrigger
+												id='saveTitle-button'
+												className='flex justify-center'>
+												<div
+													className='text-violet-500 hover:text-violet-600'
+													onClick={(event) => {
+														handleSubmit(event, todo);
+													}}
+													style={{ cursor: 'pointer' }}>
+													<BookSaved size={'1.2rem'} />
+												</div>
+											</TooltipTrigger>
+											<TooltipContent className='bg-violet-500'>
+												<p className='font-bold text-white'>Save</p>
+											</TooltipContent>
+										</Tooltip>
+									</TooltipProvider>
+								</>
+							) : (
+								''
+							)}
+						</div>
+						{/* )} */}
 					</div>
 					<div className='mt-0 flex justify-start pb-2 pt-0 text-sm text-gray-400'>
 						<div className='mr-2 flex items-center justify-start pl-4'>

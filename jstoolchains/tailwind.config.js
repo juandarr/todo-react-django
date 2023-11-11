@@ -15,9 +15,8 @@ export const theme = {
 		},
 	},
 	fontFamily: {
-		Noto: ['Noto Sans', 'Segoe UI Emoji'],
-		Maple: ['Maple', 'Noto Sans'],
-		SourceCodePro: ['Source Code Pro', 'Noto Sans'],
+		Noto: ['Noto Sans', 'Segoe UI Emoji', 'Apple Color Emoji'],
+		Maple: ['Maple', 'Noto Sans']
 	},
 	extend: {
 		spacing: {
