@@ -15,7 +15,7 @@ export const theme = {
 		},
 	},
 	fontFamily: {
-		Noto: ['Noto Sans', 'Open Sans',],
+		Noto: ['Noto Sans', 'Open Sans', 'Segoe UI Emoji'],
 		Maple: ['Maple', 'Noto Sans'],
 		SourceCodePro: ['Source Code Pro', 'Noto Sans'],
 	},

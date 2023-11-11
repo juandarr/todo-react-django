@@ -1,5 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap");
 
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
+
 /* input.css */
 @tailwind base;
 @tailwind components;
@@ -136,7 +138,7 @@
 
 /* Body style */
 .body-overflow {
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   width: 100vw;
 }
@@ -466,7 +468,6 @@ input[type="checkbox"]:checked:hover {
 /* Custom scrollbar  for webkit browsers (safari and chrome)*/
 ::-webkit-scrollbar {
   width: 8px;
-  overflow-y: overlay;
 }
 
 /* Style the custom scrollbar */
@@ -487,7 +488,6 @@ input[type="checkbox"]:checked:hover {
 /* Custom scrollbar for mozilla browser */
 ::-moz-scrollbar {
   width: 8px;
-  overflow-y: overlay;
 }
 
 /* Style the custom scrollbar */
