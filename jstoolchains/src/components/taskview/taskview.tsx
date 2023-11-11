@@ -28,15 +28,7 @@ export default function TaskView({
 				el.classList.toggle('active');
 				const content = el.parentElement.parentElement
 					.nextElementSibling as HTMLElement;
-				content.classList.toggle('inactive');
-				if (content.classList.contains('inactive')) {
-					content.style.maxHeight = '0px';
-				} else {
-					/* Height per .content element is about 6rem */
-					content.style.maxHeight =
-						6 * content.childNodes[0].childNodes.length + 'rem';
-					// content.style.maxHeight = content.scrollHeight + 'px';
-				}
+				content.classList.toggle('is-open');
 			}
 		};
 
@@ -49,17 +41,6 @@ export default function TaskView({
 			}
 		};
 	}, []);
-
-	useEffect(() => {
-		const contents = document.getElementsByClassName('content');
-		for (let i = 0; i < contents.length; i++) {
-			if (!contents[i].classList.contains('inactive')) {
-				(contents[i] as HTMLElement).style.maxHeight =
-					/* Height per .content element is about 6rem */
-					6 * contents[i].childNodes[0].childNodes.length + 'rem';
-			}
-		}
-	}, [currentView, todos]);
 
 	const listTodos = useMemo(() => {
 		if (typeof currentView.id === 'number') {

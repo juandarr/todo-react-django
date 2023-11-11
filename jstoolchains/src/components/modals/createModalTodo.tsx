@@ -37,7 +37,7 @@ import Spinner from 'react-spinners/DotLoader';
 import type { CreateModalTodoProps, todoType } from '../../lib/customTypes';
 import { PriorityEnum } from '../../lib/userSettings';
 import { isDescendantOf } from '../../lib/utils';
-import useAutosizeTextArea from '../../lib/useAutosizeTextArea';
+import useAutosizeTextArea from '../../hooks/useAutosizeTextArea';
 import { DatePickerWithPresets } from '../ui/datepicker';
 import { UserContext } from '../../contexts/UserContext';
 import useTextEditor from '../../hooks/useTextEditor';
@@ -73,7 +73,7 @@ export default function CreateModalTodo({
 	const textAreaTitle = useRef<HTMLTextAreaElement>(null);
 	const textAreaTitleCount = useRef<HTMLDivElement>(null);
 
-	useAutosizeTextArea(textAreaTitle.current, newTodo.title);
+	useAutosizeTextArea(textAreaTitle.current, '#todoTitle', newTodo.title);
 
 	const openModalCallback = (event: KeyboardEvent): void => {
 		if (!isDescendantOf(event.target as HTMLElement, 'form')) {

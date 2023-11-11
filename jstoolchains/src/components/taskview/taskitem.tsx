@@ -18,7 +18,7 @@ import { Calendar2, Task, Flag, BookSaved } from 'iconsax-react';
 import EditModalTodo from '../modals/editModalTodo';
 import { UserContext } from '../../contexts/UserContext';
 import { waitForElementToExist } from '../../lib/utils';
-import { flushSync } from 'react-dom';
+import useAutosizeTextArea from '../../hooks/useAutosizeTextArea';
 
 export default function TaskItem({
 	todo,
@@ -35,6 +35,12 @@ export default function TaskItem({
 	const [newTodoEdit, setNewTodoEdit] = useState<Todo>(todo);
 
 	const textAreaTitle = useRef<HTMLTextAreaElement>(null);
+
+	useAutosizeTextArea(
+		textAreaTitle.current,
+		`#todoTitle-${todo.id}`,
+		newTodoEdit.title,
+	);
 
 	const options: Intl.DateTimeFormatOptions = {
 		weekday: 'short',
@@ -85,13 +91,6 @@ export default function TaskItem({
 		}
 	};
 
-	const adjustHeight = (textArea: HTMLElement): void => {
-		if (textArea !== null) {
-			textArea.style.height = '0px';
-			textArea.style.height = `${textArea.scrollHeight}px`;
-		}
-	};
-
 	function toggleHandler(checked: boolean): void {
 		toggleTodo(todo.id as number, checked)
 			.then((result) => {})
@@ -106,10 +105,14 @@ export default function TaskItem({
 			});
 	}
 
+	/* Resize textArea element on component mount */
 	useEffect(() => {
 		waitForElementToExist(`#todoTitle-${todo.id}`)
 			.then((element) => {
-				adjustHeight(textAreaTitle.current as HTMLElement);
+				(textAreaTitle.current as HTMLElement).style.height = '0px';
+				(textAreaTitle.current as HTMLElement).style.height = `${
+					(textAreaTitle.current as HTMLElement).scrollHeight
+				}px`;
 			})
 			.catch(() => {});
 	}, []);
@@ -146,11 +149,11 @@ export default function TaskItem({
 								}}
 								onBlur={(event) => {
 									if (event.relatedTarget?.id !== 'saveTitle-button') {
-										flushSync(() => {
-											setInFocus(false);
-											setNewTodoEdit(todo);
-										});
-										adjustHeight(textAreaTitle.current as HTMLElement);
+										// flushSync(() => {
+										setInFocus(false);
+										setNewTodoEdit(todo);
+										// });
+										// adjustHeight(textAreaTitle.current as HTMLElement);
 									}
 								}}
 								onChange={(event) => {
@@ -159,7 +162,7 @@ export default function TaskItem({
 										title: event.target.value,
 									}));
 
-									adjustHeight(textAreaTitle.current as HTMLElement);
+									// adjustHeight(textAreaTitle.current as HTMLElement);
 								}}
 								onKeyDown={(e) => {
 									handleKeyDown(e, todo);
