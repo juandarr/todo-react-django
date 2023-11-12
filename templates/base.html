@@ -21,8 +21,12 @@
     </script>
     <script>
         document.body.addEventListener('mousedown', event => {
+            console.log(event.target.localName)
             if (event.detail > 1) {
-                event.preventDefault();
+                if (!(['input', 'textarea', 'p'].includes(event.target.localName))) {
+
+                    event.preventDefault();
+                }
             }
         });
     </script>
