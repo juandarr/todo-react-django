@@ -58,13 +58,13 @@ export function DatePickerWithPresets({
 					e.preventDefault();
 				}}
 				align='start'
-				className='flex w-auto flex-col space-y-2 p-2'>
+				className='flex w-auto flex-col space-y-2 bg-slate-50 p-2'>
 				<div className='flex justify-around'>
 					<TooltipProvider>
 						<Tooltip>
 							<TooltipTrigger asChild={true}>
 								<button
-									className='text-green-400 hover:text-green-500'
+									className='text-emerald-500 hover:text-emerald-600'
 									onClick={() => {
 										setNewTodo((old) => ({
 											...old,
@@ -83,7 +83,7 @@ export function DatePickerWithPresets({
 						<Tooltip>
 							<TooltipTrigger asChild={true}>
 								<button
-									className='text-amber-400 hover:text-amber-500'
+									className='text-amber-500 hover:text-amber-600'
 									onClick={() => {
 										setNewTodo((old) => ({
 											...old,
@@ -102,7 +102,7 @@ export function DatePickerWithPresets({
 						<Tooltip>
 							<TooltipTrigger asChild={true}>
 								<button
-									className='text-sky-400 hover:text-sky-500'
+									className='text-cyan-500 hover:text-cyan-600'
 									onClick={() => {
 										setNewTodo((old) => ({
 											...old,
@@ -121,7 +121,7 @@ export function DatePickerWithPresets({
 						<Tooltip>
 							<TooltipTrigger asChild={true}>
 								<button
-									className='text-rose-400 hover:text-rose-500'
+									className='text-rose-500 hover:text-rose-600'
 									onClick={() => {
 										setNewTodo((old) => ({
 											...old,
@@ -140,7 +140,7 @@ export function DatePickerWithPresets({
 						<Tooltip>
 							<TooltipTrigger asChild={true}>
 								<button
-									className='text-gray-400 hover:text-gray-500'
+									className='text-gray-500 hover:text-gray-600'
 									onClick={() => {
 										setNewTodo((old) => ({
 											...old,
@@ -156,7 +156,7 @@ export function DatePickerWithPresets({
 						</Tooltip>
 					</TooltipProvider>
 				</div>
-				<div className='rounded-md border'>
+				<div className='rounded-md border bg-white'>
 					<Calendar
 						mode='single'
 						selected={newTodo.dueDate as Date}
