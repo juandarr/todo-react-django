@@ -117,6 +117,10 @@ export default function TaskItem({
 			.catch(() => {});
 	}, []);
 
+	const el = document.createElement('html');
+	el.innerHTML = todo.description as string;
+	const description = el.innerText;
+
 	return (
 		<>
 			<div className='parent flex'>
@@ -132,79 +136,77 @@ export default function TaskItem({
 						className='border-2 border-black'
 					/>
 				</div>
-				<form className='relative flex flex-1 flex-col' id='editTitle-form'>
-					<div className='flex items-center justify-center'>
-						<div className='relative flex flex-1 items-center'>
-							<textarea
-								className={`taskitem mb-1 mr-2 mt-1 h-fit w-full rounded-xl bg-white px-4 py-1 text-sm font-medium ${
-									(todo.complete as boolean) ? 'text-gray-400' : 'text-gray-700'
-								} focus-visible:outline-dashed focus-visible:outline-2 focus-visible:outline-violet-400`}
-								name='editTitle'
-								id={`todoTitle-${todo.id}`}
-								ref={textAreaTitle}
-								placeholder='Enter title'
-								value={newTodoEdit.title}
-								onFocus={(event) => {
-									setInFocus(true);
-								}}
-								onBlur={(event) => {
-									if (event.relatedTarget?.id !== 'saveTitle-button') {
-										// flushSync(() => {
-										setInFocus(false);
-										setNewTodoEdit(todo);
-										// });
-										// adjustHeight(textAreaTitle.current as HTMLElement);
-									}
-								}}
-								onChange={(event) => {
-									setNewTodoEdit((old) => ({
-										...old,
-										title: event.target.value,
-									}));
-
-									// adjustHeight(textAreaTitle.current as HTMLElement);
-								}}
-								onKeyDown={(e) => {
-									handleKeyDown(e, todo);
-								}}
-								maxLength={100}
-								rows={1}
-							/>
-							{inFocus ? (
-								<>
-									<div
-										id='todoEditTextCount'
-										className={`absolute -bottom-3 right-9 text-[10px] ${
-											newTodoEdit.title.length < 50
-												? 'text-violet-400'
-												: 'text-amber-500'
-										}`}>
-										<span id='current'>{newTodoEdit.title.length}</span>
-										<span id='maximum'>/100</span>
-									</div>
-									<TooltipProvider>
-										<Tooltip>
-											<TooltipTrigger
-												id='saveTitle-button'
-												className='absolute -right-4 bottom-0 top-0 flex items-center justify-center'>
-												<div
-													className='text-violet-500 hover:text-violet-600'
-													onClick={(event) => {
-														editHandler(event, todo);
-													}}
-													style={{ cursor: 'pointer' }}>
-													<BookSaved size={'1.2rem'} />
-												</div>
-											</TooltipTrigger>
-											<TooltipContent className='bg-violet-500'>
-												<p className='font-bold text-white'>Save</p>
-											</TooltipContent>
-										</Tooltip>
-									</TooltipProvider>
-								</>
-							) : (
-								<></>
-							)}
+				<form className='relative flex w-8/12 flex-col' id='editTitle-form'>
+					<div className='relative flex flex-1 items-center justify-start'>
+						<textarea
+							className={`taskitem mr-2 mt-1 h-fit w-full rounded-xl bg-white px-4 py-0.5 text-sm font-medium ${
+								(todo.complete as boolean) ? 'text-gray-400' : 'text-gray-700'
+							} focus-visible:outline-dashed focus-visible:outline-2 focus-visible:outline-violet-400`}
+							name='editTitle'
+							id={`todoTitle-${todo.id}`}
+							ref={textAreaTitle}
+							placeholder='Enter title'
+							value={newTodoEdit.title}
+							onFocus={(event) => {
+								setInFocus(true);
+							}}
+							onBlur={(event) => {
+								if (event.relatedTarget?.id !== 'saveTitle-button') {
+									setInFocus(false);
+									setNewTodoEdit(todo);
+								}
+							}}
+							onChange={(event) => {
+								setNewTodoEdit((old) => ({
+									...old,
+									title: event.target.value,
+								}));
+							}}
+							onKeyDown={(e) => {
+								handleKeyDown(e, todo);
+							}}
+							maxLength={100}
+							rows={1}
+						/>
+						{inFocus ? (
+							<>
+								<div
+									id='todoEditTextCount'
+									className={`absolute -bottom-3.5 right-6 text-[9px] ${
+										newTodoEdit.title.length < 50
+											? 'text-violet-400'
+											: 'text-amber-500'
+									}`}>
+									<span id='current'>{newTodoEdit.title.length}</span>
+									<span id='maximum'>/100</span>
+								</div>
+								<TooltipProvider>
+									<Tooltip>
+										<TooltipTrigger
+											id='saveTitle-button'
+											className='absolute -right-4 bottom-0 top-0 flex items-center justify-center'>
+											<div
+												className='text-violet-500 hover:text-violet-600'
+												onClick={(event) => {
+													editHandler(event, todo);
+												}}
+												style={{ cursor: 'pointer' }}>
+												<BookSaved size={'1.2rem'} />
+											</div>
+										</TooltipTrigger>
+										<TooltipContent className='bg-violet-500'>
+											<p className='font-bold text-white'>Save</p>
+										</TooltipContent>
+									</Tooltip>
+								</TooltipProvider>
+							</>
+						) : (
+							<></>
+						)}
+					</div>
+					<div className='flex w-[90%] items-center justify-start'>
+						<div className='mr-2 block overflow-hidden text-ellipsis whitespace-nowrap px-4 py-1 text-xs'>
+							{description}
 						</div>
 					</div>
 					<div className='mt-0 flex justify-start pb-2 pt-0 text-sm text-gray-400'>
@@ -263,7 +265,7 @@ export default function TaskItem({
 				</form>
 				<div
 					id={`todo-${todo.id}`}
-					className='hidden-child mt-3 flex w-[14%] items-start justify-end px-3'>
+					className='hidden-child mt-3 flex w-2/12 items-start justify-center px-3'>
 					<EditModalTodo
 						editTodoFull={editTodoFull}
 						todo={todo}
@@ -281,7 +283,7 @@ export default function TaskItem({
 						size={1.6}
 					/>
 				</div>
-				<div className='w-[5%]'></div>
+				{/* <div className='w-[5%]'></div> */}
 			</div>
 		</>
 	);
