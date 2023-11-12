@@ -31,7 +31,10 @@ export default function TaskList({
 		<div className={`content mb-3 ${isComplete ? '' : 'is-open'}`}>
 			{todos.length === 0 ? (
 				<div className='inner'>
-					<div className='text-md flex-1 px-6 pt-6 font-bold text-violet-600'>
+					<div
+						className={`text-md flex-1 px-6 ${
+							isComplete ? 'pt-6' : 'py-6'
+						} font-bold text-violet-600`}>
 						No todos {isComplete ? 'completed yet' : 'at the moment'}
 					</div>
 				</div>

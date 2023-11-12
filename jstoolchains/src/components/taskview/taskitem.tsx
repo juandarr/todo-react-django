@@ -283,7 +283,6 @@ export default function TaskItem({
 						size={1.6}
 					/>
 				</div>
-				{/* <div className='w-[5%]'></div> */}
 			</div>
 		</>
 	);
