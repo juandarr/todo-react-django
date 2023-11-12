@@ -211,14 +211,14 @@ export default function GoalsModal({
 					}}>
 					<div className='flex-col items-center justify-start'>
 						<h1 className='mb-2 ml-3 mr-3 mt-3 text-xl font-bold text-fuchsia-500'>
-							Your progress
+							Progress
 						</h1>
 						<div className='mb-3 ml-3 text-sm'>
 							The home of your goals and progress.
 						</div>
 						<div className='relative mb-6 ml-3 mr-3 text-lg font-bold text-cyan-500'>
-							Todos completed
-							<div className='absolute -bottom-2 left-40 text-xs text-cyan-500'>
+							Completed <span className='text-sm'>tasks</span>
+							<div className='absolute -bottom-2 left-36 text-xs text-cyan-500'>
 								* {options.timeZone !== '' ? monthLabel : 'dummy'}
 							</div>
 						</div>

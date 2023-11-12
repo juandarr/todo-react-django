@@ -96,7 +96,7 @@ export default function SettingsModal({
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
 				}}
-				className='max-h-[80vh] w-96 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
+				className='max-h-[80vh] w-80 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
 				<form
 					id='listform'
 					className='flex flex-col'
@@ -123,7 +123,7 @@ export default function SettingsModal({
 										.then(() => {})
 										.catch(() => {});
 								}}>
-								<SelectTrigger className='select__control mb-3 mt-3 h-2 w-6/12 px-2 py-4'>
+								<SelectTrigger className='select__control mb-3 mt-3 h-2 w-7/12 px-2 py-4'>
 									<SelectValue placeholder='Homeview' />
 								</SelectTrigger>
 								<SelectContent>
@@ -147,7 +147,7 @@ export default function SettingsModal({
 									label: editSettings.timezone.value,
 									value: editSettings.timezone.value,
 								}}
-								className='mb-3 mt-3 w-6/12 text-sm'
+								className='mb-3 mt-3 w-7/12 text-sm'
 								onChange={(option) => {
 									const selection = option as { label: string; value: string };
 									setEditSettings((old) => ({
