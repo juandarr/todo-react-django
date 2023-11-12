@@ -173,7 +173,7 @@ export default function EditModalTodo({
 					event.preventDefault();
 					toggleHidden();
 				}}
-				className='max-h-[80vh] w-80 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
+				className='max-h-[80vh] w-96 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
 				<form
 					id='listform'
 					className='flex flex-col'
