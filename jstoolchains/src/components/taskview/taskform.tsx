@@ -63,9 +63,9 @@ export default function TaskForm({
 	return (
 		<form
 			id='myform'
-			className='mb-6 flex items-center space-x-4 text-lg'
+			className='mb-6 flex items-center space-x-4'
 			onSubmit={handleSubmit}>
-			<div className='relative flex flex-1 flex-col'>
+			<div className='text-md relative flex flex-1 flex-col'>
 				<input
 					type='text'
 					name='title'
@@ -94,7 +94,7 @@ export default function TaskForm({
 				<div
 					id='todoTextCount'
 					ref={inputRefCount}
-					className={`absolute -bottom-[22px] right-3 hidden text-[10px] ${
+					className={`absolute -bottom-[15px] right-3 hidden text-[10px] ${
 						newTodo.title.length < 50 ? 'text-gray-400' : 'text-amber-500'
 					}`}>
 					<span id='current'>{newTodo.title.length}</span>
@@ -103,7 +103,7 @@ export default function TaskForm({
 			</div>
 			<button
 				type='submit'
-				className='flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-100'
+				className='flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-100'
 				disabled={!!(newTodo.title.length === 0 || status === 'submitting')}>
 				<Spinner
 					color='rgb(8 145 178)'

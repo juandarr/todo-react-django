@@ -148,26 +148,30 @@ export default function GoalsModal({
 				streak += 1;
 			}
 			let penalty = 0;
+			/* TODO : This algorithm is not efficient at all. Streak should be calculated based on a historic collection of past streak data. Redoit in the future */
 			do {
 				idx += 1;
 				date.setDate(date.getDate() - 1);
+				console.log('Exploring: ', date.toDateString());
 				tmp = todos.find(
 					(todo) =>
 						todo.complete === true &&
 						todo.completedAt?.toDateString() === date.toDateString(),
 				);
 				if (tmp !== undefined) {
-					previousDays[idx][
-						date.getDate() +
-							'-' +
-							date.toLocaleDateString('en-US', { weekday: 'short' })
-					] = true;
+					if (idx <= 6) {
+						previousDays[idx][
+							date.getDate() +
+								'-' +
+								date.toLocaleDateString('en-US', { weekday: 'short' })
+						] = true;
+					}
 					streak += 1;
 					penalty = 0;
 				} else {
 					penalty += 1;
 				}
-			} while (penalty < 2 || idx > 6); // Allow gaps (penalty < 2) or not (penalty < 1)
+			} while (penalty < 2 || idx <= 6); // Allow gaps (penalty < 2, can miss one day max) or not (penalty < 1, no misses allowed)
 			console.log('Array before reverse: ', previousDays);
 			return { streak, previousDays: previousDays.reverse() };
 		}
@@ -211,14 +215,14 @@ export default function GoalsModal({
 					}}>
 					<div className='flex-col items-center justify-start'>
 						<h1 className='mb-2 ml-3 mr-3 mt-3 text-xl font-bold text-fuchsia-500'>
-							Your progress
+							Progress
 						</h1>
 						<div className='mb-3 ml-3 text-sm'>
 							The home of your goals and progress.
 						</div>
 						<div className='relative mb-6 ml-3 mr-3 text-lg font-bold text-cyan-500'>
-							Todos completed
-							<div className='absolute -bottom-2 left-40 text-xs text-cyan-500'>
+							Completed <span className='text-sm'>tasks</span>
+							<div className='absolute -bottom-2 left-36 text-xs text-cyan-500'>
 								* {options.timeZone !== '' ? monthLabel : 'dummy'}
 							</div>
 						</div>

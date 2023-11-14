@@ -450,6 +450,7 @@ input[type="checkbox"]:checked:hover {
 /* Custom scrollbar  for webkit browsers (safari and chrome)*/
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
 /* Style the custom scrollbar */

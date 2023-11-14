@@ -125,7 +125,7 @@ export default function NavBar({
 					</TooltipProvider>
 					<PopoverContent
 						align={'center'}
-						className='data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'
+						className='w-fit data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'
 						onCloseAutoFocus={(event) => {
 							event.preventDefault();
 						}}>
