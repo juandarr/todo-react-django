@@ -240,7 +240,8 @@ export default function TaskItem({
 									<Calendar2 className='mr-1' size={'1.2rem'} />
 									<div
 										className={`text-xs ${
-											(todo.dueDate?.getTime() as number) < today
+											(todo.dueDate?.getTime() as number) < today &&
+											todo.complete === false
 												? 'font-medium text-rose-500'
 												: ''
 										} `}>
