@@ -120,6 +120,12 @@ export default function TaskItem({
 	const el = document.createElement('html');
 	el.innerHTML = todo.description as string;
 	const description = el.innerText;
+	const tmp = new Date();
+	const today = new Date(
+		tmp.getFullYear(),
+		tmp.getMonth(),
+		tmp.getDate(),
+	).getTime();
 
 	return (
 		<>
@@ -232,7 +238,12 @@ export default function TaskItem({
 										(todo.complete as boolean) ? 'line-through' : ''
 									}`}>
 									<Calendar2 className='mr-1' size={'1.2rem'} />
-									<div className='text-xs'>
+									<div
+										className={`text-xs ${
+											(todo.dueDate?.getTime() as number) < today
+												? 'font-medium text-rose-500'
+												: ''
+										} `}>
 										{todo.dueDate !== undefined
 											? (todo.dueDate as Date).toLocaleDateString(
 													'en-US',
