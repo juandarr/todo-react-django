@@ -60,8 +60,13 @@ export default function TaskView({
 	}, [todos, currentView]);
 
 	const todosCompleted = useMemo(() => {
-		const filteredTodos = listTodos.filter((todo) => todo.complete === true);
-
+		let filteredTodos = listTodos.filter((todo) => todo.complete === true);
+		if (currentView.id === '1t') {
+			filteredTodos = filteredTodos.filter(
+				(todo) =>
+					todo.completedAt?.toDateString() === new Date().toDateString(),
+			);
+		}
 		return filteredTodos.sort(
 			(a, b) =>
 				new Date(b.completedAt as Date).valueOf() -

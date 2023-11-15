@@ -19,8 +19,13 @@ export const viewData: viewDataType = {
 	viewTagFilters: new Map([
 		[
 			'1t',
-			(todo: Todo) =>
-				todo.dueDate?.toDateString() === new Date().toDateString(),
+			(todo: Todo) => {
+				const tmp = new Date();
+				const tomorrow =
+					new Date(tmp.getFullYear(), tmp.getMonth(), tmp.getDate()).getTime() +
+					24 * 60 * 60 * 1000;
+				return (todo.dueDate?.getTime() as number) < tomorrow;
+			},
 		],
 		[
 			'2t',
