@@ -166,6 +166,18 @@ export default function EditModalList({
 						</div>
 					</div>
 					<div className='mb-4 ml-4 mr-4 mt-1 flex items-center justify-between'>
+						<div className='flex justify-end'>
+							<DeleteModalList
+								deleteFunction={deleteFunction}
+								deleteEntity='list'
+								parentId={`list-${listData.id}`}
+								id={listData.id}
+								size={1.6}
+							/>
+							<div className=' ml-4 mr-4 flex items-center text-violet-500 hover:cursor-pointer hover:text-violet-600'>
+								<ArchiveBox />
+							</div>
+						</div>
 						<button
 							type='submit'
 							className='flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'
@@ -182,30 +194,10 @@ export default function EditModalList({
 								Save
 							</span>
 						</button>
-						<div className='flex justify-end'>
-							<div className='mr-4 text-violet-500 hover:cursor-pointer hover:text-violet-600'>
-								<ArchiveBox />
-							</div>
-							<DeleteModalList
-								deleteFunction={deleteFunction}
-								deleteEntity='list'
-								parentId={`list-${listData.id}`}
-								id={listData.id}
-								size={1.6}
-							/>
-							{/* <div className='text-rose-500 hover:cursor-pointer hover:text-rose-600'>
-								<Trash />
-							</div> */}
-						</div>
 						<PopoverClose
 							className='absolute right-2 top-2 text-gray-400 hover:text-gray-500'
 							aria-label='Close'>
 							<CloseSquare />
-							{/* <button
-								className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-600 focus-visible:ring focus-visible:ring-rose-300 disabled:bg-rose-200'
-								disabled={status === 'submitting'}>
-								Cancel
-							</button> */}
 						</PopoverClose>
 					</div>
 				</form>
