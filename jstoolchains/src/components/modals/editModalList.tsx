@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, type CSSProperties } from 'react';
 
 import { type EditModalListProps } from '../../lib/customTypes';
-import { Edit } from 'iconsax-react';
+import { ArchiveBox, CloseSquare, Edit, Trash } from 'iconsax-react';
 
 import {
 	Tooltip,
@@ -135,7 +135,7 @@ export default function EditModalList({
 							ref={inputTitle}
 							value={listEdit}
 							placeholder='Name this list'
-							className='m-4 h-8 rounded-xl bg-gray-300 p-2 px-4 py-3 text-gray-900 placeholder:text-gray-500'
+							className='m-4 h-10 rounded-xl bg-gray-300 p-4 text-gray-900 placeholder:text-gray-500'
 							onChange={(event) => {
 								setListEdit(event.target.value);
 							}}
@@ -166,7 +166,7 @@ export default function EditModalList({
 					<div className='mb-4 ml-4 mr-4 mt-1 flex items-center justify-between'>
 						<button
 							type='submit'
-							className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'
+							className='flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'
 							disabled={!!(status === 'submitting' || listEdit.length === 0)}>
 							<Spinner
 								color='rgb(147 51 234)'
@@ -180,12 +180,23 @@ export default function EditModalList({
 								Save
 							</span>
 						</button>
-						<PopoverClose asChild={true}>
-							<button
+						<div className='flex justify-end'>
+							<div className='mr-4 text-violet-500 hover:cursor-pointer hover:text-violet-600'>
+								<ArchiveBox />
+							</div>
+							<div className='text-rose-500 hover:cursor-pointer hover:text-rose-600'>
+								<Trash />
+							</div>
+						</div>
+						<PopoverClose
+							className='absolute right-2 top-2 text-gray-400 hover:text-gray-500'
+							aria-label='Close'>
+							<CloseSquare />
+							{/* <button
 								className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-600 focus-visible:ring focus-visible:ring-rose-300 disabled:bg-rose-200'
 								disabled={status === 'submitting'}>
 								Cancel
-							</button>
+							</button> */}
 						</PopoverClose>
 					</div>
 				</form>
