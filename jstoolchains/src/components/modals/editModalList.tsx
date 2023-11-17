@@ -21,7 +21,7 @@ import {
 import { useToast } from '../ui/toast/use-toast';
 
 import Spinner from 'react-spinners/DotLoader';
-import DeleteModal from './deleteModal';
+import DeleteModalList from './deleteModalList';
 
 const override: CSSProperties = {
 	display: 'block',
@@ -186,7 +186,7 @@ export default function EditModalList({
 							<div className='mr-4 text-violet-500 hover:cursor-pointer hover:text-violet-600'>
 								<ArchiveBox />
 							</div>
-							<DeleteModal
+							<DeleteModalList
 								deleteFunction={deleteFunction}
 								deleteEntity='list'
 								parentId={`list-${listData.id}`}
