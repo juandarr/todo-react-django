@@ -59,7 +59,7 @@ export default function DeleteModal({
 			if (error instanceof Error) {
 				toast({
 					variant: 'destructive',
-					title: `There was an error creating ${deleteEntity}: `,
+					title: `There was an error deleting ${deleteEntity}: `,
 					description: error.message,
 				});
 			}

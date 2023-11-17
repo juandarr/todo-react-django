@@ -4,7 +4,6 @@ import { type SideBarProps } from '../../lib/customTypes';
 
 import CreateModalList from '../modals/createModalList';
 import EditModalList from '../modals/editModalList';
-import DeleteModal from '../modals/deleteModal';
 import { UserContext } from '../../contexts/UserContext';
 
 export default function SideBar({
@@ -57,14 +56,7 @@ export default function SideBar({
 						editList={editList}
 						listData={{ id: list.id as number, title: list.title }}
 						parentId={`list-${list.id}`}
-					/>
-					<span className='mr-2'></span>
-					<DeleteModal
 						deleteFunction={deleteList}
-						deleteEntity='list'
-						parentId={`list-${list.id}`}
-						id={list.id as number}
-						size={1.4}
 					/>
 				</div>
 			</div>

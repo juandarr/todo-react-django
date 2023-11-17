@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, type CSSProperties } from 'react';
 
 import { type EditModalListProps } from '../../lib/customTypes';
-import { ArchiveBox, CloseSquare, Edit, Trash } from 'iconsax-react';
+import { ArchiveBox, CloseSquare, Edit } from 'iconsax-react';
 
 import {
 	Tooltip,
@@ -21,6 +21,7 @@ import {
 import { useToast } from '../ui/toast/use-toast';
 
 import Spinner from 'react-spinners/DotLoader';
+import DeleteModal from './deleteModal';
 
 const override: CSSProperties = {
 	display: 'block',
@@ -33,6 +34,7 @@ export default function EditModalList({
 	editList,
 	listData,
 	parentId,
+	deleteFunction,
 }: EditModalListProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
 	const [listEdit, setListEdit] = useState('');
@@ -184,9 +186,16 @@ export default function EditModalList({
 							<div className='mr-4 text-violet-500 hover:cursor-pointer hover:text-violet-600'>
 								<ArchiveBox />
 							</div>
-							<div className='text-rose-500 hover:cursor-pointer hover:text-rose-600'>
+							<DeleteModal
+								deleteFunction={deleteFunction}
+								deleteEntity='list'
+								parentId={`list-${listData.id}`}
+								id={listData.id}
+								size={1.6}
+							/>
+							{/* <div className='text-rose-500 hover:cursor-pointer hover:text-rose-600'>
 								<Trash />
-							</div>
+							</div> */}
 						</div>
 						<PopoverClose
 							className='absolute right-2 top-2 text-gray-400 hover:text-gray-500'
