@@ -121,13 +121,22 @@ export default function DeleteModalList({
 							console.log('Error deleting entity: ', error);
 						});
 					}}>
-					<div className='m-4 flex h-8 items-center justify-center rounded-xl p-2 px-4 py-3 text-gray-900'>
-						Are you sure to delete?
+					<div className='m-4 rounded-xl text-left text-gray-900'>
+						Are you sure you want to{' '}
+						<span className='font-medium'> delete</span> this{' '}
+						<span className='font-medium'> list</span>?
 					</div>
-					<div className='mb-4 ml-4 mr-4 flex items-center justify-between'>
+					<div className='mb-4 ml-4 mr-4 flex items-center justify-end'>
+						<PopoverClose asChild={true}>
+							<button
+								className='flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-gray-300 p-3 text-lg text-black hover:bg-gray-400 focus-visible:ring focus-visible:ring-gray-300 disabled:bg-gray-100'
+								disabled={status === 'submitting'}>
+								Cancel
+							</button>
+						</PopoverClose>
 						<button
 							type='submit'
-							className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring  focus-visible:ring-cyan-300 disabled:bg-cyan-100'
+							className='ml-4 flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring  focus-visible:ring-cyan-300 disabled:bg-cyan-100'
 							disabled={status === 'submitting'}>
 							<Spinner
 								color='rgb(8 145 178)'
@@ -141,13 +150,6 @@ export default function DeleteModalList({
 								Yes
 							</span>
 						</button>
-						<PopoverClose asChild={true}>
-							<button
-								className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-500 focus-visible:ring focus-visible:ring-rose-300 disabled:bg-rose-100'
-								disabled={status === 'submitting'}>
-								Cancel
-							</button>
-						</PopoverClose>
 					</div>
 				</form>
 				<PopoverArrow className='fill-rose-500' />
