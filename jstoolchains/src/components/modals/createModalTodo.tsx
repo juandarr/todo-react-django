@@ -346,33 +346,6 @@ export default function CreateModalTodo({
 							</span>
 						</button>
 					</div>
-					{/* <div className='mb-4 ml-4 mr-4 flex items-center justify-between'>
-						<button
-							type='submit'
-							className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'
-							disabled={
-								!!(status === 'submitting' || newTodo.title.length === 0)
-							}>
-							<Spinner
-								color='rgb(8 145 178)'
-								loading={status === 'submitting'}
-								cssOverride={override}
-								size={20}
-								aria-label='Loading Spinner'
-								data-testid='loader'
-							/>
-							<span className={status === 'submitting' ? 'invisible' : 'block'}>
-								Create
-							</span>
-						</button>
-						<PopoverClose asChild={true}>
-							<button
-								className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-600 focus-visible:ring focus-visible:ring-rose-300 disabled:bg-rose-200'
-								disabled={status === 'submitting'}>
-								Cancel
-							</button>
-						</PopoverClose>
-					</div> */}
 				</form>
 				<PopoverArrow className='fill-emerald-500' />
 			</PopoverContent>
