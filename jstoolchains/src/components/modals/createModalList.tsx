@@ -115,7 +115,7 @@ export default function CreateModalList({
 							type='text'
 							value={newList}
 							placeholder='Name this list'
-							className='m-4 h-8 rounded-xl bg-gray-300 p-2 px-4 py-3 text-gray-900 placeholder:text-gray-500'
+							className='m-4 h-10 rounded-xl bg-gray-300 p-4 text-gray-900 placeholder:text-gray-500'
 							onChange={(event) => {
 								setNewList(event.target.value);
 							}}
@@ -141,13 +141,20 @@ export default function CreateModalList({
 							<span id='maximum'>/75</span>
 						</div>
 					</div>
-					<div className='mb-4 ml-4 mr-4 mt-1 flex items-center justify-between'>
+					<div className='mb-4 ml-4 mr-4 flex items-center justify-end'>
+						<PopoverClose asChild={true}>
+							<button
+								className='flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-gray-300 p-3 text-lg text-black hover:bg-gray-400 focus-visible:ring focus-visible:ring-rose-300 disabled:bg-rose-200'
+								disabled={status === 'submitting'}>
+								Cancel
+							</button>
+						</PopoverClose>
 						<button
 							type='submit'
-							className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'
-							disabled={!!(newList.length === 0 || status === 'submitting')}>
+							className='ml-4 flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'
+							disabled={!!(status === 'submitting' || newList.length === 0)}>
 							<Spinner
-								color='rgb(8 145 178)'
+								color='rgb(147 51 234)'
 								loading={status === 'submitting'}
 								cssOverride={override}
 								size={20}
@@ -155,16 +162,9 @@ export default function CreateModalList({
 								data-testid='loader'
 							/>
 							<span className={status === 'submitting' ? 'invisible' : 'block'}>
-								Create
+								Save
 							</span>
 						</button>
-						<PopoverClose asChild={true}>
-							<button
-								className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-600 focus-visible:ring focus-visible:ring-rose-300 disabled:bg-rose-200'
-								disabled={status === 'submitting'}>
-								Cancel
-							</button>
-						</PopoverClose>
 					</div>
 				</form>
 				<PopoverArrow className='fill-violet-500' />
