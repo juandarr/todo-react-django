@@ -319,10 +319,17 @@ export default function CreateModalTodo({
 							isDisabled={status === 'submitting'}
 						/>
 					</div>
-					<div className='mb-4 ml-4 mr-4 flex items-center justify-between'>
+					<div className='mb-4 ml-4 mr-4 flex items-center justify-end'>
+						<PopoverClose asChild={true}>
+							<button
+								className='flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-gray-300 p-3 text-lg text-black hover:bg-gray-400 focus-visible:ring focus-visible:ring-rose-300 disabled:bg-rose-200'
+								disabled={status === 'submitting'}>
+								Cancel
+							</button>
+						</PopoverClose>
 						<button
 							type='submit'
-							className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'
+							className='ml-4 flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'
 							disabled={
 								!!(status === 'submitting' || newTodo.title.length === 0)
 							}>
@@ -338,13 +345,6 @@ export default function CreateModalTodo({
 								Create
 							</span>
 						</button>
-						<PopoverClose asChild={true}>
-							<button
-								className='flex h-10 w-2/5 items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-600 focus-visible:ring focus-visible:ring-rose-300 disabled:bg-rose-200'
-								disabled={status === 'submitting'}>
-								Cancel
-							</button>
-						</PopoverClose>
 					</div>
 				</form>
 				<PopoverArrow className='fill-emerald-500' />

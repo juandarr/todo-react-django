@@ -145,6 +145,7 @@ export interface EditModalListProps {
 	editList: (id: number, title: string) => Promise<List>;
 	listData: { id: number; title: string };
 	parentId: string;
+	deleteFunction: (id: number) => Promise<void>;
 }
 
 export interface EditModalTodoProps {
@@ -153,7 +154,15 @@ export interface EditModalTodoProps {
 	lists: List[];
 	parentId: string;
 }
-export interface DeleteModalProps {
+export interface DeleteModalListProps {
+	deleteFunction: (id: number) => Promise<void>;
+	deleteEntity: string;
+	parentId: string;
+	id: number;
+	size: number;
+}
+
+export interface DeleteModalTodoProps {
 	deleteFunction: (id: number) => Promise<void>;
 	deleteEntity: string;
 	parentId: string;

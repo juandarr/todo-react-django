@@ -4,7 +4,6 @@ import { type SideBarProps } from '../../lib/customTypes';
 
 import CreateModalList from '../modals/createModalList';
 import EditModalList from '../modals/editModalList';
-import DeleteModal from '../modals/deleteModal';
 import { UserContext } from '../../contexts/UserContext';
 
 export default function SideBar({
@@ -26,7 +25,7 @@ export default function SideBar({
 			key={value}
 			className={`flex cursor-pointer justify-start ${
 				currentView.id === value ? 'rounded-md bg-cyan-200 font-semibold' : ''
-			} rounded-xl p-1 pl-2 text-lg hover:underline hover:decoration-rose-500 hover:decoration-2 hover:underline-offset-4`}
+			} rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-rose-500 hover:decoration-2 hover:underline-offset-4`}
 			onClick={() => {
 				changeCurrentView(value);
 			}}>
@@ -43,7 +42,7 @@ export default function SideBar({
 						currentView.id === list.id
 							? 'rounded-md bg-cyan-200 font-semibold'
 							: ''
-					} truncate rounded-xl p-1 pl-2 text-lg hover:underline hover:decoration-rose-500 hover:decoration-2 hover:underline-offset-4`}
+					} truncate rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-rose-500 hover:decoration-2 hover:underline-offset-4`}
 					onClick={() => {
 						changeCurrentView(list.id as number);
 					}}>
@@ -57,14 +56,7 @@ export default function SideBar({
 						editList={editList}
 						listData={{ id: list.id as number, title: list.title }}
 						parentId={`list-${list.id}`}
-					/>
-					<span className='mr-2'></span>
-					<DeleteModal
 						deleteFunction={deleteList}
-						deleteEntity='list'
-						parentId={`list-${list.id}`}
-						id={list.id as number}
-						size={1.4}
 					/>
 				</div>
 			</div>
@@ -82,13 +74,13 @@ export default function SideBar({
 				Welcome, {user.username} ;)
 			</div>
 			<div className='mb-1 flex flex-col'>
-				<div className='mb-2 text-xl font-bold'>Tareas</div>
+				<div className='mb-2 text-lg font-bold'>Tareas</div>
 				<button
 					className={`flex cursor-pointer justify-start ${
 						currentView.id === user.inboxListId
 							? 'rounded-md bg-cyan-200 font-semibold'
 							: ''
-					} rounded-xl p-1 pl-2 text-lg hover:underline hover:decoration-rose-500 hover:decoration-2 hover:underline-offset-4`}
+					} rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-rose-500 hover:decoration-2 hover:underline-offset-4`}
 					onClick={() => {
 						changeCurrentView(user.inboxListId);
 					}}>
@@ -98,7 +90,7 @@ export default function SideBar({
 			</div>
 			<div className='mt-4 flex flex-col'>
 				<div className='mb-2 flex justify-between'>
-					<div className='text-xl font-bold text-violet-600'>Lists</div>
+					<div className='text-lg font-bold text-violet-600'>Lists</div>
 					<CreateModalList addList={addList} />
 				</div>
 				{otherLists}

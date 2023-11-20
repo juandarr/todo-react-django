@@ -13,7 +13,7 @@ import { useToast } from '../ui/toast/use-toast';
 
 import { type Todo } from '../../../../todo-api-client/models';
 
-import DeleteModal from '../modals/deleteModal';
+import DeleteModalTodo from '../modals/deleteModalTodo';
 import { Calendar2, Task, Flag, BookSaved } from 'iconsax-react';
 import EditModalTodo from '../modals/editModalTodo';
 import { UserContext } from '../../contexts/UserContext';
@@ -240,7 +240,8 @@ export default function TaskItem({
 									<Calendar2 className='mr-1' size={'1.2rem'} />
 									<div
 										className={`text-xs ${
-											(todo.dueDate?.getTime() as number) < today
+											(todo.dueDate?.getTime() as number) < today &&
+											todo.complete === false
 												? 'font-medium text-rose-500'
 												: ''
 										} `}>
@@ -285,7 +286,7 @@ export default function TaskItem({
 						key={`edit-${todo.id}`}
 					/>
 					<span className='mr-2'></span>
-					<DeleteModal
+					<DeleteModalTodo
 						deleteFunction={deleteTodo}
 						deleteEntity={'todo'}
 						parentId={`todo-${todo.id}`}
