@@ -362,15 +362,15 @@ export default function App(): React.JSX.Element {
 
 	const editList = async (
 		id: number,
-		newList: { title: string; archived: null | boolean },
+		newList: { title?: string; archived?: boolean },
 	): Promise<List> => {
 		let list;
-		if (newList.archived === null) {
+		if (newList.archived === undefined) {
 			list = {
 				title: newList.title,
 			};
 		} else {
-			list = { title: newList.title, archived: newList.archived };
+			list = { archived: newList.archived };
 		}
 
 		try {
@@ -389,18 +389,19 @@ export default function App(): React.JSX.Element {
 				console.log('Patched list and current list match! ', newList.title);
 				const tmp = {
 					title:
-						currentView.title !== newList.title
-							? newList.title
-							: currentView.title,
+						newList.title === undefined || currentView.title === newList.title
+							? currentView.title
+							: newList.title,
 					archived:
-						currentView.archived !== newList.archived
-							? newList.archived
-							: currentView.archived,
+						newList.archived === undefined ||
+						currentView.archived === newList.archived
+							? currentView.archived
+							: newList.archived,
 				};
 				setCurrentView((oldCurrentView) => ({
 					...oldCurrentView,
 					title: tmp.title,
-					archived: tmp.archived as boolean,
+					archived: tmp.archived,
 				}));
 			}
 			return updatedList;

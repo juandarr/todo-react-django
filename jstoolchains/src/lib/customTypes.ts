@@ -146,8 +146,8 @@ export interface EditModalListProps {
 	editList: (
 		id: number,
 		newList: {
-			title: string;
-			archived: null | boolean;
+			title?: string;
+			archived?: boolean;
 		},
 	) => Promise<List>;
 	listData: { id: number; title: string; archived: boolean };
@@ -194,8 +194,8 @@ export interface SideBarProps {
 	editList: (
 		id: number,
 		newList: {
-			title: string;
-			archived: null | boolean;
+			title?: string;
+			archived?: boolean;
 		},
 	) => Promise<List>;
 	showSidebar: boolean;

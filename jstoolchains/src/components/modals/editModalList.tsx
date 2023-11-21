@@ -42,10 +42,7 @@ export default function EditModalList({
 	deleteFunction,
 }: EditModalListProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
-	const [listEdit, setListEdit] = useState<{
-		title: string;
-		archived: null | boolean;
-	}>({ title: '', archived: null });
+	const [listEdit, setListEdit] = useState<string>('');
 	const [status, setStatus] = useState('typing');
 	const inputTitle = useRef<HTMLInputElement>(null);
 	const inputTitleCount = useRef<HTMLDivElement>(null);
@@ -65,7 +62,7 @@ export default function EditModalList({
 			| React.MouseEvent<HTMLDivElement, MouseEvent>,
 
 		id: number,
-		tmpList: { title: string; archived: null | boolean },
+		tmpList: { title?: string; archived?: boolean },
 	): Promise<void> => {
 		event.preventDefault();
 		if (tmpList.title === '') return;
@@ -96,7 +93,7 @@ export default function EditModalList({
 	};
 	const openPopover = (): void => {
 		removeHidden();
-		setListEdit({ title: listData.title, archived: null });
+		setListEdit(listData.title);
 		setStatus('typing');
 		setIsOpen(true);
 	};
@@ -142,7 +139,7 @@ export default function EditModalList({
 					id='listform'
 					className='flex flex-col'
 					onSubmit={(e) => {
-						editHandleSubmit(e, listData.id, listEdit)
+						editHandleSubmit(e, listData.id, { title: listEdit })
 							.then(() => {})
 							.catch(() => {});
 					}}>
@@ -152,11 +149,11 @@ export default function EditModalList({
 							name='title'
 							type='text'
 							ref={inputTitle}
-							value={listEdit.title}
+							value={listEdit}
 							placeholder='Name this list'
 							className='m-4 h-10 rounded-xl bg-gray-300 p-4 text-gray-900 placeholder:text-gray-500'
 							onChange={(event) => {
-								setListEdit({ ...listEdit, title: event.target.value });
+								setListEdit(event.target.value);
 							}}
 							onFocus={(e) => {
 								if (inputTitleCount.current instanceof HTMLDivElement) {
@@ -176,9 +173,9 @@ export default function EditModalList({
 							id='listTitleCount'
 							ref={inputTitleCount}
 							className={`absolute bottom-0 right-6 text-[10px] ${
-								listEdit.title.length < 38 ? 'text-gray-400' : 'text-amber-500'
+								listEdit.length < 38 ? 'text-gray-400' : 'text-amber-500'
 							}`}>
-							<span id='current'>{listEdit.title.length}</span>
+							<span id='current'>{listEdit.length}</span>
 							<span id='maximum'>/75</span>
 						</div>
 					</div>
@@ -198,7 +195,6 @@ export default function EditModalList({
 											className='ml-4 mr-4 flex items-center text-violet-500 hover:cursor-pointer hover:text-violet-600'
 											onClick={(e) => {
 												editHandleSubmit(e, listData.id, {
-													...listEdit,
 													archived: !listData.archived,
 												})
 													.then(() => {})
@@ -222,9 +218,7 @@ export default function EditModalList({
 						<button
 							type='submit'
 							className='flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'
-							disabled={
-								!!(status === 'submitting' || listEdit.title.length === 0)
-							}>
+							disabled={!!(status === 'submitting' || listEdit.length === 0)}>
 							<Spinner
 								color='rgb(147 51 234)'
 								loading={status === 'submitting'}
