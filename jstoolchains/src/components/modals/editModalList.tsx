@@ -22,6 +22,7 @@ import { useToast } from '../ui/toast/use-toast';
 
 import Spinner from 'react-spinners/DotLoader';
 import DeleteModalList from './deleteModalList';
+import { flushSync } from 'react-dom';
 
 const override: CSSProperties = {
 	display: 'block',
@@ -37,7 +38,10 @@ export default function EditModalList({
 	deleteFunction,
 }: EditModalListProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
-	const [listEdit, setListEdit] = useState('');
+	const [listEdit, setListEdit] = useState<{
+		title: string;
+		archived: null | boolean;
+	}>({ title: '', archived: null });
 	const [status, setStatus] = useState('typing');
 	const inputTitle = useRef<HTMLInputElement>(null);
 	const inputTitleCount = useRef<HTMLDivElement>(null);
@@ -52,11 +56,15 @@ export default function EditModalList({
 	}, [status]);
 
 	const editHandleSubmit = async (
-		event: React.FormEvent<HTMLFormElement>,
+		event:
+			| React.FormEvent<HTMLFormElement>
+			| React.MouseEvent<HTMLDivElement, MouseEvent>,
+
 		id: number,
+		listEdit: { title: string; archived: null | boolean },
 	): Promise<void> => {
 		event.preventDefault();
-		if (listEdit === '') return;
+		if (listEdit.title === '') return;
 		setStatus('submitting');
 
 		try {
@@ -84,7 +92,7 @@ export default function EditModalList({
 	};
 	const openPopover = (): void => {
 		toggleHidden();
-		setListEdit(listData.title);
+		setListEdit({ title: listData.title, archived: null });
 		setStatus('typing');
 		setIsOpen(true);
 	};
@@ -125,7 +133,7 @@ export default function EditModalList({
 					id='listform'
 					className='flex flex-col'
 					onSubmit={(e) => {
-						editHandleSubmit(e, listData.id)
+						editHandleSubmit(e, listData.id, listEdit)
 							.then(() => {})
 							.catch(() => {});
 					}}>
@@ -135,11 +143,11 @@ export default function EditModalList({
 							name='title'
 							type='text'
 							ref={inputTitle}
-							value={listEdit}
+							value={listEdit.title}
 							placeholder='Name this list'
 							className='m-4 h-10 rounded-xl bg-gray-300 p-4 text-gray-900 placeholder:text-gray-500'
 							onChange={(event) => {
-								setListEdit(event.target.value);
+								setListEdit({ ...listEdit, title: event.target.value });
 							}}
 							onFocus={(e) => {
 								if (inputTitleCount.current instanceof HTMLDivElement) {
@@ -159,9 +167,9 @@ export default function EditModalList({
 							id='listTitleCount'
 							ref={inputTitleCount}
 							className={`absolute bottom-0 right-6 text-[10px] ${
-								listEdit.length < 38 ? 'text-gray-400' : 'text-amber-500'
+								listEdit.title.length < 38 ? 'text-gray-400' : 'text-amber-500'
 							}`}>
-							<span id='current'>{listEdit.length}</span>
+							<span id='current'>{listEdit.title.length}</span>
 							<span id='maximum'>/75</span>
 						</div>
 					</div>
@@ -170,18 +178,28 @@ export default function EditModalList({
 							<DeleteModalList
 								deleteFunction={deleteFunction}
 								deleteEntity='list'
-								parentId={`list-${listData.id}`}
 								id={listData.id}
 								size={1.6}
 							/>
-							<div className=' ml-4 mr-4 flex items-center text-violet-500 hover:cursor-pointer hover:text-violet-600'>
+							<div
+								className=' ml-4 mr-4 flex items-center text-violet-500 hover:cursor-pointer hover:text-violet-600'
+								onClick={(e) => {
+									editHandleSubmit(e, listData.id, {
+										...listEdit,
+										archived: true,
+									})
+										.then(() => {})
+										.catch(() => {});
+								}}>
 								<ArchiveBox />
 							</div>
 						</div>
 						<button
 							type='submit'
 							className='flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'
-							disabled={!!(status === 'submitting' || listEdit.length === 0)}>
+							disabled={
+								!!(status === 'submitting' || listEdit.title.length === 0)
+							}>
 							<Spinner
 								color='rgb(147 51 234)'
 								loading={status === 'submitting'}

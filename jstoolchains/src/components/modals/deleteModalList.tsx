@@ -33,7 +33,6 @@ const override: CSSProperties = {
 export default function DeleteModalList({
 	deleteFunction,
 	deleteEntity,
-	parentId,
 	id,
 	size,
 }: DeleteModalListProps): React.JSX.Element {

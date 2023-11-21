@@ -353,10 +353,18 @@ export default function App(): React.JSX.Element {
 		}
 	};
 
-	const editList = async (id: number, title: string): Promise<List> => {
-		const list = {
-			title,
-		};
+	const editList = async (
+		id: number,
+		newList: { title: string; archived: null | boolean },
+	): Promise<List> => {
+		let list;
+		if (newList.archived === null) {
+			list = {
+				title: newList.title,
+			};
+		} else {
+			list = { title: newList.title, archived: newList.archived };
+		}
 
 		try {
 			const updatedList = await clientList.listsPartialUpdate({
@@ -370,9 +378,12 @@ export default function App(): React.JSX.Element {
 				payload: updatedList,
 			});
 			// If the current view is the one being edited, update the current view
-			if (id === currentView.id) {
-				console.log('Patched list and current list match! ', title);
-				setCurrentView((oldCurrentView) => ({ ...oldCurrentView, title }));
+			if (id === currentView.id && newList.archived === null) {
+				console.log('Patched list and current list match! ', newList.title);
+				setCurrentView((oldCurrentView) => ({
+					...oldCurrentView,
+					title: newList.title,
+				}));
 			}
 			return updatedList;
 		} catch (error) {

@@ -74,7 +74,7 @@ export default function SideBar({
 				Welcome, {user.username} ;)
 			</div>
 			<div className='mb-1 flex flex-col'>
-				<div className='mb-2 text-lg font-bold'>Tareas</div>
+				<div className='mb-2 text-lg font-bold text-sky-600'>Tareas</div>
 				<button
 					className={`flex cursor-pointer justify-start ${
 						currentView.id === user.inboxListId
@@ -92,6 +92,12 @@ export default function SideBar({
 				<div className='mb-2 flex justify-between'>
 					<div className='text-lg font-bold text-violet-600'>Lists</div>
 					<CreateModalList addList={addList} />
+				</div>
+				{otherLists}
+			</div>
+			<div className='mt-4 flex flex-col'>
+				<div className='mb-2 flex justify-between'>
+					<div className='text-lg font-bold text-fuchsia-600'>Archived</div>
 				</div>
 				{otherLists}
 			</div>

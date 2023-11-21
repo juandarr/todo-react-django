@@ -142,7 +142,13 @@ export interface CreateModalListProps {
 }
 
 export interface EditModalListProps {
-	editList: (id: number, title: string) => Promise<List>;
+	editList: (
+		id: number,
+		newList: {
+			title: string;
+			archived: null | boolean;
+		},
+	) => Promise<List>;
 	listData: { id: number; title: string };
 	parentId: string;
 	deleteFunction: (id: number) => Promise<void>;
@@ -157,7 +163,6 @@ export interface EditModalTodoProps {
 export interface DeleteModalListProps {
 	deleteFunction: (id: number) => Promise<void>;
 	deleteEntity: string;
-	parentId: string;
 	id: number;
 	size: number;
 }
@@ -185,7 +190,13 @@ export interface SideBarProps {
 	changeCurrentView: (viewId: number | string) => void;
 	addList: addListType;
 	deleteList: (id: number) => Promise<void>;
-	editList: (id: number, title: string) => Promise<List>;
+	editList: (
+		id: number,
+		newList: {
+			title: string;
+			archived: null | boolean;
+		},
+	) => Promise<List>;
 	showSidebar: boolean;
 }
 
