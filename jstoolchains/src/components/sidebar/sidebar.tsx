@@ -150,8 +150,16 @@ export default function SideBar({
 						/>
 					</div>
 				</div>
-				<div className='content is-open'>
-					<div className='inner'>{archivedLists}</div>
+				<div className='content'>
+					{archivedLists.length === 0 ? (
+						<div className='inner'>
+							<div className={`p-1 pl-2 text-base text-gray-600`}>
+								🦖 No archived lists
+							</div>
+						</div>
+					) : (
+						<div className='inner'>{archivedLists}</div>
+					)}
 				</div>
 			</div>
 		</div>
