@@ -1,12 +1,7 @@
 import React, { useState, useRef, useEffect, type CSSProperties } from 'react';
 
 import { type EditModalListProps } from '../../lib/customTypes';
-import {
-	CloseSquare,
-	DirectboxReceive,
-	DirectboxSend,
-	Edit,
-} from 'iconsax-react';
+import { CloseSquare, Edit } from 'iconsax-react';
 
 import {
 	Tooltip,
@@ -27,6 +22,7 @@ import { useToast } from '../ui/toast/use-toast';
 
 import Spinner from 'react-spinners/DotLoader';
 import DeleteModalList from './deleteModalList';
+import ArchiveModalList from './archiveModalList';
 
 const override: CSSProperties = {
 	display: 'block',
@@ -57,9 +53,7 @@ export default function EditModalList({
 	}, [status]);
 
 	const editHandleSubmit = async (
-		event:
-			| React.FormEvent<HTMLFormElement>
-			| React.MouseEvent<HTMLDivElement, MouseEvent>,
+		event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
 
 		id: number,
 		tmpList: { title?: string; archived?: boolean },
@@ -135,14 +129,7 @@ export default function EditModalList({
 					addHidden();
 				}}
 				className='w-80 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
-				<form
-					id='listform'
-					className='flex flex-col'
-					onSubmit={(e) => {
-						editHandleSubmit(e, listData.id, { title: listEdit })
-							.then(() => {})
-							.catch(() => {});
-					}}>
+				<form id='listform' className='flex flex-col'>
 					<div className='relative flex flex-1 flex-col'>
 						<input
 							id='listName'
@@ -187,38 +174,17 @@ export default function EditModalList({
 								id={listData.id}
 								size={1.6}
 							/>
-
-							<TooltipProvider>
-								<Tooltip>
-									<TooltipTrigger asChild={true}>
-										<div
-											className='ml-4 mr-4 flex items-center text-violet-500 hover:cursor-pointer hover:text-violet-600'
-											onClick={(e) => {
-												editHandleSubmit(e, listData.id, {
-													archived: !listData.archived,
-												})
-													.then(() => {})
-													.catch(() => {});
-											}}>
-											{listData.archived ? (
-												<DirectboxSend />
-											) : (
-												<DirectboxReceive />
-											)}
-										</div>
-									</TooltipTrigger>
-									<TooltipContent className='bg-violet-500'>
-										<p className='font-bold text-white'>
-											{listData.archived ? 'Restore' : 'Archive'}
-										</p>
-									</TooltipContent>
-								</Tooltip>
-							</TooltipProvider>
+							<ArchiveModalList editFunction={editList} listData={listData} />
 						</div>
 						<button
 							type='submit'
 							className='flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'
-							disabled={!!(status === 'submitting' || listEdit.length === 0)}>
+							disabled={!!(status === 'submitting' || listEdit.length === 0)}
+							onClick={(e) => {
+								editHandleSubmit(e, listData.id, { title: listEdit })
+									.then(() => {})
+									.catch(() => {});
+							}}>
 							<Spinner
 								color='rgb(147 51 234)'
 								loading={status === 'submitting'}

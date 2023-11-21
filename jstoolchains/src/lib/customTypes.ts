@@ -176,6 +176,16 @@ export interface DeleteModalTodoProps {
 	size: number;
 }
 
+export interface ArchiveModalListProps {
+	editFunction: (
+		id: number,
+		newList: {
+			title?: string;
+			archived?: boolean;
+		},
+	) => Promise<List>;
+	listData: { id: number; title: string; archived: boolean };
+}
 export interface SettingsModalProps {
 	lists: List[];
 	settings: Setting[];
