@@ -65,23 +65,20 @@ export default function EditModalList({
 			| React.MouseEvent<HTMLDivElement, MouseEvent>,
 
 		id: number,
-		listEdit: { title: string; archived: null | boolean },
+		tmpList: { title: string; archived: null | boolean },
 	): Promise<void> => {
 		event.preventDefault();
-		if (listEdit.title === '') return;
+		if (tmpList.title === '') return;
 		setStatus('submitting');
 
 		try {
-			const updatedList = await editList(id, listEdit);
+			const updatedList = await editList(id, tmpList);
 			console.log('Updated list: ', updatedList);
 			toast({
 				title: 'List was updated!',
 				description: '',
 			});
 			closePopover();
-			if (listEdit.archived === null) {
-				toggleHidden();
-			}
 		} catch (error) {
 			if (error instanceof Error) {
 				toast({
@@ -98,14 +95,19 @@ export default function EditModalList({
 		setIsOpen(false);
 	};
 	const openPopover = (): void => {
-		toggleHidden();
+		removeHidden();
 		setListEdit({ title: listData.title, archived: null });
 		setStatus('typing');
 		setIsOpen(true);
 	};
 
-	const toggleHidden = (): void => {
-		(document.getElementById(parentId) as HTMLElement).classList.toggle(
+	const removeHidden = (): void => {
+		(document.getElementById(parentId) as HTMLElement).classList.remove(
+			'hidden-child',
+		);
+	};
+	const addHidden = (): void => {
+		(document.getElementById(parentId) as HTMLElement).classList.add(
 			'hidden-child',
 		);
 	};
@@ -133,6 +135,7 @@ export default function EditModalList({
 				onOpenAutoFocus={(event) => {}}
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
+					addHidden();
 				}}
 				className='w-80 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
 				<form
@@ -190,9 +193,9 @@ export default function EditModalList({
 
 							<TooltipProvider>
 								<Tooltip>
-									<TooltipTrigger>
+									<TooltipTrigger asChild={true}>
 										<div
-											className=' ml-4 mr-4 flex items-center text-violet-500 hover:cursor-pointer hover:text-violet-600'
+											className='ml-4 mr-4 flex items-center text-violet-500 hover:cursor-pointer hover:text-violet-600'
 											onClick={(e) => {
 												editHandleSubmit(e, listData.id, {
 													...listEdit,
