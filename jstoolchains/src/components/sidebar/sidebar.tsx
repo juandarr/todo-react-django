@@ -5,6 +5,7 @@ import { type SideBarProps } from '../../lib/customTypes';
 import CreateModalList from '../modals/createModalList';
 import EditModalList from '../modals/editModalList';
 import { UserContext } from '../../contexts/UserContext';
+import { ArrowDown3 } from 'iconsax-react';
 
 export default function SideBar({
 	lists,
@@ -133,9 +134,25 @@ export default function SideBar({
 			</div>
 			<div className='mt-4 flex flex-col'>
 				<div className='mb-2 flex justify-between'>
-					<div className='text-lg font-bold text-fuchsia-600'>Archived</div>
+					<div className='relative text-lg font-bold text-fuchsia-600'>
+						Archived
+						<span className='absolute -right-4 bottom-0 text-xs font-medium'>
+							({archivedLists.length})
+						</span>
+					</div>
+
+					<div className='flex items-center justify-center text-fuchsia-500 hover:text-fuchsia-600'>
+						<ArrowDown3
+							className={`collapsible ${
+								archivedLists.length === 0 ? 'active' : ''
+							}`}
+							size='1.5rem'
+						/>
+					</div>
 				</div>
-				{archivedLists}
+				<div className='content'>
+					<div className='inner'>{archivedLists}</div>
+				</div>
 			</div>
 		</div>
 	);
