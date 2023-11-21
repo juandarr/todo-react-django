@@ -26,7 +26,7 @@ export default function SideBar({
 			key={value}
 			className={`flex cursor-pointer justify-start ${
 				currentView.id === value ? 'rounded-md bg-cyan-200 font-semibold' : ''
-			} rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-rose-500 hover:decoration-2 hover:underline-offset-4`}
+			} rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-cyan-500 hover:decoration-2 hover:underline-offset-4`}
 			onClick={() => {
 				changeCurrentView(value);
 			}}>
@@ -43,7 +43,7 @@ export default function SideBar({
 						currentView.id === list.id
 							? 'rounded-md bg-cyan-200 font-semibold'
 							: ''
-					} truncate rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-rose-500 hover:decoration-2 hover:underline-offset-4`}
+					} truncate rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-violet-500 hover:decoration-2 hover:underline-offset-4`}
 					onClick={() => {
 						changeCurrentView(list.id as number);
 					}}>
@@ -76,7 +76,7 @@ export default function SideBar({
 						currentView.id === list.id
 							? 'rounded-md bg-cyan-200 font-semibold'
 							: ''
-					} truncate rounded-xl p-1 pl-2 text-base text-gray-500 hover:underline hover:decoration-violet-500 hover:decoration-2 hover:underline-offset-4`}
+					} truncate rounded-xl p-1 pl-2 text-base text-gray-500 hover:underline hover:decoration-fuchsia-500 hover:decoration-2 hover:underline-offset-4`}
 					onClick={() => {
 						changeCurrentView(list.id as number);
 					}}>
@@ -117,7 +117,7 @@ export default function SideBar({
 						currentView.id === user.inboxListId
 							? 'rounded-md bg-cyan-200 font-semibold'
 							: ''
-					} rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-rose-500 hover:decoration-2 hover:underline-offset-4`}
+					} rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-cyan-500 hover:decoration-2 hover:underline-offset-4`}
 					onClick={() => {
 						changeCurrentView(user.inboxListId);
 					}}>
