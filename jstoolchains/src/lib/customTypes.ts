@@ -149,7 +149,7 @@ export interface EditModalListProps {
 			archived: null | boolean;
 		},
 	) => Promise<List>;
-	listData: { id: number; title: string };
+	listData: { id: number; title: string; archived: boolean };
 	parentId: string;
 	deleteFunction: (id: number) => Promise<void>;
 }

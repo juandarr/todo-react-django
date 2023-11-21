@@ -1,7 +1,12 @@
 import React, { useState, useRef, useEffect, type CSSProperties } from 'react';
 
 import { type EditModalListProps } from '../../lib/customTypes';
-import { ArchiveBox, CloseSquare, Edit } from 'iconsax-react';
+import {
+	CloseSquare,
+	DirectboxReceive,
+	DirectboxSend,
+	Edit,
+} from 'iconsax-react';
 
 import {
 	Tooltip,
@@ -22,7 +27,6 @@ import { useToast } from '../ui/toast/use-toast';
 
 import Spinner from 'react-spinners/DotLoader';
 import DeleteModalList from './deleteModalList';
-import { flushSync } from 'react-dom';
 
 const override: CSSProperties = {
 	display: 'block',
@@ -75,6 +79,9 @@ export default function EditModalList({
 				description: '',
 			});
 			closePopover();
+			if (listEdit.archived === null) {
+				toggleHidden();
+			}
 		} catch (error) {
 			if (error instanceof Error) {
 				toast({
@@ -126,7 +133,6 @@ export default function EditModalList({
 				onOpenAutoFocus={(event) => {}}
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
-					toggleHidden();
 				}}
 				className='w-80 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
 				<form
@@ -186,12 +192,12 @@ export default function EditModalList({
 								onClick={(e) => {
 									editHandleSubmit(e, listData.id, {
 										...listEdit,
-										archived: true,
+										archived: !listData.archived,
 									})
 										.then(() => {})
 										.catch(() => {});
 								}}>
-								<ArchiveBox />
+								{listData.archived ? <DirectboxSend /> : <DirectboxReceive />}
 							</div>
 						</div>
 						<button
