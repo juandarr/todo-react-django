@@ -48,6 +48,7 @@ export interface viewDataType {
 export interface viewType {
 	id: number | string;
 	title: string;
+	archived: boolean;
 }
 
 export interface cssTailVariant {

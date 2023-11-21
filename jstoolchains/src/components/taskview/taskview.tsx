@@ -90,7 +90,8 @@ export default function TaskView({
 								month: 'short',
 								day: 'numeric',
 						  })
-						: '')}
+						: '') +
+					(currentView.archived ? ' (Archived)' : '')}
 			</div>
 			<TaskForm addTodo={addTodo} key={currentView.id} />
 			<TaskListHeader

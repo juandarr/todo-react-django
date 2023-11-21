@@ -187,18 +187,34 @@ export default function EditModalList({
 								id={listData.id}
 								size={1.6}
 							/>
-							<div
-								className=' ml-4 mr-4 flex items-center text-violet-500 hover:cursor-pointer hover:text-violet-600'
-								onClick={(e) => {
-									editHandleSubmit(e, listData.id, {
-										...listEdit,
-										archived: !listData.archived,
-									})
-										.then(() => {})
-										.catch(() => {});
-								}}>
-								{listData.archived ? <DirectboxSend /> : <DirectboxReceive />}
-							</div>
+
+							<TooltipProvider>
+								<Tooltip>
+									<TooltipTrigger>
+										<div
+											className=' ml-4 mr-4 flex items-center text-violet-500 hover:cursor-pointer hover:text-violet-600'
+											onClick={(e) => {
+												editHandleSubmit(e, listData.id, {
+													...listEdit,
+													archived: !listData.archived,
+												})
+													.then(() => {})
+													.catch(() => {});
+											}}>
+											{listData.archived ? (
+												<DirectboxSend />
+											) : (
+												<DirectboxReceive />
+											)}
+										</div>
+									</TooltipTrigger>
+									<TooltipContent className='bg-violet-500'>
+										<p className='font-bold text-white'>
+											{listData.archived ? 'Restore' : 'Archive'}
+										</p>
+									</TooltipContent>
+								</Tooltip>
+							</TooltipProvider>
 						</div>
 						<button
 							type='submit'
