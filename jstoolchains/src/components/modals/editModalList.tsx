@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, type CSSProperties } from 'react';
 
 import { type EditModalListProps } from '../../lib/customTypes';
-import { ArchiveBox, CloseSquare, Edit } from 'iconsax-react';
+import { CloseSquare, Edit } from 'iconsax-react';
 
 import {
 	Tooltip,
@@ -22,6 +22,7 @@ import { useToast } from '../ui/toast/use-toast';
 
 import Spinner from 'react-spinners/DotLoader';
 import DeleteModalList from './deleteModalList';
+import ArchiveModalList from './archiveModalList';
 
 const override: CSSProperties = {
 	display: 'block',
@@ -37,7 +38,7 @@ export default function EditModalList({
 	deleteFunction,
 }: EditModalListProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
-	const [listEdit, setListEdit] = useState('');
+	const [listEdit, setListEdit] = useState<string>('');
 	const [status, setStatus] = useState('typing');
 	const inputTitle = useRef<HTMLInputElement>(null);
 	const inputTitleCount = useRef<HTMLDivElement>(null);
@@ -52,15 +53,17 @@ export default function EditModalList({
 	}, [status]);
 
 	const editHandleSubmit = async (
-		event: React.FormEvent<HTMLFormElement>,
+		event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+
 		id: number,
+		tmpList: { title?: string; archived?: boolean },
 	): Promise<void> => {
 		event.preventDefault();
-		if (listEdit === '') return;
+		if (tmpList.title === '') return;
 		setStatus('submitting');
 
 		try {
-			const updatedList = await editList(id, listEdit);
+			const updatedList = await editList(id, tmpList);
 			console.log('Updated list: ', updatedList);
 			toast({
 				title: 'List was updated!',
@@ -83,14 +86,19 @@ export default function EditModalList({
 		setIsOpen(false);
 	};
 	const openPopover = (): void => {
-		toggleHidden();
+		removeHidden();
 		setListEdit(listData.title);
 		setStatus('typing');
 		setIsOpen(true);
 	};
 
-	const toggleHidden = (): void => {
-		(document.getElementById(parentId) as HTMLElement).classList.toggle(
+	const removeHidden = (): void => {
+		(document.getElementById(parentId) as HTMLElement).classList.remove(
+			'hidden-child',
+		);
+	};
+	const addHidden = (): void => {
+		(document.getElementById(parentId) as HTMLElement).classList.add(
 			'hidden-child',
 		);
 	};
@@ -118,17 +126,10 @@ export default function EditModalList({
 				onOpenAutoFocus={(event) => {}}
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
-					toggleHidden();
+					addHidden();
 				}}
 				className='w-80 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
-				<form
-					id='listform'
-					className='flex flex-col'
-					onSubmit={(e) => {
-						editHandleSubmit(e, listData.id)
-							.then(() => {})
-							.catch(() => {});
-					}}>
+				<form id='listform' className='flex flex-col'>
 					<div className='relative flex flex-1 flex-col'>
 						<input
 							id='listName'
@@ -170,18 +171,20 @@ export default function EditModalList({
 							<DeleteModalList
 								deleteFunction={deleteFunction}
 								deleteEntity='list'
-								parentId={`list-${listData.id}`}
 								id={listData.id}
 								size={1.6}
 							/>
-							<div className=' ml-4 mr-4 flex items-center text-violet-500 hover:cursor-pointer hover:text-violet-600'>
-								<ArchiveBox />
-							</div>
+							<ArchiveModalList editFunction={editList} listData={listData} />
 						</div>
 						<button
 							type='submit'
 							className='flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'
-							disabled={!!(status === 'submitting' || listEdit.length === 0)}>
+							disabled={!!(status === 'submitting' || listEdit.length === 0)}
+							onClick={(e) => {
+								editHandleSubmit(e, listData.id, { title: listEdit })
+									.then(() => {})
+									.catch(() => {});
+							}}>
 							<Spinner
 								color='rgb(147 51 234)'
 								loading={status === 'submitting'}

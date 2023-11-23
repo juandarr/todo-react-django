@@ -48,6 +48,7 @@ export interface viewDataType {
 export interface viewType {
 	id: number | string;
 	title: string;
+	archived: boolean;
 }
 
 export interface cssTailVariant {
@@ -142,8 +143,14 @@ export interface CreateModalListProps {
 }
 
 export interface EditModalListProps {
-	editList: (id: number, title: string) => Promise<List>;
-	listData: { id: number; title: string };
+	editList: (
+		id: number,
+		newList: {
+			title?: string;
+			archived?: boolean;
+		},
+	) => Promise<List>;
+	listData: { id: number; title: string; archived: boolean };
 	parentId: string;
 	deleteFunction: (id: number) => Promise<void>;
 }
@@ -157,7 +164,6 @@ export interface EditModalTodoProps {
 export interface DeleteModalListProps {
 	deleteFunction: (id: number) => Promise<void>;
 	deleteEntity: string;
-	parentId: string;
 	id: number;
 	size: number;
 }
@@ -170,6 +176,16 @@ export interface DeleteModalTodoProps {
 	size: number;
 }
 
+export interface ArchiveModalListProps {
+	editFunction: (
+		id: number,
+		newList: {
+			title?: string;
+			archived?: boolean;
+		},
+	) => Promise<List>;
+	listData: { id: number; title: string; archived: boolean };
+}
 export interface SettingsModalProps {
 	lists: List[];
 	settings: Setting[];
@@ -185,7 +201,13 @@ export interface SideBarProps {
 	changeCurrentView: (viewId: number | string) => void;
 	addList: addListType;
 	deleteList: (id: number) => Promise<void>;
-	editList: (id: number, title: string) => Promise<List>;
+	editList: (
+		id: number,
+		newList: {
+			title?: string;
+			archived?: boolean;
+		},
+	) => Promise<List>;
 	showSidebar: boolean;
 }
 

@@ -5,6 +5,7 @@ import { type SideBarProps } from '../../lib/customTypes';
 import CreateModalList from '../modals/createModalList';
 import EditModalList from '../modals/editModalList';
 import { UserContext } from '../../contexts/UserContext';
+import { ArrowDown3 } from 'iconsax-react';
 
 export default function SideBar({
 	lists,
@@ -25,7 +26,7 @@ export default function SideBar({
 			key={value}
 			className={`flex cursor-pointer justify-start ${
 				currentView.id === value ? 'rounded-md bg-cyan-200 font-semibold' : ''
-			} rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-rose-500 hover:decoration-2 hover:underline-offset-4`}
+			} rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-cyan-500 hover:decoration-2 hover:underline-offset-4`}
 			onClick={() => {
 				changeCurrentView(value);
 			}}>
@@ -34,7 +35,7 @@ export default function SideBar({
 	));
 
 	const otherLists = lists
-		.filter((list) => user.inboxListId !== list.id)
+		.filter((list) => user.inboxListId !== list.id && list.archived === false)
 		.map((list) => (
 			<div key={list.id} className='parent flex items-center justify-between'>
 				<button
@@ -42,7 +43,7 @@ export default function SideBar({
 						currentView.id === list.id
 							? 'rounded-md bg-cyan-200 font-semibold'
 							: ''
-					} truncate rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-rose-500 hover:decoration-2 hover:underline-offset-4`}
+					} truncate rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-violet-500 hover:decoration-2 hover:underline-offset-4`}
 					onClick={() => {
 						changeCurrentView(list.id as number);
 					}}>
@@ -54,7 +55,11 @@ export default function SideBar({
 					<span className='ml-2'></span>
 					<EditModalList
 						editList={editList}
-						listData={{ id: list.id as number, title: list.title }}
+						listData={{
+							id: list.id as number,
+							title: list.title,
+							archived: list.archived as boolean,
+						}}
 						parentId={`list-${list.id}`}
 						deleteFunction={deleteList}
 					/>
@@ -62,6 +67,38 @@ export default function SideBar({
 			</div>
 		));
 
+	const archivedLists = lists
+		.filter((list) => user.inboxListId !== list.id && list.archived === true)
+		.map((list) => (
+			<div key={list.id} className='parent flex items-center justify-between'>
+				<button
+					className={`flex flex-1 cursor-pointer justify-start ${
+						currentView.id === list.id
+							? 'rounded-md bg-cyan-200 font-semibold'
+							: ''
+					} truncate rounded-xl p-1 pl-2 text-base text-gray-500 hover:underline hover:decoration-fuchsia-500 hover:decoration-2 hover:underline-offset-4`}
+					onClick={() => {
+						changeCurrentView(list.id as number);
+					}}>
+					{list.title}
+				</button>
+				<div
+					id={`list-${list.id}`}
+					className='hidden-child flex items-center justify-end'>
+					<span className='ml-2'></span>
+					<EditModalList
+						editList={editList}
+						listData={{
+							id: list.id as number,
+							title: list.title,
+							archived: list.archived as boolean,
+						}}
+						parentId={`list-${list.id}`}
+						deleteFunction={deleteList}
+					/>
+				</div>
+			</div>
+		));
 	return (
 		<div
 			className={`flexflex-col absolute left-0 top-0 my-6 w-30%  rounded-xl border-2 border-black bg-white p-10 ${
@@ -74,13 +111,13 @@ export default function SideBar({
 				Welcome, {user.username} ;)
 			</div>
 			<div className='mb-1 flex flex-col'>
-				<div className='mb-2 text-lg font-bold'>Tareas</div>
+				<div className='mb-2 text-lg font-bold text-sky-600'>Tareas</div>
 				<button
 					className={`flex cursor-pointer justify-start ${
 						currentView.id === user.inboxListId
 							? 'rounded-md bg-cyan-200 font-semibold'
 							: ''
-					} rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-rose-500 hover:decoration-2 hover:underline-offset-4`}
+					} rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-cyan-500 hover:decoration-2 hover:underline-offset-4`}
 					onClick={() => {
 						changeCurrentView(user.inboxListId);
 					}}>
@@ -94,6 +131,36 @@ export default function SideBar({
 					<CreateModalList addList={addList} />
 				</div>
 				{otherLists}
+			</div>
+			<div className='mt-4 flex flex-col'>
+				<div className='mb-2 flex justify-between'>
+					<div className='relative text-lg font-bold text-fuchsia-600'>
+						Archived
+						<span className='absolute -right-4 bottom-0 text-xs font-semibold'>
+							({archivedLists.length})
+						</span>
+					</div>
+
+					<div className='flex items-center justify-center text-fuchsia-500 hover:text-fuchsia-600'>
+						<ArrowDown3
+							className={`collapsible ${
+								archivedLists.length === 0 ? 'active' : ''
+							}`}
+							size='1.5rem'
+						/>
+					</div>
+				</div>
+				<div className='content'>
+					{archivedLists.length === 0 ? (
+						<div className='inner'>
+							<div className={`p-1 pl-2 text-base text-gray-600`}>
+								🦖 No archived lists
+							</div>
+						</div>
+					) : (
+						<div className='inner'>{archivedLists}</div>
+					)}
+				</div>
 			</div>
 		</div>
 	);

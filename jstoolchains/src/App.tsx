@@ -45,6 +45,7 @@ export default function App(): React.JSX.Element {
 	const [currentView, setCurrentView] = useState<viewType>({
 		id: 0,
 		title: '',
+		archived: false,
 	});
 	const [showSidebar, setShowSidebar] = useState(true);
 
@@ -125,13 +126,14 @@ export default function App(): React.JSX.Element {
 					const list = lists.find(
 						(list) => list.id === userInfo.homeListId,
 					) as listType;
-					tmp = { id: list.id, title: list.title };
+					tmp = { id: list.id, title: list.title, archived: list.archived };
 				} else {
 					const homeId = userInfo.homeListId;
 
 					tmp = {
 						id: homeId,
 						title: viewData.viewTagDetails.get(homeId) as string,
+						archived: false,
 					};
 				}
 				return tmp;
@@ -161,11 +163,16 @@ export default function App(): React.JSX.Element {
 		let newView: viewType;
 		if (typeof newViewId === 'number') {
 			const newList: List = lists.find((list) => list.id === newViewId) as List;
-			newView = { id: newList.id as number, title: newList.title };
+			newView = {
+				id: newList.id as number,
+				title: newList.title,
+				archived: newList.archived as boolean,
+			};
 		} else {
 			newView = {
 				id: newViewId,
 				title: viewData.viewTagDetails.get(newViewId) as string,
+				archived: false,
 			};
 		}
 		const e = document.getElementById('currentView-title');
@@ -353,10 +360,18 @@ export default function App(): React.JSX.Element {
 		}
 	};
 
-	const editList = async (id: number, title: string): Promise<List> => {
-		const list = {
-			title,
-		};
+	const editList = async (
+		id: number,
+		newList: { title?: string; archived?: boolean },
+	): Promise<List> => {
+		let list;
+		if (newList.archived === undefined) {
+			list = {
+				title: newList.title,
+			};
+		} else {
+			list = { archived: newList.archived };
+		}
 
 		try {
 			const updatedList = await clientList.listsPartialUpdate({
@@ -371,8 +386,23 @@ export default function App(): React.JSX.Element {
 			});
 			// If the current view is the one being edited, update the current view
 			if (id === currentView.id) {
-				console.log('Patched list and current list match! ', title);
-				setCurrentView((oldCurrentView) => ({ ...oldCurrentView, title }));
+				console.log('Patched list and current list match! ', newList.title);
+				const tmp = {
+					title:
+						newList.title === undefined || currentView.title === newList.title
+							? currentView.title
+							: newList.title,
+					archived:
+						newList.archived === undefined ||
+						currentView.archived === newList.archived
+							? currentView.archived
+							: newList.archived,
+				};
+				setCurrentView((oldCurrentView) => ({
+					...oldCurrentView,
+					title: tmp.title,
+					archived: tmp.archived,
+				}));
 			}
 			return updatedList;
 		} catch (error) {
@@ -395,11 +425,16 @@ export default function App(): React.JSX.Element {
 						const list = lists.find(
 							(list) => list.id === userInfo.homeListId,
 						) as List;
-						return { id: list.id as number, title: list.title };
+						return {
+							id: list.id as number,
+							title: list.title,
+							archived: list.archived as boolean,
+						};
 					} else {
 						return {
 							id: userInfo.homeListId,
 							title: viewData.viewTagDetails.get(userInfo.homeListId) as string,
+							archived: false,
 						};
 					}
 				});

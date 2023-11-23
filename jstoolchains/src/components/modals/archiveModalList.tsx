@@ -1,6 +1,6 @@
 import React, { useState, type CSSProperties } from 'react';
 
-import type { DeleteModalListProps } from '../../lib/customTypes';
+import type { ArchiveModalListProps } from '../../lib/customTypes';
 
 import {
 	Tooltip,
@@ -20,7 +20,7 @@ import {
 import { useToast } from '../ui/toast/use-toast';
 
 import Spinner from 'react-spinners/DotLoader';
-import { Trash } from 'iconsax-react';
+import { DirectboxReceive, DirectboxSend } from 'iconsax-react';
 
 const override: CSSProperties = {
 	display: 'block',
@@ -29,12 +29,10 @@ const override: CSSProperties = {
 	alignSelf: 'center',
 };
 
-export default function DeleteModalList({
-	deleteFunction,
-	deleteEntity,
-	id,
-	size,
-}: DeleteModalListProps): React.JSX.Element {
+export default function ArchiveModalList({
+	editFunction,
+	listData,
+}: ArchiveModalListProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
 	const [status, setStatus] = useState('viewing');
 	const { toast } = useToast();
@@ -46,11 +44,11 @@ export default function DeleteModalList({
 		setStatus('submitting');
 
 		try {
-			await deleteFunction(id);
+			await editFunction(listData.id, {
+				archived: !listData.archived,
+			});
 			toast({
-				title: `${
-					deleteEntity.charAt(0).toUpperCase() + deleteEntity.slice(1)
-				} was deleted!`,
+				title: `List was ${!listData.archived ? 'restored' : 'archived'}`,
 				description: '',
 			});
 			closePopover();
@@ -58,7 +56,9 @@ export default function DeleteModalList({
 			if (error instanceof Error) {
 				toast({
 					variant: 'destructive',
-					title: `There was an error deleting ${deleteEntity}: `,
+					title: `There was an error ${
+						!listData.archived ? 'restoring' : 'archiving'
+					} the list: `,
 					description: error.message,
 				});
 			}
@@ -75,7 +75,7 @@ export default function DeleteModalList({
 		setIsOpen(true);
 	};
 
-	console.log('Delete modal is rendered');
+	console.log('Archive modal is rendered');
 	return (
 		<Popover modal={true} open={isOpen} onOpenChange={setIsOpen}>
 			<TooltipProvider>
@@ -86,24 +86,23 @@ export default function DeleteModalList({
 							openPopover();
 						}}>
 						<TooltipTrigger>
-							<a className='flex cursor-pointer justify-center text-rose-500 hover:text-rose-600'>
-								<Trash size={`${size}rem`} />
-							</a>
+							<div className='ml-4 mr-4 flex items-center text-violet-500 hover:cursor-pointer hover:text-violet-600'>
+								{listData.archived ? <DirectboxSend /> : <DirectboxReceive />}
+							</div>
 						</TooltipTrigger>
 					</PopoverTrigger>
-					<TooltipContent className='bg-rose-500'>
-						<p className='font-bold text-white'>Delete</p>
+					<TooltipContent className='bg-violet-500'>
+						<p className='font-bold text-white'>
+							{listData.archived ? 'Restore' : 'Archive'}
+						</p>
 					</TooltipContent>
 				</Tooltip>
 			</TooltipProvider>
 			<PopoverContent
 				align={'center'}
-				onOpenAutoFocus={(event) => {
-					// toggleHidden();
-				}}
+				onOpenAutoFocus={(event) => {}}
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
-					// toggleHidden();
 				}}
 				className='data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
 				<form
@@ -116,8 +115,11 @@ export default function DeleteModalList({
 					}}>
 					<div className='m-4 rounded-xl text-left text-gray-900'>
 						Are you sure you want to{' '}
-						<span className='font-medium'> delete</span> this{' '}
-						<span className='font-medium'> list</span>?
+						<span className='font-medium'>
+							{' '}
+							{!listData.archived ? 'archive' : 'restore'}
+						</span>{' '}
+						this <span className='font-medium'> list</span>?
 					</div>
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-end'>
 						<PopoverClose asChild={true}>
@@ -145,7 +147,7 @@ export default function DeleteModalList({
 						</button>
 					</div>
 				</form>
-				<PopoverArrow className='fill-rose-500' />
+				<PopoverArrow className='fill-violet-500' />
 			</PopoverContent>
 		</Popover>
 	);
