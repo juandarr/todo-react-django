@@ -182,6 +182,7 @@
 .taskitem,
 textarea {
   resize: none;
+  box-sizing: border-box;
 }
 
 /* Message duration */
