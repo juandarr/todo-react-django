@@ -183,6 +183,7 @@
 textarea {
   resize: none;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 /* Message duration */
