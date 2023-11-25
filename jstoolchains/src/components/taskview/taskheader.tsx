@@ -17,7 +17,7 @@ export default function TaskListHeader({
 			<div className='w-2/12 px-6 text-center font-bold text-gray-700'>
 				<span className='relative'>
 					{fieldDone}
-					<span className='absolute -bottom-1 -right-4 text-xs font-semibold'>
+					<span className='absolute -bottom-1 left-[102%] text-xs font-semibold'>
 						({items})
 					</span>
 				</span>
