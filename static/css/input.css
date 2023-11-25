@@ -104,6 +104,20 @@
   }
 }
 
+@media screen and (max-width: 900px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  html {
+    font-size: 12px;
+  }
+  body {
+    min-width: 650px;
+  }
+}
 /* Body style */
 .body-overflow {
   overflow-y: auto;
