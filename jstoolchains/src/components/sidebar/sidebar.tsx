@@ -136,7 +136,7 @@ export default function SideBar({
 				<div className='mb-2 flex justify-between'>
 					<div className='relative text-lg font-bold text-fuchsia-600'>
 						Archived
-						<span className='absolute -right-4 bottom-0 text-xs font-semibold'>
+						<span className='absolute bottom-0 left-[102%] text-xs font-semibold'>
 							({archivedLists.length})
 						</span>
 					</div>

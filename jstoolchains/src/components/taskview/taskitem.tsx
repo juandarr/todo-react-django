@@ -17,7 +17,6 @@ import DeleteModalTodo from '../modals/deleteModalTodo';
 import { Calendar2, Task, Flag, BookSaved } from 'iconsax-react';
 import EditModalTodo from '../modals/editModalTodo';
 import { UserContext } from '../../contexts/UserContext';
-import { waitForElementToExist } from '../../lib/utils';
 import useAutosizeTextArea from '../../hooks/useAutosizeTextArea';
 
 export default function TaskItem({
@@ -105,16 +104,29 @@ export default function TaskItem({
 			});
 	}
 
+	const autoExpand = (): void => {
+		(textAreaTitle.current as HTMLElement).style.height = '0px';
+		(textAreaTitle.current as HTMLElement).style.height = `${
+			(textAreaTitle.current as HTMLElement).scrollHeight
+		}px`;
+	};
+
 	/* Resize textArea element on component mount */
 	useEffect(() => {
-		waitForElementToExist(`#todoTitle-${todo.id}`)
-			.then((element) => {
-				(textAreaTitle.current as HTMLElement).style.height = '0px';
-				(textAreaTitle.current as HTMLElement).style.height = `${
-					(textAreaTitle.current as HTMLElement).scrollHeight
-				}px`;
-			})
-			.catch(() => {});
+		/* Resize text area on mount */
+		autoExpand();
+
+		const view = document.getElementById('taskView');
+
+		/* Observe changes in parent component to adapt textarea height */
+		const observer = new ResizeObserver(() => {
+			autoExpand();
+		});
+		observer.observe(view as HTMLTextAreaElement);
+
+		return () => {
+			observer.disconnect();
+		};
 	}, []);
 
 	const el = document.createElement('html');

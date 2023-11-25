@@ -11,7 +11,8 @@
 	"extends": [
 		"standard-with-typescript",
 		"plugin:react/recommended",
-		"prettier"
+		"plugin:react-hooks/recommended",
+		"prettier",
 	],
 	"parserOptions": {
 		"ecmaVersion": "latest",
