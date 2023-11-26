@@ -35,8 +35,17 @@ export function DatePickerWithPresets({
 		console.log('Current date: ', newTodo.dueDate);
 	}
 
+	const [isOpen, setIsOpen] = React.useState(false);
+
+	const openPopover = (): void => {
+		setIsOpen(true);
+	};
+
+	const closePopover = (): void => {
+		setIsOpen(false);
+	};
 	return (
-		<Popover modal={true}>
+		<Popover modal={true} open={isOpen} onOpenChange={setIsOpen}>
 			<PopoverTrigger asChild>
 				<Button
 					variant={'outline'}
@@ -44,7 +53,10 @@ export function DatePickerWithPresets({
 						'w-full justify-start text-left font-normal',
 						newTodo.dueDate === undefined && 'text-muted-foreground',
 					)}
-					disabled={isDisabled}>
+					disabled={isDisabled}
+					onClick={() => {
+						openPopover();
+					}}>
 					<CalendarIconSax className='mr-2 h-6 w-6' />
 					{newTodo.dueDate !== undefined ? (
 						format(newTodo.dueDate as Date, 'E, MMM do')
@@ -70,6 +82,7 @@ export function DatePickerWithPresets({
 											...old,
 											dueDate: addDays(new Date(), 0),
 										}));
+										closePopover();
 									}}>
 									<Calendar1 size='1.5rem' />
 								</button>
@@ -89,6 +102,7 @@ export function DatePickerWithPresets({
 											...old,
 											dueDate: addDays(new Date(), 1),
 										}));
+										closePopover();
 									}}>
 									<SunFog size='1.5rem' />
 								</button>
@@ -108,6 +122,7 @@ export function DatePickerWithPresets({
 											...old,
 											dueDate: addDays(new Date(), 3),
 										}));
+										closePopover();
 									}}>
 									<ArrowRight3 size='1.7rem' />
 								</button>
@@ -127,6 +142,7 @@ export function DatePickerWithPresets({
 											...old,
 											dueDate: addDays(new Date(), 7),
 										}));
+										closePopover();
 									}}>
 									<Forward size='1.5rem' />
 								</button>
@@ -146,6 +162,7 @@ export function DatePickerWithPresets({
 											...old,
 											dueDate: undefined,
 										}));
+										closePopover();
 									}}>
 									<CalendarRemove size='1.5rem' />
 								</button>
@@ -165,6 +182,7 @@ export function DatePickerWithPresets({
 								...old,
 								dueDate: date,
 							}));
+							closePopover();
 						}}
 					/>
 				</div>
