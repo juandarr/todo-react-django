@@ -125,7 +125,7 @@
   width: 100vw;
 }
 
-/*Show child element when hovering on parent element */
+/*Show child element when hovering on parent element. When device hasHover */
 body.hasHover .parent .hidden-child {
   visibility: hidden;
 }
@@ -133,12 +133,15 @@ body.hasHover .parent .hidden-child {
 body.hasHover .parent:hover .hidden-child {
   visibility: visible;
 }
+
+/* Enable hover style when using device with hover */
 body.hasHover .lists-views:hover {
   text-decoration-line: underline;
   text-decoration-color: #06b6d4;
   text-decoration-thickness: 2px;
   text-underline-offset: 4px;
 }
+
 body.hasHover .lists-active:hover {
   text-decoration-line: underline;
   text-decoration-color: #8b5cf6;
@@ -153,11 +156,38 @@ body.hasHover .lists-archived:hover {
   text-underline-offset: 4px;
 }
 
+/* When using touch input devices hide .hidden-child for lists in sidebar unless is selected */
 body.noHover .parent .hidden-child {
   visibility: hidden;
 }
 
-body.noHover .parent .selected.hidden-child {
+body.noHover .parent .list-actions-selected.hidden-child {
+  visibility: visible;
+}
+
+body.noHover .list-view-selected {
+  text-decoration-line: underline;
+  text-decoration-color: #06b6d4;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+body.noHover .list-active-selected {
+  text-decoration-line: underline;
+  text-decoration-color: #8b5cf6;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+body.noHover .list-archived-selected {
+  text-decoration-line: underline;
+  text-decoration-color: #d946ef;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+/* When using touch input devices show .hidden-child for todos in taskView by default */
+body.noHover .parent .hidden-child.todo-actions {
   visibility: visible;
 }
 
