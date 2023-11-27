@@ -25,8 +25,10 @@ export default function SideBar({
 		<button
 			key={value}
 			className={`flex cursor-pointer justify-start ${
-				currentView.id === value ? 'rounded-md bg-cyan-200 font-semibold' : ''
-			} lists-views rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-cyan-500 hover:decoration-2 hover:underline-offset-4`}
+				currentView.id === value
+					? 'list-view-selected rounded-md bg-cyan-200 font-semibold'
+					: ''
+			} lists-views rounded-xl p-1 pl-2 text-base`}
 			onClick={() => {
 				changeCurrentView(value);
 			}}>
@@ -41,7 +43,7 @@ export default function SideBar({
 				<button
 					className={`flex flex-1 cursor-pointer justify-start ${
 						currentView.id === list.id
-							? 'rounded-md bg-cyan-200 font-semibold'
+							? 'list-active-selected rounded-md bg-cyan-200 font-semibold'
 							: ''
 					} lists-active truncate rounded-xl p-1 pl-2 text-base`}
 					onClick={() => {
@@ -52,7 +54,7 @@ export default function SideBar({
 				<div
 					id={`list-${list.id}`}
 					className={`hidden-child flex items-center justify-end 
-					${currentView.id === list.id ? 'selected' : ''}`}>
+					${currentView.id === list.id ? 'edit-selected' : ''}`}>
 					<span className='ml-2'></span>
 					<EditModalList
 						editList={editList}
@@ -75,7 +77,7 @@ export default function SideBar({
 				<button
 					className={`flex flex-1 cursor-pointer justify-start ${
 						currentView.id === list.id
-							? 'rounded-md bg-cyan-200 font-semibold'
+							? 'list-archived-selected rounded-md bg-cyan-200 font-semibold'
 							: ''
 					} lists-archived truncate rounded-xl p-1 pl-2 text-base text-gray-500`}
 					onClick={() => {
@@ -86,7 +88,7 @@ export default function SideBar({
 				<div
 					id={`list-${list.id}`}
 					className={`hidden-child flex items-center justify-end
-					${currentView.id === list.id ? 'selected' : ''}
+					${currentView.id === list.id ? 'edit-selected' : ''}
 					`}>
 					<span className='ml-2'></span>
 					<EditModalList
