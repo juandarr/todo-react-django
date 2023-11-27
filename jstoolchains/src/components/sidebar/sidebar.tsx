@@ -26,7 +26,7 @@ export default function SideBar({
 			key={value}
 			className={`flex cursor-pointer justify-start ${
 				currentView.id === value ? 'rounded-md bg-cyan-200 font-semibold' : ''
-			} rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-cyan-500 hover:decoration-2 hover:underline-offset-4`}
+			} lists-views rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-cyan-500 hover:decoration-2 hover:underline-offset-4`}
 			onClick={() => {
 				changeCurrentView(value);
 			}}>
@@ -34,7 +34,7 @@ export default function SideBar({
 		</button>
 	));
 
-	const otherLists = lists
+	const activeLists = lists
 		.filter((list) => user.inboxListId !== list.id && list.archived === false)
 		.map((list) => (
 			<div key={list.id} className='parent flex items-center justify-between'>
@@ -43,7 +43,7 @@ export default function SideBar({
 						currentView.id === list.id
 							? 'rounded-md bg-cyan-200 font-semibold'
 							: ''
-					} truncate rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-violet-500 hover:decoration-2 hover:underline-offset-4`}
+					} lists-active truncate rounded-xl p-1 pl-2 text-base`}
 					onClick={() => {
 						changeCurrentView(list.id as number);
 					}}>
@@ -51,7 +51,8 @@ export default function SideBar({
 				</button>
 				<div
 					id={`list-${list.id}`}
-					className='hidden-child flex items-center justify-end'>
+					className={`hidden-child flex items-center justify-end 
+					${currentView.id === list.id ? 'selected' : ''}`}>
 					<span className='ml-2'></span>
 					<EditModalList
 						editList={editList}
@@ -76,7 +77,7 @@ export default function SideBar({
 						currentView.id === list.id
 							? 'rounded-md bg-cyan-200 font-semibold'
 							: ''
-					} truncate rounded-xl p-1 pl-2 text-base text-gray-500 hover:underline hover:decoration-fuchsia-500 hover:decoration-2 hover:underline-offset-4`}
+					} lists-archived truncate rounded-xl p-1 pl-2 text-base text-gray-500`}
 					onClick={() => {
 						changeCurrentView(list.id as number);
 					}}>
@@ -84,7 +85,9 @@ export default function SideBar({
 				</button>
 				<div
 					id={`list-${list.id}`}
-					className='hidden-child flex items-center justify-end'>
+					className={`hidden-child flex items-center justify-end
+					${currentView.id === list.id ? 'selected' : ''}
+					`}>
 					<span className='ml-2'></span>
 					<EditModalList
 						editList={editList}
@@ -130,7 +133,7 @@ export default function SideBar({
 					<div className='text-lg font-bold text-violet-600'>Lists</div>
 					<CreateModalList addList={addList} />
 				</div>
-				{otherLists}
+				{activeLists}
 			</div>
 			<div className='mt-4 flex flex-col'>
 				<div className='mb-2 flex justify-between'>
