@@ -173,7 +173,6 @@ export interface DeleteModalTodoProps {
 	deleteEntity: string;
 	parentId: string;
 	id: number;
-	size: string;
 }
 
 export interface ArchiveModalListProps {

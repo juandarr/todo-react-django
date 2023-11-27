@@ -34,7 +34,6 @@ export default function DeleteModalTodo({
 	deleteEntity,
 	parentId,
 	id,
-	size,
 }: DeleteModalTodoProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
 	const [status, setStatus] = useState('viewing');
@@ -93,7 +92,7 @@ export default function DeleteModalTodo({
 							openPopover();
 						}}>
 						<TooltipTrigger>
-							<Trash size={size} />
+							<Trash className='delete-todo' />
 						</TooltipTrigger>
 					</PopoverTrigger>
 					<TooltipContent className='bg-rose-500'>

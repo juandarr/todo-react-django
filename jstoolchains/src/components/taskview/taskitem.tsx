@@ -304,9 +304,6 @@ export default function TaskItem({
 						parentId={`todo-${todo.id}`}
 						id={todo.id as number}
 						key={`del-${todo.id}`}
-						size={
-							document.body.classList.contains('noHover') ? '1.4rem' : '1.6rem'
-						}
 					/>
 				</div>
 			</div>

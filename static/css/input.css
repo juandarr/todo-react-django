@@ -156,6 +156,15 @@ body.hasHover .lists-archived:hover {
   text-underline-offset: 4px;
 }
 
+body.hasHover svg.edit-todo {
+  height: 1.6rem;
+  width: 1.6rem;
+}
+
+body.hasHover svg.delete-todo {
+  height: 1.6rem;
+  width: 1.6rem;
+}
 /* When using touch input devices hide .hidden-child for lists in sidebar unless is selected */
 body.noHover .parent .hidden-child {
   visibility: hidden;
@@ -191,6 +200,14 @@ body.noHover .parent .hidden-child.todo-actions {
   visibility: visible;
 }
 
+body.noHover svg.edit-todo {
+  height: 1.4rem;
+  width: 1.4rem;
+}
+body.noHover svg.delete-todo {
+  height: 1.4rem;
+  width: 1.4rem;
+}
 /* Animation for modals */
 @keyframes popover-content-show {
   from {
