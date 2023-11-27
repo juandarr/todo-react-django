@@ -88,13 +88,12 @@ export default function DeleteModalTodo({
 				<Tooltip>
 					<PopoverTrigger
 						asChild={true}
+						className='flex cursor-pointer justify-center text-rose-500 hover:text-rose-600'
 						onClick={() => {
 							openPopover();
 						}}>
 						<TooltipTrigger>
-							<a className='flex cursor-pointer justify-center text-rose-500 hover:text-rose-600'>
-								<Trash size={`${size}rem`} />
-							</a>
+							<Trash size={size} />
 						</TooltipTrigger>
 					</PopoverTrigger>
 					<TooltipContent className='bg-rose-500'>

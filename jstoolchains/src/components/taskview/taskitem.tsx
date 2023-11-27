@@ -289,7 +289,7 @@ export default function TaskItem({
 				</form>
 				<div
 					id={`todo-${todo.id}`}
-					className='hidden-child mt-3 flex w-2/12 items-start justify-center px-3'>
+					className='hidden-child todo-actions mt-3 flex w-2/12 items-start justify-end'>
 					<EditModalTodo
 						editTodoFull={editTodoFull}
 						todo={todo}
@@ -304,7 +304,9 @@ export default function TaskItem({
 						parentId={`todo-${todo.id}`}
 						id={todo.id as number}
 						key={`del-${todo.id}`}
-						size={1.6}
+						size={
+							document.body.classList.contains('noHover') ? '1.4rem' : '1.6rem'
+						}
 					/>
 				</div>
 			</div>

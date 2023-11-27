@@ -54,7 +54,7 @@ export default function SideBar({
 				<div
 					id={`list-${list.id}`}
 					className={`hidden-child flex items-center justify-end 
-					${currentView.id === list.id ? 'edit-selected' : ''}`}>
+					${currentView.id === list.id ? 'list-actions-selected' : ''}`}>
 					<span className='ml-2'></span>
 					<EditModalList
 						editList={editList}
@@ -88,7 +88,7 @@ export default function SideBar({
 				<div
 					id={`list-${list.id}`}
 					className={`hidden-child flex items-center justify-end
-					${currentView.id === list.id ? 'edit-selected' : ''}
+					${currentView.id === list.id ? 'list-actions-selected' : ''}
 					`}>
 					<span className='ml-2'></span>
 					<EditModalList

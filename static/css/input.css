@@ -156,12 +156,12 @@ body.hasHover .lists-archived:hover {
   text-underline-offset: 4px;
 }
 
-/* When using touch input devices hide .hidden-child unless is selected */
+/* When using touch input devices hide .hidden-child for lists in sidebar unless is selected */
 body.noHover .parent .hidden-child {
   visibility: hidden;
 }
 
-body.noHover .parent .edit-selected.hidden-child {
+body.noHover .parent .list-actions-selected.hidden-child {
   visibility: visible;
 }
 
@@ -184,6 +184,11 @@ body.noHover .list-archived-selected {
   text-decoration-color: #d946ef;
   text-decoration-thickness: 2px;
   text-underline-offset: 4px;
+}
+
+/* When using touch input devices show .hidden-child for todos in taskView by default */
+body.noHover .parent .hidden-child.todo-actions {
+  visibility: visible;
 }
 
 /* Animation for modals */
