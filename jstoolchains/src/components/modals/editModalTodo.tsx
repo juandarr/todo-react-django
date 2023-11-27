@@ -156,13 +156,7 @@ export default function EditModalTodo({
 							openPopover();
 						}}>
 						<TooltipTrigger>
-							<Edit
-								size={
-									document.body.classList.contains('noHover')
-										? '1.4rem'
-										: '1.6rem'
-								}
-							/>
+							<Edit className='edit-todo' />
 						</TooltipTrigger>
 					</PopoverTrigger>
 					<TooltipContent className='bg-sky-500'>
