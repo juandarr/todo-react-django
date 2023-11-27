@@ -126,11 +126,38 @@
 }
 
 /*Show child element when hovering on parent element */
-.parent .hidden-child {
+body.hasHover .parent .hidden-child {
   visibility: hidden;
 }
 
-.parent:hover .hidden-child {
+body.hasHover .parent:hover .hidden-child {
+  visibility: visible;
+}
+body.hasHover .lists-views:hover {
+  text-decoration-line: underline;
+  text-decoration-color: #06b6d4;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+body.hasHover .lists-active:hover {
+  text-decoration-line: underline;
+  text-decoration-color: #8b5cf6;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+body.hasHover .lists-archived:hover {
+  text-decoration-line: underline;
+  text-decoration-color: #d946ef;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+body.noHover .parent .hidden-child {
+  visibility: hidden;
+}
+
+body.noHover .parent .selected.hidden-child {
   visibility: visible;
 }
 

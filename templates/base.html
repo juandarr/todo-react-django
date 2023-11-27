@@ -29,6 +29,33 @@
                 }
             }
         });
+        function watchForHover() {
+            // lastTouchTime is used for ignoring emulated mousemove events
+            let lastTouchTime = 0
+
+            function enableHover() {
+                if (new Date() - lastTouchTime < 500) return
+                document.body.classList.add('hasHover')
+                document.body.classList.remove('noHover')
+            }
+
+            function disableHover() {
+                document.body.classList.remove('hasHover')
+                document.body.classList.add('noHover')
+            }
+
+            function updateLastTouchTime() {
+                lastTouchTime = new Date()
+            }
+
+            document.addEventListener('touchstart', updateLastTouchTime, true)
+            document.addEventListener('touchstart', disableHover, true)
+            document.addEventListener('mousemove', enableHover, true)
+
+            enableHover()
+        }
+
+        watchForHover()
     </script>
     {% block js_script %}
 
