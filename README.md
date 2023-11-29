@@ -1,6 +1,7 @@
-# Tasker with pomodoro timer (pending feature) and stats (pending feature)
+# JoyFlow
+A task manager app, with statistics and a pomodoro timer (pending feature)
 
-Organize and manage your personal projects in list and tasks.
+The main purpose of this app is to help you organize and manage your personal projects in list, tasks and define how you are going to manage your time during the day.
 
 ![Overview of Todo app](./images/todo-overview.png)
 
@@ -14,7 +15,7 @@ Organize and manage your personal projects in list and tasks.
 
 ## Features
 
-- Create tasks. The concept of task/todo is used to represent something that you will do eventually which has at least a definition (title). Tasks have the following properties:
+- Create tasks. The concept of task/todo is used to represent something that you will do eventually which has at least a definition, purpose or topic (title). Tasks have the following properties:
   - Title
   - Description
     - An optional description of the task
@@ -34,6 +35,21 @@ Organize and manage your personal projects in list and tasks.
   - `s`: hide or show the sidebar
   - `q`: open the task creation modal from the navigation bar 
   - `h`: show the list defined as home list in the task view
+
+## Identity
+The app name is JoyFlow. The goal is to create a system the user will enjoy using as  a companion while facing the challenges brought by the day. The user inferface is designed to be playful, clean and minimalistic. The flow part of the name is aspirational: the intention is for the system to help the user to induce and keep a state of flow while working on a project or mission.
+
+### Base colors
+The hue `600` as defined by the TailwindCSS system.
+
+- Violet: `rgb(124,58,237)` (`violet-600`)
+- Cyan:`rgb(2, 132,199)` (`cyan-600`)
+- Fuchsia:`rgb(192,38,211)` (`fuchsia-600`)
+- Red: `rgb(244,63,94)` (`rose-600`)
+- Green:`rgb(5,150,105)` (`emerald-600`)
+- Yellow:`rgb(217,119,6)` (`amber-600`)
+
+The overal background of the app is `rbg(56,189,248)` (`sky-400`). The background of component is `white`. For input elements such TextArea, input or TextEditor the background is `rgb(17,24,39)` (`gray-900`).
 
 # License
 
