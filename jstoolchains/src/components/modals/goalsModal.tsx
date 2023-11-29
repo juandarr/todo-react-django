@@ -148,6 +148,8 @@ export default function GoalsModal({
 				streak += 1;
 			}
 			let penalty = 0;
+			const penaltyLimit = 1;
+			let streakCompleted = false;
 			/* TODO : This algorithm is not efficient at all. Streak should be calculated based on a historic collection of past streak data. Redoit in the future */
 			do {
 				idx += 1;
@@ -166,12 +168,17 @@ export default function GoalsModal({
 								date.toLocaleDateString('en-US', { weekday: 'short' })
 						] = true;
 					}
-					streak += 1;
+					if (!streakCompleted) {
+						streak += 1;
+					}
 					penalty = 0;
 				} else {
 					penalty += 1;
+					if (penalty >= penaltyLimit) {
+						streakCompleted = true;
+					}
 				}
-			} while (penalty < 2 || idx <= 6); // Allow gaps (penalty < 2, can miss one day max) or not (penalty < 1, no misses allowed)
+			} while (penalty < penaltyLimit || idx <= 6); // Allow gaps (penalty < 2, can miss one day max) or not (penalty < 1, no misses allowed)
 			console.log('Array before reverse: ', previousDays);
 			return { streak, previousDays: previousDays.reverse() };
 		}
