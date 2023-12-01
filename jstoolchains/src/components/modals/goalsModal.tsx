@@ -148,7 +148,9 @@ export default function GoalsModal({
 				streak += 1;
 			}
 			let penalty = 0;
+			// Allow gaps (penaltyLimit = 2, can miss one day max) or not (penaltyLimit = 1, no misses allowed)
 			const penaltyLimit = 1;
+			// Use to stop the streak counter once penalty limit is reached
 			let streakCompleted = false;
 			/* TODO : This algorithm is not efficient at all. Streak should be calculated based on a historic collection of past streak data. Redoit in the future */
 			do {
@@ -178,7 +180,7 @@ export default function GoalsModal({
 						streakCompleted = true;
 					}
 				}
-			} while (penalty < penaltyLimit || idx <= 6); // Allow gaps (penalty < 2, can miss one day max) or not (penalty < 1, no misses allowed)
+			} while (penalty < penaltyLimit || idx <= 6);
 			console.log('Array before reverse: ', previousDays);
 			return { streak, previousDays: previousDays.reverse() };
 		}
@@ -234,20 +236,22 @@ export default function GoalsModal({
 							</div>
 						</div>
 						<div className='mb-6 ml-3 mr-3 flex items-center justify-around'>
-							<div className=' relative flex w-1/3 items-center justify-center text-yellow-500'>
+							<div className=' relative flex w-1/3 flex-col items-center justify-center text-yellow-500'>
+								<div className='pb-1 font-medium'>Today</div>
 								<Sun1 size='2rem' variant='Broken' />
-
 								<div className='absolute -bottom-3 left-[68%] font-Maple text-2xl'>
 									{completedCounter.day}
 								</div>
 							</div>
-							<div className='relative flex w-1/3 items-center justify-center text-emerald-500'>
+							<div className='relative flex w-1/3 flex-col items-center justify-center text-emerald-500'>
+								<div className='pb-1 font-medium'>Week</div>
 								<CardEdit size='2rem' variant='Broken' />
 								<div className='absolute -bottom-3 left-[68%] font-Maple text-2xl'>
 									{completedCounter.week}
 								</div>
 							</div>
-							<div className='relative flex w-1/3 items-center justify-center text-orange-500'>
+							<div className='relative flex w-1/3 flex-col items-center justify-center text-orange-500'>
+								<div className='pb-1 font-medium'>Month</div>
 								<CalendarTick size='2rem' variant='Broken' />
 								<div className='absolute -bottom-3 left-[68%] font-Maple text-2xl'>
 									{completedCounter.month}
