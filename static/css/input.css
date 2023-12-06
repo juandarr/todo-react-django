@@ -611,47 +611,6 @@ input[type="checkbox"]:checked:hover {
 }
 
 /* Spinner animation class */
-/* .loader {
-  width: 1.6rem;
-  height: 1.6rem;
-  border: 2px solid rgb(124 58 237);
-  border-radius: 50%;
-  display: block;
-  position: absolute;
-  box-sizing: border-box;
-  animation: rotation 1s linear infinite;
-  justify-content: center;
-  align-self: center;
-}
-.loader::after,
-.loader::before {
-  content: "";
-  box-sizing: border-box;
-  position: absolute;
-  left: 0;
-  top: 0;
-  background: rgb(217 70 239);
-  width: 0.2rem;
-  height: 0.2rem;
-  transform: translate(150%, 150%);
-  border-radius: 50%;
-}
-.loader::before {
-  left: auto;
-  top: auto;
-  right: 0;
-  bottom: 0;
-  transform: translate(-150%, -150%);
-}
-
-@keyframes rotation {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-} */
 .loader {
   width: 1.5rem;
   height: 1.5rem;
