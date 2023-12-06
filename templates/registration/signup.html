@@ -7,7 +7,7 @@
 <div class="flex justify-center items-center">
     <div
         class="flex flex-col items-center justify-center bg-white w-fit rounded-xl mt-10 m-4 p-8">
-        <h2 class="text-xl mb-2 font-bold">Sign up</h2>
+        <h2 class="text-xl mb-2 font-bold">Register</h2>
         <form class="ml-2 mr-2 admin-form" method="post" id="signup-form">
             {% csrf_token %}
             <div class="mb-4">
@@ -28,9 +28,13 @@
             </div>
             <div class="flex justify-center">
                 <button
-                    class="mt-2 mb-4 bg-cyan-500 p-3 w-fit rounded-md font-semibold text-lg hover:bg-cyan-600"
-                    type="submit">
-                    Sign up
+                    class="mt-2 mb-4 h-9 flex justify-center items-center bg-cyan-500 p-3 w-fit rounded-xl font-semibold text-lg hover:bg-cyan-600"
+                    type="submit" id="registerBtn">
+                    <span class='loader invisible'
+                        id="registerBtnSpinner"></span>
+                    <span class='block' id="registerBtnLabel">
+                        Register
+                    </span>
                 </button>
             </div>
         </form>
@@ -40,6 +44,16 @@
 
 {% block js_script %}
 <script>
+
+    function handlePasswordChangeFormSubmit() {
+        // Disable button
+        document.getElementById('registerBtn').disabled = true;
+        // Hidde button label
+        document.getElementById('registerBtnLabel').classList.toggle('invisible');
+        // Show loading indicator
+        document.getElementById('registerBtnSpinner').classList.toggle('invisible');
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
         const signupForm = document.getElementById('signup-form');
 
@@ -48,6 +62,8 @@
                 // Prevent the default form submission behavior
                 event.preventDefault();
 
+                // Disable form button, hidde button label, show loading spinner
+                handlePasswordChangeFormSubmit();
                 // Get the user's timezone
                 const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
