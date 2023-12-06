@@ -8,3 +8,4 @@ todo/migrations/__pycache__
 django/
 todo-api-client/
 .env
+jstoolchains/todo-react-django.code-workspace
