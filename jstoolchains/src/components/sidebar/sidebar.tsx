@@ -116,7 +116,7 @@ export default function SideBar({
 				Welcome, {user.username} ;)
 			</div>
 			<div className='mb-1 flex flex-col'>
-				<div className='mb-2 text-lg font-bold text-sky-600'>Tareas</div>
+				<div className='mb-2 text-lg font-bold text-cyan-600'>Tareas</div>
 				<button
 					className={`flex cursor-pointer justify-start ${
 						currentView.id === user.inboxListId

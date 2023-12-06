@@ -18,16 +18,7 @@ import {
 } from '../ui/popover';
 import { useToast } from '../ui/toast/use-toast';
 
-import Spinner from 'react-spinners/DotLoader';
-
 import type { CreateModalListProps } from '../../lib/customTypes';
-
-const override: CSSProperties = {
-	display: 'block',
-	position: 'absolute',
-	justifyContent: 'center',
-	alignSelf: 'center',
-};
 
 export default function CreateModalList({
 	addList,
@@ -153,14 +144,10 @@ export default function CreateModalList({
 							type='submit'
 							className='ml-4 flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'
 							disabled={!!(status === 'submitting' || newList.length === 0)}>
-							<Spinner
-								color='rgb(147 51 234)'
-								loading={status === 'submitting'}
-								cssOverride={override}
-								size={20}
-								aria-label='Loading Spinner'
-								data-testid='loader'
-							/>
+							<span
+								className={`loader ${
+									status === 'submitting' ? 'block' : 'invisible'
+								}`}></span>
 							<span className={status === 'submitting' ? 'invisible' : 'block'}>
 								Save
 							</span>

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-Task manager
+JoyFlow
 {% endblock %}
 
 {% block content %}
@@ -10,10 +10,10 @@ Task manager
 {% else %}
 <div class="flex flex-col items-center mt-3">
     <p class="mb-2">You are not logged in</p>
-    <a class="bg-white p-3 mb-2 font-semibold w-fit hover:bg-gray-200 rounded-md"
+    <a class="bg-white p-3 h-9 mb-2 font-semibold w-fit hover:bg-gray-200 rounded-md flex justify-center items-center"
         href="{% url 'login' %}">Log In</a>
     <p>Or register if you don't have an account</p>
-    <a class="bg-white p-3 mt-2 font-semibold w-fit hover:bg-gray-200 rounded-md"
+    <a class="bg-white p-3 h-9 mt-2 font-semibold w-fit hover:bg-gray-200 rounded-md flex justify-center items-center"
         href="{% url 'signup' %}">Register</a>
 </div>
 {% endif %}

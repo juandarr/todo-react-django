@@ -27,8 +27,6 @@ import {
 
 import { useToast } from '../ui/toast/use-toast';
 
-import Spinner from 'react-spinners/DotLoader';
-
 import type { EditModalTodoProps, todoType } from '../../lib/customTypes';
 import { PriorityEnum } from '../../lib/userSettings';
 
@@ -37,13 +35,6 @@ import { DatePickerWithPresets } from '../ui/datepicker';
 import useTextEditor from '../../hooks/useTextEditor';
 import TextEditor from '../ui/textEditor';
 import useAutosizeTextArea from '../../hooks/useAutosizeTextArea';
-
-const override: CSSProperties = {
-	display: 'block',
-	position: 'absolute',
-	justifyContent: 'center',
-	alignSelf: 'center',
-};
 
 export default function EditModalTodo({
 	editTodoFull,
@@ -323,14 +314,10 @@ export default function EditModalTodo({
 							disabled={
 								!!(status === 'submitting' || newEditTodo.title.length === 0)
 							}>
-							<Spinner
-								color='rgb(8 145 178)'
-								loading={status === 'submitting'}
-								cssOverride={override}
-								size={20}
-								aria-label='Loading Spinner'
-								data-testid='loader'
-							/>
+							<span
+								className={`loader ${
+									status === 'submitting' ? 'block' : 'invisible'
+								}`}></span>
 							<span className={status === 'submitting' ? 'invisible' : 'block'}>
 								Save
 							</span>

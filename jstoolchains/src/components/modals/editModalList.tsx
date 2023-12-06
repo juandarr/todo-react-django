@@ -20,16 +20,8 @@ import {
 
 import { useToast } from '../ui/toast/use-toast';
 
-import Spinner from 'react-spinners/DotLoader';
 import DeleteModalList from './deleteModalList';
 import ArchiveModalList from './archiveModalList';
-
-const override: CSSProperties = {
-	display: 'block',
-	position: 'absolute',
-	justifyContent: 'center',
-	alignSelf: 'center',
-};
 
 export default function EditModalList({
 	editList,
@@ -185,14 +177,10 @@ export default function EditModalList({
 									.then(() => {})
 									.catch(() => {});
 							}}>
-							<Spinner
-								color='rgb(147 51 234)'
-								loading={status === 'submitting'}
-								cssOverride={override}
-								size={20}
-								aria-label='Loading Spinner'
-								data-testid='loader'
-							/>
+							<span
+								className={`loader ${
+									status === 'submitting' ? 'block' : 'invisible'
+								}`}></span>
 							<span className={status === 'submitting' ? 'invisible' : 'block'}>
 								Save
 							</span>
