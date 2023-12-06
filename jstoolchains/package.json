@@ -70,7 +70,6 @@
 		"react-day-picker": "^8.8.2",
 		"react-dom": "^18.2.0",
 		"react-select-virtualized": "^5.5.1",
-		"react-spinners": "^0.13.8",
 		"react-windowed-select": "^5.1.1"
 	}
 }

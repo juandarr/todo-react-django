@@ -19,15 +19,7 @@ import {
 
 import { useToast } from '../ui/toast/use-toast';
 
-import Spinner from 'react-spinners/DotLoader';
 import { Trash } from 'iconsax-react';
-
-const override: CSSProperties = {
-	display: 'block',
-	position: 'absolute',
-	justifyContent: 'center',
-	alignSelf: 'center',
-};
 
 export default function DeleteModalList({
 	deleteFunction,
@@ -131,14 +123,10 @@ export default function DeleteModalList({
 							type='submit'
 							className='ml-4 flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring  focus-visible:ring-cyan-300 disabled:bg-cyan-100'
 							disabled={status === 'submitting'}>
-							<Spinner
-								color='rgb(8 145 178)'
-								loading={status === 'submitting'}
-								cssOverride={override}
-								size={20}
-								aria-label='Loading Spinner'
-								data-testid='loader'
-							/>
+							<span
+								className={`loader ${
+									status === 'submitting' ? 'block' : 'invisible'
+								}`}></span>
 							<span className={status === 'submitting' ? 'invisible' : 'block'}>
 								Yes
 							</span>

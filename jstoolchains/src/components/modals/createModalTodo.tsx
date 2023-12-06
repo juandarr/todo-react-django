@@ -32,8 +32,6 @@ import {
 } from '../ui/select';
 import { useToast } from '../ui/toast/use-toast';
 
-import Spinner from 'react-spinners/DotLoader';
-
 import type { CreateModalTodoProps, todoType } from '../../lib/customTypes';
 import { PriorityEnum } from '../../lib/userSettings';
 import { isDescendantOf } from '../../lib/utils';
@@ -42,14 +40,6 @@ import { DatePickerWithPresets } from '../ui/datepicker';
 import { UserContext } from '../../contexts/UserContext';
 import useTextEditor from '../../hooks/useTextEditor';
 import TextEditor from '../ui/textEditor';
-// import { EditorContent } from '@tiptap/react';
-
-const override: CSSProperties = {
-	display: 'block',
-	position: 'absolute',
-	justifyContent: 'center',
-	alignSelf: 'center',
-};
 
 export default function CreateModalTodo({
 	lists,
@@ -333,14 +323,10 @@ export default function CreateModalTodo({
 							disabled={
 								!!(status === 'submitting' || newTodo.title.length === 0)
 							}>
-							<Spinner
-								color='rgb(8 145 178)'
-								loading={status === 'submitting'}
-								cssOverride={override}
-								size={20}
-								aria-label='Loading Spinner'
-								data-testid='loader'
-							/>
+							<span
+								className={`loader ${
+									status === 'submitting' ? 'block' : 'invisible'
+								}`}></span>
 							<span className={status === 'submitting' ? 'invisible' : 'block'}>
 								Create
 							</span>
