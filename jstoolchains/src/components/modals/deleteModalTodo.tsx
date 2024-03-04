@@ -63,7 +63,7 @@ export default function DeleteModalTodo({
 	};
 
 	const openPopover = (): void => {
-		setStatus('submitting');
+		setStatus('viewing');
 		setIsOpen(true);
 	};
 
