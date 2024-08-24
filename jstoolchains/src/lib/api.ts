@@ -8,7 +8,7 @@ import { Configuration } from '../../../todo-api-client/runtime';
 import { getCookie } from './utils';
 
 const apiConfig = new Configuration({
-	basePath: 'http://127.0.0.1:8000',
+	basePath: 'http://localhost:8000',
 	headers: {
 		'X-CSRFToken': getCookie('csrftoken'),
 	},
