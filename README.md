@@ -6,6 +6,7 @@ The main purpose of this app is to help you organize and manage your personal pr
 ![Overview of Todo app](./images/todo-overview.png)
 
 ## Update roadmap
+
 My goal right now is to update every dependency to 2024, improve the code and add some core features that will make the application more useful. Here are the main topics to explore in order:
 - Update to last React version, 19, including the optimizations provided by the React compiler and using other tools to check suboptimal configuration in the app.
 - Check other dependencies.
@@ -58,6 +59,12 @@ Here are the instructions to run the application and start developing with hot r
 - Run tailwind watch in a separate terminal by going to `jstoolchains` and running `npm run tailwind-watch`.
 - Run webpack by opening a separate terminal, `cd jstoolchains` and running `npm run dev`
 - Now go to the server address, you should be ready to start development!
+
+### Running after setup
+Once the initial setup is completed, generally you just need the following three commands (one per terminal session) to work on development mode:
+- Run the python server from root with `python manage.py runserver 127.0.0.1:8000`. `0.0.0.0:8000` if using `WSL2`
+- Run tailwind watch from `jstoolchains` folder with `npm run tailwind-watch`
+- Run webpack from `jstoolchains` folder with `npm run dev` 
 
 ## Identity
 The app name is JoyFlow. The goal is to create a system the user will enjoy using as  a companion while facing the challenges brought by the day. The user inferface is designed to be playful, clean and minimalistic. The flow part of the name is aspirational: the intention is for the system to help the user to induce and keep a state of flow while working on a project or mission.
