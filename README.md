@@ -40,8 +40,10 @@ The main purpose of this app is to help you organize and manage your personal pr
 
 Here are the instructions to run the application and start developing with hot reloading:
 
+- Clone the repository in the location you choose. 
 - Install a Python environment using `miniconda` or `uv`. If using `minicoda`, install `pip` with `conda install pip` and proceed to the python dependency installation with `pip install -r requirements.txt`
-- Create `database` folder, add a previous existing database or create the database from scratch. 
+- Create `database` folder, add a previous existing database or create the database from scratch using `python manage.py migrate` on root folder. 
+- Add API folder from server folder. TODO Add instruction to create the API following the `OpenAPI` specifications in `schema.yml` /TODO 
 - Install `node`, the proceed to install every dependency by going to `jstoolchains` and running `npm install`
 - Bring `.env` file with custom credentials to use Gmail SMTP server
 - Modify API call in the `jstoolchains` folder (go to `src\lib\api.ts`), make sure the call is to `127.0.0.1:8000`
