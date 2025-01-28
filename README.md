@@ -36,6 +36,20 @@ The main purpose of this app is to help you organize and manage your personal pr
   - `q`: open the task creation modal from the navigation bar 
   - `h`: show the list defined as home list in the task view
 
+## Development
+
+Here are the instructions to run the application and start developing with hot reloading:
+
+- Install a Python environment using `miniconda` or `uv`. If using `minicoda`, install `pip` with `conda install pip` and proceed to the python dependency installation with `pip install -r requirements.txt`
+- Create `database` folder, add a previous existing database or create the database from scratch. 
+- Install `node`, the proceed to install every dependency by going to `jstoolchains` and running `npm install`
+- Bring `.env` file with custom credentials to use Gmail SMTP server
+- Modify API call in the `jstoolchains` folder (go to `src\lib\api.ts`), make sure the call is to `127.0.0.1:8000`
+- Run the python server using `127.0.0.1:8000` if using Linux. `0.0.0.0:8000` is required if making the call from `WSL2`.
+- Run tailwind watch in a separate terminal by going to `jstoolchains` and running `npm run tailwind-watch`.
+- Run webpack by opening a separate terminal, `cd jstoolchains` and running `npm run dev`
+- Now go to the server address, you should be ready to start development!
+
 ## Identity
 The app name is JoyFlow. The goal is to create a system the user will enjoy using as  a companion while facing the challenges brought by the day. The user inferface is designed to be playful, clean and minimalistic. The flow part of the name is aspirational: the intention is for the system to help the user to induce and keep a state of flow while working on a project or mission.
 
