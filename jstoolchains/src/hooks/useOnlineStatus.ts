@@ -6,7 +6,7 @@ import { checkOnlineStatus } from '../lib/utils';
 // normally indicate when the device is connected to a router or local network
 export function useOnlineStatus(): boolean {
 	const [isOnline, setIsOnline] = useState<boolean>(false);
-	const intervalRef = useRef<NodeJS.Timeout>();
+	const intervalRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
 	useEffect(() => {
 		// Check for online connection when component is mounted
