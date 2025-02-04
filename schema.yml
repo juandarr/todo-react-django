@@ -737,9 +737,7 @@ components:
           type: integer
           readOnly: true
       required:
-      - id
       - title
-      - user
     PatchedList:
       type: object
       properties:
@@ -884,10 +882,7 @@ components:
           type: integer
           readOnly: true
       required:
-      - created_at
-      - id
       - title
-      - user
     User:
       type: object
       properties:
