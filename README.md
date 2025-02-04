@@ -52,8 +52,10 @@ Here are the instructions to run the application and start developing with hot r
 - Clone the repository in the location you choose. 
 - Install a Python environment using `miniconda` or `uv`. If using `minicoda`, install `pip` with `conda install pip` and proceed to the python dependency installation with `pip install -r requirements.txt`
 - Create `database` folder, add a previous existing database or create the database from scratch using `python manage.py migrate` on root folder. 
-- Add API folder from server folder. Make sure you have the npm package to create the API specification via `schema.yml` in the root folder: `npm install @openapitools/openapi-generator-cli`. Once you have it installed run: `openapi-generator-cli generate -i schema.yml -g typescript-fetch -o ./api-location/`
 - Install `node`, the proceed to install every dependency by going to `jstoolchains` and running `npm install`
+- Create API from specification in file `schema.yml`. 
+  - Make sure you install the `openapi generator cli`: `npm install @openapitools/openapi-generator-cli`. This package will allow you to create the API via `schema.yml`, located at the root of the project. 
+  - Once you have it installed, run: `npx @openapitools/openapi-generator-cli generate -i schema.yml -g typescript-fetch -o ../todo-api-client/`
 - Bring `.env` file with custom credentials to use Gmail SMTP server
 - Modify API call in the `jstoolchains` folder (go to `src\lib\api.ts`), make sure the call is to `127.0.0.1:8000`
 - Run the python server using `127.0.0.1:8000` if using Linux. `0.0.0.0:8000` is required if making the call from `WSL2`.
