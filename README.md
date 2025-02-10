@@ -1,7 +1,7 @@
 # JoyFlow
 A task manager app, with statistics and a pomodoro timer (pending feature)
 
-The main purpose of this app is to help you organize and manage your personal projects in list, tasks and define how you are going to manage your time during the day.
+The main purpose of this app is to help you organize and manage your personal projects with lists and tasks. It also provides the tools to manage your time during the day (e. g., pomodoro, priorities).
 
 ![Overview of Todo app](./images/todo-overview.png)
 
@@ -24,7 +24,7 @@ My goal right now is to update every dependency to 2024, improve the code and ad
 
 ## Features
 
-- Create tasks. The concept of task/todo is used to represent something that you will do eventually which has at least a definition, purpose or topic (title). Tasks have the following properties:
+- Tasks: The concept of task/todo is used to represent something that you will eventually do with at least a definition, purpose or topic (title). Tasks have the following properties:
   - Title
   - Description
     - An optional description of the task
@@ -36,9 +36,11 @@ My goal right now is to update every dependency to 2024, improve the code and ad
     - Priorities give a definition of how important is the task being created. It has four option from least to most important: none, low, medium, high
   - List 
     - Tasks are associated to list. When no list is assigned it will be associated to the inbox list by default
-- Create lists. Lists can represent a project, a list of tasks for the day or anything you want.Lists have the following properties:
-  - Title
-- Tasks created from the navigation bar can be associated to any current List. If no list is defined it will be associated to the default list for the current user(inbox)
+- Lists: can represent a project, a collection of things to do during the day or anything you want.
+  - Lists have the following properties:
+    - Title
+  - Lists can be archived when you want to preserve the data and history
+- Tasks created from the navigation bar can be associated to any current List. If no list is defined it will be associated to the default list for the current user (inbox)
 - Tasks created from the task view only allow to define title and are associated to inbox by default
 - Keyboard shortcuts
   - `s`: hide or show the sidebar
