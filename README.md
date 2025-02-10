@@ -8,7 +8,7 @@ The main purpose of this app is to help you organize and manage your personal pr
 ## Update roadmap
 
 My goal right now is to update every dependency to 2024, improve the code and add some core features that will make the application more useful. Here are the main topics to explore in order:
-- [x]] Update to last React version, 19, including the optimizations provided by the React compiler and using other tools to check suboptimal configuration in the app.
+- [x] Update to last React version, 19, including the optimizations provided by the React compiler and using other tools to check suboptimal configuration in the app.
 - [ ] Update tailwindcss to 4.0 - in progress
 - [ ] Check other dependencies.
 - [ ] Avoid unnecessary rendering, and familiarize with the code again (heavy development of the app was done a couple of years ago)
@@ -40,8 +40,8 @@ My goal right now is to update every dependency to 2024, improve the code and ad
   - Lists have the following properties:
     - Title
   - Lists can be archived when you want to preserve the data and history
-- Tasks created from the navigation bar can be associated to any current List. If no list is defined it will be associated to the default list for the current user (inbox)
-- Tasks created from the task view only allow to define title and are associated to inbox by default
+- Tasks created from the top navigation bar (`+` icon) can be associated to any active List. If no list is defined it will be associated to the default list for the current user (inbox)
+- Tasks created from the task view only require the title and will be associated to current list in view
 - Keyboard shortcuts
   - `s`: hide or show the sidebar
   - `q`: open the task creation modal from the navigation bar 
