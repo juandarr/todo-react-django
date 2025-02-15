@@ -67,7 +67,7 @@
 		"iconsax-react": "^0.0.8",
 		"lucide-react": "^0.474.0",
 		"react": "19.0.0",
-		"react-day-picker": "^8.8.2",
+		"react-day-picker": "^8.10.1",
 		"react-dom": "19.0.0",
 		"react-select-virtualized": "^5.6.0",
 		"react-windowed-select": "^5.2.0"
