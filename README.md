@@ -14,6 +14,7 @@ My goal right now is to update every dependency to 2024, improve the code and ad
 - [ ] Add new features (In progress)
   - [ ] Add the option to use drag and drop to set a customized order.
     - I am using DnD-kit, to add drag and drop in TaskList type components
+    - Another candidate is [react-dnd](https://react-dnd.github.io/react-dnd/about). Pick the best library and move on
   - [ ] Better description box (as a kind of note)
   - [ ] Add filters to sort the tasks by certain parameters
   
