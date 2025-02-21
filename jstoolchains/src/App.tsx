@@ -59,7 +59,7 @@ export default function App(): React.JSX.Element {
 
 	const [user]: userModelFetch = useModelFetch(clientUser.usersList());
 	const [userInfo, setUserInfo] = useState(userInfoInitial);
-	const [lists, dispatch] = useReducer(listsReducer, initialListsState);
+	const [lists, dispatchLists] = useReducer(listsReducer, initialListsState);
 
 	const initializationCompleted = useRef(false);
 
@@ -96,7 +96,7 @@ export default function App(): React.JSX.Element {
 			.listsList()
 			.then((result: List[]) => {
 				if (!ignore) {
-					dispatch({
+					dispatchLists({
 						type: 'added',
 						payload: result,
 					});
@@ -349,7 +349,7 @@ export default function App(): React.JSX.Element {
 		try {
 			const listCreated = await clientList.listsCreate({ list });
 			console.log('List was created!', listCreated);
-			dispatch({
+			dispatchLists({
 				type: 'added',
 				payload: listCreated,
 			});
@@ -380,7 +380,7 @@ export default function App(): React.JSX.Element {
 			});
 			console.log('List was patched!');
 
-			dispatch({
+			dispatchLists({
 				type: 'edited',
 				payload: updatedList,
 			});
@@ -414,7 +414,7 @@ export default function App(): React.JSX.Element {
 	const deleteList = async (id: number): Promise<void> => {
 		try {
 			await clientList.listsDestroy({ id });
-			dispatch({
+			dispatchLists({
 				type: 'deleted',
 				payload: { id },
 			});
