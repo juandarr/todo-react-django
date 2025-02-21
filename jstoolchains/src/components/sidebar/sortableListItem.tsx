@@ -3,7 +3,7 @@ import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import EditModalList from '../modals/editModalList';
 
-export function SortableListItem({list, currentView, changeCurrentView, deleteList, editList}:any) {
+function SortableListItem({list, currentView, changeCurrentView, deleteList, editList}:any) {
   const {
     attributes,
     listeners,
@@ -51,3 +51,5 @@ export function SortableListItem({list, currentView, changeCurrentView, deleteLi
     </div>
   );
 }
+
+export default SortableListItem;
