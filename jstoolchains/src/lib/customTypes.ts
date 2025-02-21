@@ -1,3 +1,4 @@
+import { ActionDispatch } from 'react';
 import type {
 	List,
 	Todo,
@@ -193,6 +194,12 @@ export interface SettingsModalProps {
 export interface GoalsModalProps {
 	todos: Todo[];
 }
+
+type actionType = {
+	type: string;
+	payload?: any;
+  };
+  
 export interface SideBarProps {
 	lists: List[];
 	viewData: viewDataType;
@@ -208,6 +215,7 @@ export interface SideBarProps {
 		},
 	) => Promise<List>;
 	showSidebar: boolean;
+	dispatchLists: ActionDispatch<[action: actionType]>;
 }
 
 export interface NavBarProps {
