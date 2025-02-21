@@ -2,15 +2,18 @@ import React from 'react';
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import EditModalList from '../modals/editModalList';
+import { SortableListItemProps } from '../../lib/customTypes';
 
-function SortableListItem({list, currentView, changeCurrentView, deleteList, editList}:any) {
+export default function SortableListItem({list, currentView, changeCurrentView, deleteList, editList}:SortableListItemProps) {
   const {
     attributes,
     listeners,
     setNodeRef,
     transform,
     transition,
-  } = useSortable({id: list.id});
+  } = useSortable({
+    id: list.id as number
+  });
   
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -51,5 +54,3 @@ function SortableListItem({list, currentView, changeCurrentView, deleteList, edi
     </div>
   );
 }
-
-export default SortableListItem;

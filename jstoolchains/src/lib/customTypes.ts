@@ -199,7 +199,7 @@ type actionType = {
 	type: string;
 	payload?: any;
   };
-  
+
 export interface SideBarProps {
 	lists: List[];
 	viewData: viewDataType;
@@ -215,6 +215,21 @@ export interface SideBarProps {
 		},
 	) => Promise<List>;
 	showSidebar: boolean;
+	dispatchLists: ActionDispatch<[action: actionType]>;
+}
+
+export interface SortableListItemProps {
+	list: List;
+	currentView: viewType;
+	changeCurrentView: (viewId: number | string) => void;
+	deleteList: (id: number) => Promise<void>;
+	editList: (
+		id: number,
+		newList: {
+			title?: string;
+			archived?: boolean;
+		},
+	) => Promise<List>;
 	dispatchLists: ActionDispatch<[action: actionType]>;
 }
 

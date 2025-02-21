@@ -7,8 +7,27 @@ import EditModalList from '../modals/editModalList';
 import { UserContext } from '../../contexts/UserContext';
 import { ArrowDown3 } from 'iconsax-react';
 
+/*Drag and drop imports*/
+import {
+	DndContext, 
+	closestCenter,
+	KeyboardSensor,
+	PointerSensor,
+	useSensor,
+	useSensors,
+  } from '@dnd-kit/core';
+import {
+	arrayMove,
+	SortableContext,
+	sortableKeyboardCoordinates,
+	verticalListSortingStrategy,
+  } from '@dnd-kit/sortable';
+  
+import SortableListItem from './sortableListItem';
+
 export default function SideBar({
 	lists,
+	dispatchLists,
 	viewData,
 	currentView,
 	changeCurrentView,
@@ -37,6 +56,9 @@ export default function SideBar({
 	));
 
 	const activeLists = lists
+		.filter((list) => user.inboxListId !== list.id && list.archived === false);
+		/*
+		const activeLists = lists
 		.filter((list) => user.inboxListId !== list.id && list.archived === false)
 		.map((list) => (
 			<div key={list.id} className='parent flex items-center justify-between'>
@@ -68,7 +90,7 @@ export default function SideBar({
 					/>
 				</div>
 			</div>
-		));
+		)); */
 
 	const archivedLists = lists
 		.filter((list) => user.inboxListId !== list.id && list.archived === true)
@@ -104,6 +126,28 @@ export default function SideBar({
 				</div>
 			</div>
 		));
+
+	/* Drag and drop definitions */
+	const sensors = useSensors(
+		useSensor(PointerSensor),
+		useSensor(KeyboardSensor, {
+		  coordinateGetter: sortableKeyboardCoordinates,
+		})
+	  );
+	
+	  function handleDragEnd(event: any) {
+		const {active, over} = event;
+		
+		if (active.id !== over.id) {
+		  
+			const oldIndex = lists.indexOf(active.id);
+			const newIndex = lists.indexOf(over.id);
+			
+			const newLists = arrayMove(lists, oldIndex, newIndex);
+		    dispatchLists({ type: 'changed', payload: newLists });	
+		}
+	  }
+
 	return (
 		<div
 			className={`flexflex-col absolute left-0 top-0 my-6 w-30%  rounded-xl border-2 border-black bg-white p-10 ${
@@ -135,7 +179,19 @@ export default function SideBar({
 					<div className='text-lg font-bold text-violet-600'>Lists</div>
 					<CreateModalList addList={addList} />
 				</div>
-				{activeLists}
+			<DndContext 
+				sensors={sensors}
+				collisionDetection={closestCenter}
+				onDragEnd={handleDragEnd}
+				>
+				<SortableContext 
+					items={activeLists.map(list => list.id as number)}
+					strategy={verticalListSortingStrategy}
+				>
+					{activeLists.map(list => <SortableListItem key={list.id} list={list} dispatchLists={dispatchLists}
+						currentView={currentView} changeCurrentView={changeCurrentView} deleteList={deleteList} editList={editList}  />)}
+				</SortableContext>
+    		</DndContext>
 			</div>
 			<div className='mt-4 flex flex-col'>
 				<div className='mb-2 flex justify-between'>

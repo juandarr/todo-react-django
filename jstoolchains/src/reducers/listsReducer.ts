@@ -16,6 +16,9 @@ export default function listsReducer(
 				return [...lists, ...action.payload];
 			}
 		}
+		case 'changed': {
+				return [...action.payload];
+		}
 		case 'edited': {
 			return lists.map((list) => {
 				if (list.id === action.payload.id) {

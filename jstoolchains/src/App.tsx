@@ -487,6 +487,7 @@ export default function App(): React.JSX.Element {
 				<div className='relative mx-6 flex w-5/6 justify-end'>
 					<SideBar
 						lists={lists}
+						dispatchLists={dispatchLists}
 						viewData={viewData}
 						currentView={currentView}
 						changeCurrentView={changeCurrentView}
