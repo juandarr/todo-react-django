@@ -57,40 +57,7 @@ export default function SideBar({
 
 	const activeLists = lists
 		.filter((list) => user.inboxListId !== list.id && list.archived === false);
-		/*
-		const activeLists = lists
-		.filter((list) => user.inboxListId !== list.id && list.archived === false)
-		.map((list) => (
-			<div key={list.id} className='parent flex items-center justify-between'>
-				<button
-					className={`flex flex-1 cursor-pointer justify-start ${
-						currentView.id === list.id
-							? 'list-active-selected rounded-md bg-cyan-200 font-semibold'
-							: ''
-					} lists-active truncate rounded-xl p-1 pl-2 text-base`}
-					onClick={() => {
-						changeCurrentView(list.id as number);
-					}}>
-					{list.title}
-				</button>
-				<div
-					id={`list-${list.id}`}
-					className={`hidden-child flex items-center justify-end 
-					${currentView.id === list.id ? 'list-actions-selected' : ''}`}>
-					<span className='ml-2'></span>
-					<EditModalList
-						editList={editList}
-						listData={{
-							id: list.id as number,
-							title: list.title,
-							archived: list.archived as boolean,
-						}}
-						parentId={`list-${list.id}`}
-						deleteFunction={deleteList}
-					/>
-				</div>
-			</div>
-		)); */
+	
 
 	const archivedLists = lists
 		.filter((list) => user.inboxListId !== list.id && list.archived === true)
@@ -139,10 +106,10 @@ export default function SideBar({
 		const {active, over} = event;
 		
 		if (active.id !== over.id) {
-		  
-			const oldIndex = lists.indexOf(active.id);
-			const newIndex = lists.indexOf(over.id);
-			
+	
+			const oldIndex = lists.findIndex(i => i.id==active.id);
+			const newIndex = lists.findIndex(i => i.id==over.id);
+	
 			const newLists = arrayMove(lists, oldIndex, newIndex);
 		    dispatchLists({ type: 'changed', payload: newLists });	
 		}
@@ -185,11 +152,11 @@ export default function SideBar({
 				onDragEnd={handleDragEnd}
 				>
 				<SortableContext 
-					items={activeLists.map(list => list.id as number)}
+					items={lists.map(list => list.id as number)}
 					strategy={verticalListSortingStrategy}
 				>
 					{activeLists.map(list => <SortableListItem key={list.id} list={list} dispatchLists={dispatchLists}
-						currentView={currentView} changeCurrentView={changeCurrentView} deleteList={deleteList} editList={editList}  />)}
+						currentView={currentView} changeCurrentView={changeCurrentView} deleteList={deleteList} editList={editList} />)}
 				</SortableContext>
     		</DndContext>
 			</div>

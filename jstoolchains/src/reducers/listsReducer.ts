@@ -17,6 +17,7 @@ export default function listsReducer(
 			}
 		}
 		case 'changed': {
+				console.log("Action payload: ",action.payload);
 				return [...action.payload];
 		}
 		case 'edited': {
