@@ -731,6 +731,8 @@ components:
         title:
           type: string
           maxLength: 75
+        index:
+          type: integer
         archived:
           type: boolean
         user:
@@ -747,6 +749,8 @@ components:
         title:
           type: string
           maxLength: 75
+        index:
+          type: integer
         archived:
           type: boolean
         user:
