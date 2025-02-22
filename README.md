@@ -67,7 +67,7 @@ Here are the instructions to run the application and start developing with hot r
 - Install `node`, the proceed to install every dependency by going to `jstoolchains` and running `npm install`
 - [Create API](https://www.saaspegasus.com/guides/modern-javascript-for-django-developers/apis/) from specification in file `schema.yml`.
   - Make sure you install the `openapi generator cli`: `npm install @openapitools/openapi-generator-cli`. This package will allow you to create the API via `schema.yml`, located at the root of the project.
-  - Once you have it installed, run: `npx @openapitools/openapi-generator-cli generate -i schema.yml -g typescript-fetch -o ../todo-api-client/`
+  - Once you have it installed, go to the folder `jstoolchains` and run: `npx @openapitools/openapi-generator-cli generate -i ../schema.yml -g typescript-fetch -o ../todo-api-client/`
 - Bring `.env` file with custom credentials to use Gmail SMTP server
 - Modify API call in the `jstoolchains` folder (go to `src\lib\api.ts`), make sure the call is to `127.0.0.1:8000`
 - Run the python server using `127.0.0.1:8000` if using Linux. `0.0.0.0:8000` is required if making the call from `WSL2`.
@@ -83,11 +83,26 @@ Once the initial setup is completed, generally you just need the following three
 - Run tailwind watch from `jstoolchains` folder with `npm run tailwind-watch`
 - Run webpack from `jstoolchains` folder with `npm run dev`
 
-## Identity
+### Database migrations
+
+When doing a modification to the database you can use the `migration` tool from Django to propagate your changes in your models to your database schema. Here are the common steps (for more information refer to [Migrations Django documentation](https://docs.djangoproject.com/en/5.1/topics/migrations/)):
+
+- `python manage.py makemigrations`, and after 
+- `python manage.py migrate`
+
+You also need to get a new `schema.yml` file, since the structure was changed. Make sure you have installed `drf-spectacular` with `pip install drf-spectacular` and run the following command:
+- `python manage.py spectacular --file schema.yml` at the root of the project
+
+> Temporary workaround
+  Once you get the new file, make sure that the schema for List and Todo only have `title` as required field
+
+Once you have your `schema.yml` file set, you can create your own API using `openapitools` according to the instruction at the beginning of the `development` section.
+
+## Design
 
 The app name is JoyFlow. The goal is to create a system the user will enjoy using as a companion while facing the challenges brought by the day. The user inferface is designed to be playful, clean and minimalistic. The flow part of the name is aspirational: the intention is for the system to help the user to induce and keep a state of flow while working on a project or mission.
 
-### Base colors
+### Color palette
 
 The hue `600` as defined by the TailwindCSS system.
 
