@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
 
+import { clientList} from '../../lib/api';
+
 import { type SideBarProps } from '../../lib/customTypes';
 
 import CreateModalList from '../modals/createModalList';
@@ -102,16 +104,39 @@ export default function SideBar({
 		})
 	  );
 	
-	  function handleDragEnd(event: any) {
+	  async function handleDragEnd(event: any) {
 		const {active, over} = event;
 		
 		if (active.id !== over.id) {
 	
 			const oldIndex = lists.findIndex(i => i.id==active.id);
 			const newIndex = lists.findIndex(i => i.id==over.id);
-	
+			let tmp = lists[oldIndex]; 
+			const tmpIndex = lists[oldIndex].index;
+			lists[oldIndex] = {...tmp, index: lists[newIndex].index};
+			tmp = lists[newIndex]; 
+			lists[newIndex] = {...tmp, index: tmpIndex};
 			const newLists = arrayMove(lists, oldIndex, newIndex);
-		    dispatchLists({ type: 'changed', payload: newLists });	
+
+			/* Update active and over lists */
+			const tmpLists = [{id:lists[oldIndex].id, index: lists[oldIndex].index}, 
+			{id:lists[newIndex].id, index: lists[newIndex].index}];
+			tmpLists.map(async list => {
+			try {
+						await clientList.listsPartialUpdate({
+							id: list.id as number,
+							patchedList:{ index: list.index }}
+						);
+
+						console.log('List was patched!');
+						
+					} catch (error) {
+						console.log('There was an error updating the field in List');
+						throw error;
+					}
+				});
+			
+		    dispatchLists({ type: 'changed', payload: newLists });
 		}
 	  }
 
