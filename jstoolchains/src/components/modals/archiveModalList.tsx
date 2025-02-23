@@ -40,7 +40,7 @@ export default function ArchiveModalList({
 				archived: !listData.archived,
 			});
 			toast({
-				title: `List was ${!listData.archived ? 'restored' : 'archived'}`,
+				title: `List was ${listData.archived ? 'restored' : 'archived'}`,
 				description: '',
 			});
 			closePopover();
