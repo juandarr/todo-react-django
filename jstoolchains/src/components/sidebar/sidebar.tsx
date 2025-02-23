@@ -15,6 +15,7 @@ import {
 	closestCenter,
 	KeyboardSensor,
 	PointerSensor,
+	MouseSensor,
 	useSensor,
 	useSensors,
   } from '@dnd-kit/core';
@@ -98,10 +99,13 @@ export default function SideBar({
 
 	/* Drag and drop definitions */
 	const sensors = useSensors(
-		useSensor(PointerSensor),
+		/*useSensor(PointerSensor),
 		useSensor(KeyboardSensor, {
 		  coordinateGetter: sortableKeyboardCoordinates,
-		})
+		})*/
+		useSensor(MouseSensor, {
+			activationConstraint: {distance: 5}
+		}),
 	  );
 	
 	  async function handleDragEnd(event: any) {
@@ -111,16 +115,29 @@ export default function SideBar({
 	
 			const oldIndex = lists.findIndex(i => i.id==active.id);
 			const newIndex = lists.findIndex(i => i.id==over.id);
-			let tmp = lists[oldIndex]; 
-			const tmpIndex = lists[oldIndex].index;
-			lists[oldIndex] = {...tmp, index: lists[newIndex].index};
-			tmp = lists[newIndex]; 
-			lists[newIndex] = {...tmp, index: tmpIndex};
-			const newLists = arrayMove(lists, oldIndex, newIndex);
 
+			const newLists = arrayMove(lists, oldIndex, newIndex);
+			const tmpIndex = lists[newIndex].index;
+			
 			/* Update active and over lists */
-			const tmpLists = [{id:lists[oldIndex].id, index: lists[oldIndex].index}, 
-			{id:lists[newIndex].id, index: lists[newIndex].index}];
+			let tmpLists: {id:number; index:number;}[] = [];
+			if (newIndex < oldIndex) {
+				for (let i = newIndex; i < oldIndex; i++) {
+					tmpLists.push({id:lists[i].id as number, index: (lists[i].index as number)+1 });
+					newLists[i+1].index = (newLists[i+1].index as number)+1;
+				}
+				tmpLists.push({id:lists[oldIndex].id as number, index: tmpIndex as number });
+				
+			}else if (newIndex > oldIndex) {
+				for (let i = newIndex; i > oldIndex; i--) {
+					tmpLists.push({id:lists[i].id as number, index: (lists[i].index as number)-1 });
+					newLists[i-1].index = (newLists[i-1].index as number)-1;
+				}
+				
+			}
+			tmpLists.push({id:lists[oldIndex].id as number, index: tmpIndex as number });
+			newLists[newIndex].index = tmpIndex;
+
 			tmpLists.map(async list => {
 			try {
 						await clientList.listsPartialUpdate({
@@ -135,7 +152,7 @@ export default function SideBar({
 						throw error;
 					}
 				});
-			
+		
 		    dispatchLists({ type: 'changed', payload: newLists });
 		}
 	  }
@@ -180,7 +197,7 @@ export default function SideBar({
 					items={lists.map(list => list.id as number)}
 					strategy={verticalListSortingStrategy}
 				>
-					{activeLists.map(list => <SortableListItem key={list.id} list={list} dispatchLists={dispatchLists}
+					{lists.map(list => <SortableListItem key={list.id} list={list} dispatchLists={dispatchLists}
 						currentView={currentView} changeCurrentView={changeCurrentView} deleteList={deleteList} editList={editList} />)}
 				</SortableContext>
     		</DndContext>
