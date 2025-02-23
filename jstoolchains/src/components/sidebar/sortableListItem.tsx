@@ -5,6 +5,9 @@ import EditModalList from '../modals/editModalList';
 import { SortableListItemProps } from '../../lib/customTypes';
 
 export default function SortableListItem({list, currentView, changeCurrentView, deleteList, editList}:SortableListItemProps) {
+  if (list.index === 1 || list.archived === true) {
+    return null;
+  }
   const {
     attributes,
     listeners,
