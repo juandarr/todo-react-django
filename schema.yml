@@ -783,6 +783,8 @@ components:
         description:
           type: string
           maxLength: 10000
+        index:
+          type: integer
         created_at:
           type: string
           format: date-time
@@ -863,6 +865,8 @@ components:
         description:
           type: string
           maxLength: 10000
+        index:
+          type: integer
         created_at:
           type: string
           format: date-time
