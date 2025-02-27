@@ -99,6 +99,19 @@ export interface TaskFormProps {
 	addTodo: addTodoType;
 }
 
+export interface SortableTaskItemProps {
+	todo: Todo;
+	lists: List[];
+	toggleTodo: (id: number, complete: boolean) => Promise<Todo>;
+	editTodo: (
+		id: number,
+		title: string,
+		setInFocus: React.Dispatch<React.SetStateAction<boolean>>,
+	) => Promise<void>;
+	editTodoFull: (todo: todoType) => Promise<Todo>;
+	deleteTodo: (id: number) => Promise<void>;
+}
+
 export interface TaskItemProps {
 	todo: Todo;
 	lists: List[];
