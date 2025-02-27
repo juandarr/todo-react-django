@@ -22,16 +22,15 @@ import useAutosizeTextArea from '../../hooks/useAutosizeTextArea';
 // Imports required to implement dnd-kit functionality
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
-import EditModalList from '../modals/editModalList';
-import { SortableListItemProps } from '../../lib/customTypes';
+import { SortableTaskItemProps } from '../../lib/customTypes';
 
 
-export default function SortableTodoItem({todo,
+export default function SortableTaskItem({todo,
   lists,
   toggleTodo,
   editTodo,
   editTodoFull,
-  deleteTodo,}:SortableTodoItemProps): React.JSX.Element {
+  deleteTodo,}:SortableTaskItemProps): React.JSX.Element {
   if (todo.completed === true) {
     return null;
   }
