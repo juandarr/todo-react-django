@@ -10,6 +10,7 @@ export default function TaskView({
 	lists,
 	showSidebar,
 	currentView,
+	setTodos,
 	addTodo,
 	toggleTodo,
 	deleteTodo,
@@ -105,6 +106,7 @@ export default function TaskView({
 			<TaskList
 				todos={todosTodo}
 				lists={lists}
+				setTodos={setTodos}
 				toggleTodo={toggleTodo}
 				deleteTodo={deleteTodo}
 				editTodo={editTodo}
@@ -121,6 +123,7 @@ export default function TaskView({
 			<TaskList
 				todos={todosCompleted}
 				lists={lists}
+				setTodos={setTodos}
 				toggleTodo={toggleTodo}
 				deleteTodo={deleteTodo}
 				editTodo={editTodo}
