@@ -500,6 +500,7 @@ export default function App(): React.JSX.Element {
 						todos={todos}
 						lists={lists}
 						currentView={currentView}
+						setTodos={setTodos}
 						addTodo={addTodo}
 						toggleTodo={toggleTodo}
 						deleteTodo={deleteTodo}
