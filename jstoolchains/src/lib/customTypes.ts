@@ -83,6 +83,7 @@ export interface TaskViewProps {
 	todos: Todo[];
 	lists: List[];
 	showSidebar: boolean;
+	setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
 	currentView: viewType;
 	addTodo: (todo: todoType, origin: string) => Promise<Todo>;
 	toggleTodo: (id: number, complete: boolean) => Promise<Todo>;
@@ -128,6 +129,7 @@ export interface TaskItemProps {
 export interface TaskListProps {
 	todos: Todo[];
 	lists: List[];
+	setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
 	toggleTodo: (id: number, complete: boolean) => Promise<Todo>;
 	deleteTodo: (id: number) => Promise<void>;
 	editTodo: (
