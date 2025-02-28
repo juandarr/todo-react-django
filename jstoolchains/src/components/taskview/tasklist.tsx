@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { clientTodo} from '../../lib/api';
+
 import type { TaskListProps } from '../../lib/customTypes';
 import TaskItem from './taskitem';
 
@@ -31,7 +33,6 @@ export default function TaskList({
 	editTodoFull,
 	isComplete,
 }: TaskListProps): React.JSX.Element {
-	/* TODO Part two of implementation, add drag and drop functionality, import libraries, add sensors etc. Follow instructions from Claude 3.5*/
 	/* Drag and drop definitions */
 		const sensors = useSensors(
 			useSensor(PointerSensor),
@@ -43,54 +44,61 @@ export default function TaskList({
 			}),*/
 		  );
 		
-		  async function handleDragEnd(event: any) {
-			const {active, over} = event;
-			
-			if (active.id !== over.id) {
-		
-				const oldIndex = lists.findIndex(i => i.id==active.id);
-				const newIndex = lists.findIndex(i => i.id==over.id);
-	
-				const newLists = arrayMove(lists, oldIndex, newIndex);
-				const tmpIndex = lists[newIndex].index;
+		 async function handleDragEnd(event: any) {
+				const {active, over} = event;
 				
-				/* Update active and over lists */
-				let tmpLists: {id:number; index:number;}[] = [];
-				if (newIndex < oldIndex) {
-					for (let i = newIndex; i < oldIndex; i++) {
-						tmpLists.push({id:lists[i].id as number, index: (lists[i].index as number)+1 });
-						newLists[i+1].index = (newLists[i+1].index as number)+1;
-					}
-					tmpLists.push({id:lists[oldIndex].id as number, index: tmpIndex as number });
-					
-				}else if (newIndex > oldIndex) {
-					for (let i = newIndex; i > oldIndex; i--) {
-						tmpLists.push({id:lists[i].id as number, index: (lists[i].index as number)-1 });
-						newLists[i-1].index = (newLists[i-1].index as number)-1;
-					}
-					
-				}
-				tmpLists.push({id:lists[oldIndex].id as number, index: tmpIndex as number });
-				newLists[newIndex].index = tmpIndex;
-	
-				tmpLists.map(async list => {
-				try {
-							await clientList.listsPartialUpdate({
-								id: list.id as number,
-								patchedList:{ index: list.index }}
-							);
-	
-							console.log('List was patched!');
-							
-						} catch (error) {
-							console.log('There was an error updating the field in List');
-							throw error;
-						}
-					});
+				if (active.id !== over.id) {
 			
-				dispatchLists({ type: 'changed', payload: newLists });
-			}
-		  }
+					//Find index of item being dragged (active) and index of item being dragged over (over)
+					const oldIndex = todos.findIndex(i => i.id==active.id);
+					const newIndex = todos.findIndex(i => i.id==over.id);
+		 
+					//Move items in the array
+					const newTodos = arrayMove(todos, oldIndex, newIndex);
+					//Store index in list of final destination of dragged item 
+					const tmpIndex = todos[newIndex].index;
+					
+					/* Update active and over lists */
+					let tmpTodos: {id:number; index:number;}[] = [];
+					/* Update indexes of lists between active and over items */
+					if (newIndex < oldIndex) {
+						for (let i = newIndex; i < oldIndex; i++) {
+							tmpTodos.push({id:lists[i].id as number, index: (todos[i].index as number)+1 });
+							newTodos[i+1].index = (newTodos[i+1].index as number)+1;
+						}
+						tmpTodos.push({id:todos[oldIndex].id as number, index: tmpIndex as number });
+						
+					}else if (newIndex > oldIndex) {
+						for (let i = newIndex; i > oldIndex; i--) {
+							tmpTodos.push({id:todos[i].id as number, index: (todos[i].index as number)-1 });
+							newTodos[i-1].index = (newTodos[i-1].index as number)-1;
+						}
+						
+					}
+					tmpTodos.push({id:todos[oldIndex].id as number, index: tmpIndex as number });
+					newTodos[newIndex].index = tmpIndex;
+		 
+					// Update indexes of items between over and active list indexes in database
+					tmpTodos.map(async todo => {
+					try {
+								await clientTodo.todosPartialUpdate({
+									id: todo.id as number,
+									patchedTodo:{ index: todo.index }}
+								);
+		 
+								console.log('Todo was patched!');
+								
+							} catch (error) {
+								console.log('There was an error updating the field in Todo');
+								throw error;
+							}
+						});
+					
+					// Update state with new todos order
+					// Modify this function with the correct implementation
+					dispatchTodos({ type: 'changed', payload: newTodos });
+				}
+			  }
 	
 
 
@@ -121,7 +129,53 @@ export default function TaskList({
 					</div>
 				</div>
 			) : (
-				<ul className='inner divide-gray-150 divide-y'>{taskList}</ul>
+				<ul className='inner divide-gray-150 divide-y'>
+				{!isComplete && (
+					<DndContext 
+									sensors={sensors}
+									collisionDetection={closestCenter}
+									onDragEnd={handleDragEnd}
+									>
+									<SortableContext 
+										items={lists.map(list => list.id as number)}
+										strategy={verticalListSortingStrategy}
+									>
+										{todos.map((todo, idx: number) => {
+		return (
+			<li key={todo.id} id={`item-${todo.id}`}>
+				<SortableTaskItem
+					todo={todo}
+					lists={lists}
+					toggleTodo={toggleTodo}
+					editTodo={editTodo}
+					editTodoFull={editTodoFull}
+					deleteTodo={deleteTodo}
+				/>
+			</li>
+		);
+	})}
+									</SortableContext>
+								</DndContext>
+
+				)}
+				{isComplete && (
+					todos.map((todo, idx: number) => {
+						return (
+							<li key={todo.id} id={`item-${todo.id}`}>
+								<TaskItem
+									todo={todo}
+									lists={lists}
+									toggleTodo={toggleTodo}
+									editTodo={editTodo}
+									editTodoFull={editTodoFull}
+									deleteTodo={deleteTodo}
+								/>
+							</li>
+						);
+					})
+				)}
+				
+				</ul>
 			)}
 		</div>
 	);
