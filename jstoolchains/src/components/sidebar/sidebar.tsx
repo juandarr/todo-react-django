@@ -99,10 +99,6 @@ export default function SideBar({
 
 	/* Drag and drop definitions */
 	const sensors = useSensors(
-		/*useSensor(PointerSensor),
-		useSensor(KeyboardSensor, {
-		  coordinateGetter: sortableKeyboardCoordinates,
-		})*/
 		useSensor(MouseSensor, {
 			activationConstraint: {distance: 5}
 		}),
@@ -113,14 +109,18 @@ export default function SideBar({
 		
 		if (active.id !== over.id) {
 	
+			//Find index of item being dragged (active) and index of item being dragged over (over)
 			const oldIndex = lists.findIndex(i => i.id==active.id);
 			const newIndex = lists.findIndex(i => i.id==over.id);
 
+			//Move items in the array
 			const newLists = arrayMove(lists, oldIndex, newIndex);
+			//Store index in list of final destination of dragged item 
 			const tmpIndex = lists[newIndex].index;
 			
 			/* Update active and over lists */
 			let tmpLists: {id:number; index:number;}[] = [];
+			/* Update indexes of lists between active and over lists */
 			if (newIndex < oldIndex) {
 				for (let i = newIndex; i < oldIndex; i++) {
 					tmpLists.push({id:lists[i].id as number, index: (lists[i].index as number)+1 });
@@ -138,6 +138,7 @@ export default function SideBar({
 			tmpLists.push({id:lists[oldIndex].id as number, index: tmpIndex as number });
 			newLists[newIndex].index = tmpIndex;
 
+			// Update indexes of items between over and active lists indexes in database
 			tmpLists.map(async list => {
 			try {
 						await clientList.listsPartialUpdate({
@@ -152,7 +153,8 @@ export default function SideBar({
 						throw error;
 					}
 				});
-		
+			
+			// Update state with new lists order
 		    dispatchLists({ type: 'changed', payload: newLists });
 		}
 	  }
