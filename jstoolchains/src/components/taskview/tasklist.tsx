@@ -27,6 +27,7 @@ import SortableTaskItem from './sortableTaskItem';
 export default function TaskList({
 	todos,
 	lists,
+	setTodos,
 	toggleTodo,
 	deleteTodo,
 	editTodo,
@@ -95,8 +96,7 @@ export default function TaskList({
 						});
 					
 					// Update state with new todos order
-					// Modify this function with the correct implementation
-					dispatchTodos({ type: 'changed', payload: newTodos });
+					setTodos(() => [...newTodos]);
 				}
 			  }
 	
