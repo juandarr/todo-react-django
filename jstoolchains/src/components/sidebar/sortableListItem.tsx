@@ -28,7 +28,7 @@ export default function SortableListItem({
 	return (
 		<div ref={setNodeRef} style={style} >
 			<div key={list.id} className='parent flex items-center justify-between'>
-				<button {...attributes} {...listeners}>
+				<button className={`hidden-child`} {...attributes} {...listeners}>
 					<Apple size='28' color='#FF8A65' />
 				</button>
 				<button
