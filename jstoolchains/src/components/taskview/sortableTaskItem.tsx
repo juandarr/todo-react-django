@@ -30,8 +30,8 @@ export default function SortableTaskItem({todo,
   toggleTodo,
   editTodo,
   editTodoFull,
-  deleteTodo,}:SortableTaskItemProps): React.JSX.Element {
-  if (todo.completed === true) {
+  deleteTodo,}:SortableTaskItemProps) {
+  if (todo.complete === true) {
     return null;
   }
 
