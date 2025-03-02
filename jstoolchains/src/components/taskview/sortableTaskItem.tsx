@@ -1,7 +1,5 @@
 import React, { useContext, useRef, useState, useEffect } from 'react';
 
-import type { TaskItemProps } from '../../lib/customTypes';
-
 import { Checkbox } from '../ui/checkbox';
 import {
 	Tooltip,
