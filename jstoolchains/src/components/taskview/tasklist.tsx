@@ -142,7 +142,7 @@ export default function TaskList({
 							collisionDetection={closestCenter}
 							onDragEnd={handleDragEnd}>
 							<SortableContext
-								items={lists.map((list) => list.id as number)}
+								items={todos.map((todo) => todo.id as number)}
 								strategy={verticalListSortingStrategy}>
 								{todos.map((todo, idx: number) => {
 									return (
