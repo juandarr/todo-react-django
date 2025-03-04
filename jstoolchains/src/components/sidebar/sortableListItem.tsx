@@ -3,7 +3,7 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import EditModalList from '../modals/editModalList';
 import { SortableListItemProps } from '../../lib/customTypes';
-import { Apple } from 'iconsax-react';
+import { RowVertical } from 'iconsax-react';
 
 export default function SortableListItem({
 	list,
@@ -29,7 +29,7 @@ export default function SortableListItem({
 		<div ref={setNodeRef} style={style} >
 			<div key={list.id} className='parent flex items-center justify-between'>
 				<button className={`hidden-child`} {...attributes} {...listeners}>
-					<Apple size='28' color='#FF8A65' />
+				<RowVertical size="24" color="#ff8a65" variant="Outline"/>
 				</button>
 				<button
 					className={`flex flex-1 cursor-pointer justify-start ${
