@@ -12,7 +12,7 @@ import { useToast } from '../ui/toast/use-toast';
 import { type Todo } from '../../../../todo-api-client/models';
 
 import DeleteModalTodo from '../modals/deleteModalTodo';
-import { Calendar2, Task, Flag, BookSaved } from 'iconsax-react';
+import { Calendar2, Task, Flag, BookSaved, RowVertical } from 'iconsax-react';
 import EditModalTodo from '../modals/editModalTodo';
 import { UserContext } from '../../contexts/UserContext';
 import useAutosizeTextArea from '../../hooks/useAutosizeTextArea';
@@ -163,8 +163,12 @@ export default function SortableTaskItem({todo,
   };
   
   return (
-    <div ref={setNodeRef} style={style} className={`parent flex`} {...attributes} {...listeners}>
+    <div ref={setNodeRef} style={style} className={`parent flex`}>
+        
         <div className='mt-3 flex w-2/12 items-start justify-center'>
+                  <button className={`hidden-child pr-3`} {...attributes} {...listeners}>
+                    <RowVertical size="20" color="#ff8a65" variant="Outline"/>
+                 </button>
                   <Checkbox
                     id={'checkbox-' + todo.id}
                     checked={todo.complete}

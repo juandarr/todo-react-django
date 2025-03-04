@@ -29,7 +29,7 @@ export default function SortableListItem({
 		<div ref={setNodeRef} style={style} >
 			<div key={list.id} className='parent flex items-center justify-between'>
 				<button className={`hidden-child`} {...attributes} {...listeners}>
-				<RowVertical size="24" color="#ff8a65" variant="Outline"/>
+				<RowVertical size="20" color="#ff8a65" variant="Outline"/>
 				</button>
 				<button
 					className={`flex flex-1 cursor-pointer justify-start ${
