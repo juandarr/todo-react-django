@@ -117,13 +117,20 @@ def user_created_handler(sender, **kwargs):
     user = kwargs['user']
     extra_data = kwargs['extra_data']
     from .models import List, Setting
-	# Create and save default list: inbox
-    new_model = List(title="📥 Inbox", user_id = user.id)
+	# Create and save default list: inbox, today and upcoming
+    new_model = List(title="🗃️ Inbox", user_id = user.id)
     new_model.save()
-
 	# Update the related User model to establish the relationship with new List
     user.inbox_id = new_model.id
     user.save()
+	# Create and save list today
+    new_model = List(title="🌻 Today", user_id = user.id)
+    new_model.save()
+	# Create and save list upcoming
+    new_model = List(title="🌅 Upcoming", user_id = user.id)
+    new_model.save()
+	
+    
 
     new_setting = Setting(parameter="home_view", value=str(new_model.id), user_id = user.id)
     new_setting.save()
