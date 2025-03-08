@@ -45,9 +45,9 @@ My goal right now is to update every dependency to 2024, improve the code and ad
   - Priority
     - Priorities give a definition of how important is the task being created. It has four option from least to most important: none, low, medium, high
   - List
-    - Tasks are associated to list. When no list is assigned it will be associated to the inbox list by default
+    - Tasks are associated to list. When no list is assigned to a task, it will be associated to the inbox list by default
 - Lists: can represent a project, a collection of things to do during the day or anything you want.
-  - Lists have the following properties:
+  - Lists have the following fields:
     - Title
   - Lists can be archived when you want to preserve the data and history
 - Tasks created from the top navigation bar (`+` icon) can be associated to any active List. If no list is defined it will be associated to the default list for the current user (inbox)
