@@ -31,7 +31,7 @@ class List(models.Model):
     id = models.BigAutoField(primary_key=True,unique=True, blank=True)
     title = models.CharField(max_length=75)
     index = models.IntegerField(default=0)
-    ordering = models.JSONField(default=default_order())
+    ordering = models.JSONField(default=default_order)
     archived = models.BooleanField(blank=True, default=False)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete =models.CASCADE, blank=True, related_name='lists')
 
