@@ -19,7 +19,7 @@ class ListSerializer(serializers.ModelSerializer):
                                               default=serializers.CurrentUserDefault())
     class Meta:
         model = List
-        fields = ('id','title','index','archived','user')
+        fields = ('id','title','index','ordering','archived','user')
 
 class SettingSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField( read_only=True,
