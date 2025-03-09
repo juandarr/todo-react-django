@@ -13,7 +13,7 @@ class TodoAdmin(admin.ModelAdmin):
 
 @admin.register(List)
 class ListAdmin(admin.ModelAdmin):
-    list_display = ["id", "title","index", "archived","user"]
+    list_display = ["id", "title","index", "ordering","archived","user"]
 
 @admin.register(Setting)
 class SettingAdmin(admin.ModelAdmin):
