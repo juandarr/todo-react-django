@@ -11,7 +11,7 @@ class TodoSerializer(serializers.ModelSerializer):
                                               default=serializers.CurrentUserDefault())
     class Meta:
         model = Todo
-        fields = ('id','title','description','index', 'created_at','complete',
+        fields = ('id','title','description', 'created_at','complete',
                   'completed_at','priority','due_date','list','user')
 
 class ListSerializer(serializers.ModelSerializer):
