@@ -12,7 +12,7 @@ My goal right now is to update every dependency to 2024, improve the code and ad
 
 - [x] Update to last React version, 19, including the optimizations provided by the React compiler and using other tools to check suboptimal configuration in the app.
 - [ ] Add new features (In progress)
-  - [ ] Add the option to use drag and drop to set a customized order.
+  - [50%] Add the option to use drag and drop to set a customized order. It is working for lists now. But needs some improvements. Next, need to implements for todos. 
     - I am using DnD-kit, to add drag and drop in TaskList type components
     - Another candidate is [react-dnd](https://react-dnd.github.io/react-dnd/about). Pick the best library and move on
   - [ ] Better description box (as a kind of note)
@@ -117,4 +117,4 @@ The overal background of the app is `rbg(56,189,248)` (`sky-400`). The backgroun
 
 # License
 
-Pending...
+MIT 2025
