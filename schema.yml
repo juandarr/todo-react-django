@@ -733,6 +733,9 @@ components:
           maxLength: 75
         index:
           type: integer
+        ordering:
+          type: object
+          additionalProperties: {}
         archived:
           type: boolean
         user:
@@ -751,6 +754,9 @@ components:
           maxLength: 75
         index:
           type: integer
+        ordering:
+          type: object
+          additionalProperties: {}
         archived:
           type: boolean
         user:
@@ -783,8 +789,6 @@ components:
         description:
           type: string
           maxLength: 10000
-        index:
-          type: integer
         created_at:
           type: string
           format: date-time
@@ -865,8 +869,6 @@ components:
         description:
           type: string
           maxLength: 10000
-        index:
-          type: integer
         created_at:
           type: string
           format: date-time
