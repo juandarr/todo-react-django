@@ -72,7 +72,7 @@ class Todo(models.Model):
         super(Todo, self).save(*args, **kwargs)
 
     class Meta:
-        ordering = ['index']
+        ordering = ['id']
 
 class Setting(models.Model):
     id = models.BigAutoField(primary_key=True,unique=True, blank=True)
