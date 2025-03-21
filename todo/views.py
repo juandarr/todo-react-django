@@ -120,6 +120,9 @@ def user_created_handler(sender, **kwargs):
 	# Create and save default list: inbox, today and upcoming
     new_model = List(title="🗃️ Inbox", user_id = user.id)
     new_model.save()
+	# Save indox as default home view
+    new_setting = Setting(parameter="home_view", value=str(new_model.id), user_id = user.id)
+    new_setting.save()
 	# Update the related User model to establish the relationship with new List
     user.inbox_id = new_model.id
     user.save()
@@ -132,8 +135,7 @@ def user_created_handler(sender, **kwargs):
 	
     
 
-    new_setting = Setting(parameter="home_view", value=str(new_model.id), user_id = user.id)
-    new_setting.save()
+   
 
     new_setting = Setting(parameter="timezone", value=extra_data['timezone'], user_id = user.id)
     new_setting.save()
