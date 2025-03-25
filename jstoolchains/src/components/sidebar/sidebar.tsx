@@ -59,11 +59,11 @@ export default function SideBar({
 	));
 
 	const activeLists = lists
-		.filter((list) => user.inboxListId !== list.id && list.archived === false);
+		.filter((list) => ((user.inboxListId+2) < (list.id as number)) && list.archived === false);
 	
-
+	console.log("This is the inbox id: ",user.inboxListId, lists)
 	const archivedLists = lists
-		.filter((list) => user.inboxListId !== list.id && list.archived === true)
+		.filter((list) => ((user.inboxListId+2) < (list.id as number)) && list.archived === true)
 		.map((list) => (
 			<div key={list.id} className='parent flex items-center justify-between'>
 				<button
@@ -196,10 +196,10 @@ export default function SideBar({
 				onDragEnd={handleDragEnd}
 				>
 				<SortableContext 
-					items={lists.map(list => list.id as number)}
+					items={activeLists.map(list => list.id as number)}
 					strategy={verticalListSortingStrategy}
 				>
-					{lists.map(list => <SortableListItem key={list.id} list={list} dispatchLists={dispatchLists}
+					{activeLists.map(list => <SortableListItem key={list.id} list={list} dispatchLists={dispatchLists}
 						currentView={currentView} changeCurrentView={changeCurrentView} deleteList={deleteList} editList={editList} />)}
 				</SortableContext>
     		</DndContext>
