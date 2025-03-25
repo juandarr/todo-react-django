@@ -132,11 +132,7 @@ def user_created_handler(sender, **kwargs):
 	# Create and save list upcoming
     new_model = List(title="🌅 Upcoming", user_id = user.id)
     new_model.save()
-	
-    
-
-   
-
+	# Add timezone value to Setting model
     new_setting = Setting(parameter="timezone", value=extra_data['timezone'], user_id = user.id)
     new_setting.save()
 
