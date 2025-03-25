@@ -190,19 +190,29 @@ export default function SideBar({
 					<div className='text-lg font-bold text-violet-600'>Lists</div>
 					<CreateModalList addList={addList} />
 				</div>
-			<DndContext 
-				sensors={sensors}
-				collisionDetection={closestCenter}
-				onDragEnd={handleDragEnd}
-				>
-				<SortableContext 
-					items={activeLists.map(list => list.id as number)}
-					strategy={verticalListSortingStrategy}
-				>
-					{activeLists.map(list => <SortableListItem key={list.id} list={list} dispatchLists={dispatchLists}
-						currentView={currentView} changeCurrentView={changeCurrentView} deleteList={deleteList} editList={editList} />)}
-				</SortableContext>
-    		</DndContext>
+			{activeLists.length === 0 ? (
+					<div className='inner'>
+						<div className={`p-1 pl-2 text-base text-gray-600`}>
+							🦕 No lists yet
+						</div>
+					</div>
+				) : (
+					<DndContext 
+					sensors={sensors}
+					collisionDetection={closestCenter}
+					onDragEnd={handleDragEnd}
+					>
+					<SortableContext 
+						items={activeLists.map(list => list.id as number)}
+						strategy={verticalListSortingStrategy}
+					>
+						{activeLists.map(list => <SortableListItem key={list.id} list={list} dispatchLists={dispatchLists}
+							currentView={currentView} changeCurrentView={changeCurrentView} deleteList={deleteList} editList={editList} />)}
+					</SortableContext>
+				</DndContext>
+					
+				)}
+			
 			</div>
 			<div className='mt-4 flex flex-col'>
 				<div className='mb-2 flex justify-between'>
