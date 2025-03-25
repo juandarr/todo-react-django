@@ -52,15 +52,16 @@ export default function TaskList({
 			//Find index of item being dragged (active) and index of item being dragged over (over)
 			const oldIndex = todos.findIndex((i) => i.id == active.id);
 			const newIndex = todos.findIndex((i) => i.id == over.id);
-
+		
+			/*
 			//Move items in the array
 			const newTodos = arrayMove(todos, oldIndex, newIndex);
 			//Store index in list of final destination of dragged item
 			const tmpIndex = todos[newIndex].index;
 
-			/* Update active and over lists */
+			// Update active and over lists 
 			let tmpTodos: { id: number; index: number }[] = [];
-			/* Update indexes of lists between active and over items */
+			//  Update indexes of lists between active and over items 
 			if (newIndex < oldIndex) {
 				for (let i = newIndex; i < oldIndex; i++) {
 					tmpTodos.push({
@@ -104,7 +105,7 @@ export default function TaskList({
 			});
 
 			// Update state with new todos order
-			setTodos(() => [...newTodos]);
+			setTodos(() => [...newTodos]);*/
 		}
 	}
 
