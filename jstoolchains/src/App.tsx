@@ -122,20 +122,12 @@ export default function App(): React.JSX.Element {
 			console.log('Setting currentView');
 			setCurrentView((oldView) => {
 				let tmp: viewType;
-				if (typeof userInfo.homeListId === 'number') {
+				
 					const list = lists.find(
 						(list) => list.id === userInfo.homeListId,
 					) as listType;
 					tmp = { id: list.id, title: list.title, archived: list.archived };
-				} else {
-					const homeId = userInfo.homeListId;
-
-					tmp = {
-						id: homeId,
-						title: viewData.viewTagDetails.get(homeId) as string,
-						archived: false,
-					};
-				}
+				
 				return tmp;
 			});
 			initializationCompleted.current = true;
@@ -161,20 +153,14 @@ export default function App(): React.JSX.Element {
 
 	const changeCurrentView = (newViewId: number | string): void => {
 		let newView: viewType;
-		if (typeof newViewId === 'number') {
-			const newList: List = lists.find((list) => list.id === newViewId) as List;
-			newView = {
-				id: newList.id as number,
-				title: newList.title,
-				archived: newList.archived as boolean,
-			};
-		} else {
-			newView = {
-				id: newViewId,
-				title: viewData.viewTagDetails.get(newViewId) as string,
-				archived: false,
-			};
-		}
+		
+		const newList: List = lists.find((list) => list.id === newViewId) as List;
+		newView = {
+			id: newList.id as number,
+			title: newList.title,
+			archived: newList.archived as boolean,
+		};
+	
 		const e = document.getElementById('currentView-title');
 		e?.classList.remove('fade-in');
 		// eslint-disable-next-line @typescript-eslint/no-unused-expressions
@@ -208,9 +194,9 @@ export default function App(): React.JSX.Element {
 		if ('dueDate' in todo) {
 			tmp.dueDate = todo.dueDate as Date;
 		} else {
-			if (currentView.id === viewData.viewTags.get('today')) {
+			if (currentView.id === (userInfo.inboxListId+1)) {
 				tmp.dueDate = new Date();
-			} else if (currentView.id === viewData.viewTags.get('upcoming')) {
+			} else if (currentView.id === (userInfo.inboxListId+2)) {
 				const tmpD = new Date();
 				tmp.dueDate = new Date(
 					new Date(
@@ -421,7 +407,7 @@ export default function App(): React.JSX.Element {
 			// If current view is the one being deleted, default current view to the home view
 			if (id === currentView.id) {
 				setCurrentView(() => {
-					if (typeof userInfo.homeListId === 'number') {
+			
 						const list = lists.find(
 							(list) => list.id === userInfo.homeListId,
 						) as List;
@@ -430,13 +416,7 @@ export default function App(): React.JSX.Element {
 							title: list.title,
 							archived: list.archived as boolean,
 						};
-					} else {
-						return {
-							id: userInfo.homeListId,
-							title: viewData.viewTagDetails.get(userInfo.homeListId) as string,
-							archived: false,
-						};
-					}
+				
 				});
 			}
 			console.log('List was deleted');
@@ -488,7 +468,6 @@ export default function App(): React.JSX.Element {
 					<SideBar
 						lists={lists}
 						dispatchLists={dispatchLists}
-						viewData={viewData}
 						currentView={currentView}
 						changeCurrentView={changeCurrentView}
 						addList={addList}

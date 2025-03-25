@@ -31,7 +31,6 @@ import SortableListItem from './sortableListItem';
 export default function SideBar({
 	lists,
 	dispatchLists,
-	viewData,
 	currentView,
 	changeCurrentView,
 	addList,
@@ -42,21 +41,8 @@ export default function SideBar({
 	const user = useContext(UserContext);
 
 	const inbox = lists.find((list) => user.inboxListId === list.id);
-
-	const ViewLists = viewData.viewTagIds.map((value) => (
-		<button
-			key={value}
-			className={`flex cursor-pointer justify-start ${
-				currentView.id === value
-					? 'list-view-selected rounded-md bg-cyan-200 font-semibold'
-					: ''
-			} lists-views rounded-xl p-1 pl-2 text-base`}
-			onClick={() => {
-				changeCurrentView(value);
-			}}>
-			{viewData.viewTagDetails.get(value)}
-		</button>
-	));
+	const today = lists.find((list) => user.inboxListId+1 === list.id);
+	const upcoming = lists.find((list) => user.inboxListId+2 === list.id);
 
 	const activeLists = lists
 		.filter((list) => ((user.inboxListId+2) < (list.id as number)) && list.archived === false);
@@ -183,7 +169,28 @@ export default function SideBar({
 					}}>
 					{inbox !== undefined ? inbox.title : ''}
 				</button>
-				{ViewLists}
+				<button
+					className={`flex cursor-pointer justify-start ${
+						currentView.id === (user.inboxListId+1)
+							? 'rounded-md bg-cyan-200 font-semibold'
+							: ''
+					} rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-cyan-500 hover:decoration-2 hover:underline-offset-4`}
+					onClick={() => {
+						changeCurrentView(user.inboxListId+1);
+					}}>
+					{today !== undefined ? today.title : ''}
+				</button>
+				<button
+					className={`flex cursor-pointer justify-start ${
+						currentView.id === (user.inboxListId+2)
+							? 'rounded-md bg-cyan-200 font-semibold'
+							: ''
+					} rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-cyan-500 hover:decoration-2 hover:underline-offset-4`}
+					onClick={() => {
+						changeCurrentView(user.inboxListId+2);
+					}}>
+					{upcoming !== undefined ? upcoming.title : ''}
+				</button>
 			</div>
 			<div className='mt-4 flex flex-col'>
 				<div className='mb-2 flex justify-between'>

@@ -217,7 +217,6 @@ type actionType = {
 
 export interface SideBarProps {
 	lists: List[];
-	viewData: viewDataType;
 	currentView: viewType;
 	changeCurrentView: (viewId: number | string) => void;
 	addList: addListType;
