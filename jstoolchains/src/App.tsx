@@ -179,7 +179,7 @@ export default function App(): React.JSX.Element {
 			tmp.list = parseInt(todo.list as string);
 		} else {
 			if (origin === 'taskList') {
-				if (typeof currentView.id === 'number') {
+				if (currentView.id !== userInfo.inboxListId+1 && currentView.id !== userInfo.inboxListId+2) {
 					tmp.list = currentView.id;
 				} else {
 					tmp.list = userInfo.inboxListId;
