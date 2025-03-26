@@ -79,10 +79,7 @@ export default function App(): React.JSX.Element {
 				id: tmp.id,
 				username: tmp.username,
 				inboxListId: tmp.inboxId as number,
-				homeListId:
-					homeView.value[homeView.value.length - 1] === 't'
-						? homeView.value
-						: parseInt(homeView.value),
+				homeListId:parseInt(homeView.value),
 				timeZone: timeZone.value,
 			});
 			console.log('This is the homeView: ', homeView, ' with user: ', userInfo);
@@ -476,6 +473,7 @@ export default function App(): React.JSX.Element {
 						showSidebar={showSidebar}
 					/>
 					<TaskView
+						userInfo={userInfo}
 						todos={todos}
 						lists={lists}
 						currentView={currentView}
