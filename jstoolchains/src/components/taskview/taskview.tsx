@@ -129,6 +129,7 @@ export default function TaskView({
 			<TaskList
 				todos={todosTodo}
 				lists={lists}
+				userInfo={userInfo}
 				setTodos={setTodos}
 				toggleTodo={toggleTodo}
 				deleteTodo={deleteTodo}
@@ -146,6 +147,7 @@ export default function TaskView({
 			<TaskList
 				todos={todosCompleted}
 				lists={lists}
+				userInfo={userInfo}
 				setTodos={setTodos}
 				toggleTodo={toggleTodo}
 				deleteTodo={deleteTodo}
