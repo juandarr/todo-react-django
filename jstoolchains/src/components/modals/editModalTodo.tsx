@@ -41,6 +41,7 @@ export default function EditModalTodo({
 	todo,
 	lists,
 	parentId,
+	userInfo
 }: EditModalTodoProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
 	const [newEditTodo, setNewEditTodo] = useState<todoType>({
@@ -136,6 +137,7 @@ export default function EditModalTodo({
 	};
 
 	console.log('Modal todo edition opened');
+
 	return (
 		<Popover modal={true} open={isOpen} onOpenChange={setIsOpen}>
 			<TooltipProvider>
@@ -282,7 +284,7 @@ export default function EditModalTodo({
 								<SelectValue placeholder='List' />
 							</SelectTrigger>
 							<SelectContent>
-								{lists.map((list) => (
+								{lists.filter((list) => ( (list.id !== userInfo.inboxListId+1) && (list.id !== userInfo.inboxListId+2))).map((list) => (
 									<SelectItem
 										key={list.id}
 										value={(list.id as number).toString()}>
