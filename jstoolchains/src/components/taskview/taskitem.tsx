@@ -22,10 +22,12 @@ import useAutosizeTextArea from '../../hooks/useAutosizeTextArea';
 export default function TaskItem({
 	todo,
 	lists,
+	userInfo,
 	toggleTodo,
 	editTodo,
 	editTodoFull,
-	deleteTodo,
+	deleteTodo
+	
 }: TaskItemProps): React.JSX.Element {
 	const user = useContext(UserContext);
 	const { toast } = useToast();
@@ -295,6 +297,7 @@ export default function TaskItem({
 						todo={todo}
 						lists={lists}
 						parentId={`todo-${todo.id}`}
+						userInfo={userInfo}
 						key={`edit-${todo.id}`}
 					/>
 					<span className='mr-2'></span>
