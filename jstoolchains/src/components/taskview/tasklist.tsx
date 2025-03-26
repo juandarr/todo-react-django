@@ -27,6 +27,7 @@ import SortableTaskItem from './sortableTaskItem';
 export default function TaskList({
 	todos,
 	lists,
+	userInfo,
 	setTodos,
 	toggleTodo,
 	deleteTodo,
@@ -115,10 +116,12 @@ export default function TaskList({
 				<TaskItem
 					todo={todo}
 					lists={lists}
+					userInfo={userInfo}
 					toggleTodo={toggleTodo}
 					editTodo={editTodo}
 					editTodoFull={editTodoFull}
 					deleteTodo={deleteTodo}
+					
 				/>
 			</li>
 		);
@@ -151,10 +154,12 @@ export default function TaskList({
 											<SortableTaskItem
 												todo={todo}
 												lists={lists}
+												userInfo={userInfo}
 												toggleTodo={toggleTodo}
 												editTodo={editTodo}
 												editTodoFull={editTodoFull}
 												deleteTodo={deleteTodo}
+												
 											/>
 										</li>
 									);
@@ -169,10 +174,12 @@ export default function TaskList({
 									<TaskItem
 										todo={todo}
 										lists={lists}
+										userInfo={userInfo}
 										toggleTodo={toggleTodo}
 										editTodo={editTodo}
 										editTodoFull={editTodoFull}
 										deleteTodo={deleteTodo}
+										
 									/>
 								</li>
 							);
