@@ -34,7 +34,7 @@ export interface userInfoType {
 	id: number | undefined;
 	username: string;
 	inboxListId: number;
-	homeListId: number | string;
+	homeListId: number;
 	timeZone: string;
 }
 
@@ -47,7 +47,7 @@ export interface viewDataType {
 }
 
 export interface viewType {
-	id: number | string;
+	id: number;
 	title: string;
 	archived: boolean;
 }
@@ -80,6 +80,7 @@ export type userModelFetch = [
 ];
 
 export interface TaskViewProps {
+	userInfo: userInfoType;
 	todos: Todo[];
 	lists: List[];
 	showSidebar: boolean;
