@@ -156,6 +156,7 @@ export interface TaskListHeaderProps {
 
 export interface CreateModalTodoProps {
 	lists: Todo[];
+	userInfo: userInfoType;
 	addTodo: addTodoType;
 }
 
@@ -258,6 +259,7 @@ export interface NavBarProps {
 	changeCurrentView: (viewId: number | string) => void;
 	lists: List[];
 	todos: Todo[];
+	userInfo: userInfoType;
 	addTodo: addTodoType;
 	setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
 	settings: Setting[];
