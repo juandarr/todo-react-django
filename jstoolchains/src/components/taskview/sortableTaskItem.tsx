@@ -25,6 +25,7 @@ import { SortableTaskItemProps } from '../../lib/customTypes';
 
 export default function SortableTaskItem({todo,
   lists,
+  userInfo,
   toggleTodo,
   editTodo,
   editTodoFull,
@@ -320,6 +321,7 @@ export default function SortableTaskItem({todo,
                     editTodoFull={editTodoFull}
                     todo={todo}
                     lists={lists}
+                    userInfo={userInfo}
                     parentId={`todo-${todo.id}`}
                     key={`edit-${todo.id}`}
                   />
