@@ -456,6 +456,7 @@ export default function App(): React.JSX.Element {
 					changeCurrentView={changeCurrentView}
 					lists={lists}
 					todos={todos}
+					userInfo={userInfo}
 					addTodo={addTodo}
 					setShowSidebar={setShowSidebar}
 					settings={settings}
