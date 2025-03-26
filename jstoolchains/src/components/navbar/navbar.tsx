@@ -35,6 +35,7 @@ export default function NavBar({
 	changeCurrentView,
 	lists,
 	todos,
+	userInfo,
 	addTodo,
 	setShowSidebar,
 	settings,
@@ -100,7 +101,7 @@ export default function NavBar({
 				</TooltipProvider>
 			</div>
 			<div className='flex w-8/12 justify-center text-2xl'>
-				<CreateModalTodo lists={lists} addTodo={addTodo} />
+				<CreateModalTodo lists={lists} userInfo={userInfo} addTodo={addTodo} />
 			</div>
 			<div className='flex w-1/12 justify-end pl-3 pr-3 text-2xl '>
 				<GoalsModal todos={todos} />
