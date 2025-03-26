@@ -43,6 +43,7 @@ import TextEditor from '../ui/textEditor';
 
 export default function CreateModalTodo({
 	lists,
+	userInfo,
 	addTodo,
 }: CreateModalTodoProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
@@ -292,7 +293,7 @@ export default function CreateModalTodo({
 								<SelectValue placeholder='List' />
 							</SelectTrigger>
 							<SelectContent>
-								{lists.map((list) => (
+								{lists.filter((list) => ((list.id !== userInfo.inboxListId+1) && (list.id !== userInfo.inboxListId+2))).map((list) => (
 									<SelectItem
 										key={list.id}
 										value={(list.id as number).toString()}>
