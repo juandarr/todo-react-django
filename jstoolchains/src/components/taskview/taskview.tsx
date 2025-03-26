@@ -4,7 +4,6 @@ import TaskListHeader from './taskheader';
 import TaskList from './tasklist';
 import type { TaskViewProps, filterType } from '../../lib/customTypes';
 import type { Todo } from '../../../../todo-api-client/models/Todo';
-import { viewData } from '../../lib/userSettings';
 
 export default function TaskView({
 	userInfo,
@@ -115,6 +114,14 @@ export default function TaskView({
 								month: 'short',
 								day: 'numeric',
 						  })
+						: '') + 
+						(currentView.id === (userInfo.inboxListId+2)
+						? ': ' +
+						  new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toLocaleDateString('en-US', {
+								weekday: 'short',
+								month: 'short',
+								day: 'numeric',
+						  }) + ', and beyond'
 						: '') +
 					(currentView.archived ? ' (Archived)' : '')}
 			</div>
