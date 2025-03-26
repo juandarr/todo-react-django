@@ -104,6 +104,7 @@ export interface TaskFormProps {
 export interface SortableTaskItemProps {
 	todo: Todo;
 	lists: List[];
+	userInfo: userInfoType;
 	toggleTodo: (id: number, complete: boolean) => Promise<Todo>;
 	editTodo: (
 		id: number,
@@ -117,6 +118,7 @@ export interface SortableTaskItemProps {
 export interface TaskItemProps {
 	todo: Todo;
 	lists: List[];
+	userInfo: userInfoType;
 	toggleTodo: (id: number, complete: boolean) => Promise<Todo>;
 	editTodo: (
 		id: number,
@@ -125,11 +127,13 @@ export interface TaskItemProps {
 	) => Promise<void>;
 	editTodoFull: (todo: todoType) => Promise<Todo>;
 	deleteTodo: (id: number) => Promise<void>;
+	
 }
 
 export interface TaskListProps {
 	todos: Todo[];
 	lists: List[];
+	userInfo: userInfoType;
 	setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
 	toggleTodo: (id: number, complete: boolean) => Promise<Todo>;
 	deleteTodo: (id: number) => Promise<void>;
@@ -177,7 +181,9 @@ export interface EditModalTodoProps {
 	todo: Todo;
 	lists: List[];
 	parentId: string;
+	userInfo: userInfoType;
 }
+
 export interface DeleteModalListProps {
 	deleteFunction: (id: number) => Promise<void>;
 	deleteEntity: string;
