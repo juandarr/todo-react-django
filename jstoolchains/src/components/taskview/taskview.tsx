@@ -3,9 +3,11 @@ import TaskForm from './taskform';
 import TaskListHeader from './taskheader';
 import TaskList from './tasklist';
 import type { TaskViewProps, filterType } from '../../lib/customTypes';
+import type { Todo } from '../../../../todo-api-client/models/Todo';
 import { viewData } from '../../lib/userSettings';
 
 export default function TaskView({
+	userInfo,
 	todos,
 	lists,
 	showSidebar,
@@ -44,10 +46,31 @@ export default function TaskView({
 	}, []);
 
 	const listTodos = useMemo(() => {
-		if (typeof currentView.id === 'number') {
+		if (currentView.id === userInfo.inboxListId || (currentView.id > (userInfo.inboxListId+2)) ) {
 			return todos.filter((todo) => todo.list === currentView.id);
 		} else {
-			const customFilter = viewData.viewTagFilters.get(currentView.id);
+			let customFilter;
+			// Current view is today view
+			if (currentView.id=== userInfo.inboxListId+1){
+				customFilter = (todo: Todo) => {
+								const tmp = new Date();
+								const tomorrow =
+									new Date(tmp.getFullYear(), tmp.getMonth(), tmp.getDate()).getTime() +
+									24 * 60 * 60 * 1000;
+								return (todo.dueDate?.getTime() as number) < tomorrow;
+							};
+			}
+			// Current view is upcoming view
+			else if (currentView.id=== userInfo.inboxListId+2){
+				customFilter = (todo: Todo) => {
+					const tmp = new Date();
+					const tomorrow =
+						new Date(tmp.getFullYear(), tmp.getMonth(), tmp.getDate()).getTime() +
+						24 * 60 * 60 * 1000;
+					return (todo.dueDate?.getTime() as number) >= tomorrow;
+				};
+			}
+			
 			return todos.filter(customFilter as filterType);
 		}
 	}, [todos, currentView]);
@@ -62,7 +85,7 @@ export default function TaskView({
 
 	const todosCompleted = useMemo(() => {
 		let filteredTodos = listTodos.filter((todo) => todo.complete === true);
-		if (currentView.id === '1t') {
+		if (currentView.id === (userInfo.inboxListId+1)) {
 			filteredTodos = filteredTodos.filter(
 				(todo) =>
 					todo.completedAt?.toDateString() === new Date().toDateString(),
@@ -85,7 +108,7 @@ export default function TaskView({
 				className='absolute left-3 top-2 text-sm font-bold text-violet-600'
 				id='currentView-title'>
 				{currentView.title +
-					(currentView.id === '1t'
+					(currentView.id === (userInfo.inboxListId+1)
 						? ': ' +
 						  new Date().toLocaleDateString('en-US', {
 								weekday: 'short',
