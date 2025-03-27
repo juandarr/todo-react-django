@@ -345,13 +345,20 @@ export default function App(): React.JSX.Element {
 
 	const editList = async (
 		id: number,
-		newList: { title?: string; archived?: boolean },
+		newList: { title?: string; archived?: boolean; ordering?: object },
 	): Promise<List> => {
 		let list;
 		if (newList.archived === undefined) {
-			list = {
-				title: newList.title,
-			};
+			if (newList.ordering === undefined){
+				list = {
+					title: newList.title,
+				};
+			} else {
+				list = {
+					title: newList.title,
+					ordering: newList.ordering
+				};
+			}
 		} else {
 			list = { archived: newList.archived };
 		}
