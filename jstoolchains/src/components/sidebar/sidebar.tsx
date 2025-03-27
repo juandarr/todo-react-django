@@ -46,8 +46,6 @@ export default function SideBar({
 
 	const activeLists = lists
 		.filter((list) => ((user.inboxListId+2) < (list.id as number)) && list.archived === false);
-	
-	console.log("This is the inbox id: ",user.inboxListId, lists)
 	const archivedLists = lists
 		.filter((list) => ((user.inboxListId+2) < (list.id as number)) && list.archived === true)
 		.map((list) => (
