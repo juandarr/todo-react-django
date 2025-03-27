@@ -45,33 +45,31 @@ export default function TaskView({
 	}, []);
 
 	const listTodos = useMemo(() => {
-		if (currentView.id === userInfo.inboxListId || (currentView.id > (userInfo.inboxListId+2)) ) {
-			return todos.filter((todo) => todo.list === currentView.id);
-		} else {
-			let customFilter;
-			// Current view is today view
-			if (currentView.id=== userInfo.inboxListId+1){
-				customFilter = (todo: Todo) => {
-								const tmp = new Date();
-								const tomorrow =
-									new Date(tmp.getFullYear(), tmp.getMonth(), tmp.getDate()).getTime() +
-									24 * 60 * 60 * 1000;
-								return (todo.dueDate?.getTime() as number) < tomorrow;
-							};
-			}
-			// Current view is upcoming view
-			else if (currentView.id=== userInfo.inboxListId+2){
-				customFilter = (todo: Todo) => {
-					const tmp = new Date();
-					const tomorrow =
-						new Date(tmp.getFullYear(), tmp.getMonth(), tmp.getDate()).getTime() +
-						24 * 60 * 60 * 1000;
-					return (todo.dueDate?.getTime() as number) >= tomorrow;
-				};
-			}
-			
-			return todos.filter(customFilter as filterType);
+		let customFilter;
+		// Current view is today view
+		if (currentView.id=== userInfo.inboxListId+1){
+			customFilter = (todo: Todo) => {
+							const tmp = new Date();
+							const tomorrow =
+								new Date(tmp.getFullYear(), tmp.getMonth(), tmp.getDate()).getTime() +
+								24 * 60 * 60 * 1000;
+							return (todo.dueDate?.getTime() as number) < tomorrow;
+						};
 		}
+		// Current view is upcoming view
+		else if (currentView.id=== userInfo.inboxListId+2){
+			customFilter = (todo: Todo) => {
+				const tmp = new Date();
+				const tomorrow =
+					new Date(tmp.getFullYear(), tmp.getMonth(), tmp.getDate()).getTime() +
+					24 * 60 * 60 * 1000;
+				return (todo.dueDate?.getTime() as number) >= tomorrow;
+			};
+		} else {
+			customFilter = (todo: Todo) => todo.list === currentView.id;
+		}
+		return todos.filter(customFilter as filterType);
+		
 	}, [todos, currentView]);
 
 	const todosTodo = useMemo(() => {
