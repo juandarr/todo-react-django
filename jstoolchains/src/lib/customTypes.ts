@@ -83,6 +83,14 @@ export interface TaskViewProps {
 	userInfo: userInfoType;
 	todos: Todo[];
 	lists: List[];
+	editList: (
+		id: number,
+		newList: {
+			title?: string;
+			ordering?: {order: number[]};
+			archived?: boolean;
+		},
+	) => Promise<List>;
 	showSidebar: boolean;
 	setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
 	currentView: viewType;
