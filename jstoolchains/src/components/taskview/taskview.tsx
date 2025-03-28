@@ -4,11 +4,13 @@ import TaskListHeader from './taskheader';
 import TaskList from './tasklist';
 import type { TaskViewProps, filterType } from '../../lib/customTypes';
 import type { Todo } from '../../../../todo-api-client/models/Todo';
+import { toast } from '../ui/toast/use-toast';
 
 export default function TaskView({
 	userInfo,
 	todos,
 	lists,
+	editList,
 	showSidebar,
 	currentView,
 	setTodos,
@@ -18,6 +20,32 @@ export default function TaskView({
 	editTodo,
 	editTodoFull,
 }: TaskViewProps): React.JSX.Element {
+
+	const editHandler = async (
+			id: number,
+			tmpList: { title?: string; ordering?:{order: number[]};archived?: boolean },
+		): Promise<void> => {
+			
+			if (tmpList.ordering?.order?.length === 0) return;
+	
+			try {
+				const updatedList = await editList(id, tmpList);
+				console.log('Updated ordering of list: ', updatedList);
+				toast({
+					title: 'List ordering was updated!',
+					description: '',
+				});
+			} catch (error) {
+				if (error instanceof Error) {
+					toast({
+						variant: 'destructive',
+						title: 'There was an error updating the list ordering: ',
+						description: error.message,
+					});
+				}
+			}
+		};
+
 	useEffect(() => {
 		const coll = document.getElementsByClassName('collapsible');
 
@@ -82,8 +110,15 @@ export default function TaskView({
 			console.log('This is the current list: ',currentList);
 			console.log('And here is the ordering: ',currentList[0].ordering, currentList[0].ordering?.order.length === 0);
 			if (currentList[0].ordering?.order.length === 0) {
-				const tmp = filteredTodos.map((todos) => todos.id);
+				const tmp = filteredTodos.map((todos) => todos.id) as number[];
 				console.log('Order of todos: ' ,tmp);
+				//Store initial order of todos. Implement such operation here
+				editHandler(currentView.id, { ordering: {order: tmp } })
+									.then(() => {})
+									.catch(() => {});
+			}else {
+				//If order is already defined, check existence of todos. Remove the ones not present from ordering array, add new ones to the end, store new ordering array
+
 			}
 		}
 		// This filter is useful when filtering by priority
@@ -91,6 +126,7 @@ export default function TaskView({
 		return filteredTodos.sort(
 			(a, b) => (a.priority as number) - (b.priority as number),
 		);*/
+		return filteredTodos;
 	}, [todos, currentView]);
 
 	const todosCompleted = useMemo(() => {
