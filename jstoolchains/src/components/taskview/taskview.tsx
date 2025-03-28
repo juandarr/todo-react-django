@@ -68,16 +68,29 @@ export default function TaskView({
 		} else {
 			customFilter = (todo: Todo) => todo.list === currentView.id;
 		}
+		
 		return todos.filter(customFilter as filterType);
 		
 	}, [todos, currentView]);
 
 	const todosTodo = useMemo(() => {
+		//Todos are by default retrieved by id
 		const filteredTodos = listTodos.filter((todo) => todo.complete === false);
 
+		const currentList = lists.filter((list) => (list.id === currentView.id))
+		if (currentList.length !== 0){
+			console.log('This is the current list: ',currentList);
+			console.log('And here is the ordering: ',currentList[0].ordering, currentList[0].ordering?.order.length === 0);
+			if (currentList[0].ordering?.order.length === 0) {
+				const tmp = filteredTodos.map((todos) => todos.id);
+				console.log('Order of todos: ' ,tmp);
+			}
+		}
+		// This filter is useful when filtering by priority
+		/*
 		return filteredTodos.sort(
 			(a, b) => (a.priority as number) - (b.priority as number),
-		);
+		);*/
 	}, [todos, currentView]);
 
 	const todosCompleted = useMemo(() => {
