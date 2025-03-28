@@ -355,7 +355,6 @@ export default function App(): React.JSX.Element {
 				};
 			} else {
 				list = {
-					title: newList.title,
 					ordering: newList.ordering
 				};
 			}
@@ -484,6 +483,7 @@ export default function App(): React.JSX.Element {
 						userInfo={userInfo}
 						todos={todos}
 						lists={lists}
+						editList={editList}
 						currentView={currentView}
 						setTodos={setTodos}
 						addTodo={addTodo}
