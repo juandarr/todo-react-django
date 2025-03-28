@@ -121,7 +121,6 @@ export default function TaskList({
 					editTodo={editTodo}
 					editTodoFull={editTodoFull}
 					deleteTodo={deleteTodo}
-					
 				/>
 			</li>
 		);
@@ -168,22 +167,7 @@ export default function TaskList({
 						</DndContext>
 					)}
 					{isComplete &&
-						todos.map((todo, idx: number) => {
-							return (
-								<li key={todo.id} id={`item-${todo.id}`}>
-									<TaskItem
-										todo={todo}
-										lists={lists}
-										userInfo={userInfo}
-										toggleTodo={toggleTodo}
-										editTodo={editTodo}
-										editTodoFull={editTodoFull}
-										deleteTodo={deleteTodo}
-										
-									/>
-								</li>
-							);
-						})}
+						taskList}
 				</ul>
 			)}
 		</div>
