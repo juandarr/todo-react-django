@@ -39,13 +39,9 @@ export default function TaskList({
 }: TaskListProps): React.JSX.Element {
 	/* Drag and drop definitions */
 	const sensors = useSensors(
-		useSensor(PointerSensor),
-		useSensor(KeyboardSensor, {
-			coordinateGetter: sortableKeyboardCoordinates,
-		}),
-		/*useSensor(MouseSensor, {
+		useSensor(MouseSensor, {
 				activationConstraint: {distance: 5}
-			}),*/
+			})
 	);
 
 	async function handleDragEnd(event: any) {
@@ -59,61 +55,14 @@ export default function TaskList({
 			
 			//Move items in the array
 			const newTodos = arrayMove(todos, oldIndex, newIndex);
-			//Store index in list of final destination of dragged item
-			//const tmpIndex = todos[newIndex].index;
 
-			// Update active and over lists 
-			//let tmpTodos: { id: number; index: number }[] = [];
-			//  Update indexes of lists between active and over items 
-			/*if (newIndex < oldIndex) {
-				for (let i = newIndex; i < oldIndex; i++) {
-					tmpTodos.push({
-						id: lists[i].id as number,
-						index: (todos[i].index as number) + 1,
-					});
-					newTodos[i + 1].index = (newTodos[i + 1].index as number) + 1;
-				}
-				tmpTodos.push({
-					id: todos[oldIndex].id as number,
-					index: tmpIndex as number,
-				});
-			} else if (newIndex > oldIndex) {
-				for (let i = newIndex; i > oldIndex; i--) {
-					tmpTodos.push({
-						id: todos[i].id as number,
-						index: (todos[i].index as number) - 1,
-					});
-					newTodos[i - 1].index = (newTodos[i - 1].index as number) - 1;
-				}
-			}
-			
-			tmpTodos.push({
-				id: todos[oldIndex].id as number,
-				index: tmpIndex as number,
-			});
-			newTodos[newIndex].index = tmpIndex;*/
-
-			/*
-			// Update indexes of items between over and active list indexes in database
-			tmpTodos.map(async (todo) => {
-				try {
-					await clientTodo.todosPartialUpdate({
-						id: todo.id as number,
-						patchedTodo: { index: todo.index },
-					});
-
-					console.log('Todo was patched!');
-				} catch (error) {
-					console.log('There was an error updating the field in Todo');
-					throw error;
-				}
-			});*/
-
-			// Update state with new todos order
+				// Update state with new todos order
 			editListHandler(currentView.id, { ordering: {order: newTodos.map((todo) => todo.id) as number[] } })
 									.then(() => {})
 									.catch(() => {});
-			//setTodos(() => [...newTodos]);
+		
+			setTodos(() => [...newTodos]);
+
 		}
 	}
 
