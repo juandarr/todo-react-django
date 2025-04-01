@@ -141,14 +141,13 @@ export interface TaskItemProps {
 export interface TaskListProps {
 	todos: Todo[];
 	lists: List[];
-	editList: (
-		id: number,
-		newList: {
-			title?: string;
-			ordering?: {order: number[]};
-			archived?: boolean;
-		},
-	) => Promise<List>;
+	editListHandler:(id: number, tmpList: {
+		title?: string;
+		ordering?: {
+			order: number[];
+		};
+		archived?: boolean;
+	}) => Promise<void>;
 	currentView:viewType;
 	userInfo: userInfoType;
 	setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
