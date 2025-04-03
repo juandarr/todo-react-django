@@ -242,7 +242,7 @@ type actionType = {
 export interface SideBarProps {
 	lists: List[];
 	currentView: viewType;
-	changeCurrentView: (viewId: number | string) => void;
+	changeCurrentView: (viewId: number) => void;
 	addList: addListType;
 	deleteList: (id: number) => Promise<void>;
 	editList: (
@@ -259,7 +259,7 @@ export interface SideBarProps {
 export interface SortableListItemProps {
 	list: List;
 	currentView: viewType;
-	changeCurrentView: (viewId: number | string) => void;
+	changeCurrentView: (viewId: number) => void;
 	deleteList: (id: number) => Promise<void>;
 	editList: (
 		id: number,
@@ -272,7 +272,7 @@ export interface SortableListItemProps {
 }
 
 export interface NavBarProps {
-	changeCurrentView: (viewId: number | string) => void;
+	changeCurrentView: (viewId: number) => void;
 	lists: List[];
 	todos: Todo[];
 	userInfo: userInfoType;
