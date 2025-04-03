@@ -61,7 +61,7 @@ export default function TaskList({
 									.then(() => {})
 									.catch(() => {});
 		
-			setTodos(() => [...newTodos]);
+			//setTodos(() => newTodos);
 
 		}
 	};
