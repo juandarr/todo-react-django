@@ -400,6 +400,33 @@ export default function App(): React.JSX.Element {
 		}
 	};
 
+	const editListOrder = async (
+		id: number,
+		newList: { ordering: {order: number[]} },
+	): Promise<List> => {
+		let list = {
+					ordering: newList.ordering
+				};
+		
+		try {
+			const updatedList = await clientList.listsPartialUpdate({
+				id,
+				patchedList: list,
+			});
+			console.log('Ordering was updated!');
+
+			dispatchLists({
+				type: 'edited',
+				payload: updatedList,
+			});
+			
+			return updatedList;
+		} catch (error) {
+			console.log('There was an error updating the List ordering');
+			throw error;
+		}
+	};
+
 	const deleteList = async (id: number): Promise<void> => {
 		try {
 			await clientList.listsDestroy({ id });
@@ -483,9 +510,8 @@ export default function App(): React.JSX.Element {
 						userInfo={userInfo}
 						todos={todos}
 						lists={lists}
-						editList={editList}
+						editListOrder={editListOrder}
 						currentView={currentView}
-						setTodos={setTodos}
 						addTodo={addTodo}
 						toggleTodo={toggleTodo}
 						deleteTodo={deleteTodo}
