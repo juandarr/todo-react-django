@@ -10,10 +10,9 @@ export default function TaskView({
 	userInfo,
 	todos,
 	lists,
-	editList,
+	editListOrder,
 	showSidebar,
 	currentView,
-	setTodos,
 	addTodo,
 	toggleTodo,
 	deleteTodo,
@@ -23,13 +22,13 @@ export default function TaskView({
 
 	const editListHandler = async (
 					id: number,
-					tmpList: { title?: string; ordering?:{order: number[]};archived?: boolean },
+					tmpList: { ordering:{order: number[]}},
 				): Promise<void> => {
 					
 					if (tmpList.ordering?.order?.length === 0) return;
 			
 					try {
-						const updatedList = await editList(id, tmpList);
+						const updatedList = await editListOrder(id, tmpList);
 						console.log('Updated ordering of list: ', updatedList);
 						toast({
 							title: 'List ordering was updated!',
@@ -223,7 +222,6 @@ export default function TaskView({
 				editListHandler={editListHandler}
 				currentView={currentView}
 				userInfo={userInfo}
-				setTodos={setTodos}
 				toggleTodo={toggleTodo}
 				deleteTodo={deleteTodo}
 				editTodo={editTodo}
@@ -243,7 +241,6 @@ export default function TaskView({
 				editListHandler={editListHandler}
 				currentView={currentView}
 				userInfo={userInfo}
-				setTodos={setTodos}
 				toggleTodo={toggleTodo}
 				deleteTodo={deleteTodo}
 				editTodo={editTodo}
