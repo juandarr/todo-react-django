@@ -83,16 +83,12 @@ export interface TaskViewProps {
 	userInfo: userInfoType;
 	todos: Todo[];
 	lists: List[];
-	editList: (
-		id: number,
-		newList: {
-			title?: string;
-			ordering?: {order: number[]};
-			archived?: boolean;
-		},
-	) => Promise<List>;
+	editListOrder:(id: number, newList: {
+		ordering: {
+			order: number[];
+		};
+	}) => Promise<List>;
 	showSidebar: boolean;
-	setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
 	currentView: viewType;
 	addTodo: (todo: todoType, origin: string) => Promise<Todo>;
 	toggleTodo: (id: number, complete: boolean) => Promise<Todo>;
@@ -142,15 +138,12 @@ export interface TaskListProps {
 	todos: Todo[];
 	lists: List[];
 	editListHandler:(id: number, tmpList: {
-		title?: string;
-		ordering?: {
+		ordering: {
 			order: number[];
 		};
-		archived?: boolean;
 	}) => Promise<void>;
 	currentView:viewType;
 	userInfo: userInfoType;
-	setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
 	toggleTodo: (id: number, complete: boolean) => Promise<Todo>;
 	deleteTodo: (id: number) => Promise<void>;
 	editTodo: (
