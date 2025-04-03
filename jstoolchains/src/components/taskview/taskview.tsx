@@ -105,58 +105,58 @@ export default function TaskView({
 		//Todos are by default retrieved by id
 		const filteredTodos = listTodos.filter((todo) => todo.complete === false);
 		
-		const currentList = lists.filter((list) => (list.id === currentView.id))
-					if (currentList.length !== 0){
-						console.log('This is the current list: ',currentList);
-						console.log('And here is the ordering: ',currentList[0].ordering, currentList[0].ordering?.order.length === 0);
-						const tmp = filteredTodos.map((todo) => todo.id) as number[];
-						if (currentList[0].ordering?.order.length === 0) {
-							
-							console.log('Order of todos: ' ,tmp);
-							//Store initial order of todos. Implement such operation here
-							editListHandler(currentView.id, { ordering: {order: tmp } })
-												.then(() => {})
-												.catch(() => {});
-						} else {
-							//If order is already defined, check existence of todos. Remove the ones not present from ordering array, add new ones to the end, store new ordering array, this is next
-							//compare current list to sorted one, new todos won´t be on sorted, add to the end
-							const order = [...currentList[0].ordering?.order];
-							const toRemove = [];
-							const toAdd = [];
-							let change = false;
-							for (let i =0; i< order.length; i++){
-								if (!(tmp.includes(order[i]))){
-									toRemove.push(order[i]);
-									change =true;
-			
-								}
-							}
-							for (let i=0; i<tmp.length; i++){
-								if (!(order.includes(tmp[i]))){
-									toAdd.push(tmp[i]);
-									change = true;
-								}
-							}
-							console.log('Current list: ', tmp, ' And order: ', order);
-							// Remove values
-							let idx;
-							for (let i = 0; i < toRemove.length; i++){
-								idx = order.indexOf(toRemove[i]);
-								order.splice(idx,1);
-							}
-							// Add values
-							console.log('Here is what is going to be added: ', toAdd, ' and removed: ', toRemove);
-							order.push(...toAdd);
-							console.log('The value of change is: ', change);
-							if (change) {
-								console.log('New order: ', order);
-								editListHandler(currentView.id, { ordering: {order: order } })
-												.then(() => {})
-												.catch(() => {});
-							}
-							return order.map((id) => filteredTodos.find((todo) => todo.id===id)) as Todo[];
-						}
+		const currentList = lists.filter((list) => (list.id === currentView.id));
+		if (currentList.length !== 0){
+			console.log('This is the current list: ',currentList);
+			console.log('And here is the ordering: ',currentList[0].ordering, currentList[0].ordering?.order.length === 0);
+			const tmp = filteredTodos.map((todo) => todo.id) as number[];
+			if (currentList[0].ordering?.order.length === 0) {
+				
+				console.log('Order of todos: ' ,tmp);
+				//Store initial order of todos. Implement such operation here
+				editListHandler(currentView.id, { ordering: {order: tmp } })
+									.then(() => {})
+									.catch(() => {});
+			} else {
+				//If order is already defined, check existence of todos. Remove the ones not present from ordering array, add new ones to the end, store new ordering array, this is next
+				//compare current list to sorted one, new todos won´t be on sorted, add to the end
+				const order = [...currentList[0].ordering?.order];
+				const toRemove = [];
+				const toAdd = [];
+				let change = false;
+				for (let i =0; i< order.length; i++){
+					if (!(tmp.includes(order[i]))){
+						toRemove.push(order[i]);
+						change =true;
+
 					}
+				}
+				for (let i=0; i<tmp.length; i++){
+					if (!(order.includes(tmp[i]))){
+						toAdd.push(tmp[i]);
+						change = true;
+					}
+				}
+				console.log('Current list: ', tmp, ' And order: ', order);
+				// Remove values
+				let idx;
+				for (let i = 0; i < toRemove.length; i++){
+					idx = order.indexOf(toRemove[i]);
+					order.splice(idx,1);
+				}
+				// Add values
+				console.log('Here is what is going to be added: ', toAdd, ' and removed: ', toRemove);
+				order.push(...toAdd);
+				console.log('The value of change is: ', change);
+				if (change) {
+					console.log('New order: ', order);
+					editListHandler(currentView.id, { ordering: {order: order } })
+									.then(() => {})
+									.catch(() => {});
+				}
+				return order.map((id) => filteredTodos.find((todo) => todo.id===id)) as Todo[];
+			}
+		}
 
 		// This filter is useful when filtering by priority
 		/*
