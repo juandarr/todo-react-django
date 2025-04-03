@@ -148,7 +148,7 @@ export default function App(): React.JSX.Element {
 		};
 	}, []);
 
-	const changeCurrentView = (newViewId: number | string): void => {
+	const changeCurrentView = (newViewId: number): void => {
 		let newView: viewType;
 		
 		const newList: List = lists.find((list) => list.id === newViewId) as List;
@@ -163,7 +163,7 @@ export default function App(): React.JSX.Element {
 		// eslint-disable-next-line @typescript-eslint/no-unused-expressions
 		e?.offsetWidth;
 		e?.classList.add('fade-in');
-		setCurrentView(newView);
+		setCurrentView(() => newView);
 	};
 
 	const addTodo = async (todo: todoType, origin: string): Promise<Todo> => {
