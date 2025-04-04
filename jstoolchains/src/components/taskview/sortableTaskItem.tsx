@@ -29,7 +29,9 @@ export default function SortableTaskItem({todo,
   toggleTodo,
   editTodo,
   editTodoFull,
-  deleteTodo,}:SortableTaskItemProps) {
+  deleteTodo,
+  draggingItemId, // <-- Add draggingItemId prop here
+}:SortableTaskItemProps) {
   if (todo.complete === true) {
     return null;
   }
@@ -154,6 +156,7 @@ export default function SortableTaskItem({todo,
     setNodeRef,
     transform,
     transition,
+    isDragging
   } = useSortable({
     id: todo.id as number
   });
@@ -164,10 +167,12 @@ export default function SortableTaskItem({todo,
   };
   
   return (
-    <div ref={setNodeRef} style={style} className={`parent flex`}>
+    <div ref={setNodeRef} style={style} className={`parent flex ${isDragging ? 'cursor-grabbing bg-fuchsia-200 shadow-lg opacity-90 border-2 border-black z-20' : ''} ${draggingItemId !== null && !isDragging ? 'opacity-70 z-0' : ''}`}>
         
         <div className='mt-3 flex w-2/12 items-start justify-center'>
-                  <button className={`hidden-child pr-3`} {...attributes} {...listeners}>
+                  {/* Apply dragging styles also to the handle button if needed, or ensure parent style covers it */}
+                  {/* Add 'invisible' class if another item is being dragged */}
+                  <button className={`pr-3 ${isDragging ? '':'cursor-grab'} ${draggingItemId !== null? 'invisible' : 'hidden-child'}`} {...attributes} {...listeners}>
                     <RowVertical size="20" color="#ff8a65" variant="Outline"/>
                  </button>
                   <Checkbox
@@ -314,9 +319,10 @@ export default function SortableTaskItem({todo,
                     )}
                   </div>
                 </form>
+                {/* Add 'invisible' class if another item is being dragged */}
                 <div
                   id={`todo-${todo.id}`}
-                  className='hidden-child todo-actions mt-3 flex w-2/12 items-start justify-end'>
+                  className={`todo-actions mt-3 flex w-2/12 items-start justify-end ${draggingItemId !== null? 'invisible' : 'hidden-child'}`}>
                   <EditModalTodo
                     editTodoFull={editTodoFull}
                     todo={todo}
