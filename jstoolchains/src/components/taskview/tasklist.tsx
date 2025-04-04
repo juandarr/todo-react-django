@@ -82,10 +82,12 @@ export default function TaskList({
 			}
 		}
 		setDraggingItemId(null); // Reset dragging state on end
+		document.body.style.cursor = ''; // Reset body cursor on end
 	};
 
 	function handleDragStart(event: any) {
 		setDraggingItemId(event.active.id as number); // Set dragging state on start
+		document.body.style.cursor = 'grabbing'; // Set body cursor to grabbing on start
 	}
 
 
