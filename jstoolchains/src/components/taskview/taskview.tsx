@@ -24,9 +24,6 @@ export default function TaskView({
 					id: number,
 					tmpList: { ordering:{order: number[]}},
 				): Promise<void> => {
-					
-					if (tmpList.ordering?.order?.length === 0) return;
-			
 					try {
 						const updatedList = await editListOrder(id, tmpList);
 						console.log('Updated ordering of list: ', updatedList);
@@ -109,7 +106,7 @@ export default function TaskView({
 			console.log('This is the current list: ',currentList);
 			console.log('And here is the ordering: ',currentList[0].ordering, currentList[0].ordering?.order.length === 0);
 			const tmp = filteredTodos.map((todo) => todo.id) as number[];
-			if (currentList[0].ordering?.order.length === 0) {
+			if (currentList[0].ordering?.order.length === 0 && tmp.length > 0) {
 				
 				console.log('Order of todos: ' ,tmp);
 				//Store initial order of todos. Implement such operation here
