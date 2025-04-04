@@ -36,6 +36,7 @@ export default function TaskList({
 
 
 	const [todosList, setTodosList] = useState<Todo[]>(todos);
+	const [draggingItemId, setDraggingItemId] = useState<number | null>(null); // State to track the ID of the item being dragged
 
 	useEffect(()=> {
 		setTodosList(todos);
@@ -80,9 +81,13 @@ export default function TaskList({
 									});
 			}
 		}
+		setDraggingItemId(null); // Reset dragging state on end
 	};
 
-	
+	function handleDragStart(event: any) {
+		setDraggingItemId(event.active.id as number); // Set dragging state on start
+	}
+
 
 
 	return (
@@ -102,6 +107,7 @@ export default function TaskList({
 						<DndContext
 							sensors={sensors}
 							collisionDetection={closestCenter}
+							onDragStart={handleDragStart} // Add onDragStart handler
 							onDragEnd={handleDragEnd}>
 							<SortableContext
 								items={todosList.map((todo) => todo.id as number)}
@@ -117,7 +123,7 @@ export default function TaskList({
 												editTodo={editTodo}
 												editTodoFull={editTodoFull}
 												deleteTodo={deleteTodo}
-												
+												draggingItemId={draggingItemId} // Pass dragging state down
 											/>
 										</li>
 									);
