@@ -119,7 +119,7 @@ export default function SettingsModal({
 									<SelectValue placeholder='Homeview' />
 								</SelectTrigger>
 								<SelectContent>
-									{lists.map((list) => {
+									{lists.filter((list) => list.archived !== true).map((list) => {
 										return (
 											<SelectItem key={list.id} value={list.id+''}>
 												<div className='flex items-center justify-start'>
