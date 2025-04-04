@@ -167,13 +167,13 @@ export default function SortableTaskItem({todo,
   };
   
   return (
-    <div ref={setNodeRef} style={style} className={`parent flex ${isDragging ? 'cursor-grabbing bg-fuchsia-200 shadow-lg opacity-90 border-2 border-black z-20' : ''} ${draggingItemId !== null && !isDragging ? 'opacity-70 z-0' : ''}`}>
+    <div ref={setNodeRef} style={style} className={`parent flex ${isDragging ? 'cursor-grabbing bg-violet-100 shadow-lg opacity-90 border-[1px] border-black border-dashed' : ''} ${draggingItemId !== null && !isDragging ? 'opacity-70' : ''}`}>
         
         <div className='mt-3 flex w-2/12 items-start justify-center'>
                   {/* Apply dragging styles also to the handle button if needed, or ensure parent style covers it */}
                   {/* Add 'invisible' class if another item is being dragged */}
-                  <button className={`pr-3 ${isDragging ? '':'cursor-grab'} ${draggingItemId !== null? 'invisible' : 'hidden-child'}`} {...attributes} {...listeners}>
-                    <RowVertical size="20" color="#ff8a65" variant="Outline"/>
+                  <button className={`pr-3 pt-[1px] ${isDragging ? '':'cursor-grab'} ${draggingItemId !== null? 'invisible' : 'hidden-child'}`} {...attributes} {...listeners}>
+                    <RowVertical size="20" color="#f59e0b" variant="Outline"/>
                  </button>
                   <Checkbox
                     id={'checkbox-' + todo.id}
