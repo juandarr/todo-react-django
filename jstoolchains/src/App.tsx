@@ -7,8 +7,6 @@ import { getPoint, isDescendantOf, randomInRange } from './lib/utils';
 import NavBar from './components/navbar/navbar';
 import SideBar from './components/sidebar/sidebar';
 
-import { viewData } from './lib/userSettings';
-
 import confetti from 'canvas-confetti';
 import { Toaster } from './components/ui/toast/toaster';
 
