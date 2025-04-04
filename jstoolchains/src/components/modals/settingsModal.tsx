@@ -17,7 +17,7 @@ import {
 	SelectValue,
 } from '../ui/select';
 
-import { viewData, timeZones } from '../../lib/userSettings';
+import { timeZones } from '../../lib/userSettings';
 import type { SettingsModalProps } from '../../lib/customTypes';
 import { useToast } from '../ui/toast/use-toast';
 
@@ -38,14 +38,6 @@ export default function SettingsModal({
 		});
 		return tmp;
 	}, [settings]);
-
-	const currentViews = useMemo(() => {
-		const tmpLists = lists.map((list) => ({
-			...list,
-			id: list.id?.toString(),
-		}));
-		return [tmpLists[0], ...viewData.views, ...tmpLists.slice(1)];
-	}, [lists]);
 
 	const [editSettings, setEditSettings] = useState(currentSettings);
 
@@ -127,9 +119,9 @@ export default function SettingsModal({
 									<SelectValue placeholder='Homeview' />
 								</SelectTrigger>
 								<SelectContent>
-									{currentViews.map((list) => {
+									{lists.map((list) => {
 										return (
-											<SelectItem key={list.id} value={list.id as string}>
+											<SelectItem key={list.id} value={list.id+''}>
 												<div className='flex items-center justify-start'>
 													<span>{list.title}</span>
 												</div>
