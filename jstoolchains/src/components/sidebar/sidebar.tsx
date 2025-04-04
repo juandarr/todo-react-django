@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { clientList} from '../../lib/api';
 
@@ -38,6 +38,8 @@ export default function SideBar({
 	editList,
 	showSidebar,
 }: SideBarProps): React.JSX.Element {
+	const [draggingItemId, setDraggingItemId] = useState<number | null>(null); // State to track the ID of the item being dragged
+	
 	const user = useContext(UserContext);
 
 	const inbox = lists.find((list) => user.inboxListId === list.id);
@@ -141,7 +143,14 @@ export default function SideBar({
 			// Update state with new lists order
 		    dispatchLists({ type: 'changed', payload: newLists });
 		}
-	  }
+		setDraggingItemId(null); // Reset dragging state on end
+		document.body.style.cursor = ''; // Reset body cursor on end
+	  };
+	
+	function handleDragStart(event: any) {
+		setDraggingItemId(event.active.id as number); // Set dragging state on start
+		document.body.style.cursor = 'grabbing'; // Set body cursor to grabbing on start
+	}
 
 	return (
 		<div
@@ -205,6 +214,7 @@ export default function SideBar({
 					<DndContext 
 					sensors={sensors}
 					collisionDetection={closestCenter}
+					onDragStart={handleDragStart}
 					onDragEnd={handleDragEnd}
 					>
 					<SortableContext 
@@ -212,7 +222,7 @@ export default function SideBar({
 						strategy={verticalListSortingStrategy}
 					>
 						{activeLists.map(list => <SortableListItem key={list.id} list={list} dispatchLists={dispatchLists}
-							currentView={currentView} changeCurrentView={changeCurrentView} deleteList={deleteList} editList={editList} />)}
+							currentView={currentView} changeCurrentView={changeCurrentView} deleteList={deleteList} editList={editList} draggingItemId={draggingItemId}/>)}
 					</SortableContext>
 				</DndContext>
 					
