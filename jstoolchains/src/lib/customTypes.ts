@@ -38,14 +38,6 @@ export interface userInfoType {
 	timeZone: string;
 }
 
-export interface viewDataType {
-	views: Array<{ id: string; title: string }>;
-	viewTags: Map<string, string>;
-	viewTagIds: string[];
-	viewTagDetails: Map<string, string>;
-	viewTagFilters: Map<string, filterType>;
-}
-
 export interface viewType {
 	id: number;
 	title: string;
