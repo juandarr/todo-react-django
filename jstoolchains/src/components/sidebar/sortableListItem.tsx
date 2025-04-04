@@ -11,11 +11,12 @@ export default function SortableListItem({
 	changeCurrentView,
 	deleteList,
 	editList,
+	draggingItemId
 }: SortableListItemProps) {
 	if (list.index === 1 || list.archived === true) {
 		return null;
 	}
-	const { attributes, listeners, setNodeRef, transform, transition } =
+	const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
 		useSortable({
 			id: list.id as number,
 		});
@@ -26,10 +27,10 @@ export default function SortableListItem({
 	};
 
 	return (
-		<div ref={setNodeRef} style={style} >
+		<div ref={setNodeRef} style={style} className={`${isDragging ? 'cursor-grabbing bg-violet-100 shadow-lg opacity-90 border-[1px] border-black border-dashed' : ''} ${draggingItemId !== null && !isDragging ? 'opacity-70' : ''}`}>
 			<div key={list.id} className='parent flex items-center justify-between'>
-				<button className={`hidden-child`} {...attributes} {...listeners}>
-				<RowVertical size="20" color="#ff8a65" variant="Outline"/>
+				<button className={`${isDragging ? '':'cursor-grab'} ${draggingItemId !== null? 'invisible' : 'hidden-child'}`} {...attributes} {...listeners}>
+				<RowVertical size="20" color="#f59e0b" variant="Outline"/>
 				</button>
 				<button
 					className={`flex flex-1 cursor-pointer justify-start ${
@@ -44,7 +45,7 @@ export default function SortableListItem({
 				</button>
 				<div
 					id={`list-${list.id}`}
-					className={`hidden-child flex items-center justify-end 
+					className={`${draggingItemId !== null? 'invisible' : 'hidden-child'} flex items-center justify-end 
                             ${currentView.id === list.id ? 'list-actions-selected' : ''}`}>
 					<span className='ml-2'></span>
 					<EditModalList
