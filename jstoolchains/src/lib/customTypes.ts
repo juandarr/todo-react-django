@@ -255,6 +255,7 @@ export interface SortableListItemProps {
 		},
 	) => Promise<List>;
 	dispatchLists: ActionDispatch<[action: actionType]>;
+	draggingItemId: number | null;
 }
 
 export interface NavBarProps {
