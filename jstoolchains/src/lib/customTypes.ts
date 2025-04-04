@@ -109,6 +109,7 @@ export interface SortableTaskItemProps {
 	) => Promise<void>;
 	editTodoFull: (todo: todoType) => Promise<Todo>;
 	deleteTodo: (id: number) => Promise<void>;
+	draggingItemId: number | null; // Add the new prop type here
 }
 
 export interface TaskItemProps {
