@@ -293,7 +293,7 @@ export default function CreateModalTodo({
 								<SelectValue placeholder='List' />
 							</SelectTrigger>
 							<SelectContent>
-								{lists.filter((list) => ((list.id !== userInfo.inboxListId+1) && (list.id !== userInfo.inboxListId+2))).map((list) => (
+								{lists.filter((list) => ((list.id !== userInfo.inboxListId+1) && (list.id !== userInfo.inboxListId+2) && (list.archived !== true))).map((list) => (
 									<SelectItem
 										key={list.id}
 										value={(list.id as number).toString()}>

@@ -162,7 +162,7 @@ export interface TaskListHeaderProps {
 }
 
 export interface CreateModalTodoProps {
-	lists: Todo[];
+	lists: List[];
 	userInfo: userInfoType;
 	addTodo: addTodoType;
 }
