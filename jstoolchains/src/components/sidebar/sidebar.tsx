@@ -37,9 +37,9 @@ export default function SideBar({
 	deleteList,
 	editList,
 	showSidebar,
+	isLoadingLists, // Add isLoadingLists here
 }: SideBarProps): React.JSX.Element {
 	const [draggingItemId, setDraggingItemId] = useState<number | null>(null); // State to track the ID of the item being dragged
-	
 	const user = useContext(UserContext);
 
 	const inbox = lists.find((list) => user.inboxListId === list.id);
@@ -165,6 +165,9 @@ export default function SideBar({
 			</div>
 			<div className='mb-1 flex flex-col'>
 				<div className='mb-2 text-lg font-bold text-cyan-600'>Tareas</div>
+				{isLoadingLists ? (
+					<p className='text-center text-gray-500'>Loading lists...</p>
+				) :(<>
 				<button
 					className={`flex cursor-pointer justify-start ${
 						currentView.id === user.inboxListId
@@ -198,6 +201,7 @@ export default function SideBar({
 					}}>
 					{upcoming !== undefined ? upcoming.title : ''}
 				</button>
+				</>)}
 			</div>
 			<div className='mt-4 flex flex-col'>
 				<div className='mb-2 flex justify-between'>
