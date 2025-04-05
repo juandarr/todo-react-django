@@ -524,7 +524,7 @@ export default function App(): React.JSX.Element {
 						editTodo={editTodo}
 						editTodoFull={editTodoFull}
 						showSidebar={showSidebar}
-						isLoading={loadingTodos} // Pass loading state here
+						isLoadingTodos={loadingTodos} // Pass loading state here
 					/>
 				</div>
 				<Toaster />
