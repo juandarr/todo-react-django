@@ -47,17 +47,18 @@ export default function App(): React.JSX.Element {
 	});
 	const [showSidebar, setShowSidebar] = useState(true);
 
-	const [todos, setTodos]: todoModelFetch = useModelFetch(
+	const [todos, setTodos, loadingTodos]: todoModelFetch = useModelFetch(
 		clientTodo.todosList(),
 	);
 
-	const [settings, setSettings]: settingModelFetch = useModelFetch(
+	const [settings, setSettings, loadingSettings]: settingModelFetch = useModelFetch(
 		clientSetting.settingsList(),
 	);
 
-	const [user]: userModelFetch = useModelFetch(clientUser.usersList());
+	const [user, , loadingUser]: userModelFetch = useModelFetch(clientUser.usersList()); // Ignore user setter if not used directly
 	const [userInfo, setUserInfo] = useState(userInfoInitial);
 	const [lists, dispatchLists] = useReducer(listsReducer, initialListsState);
+	const [loadingLists, setLoadingLists] = useState(true); // Add loading state for lists
 
 	const initializationCompleted = useRef(false);
 
@@ -87,6 +88,7 @@ export default function App(): React.JSX.Element {
 	// Load lists - need to do this since changed from useState to useReducer
 	useEffect(() => {
 		let ignore = false;
+		setLoadingLists(true); // Start loading
 		clientList
 			.listsList()
 			.then((result: List[]) => {
@@ -100,6 +102,11 @@ export default function App(): React.JSX.Element {
 			.catch((error: Error) => {
 				if (error instanceof Error) {
 					console.log('There was an error retrieving data: ', error.message);
+				}
+			})
+			.finally(() => {
+				if (!ignore) {
+					setLoadingLists(false); // Finish loading
 				}
 			});
 
@@ -503,6 +510,7 @@ export default function App(): React.JSX.Element {
 						deleteList={deleteList}
 						editList={editList}
 						showSidebar={showSidebar}
+						isLoadingLists={loadingLists} // Pass loading state
 					/>
 					<TaskView
 						userInfo={userInfo}
@@ -516,6 +524,7 @@ export default function App(): React.JSX.Element {
 						editTodo={editTodo}
 						editTodoFull={editTodoFull}
 						showSidebar={showSidebar}
+						isLoading={loadingTodos} // Pass loading state here
 					/>
 				</div>
 				<Toaster />
