@@ -55,20 +55,24 @@ export type addListType = (title: string) => Promise<List>;
 export type todoModelFetch = [
 	Todo[],
 	React.Dispatch<React.SetStateAction<Todo[]>>,
+	boolean,
 ];
 
 export type listModelFetch = [
 	List[],
 	React.Dispatch<React.SetStateAction<List[]>>,
+	boolean,
 ];
 
 export type settingModelFetch = [
 	Setting[],
 	React.Dispatch<React.SetStateAction<Setting[]>>,
+	boolean,
 ];
 export type userModelFetch = [
 	User[],
 	React.Dispatch<React.SetStateAction<User[]>>,
+	boolean,
 ];
 
 export interface TaskViewProps {
@@ -91,6 +95,7 @@ export interface TaskViewProps {
 		setInFocus: React.Dispatch<React.SetStateAction<boolean>>,
 	) => Promise<void>;
 	editTodoFull: (todo: todoType) => Promise<Todo>;
+	isLoadingTodos: boolean; // Add isLoading prop
 }
 
 export interface TaskFormProps {
@@ -240,6 +245,7 @@ export interface SideBarProps {
 	) => Promise<List>;
 	showSidebar: boolean;
 	dispatchLists: ActionDispatch<[action: actionType]>;
+	isLoadingLists: boolean; // Add isLoadingLists prop
 }
 
 export interface SortableListItemProps {
