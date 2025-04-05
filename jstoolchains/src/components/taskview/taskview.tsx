@@ -18,6 +18,7 @@ export default function TaskView({
 	deleteTodo,
 	editTodo,
 	editTodoFull,
+	isLoadingTodos, // Add isLoading here
 }: TaskViewProps): React.JSX.Element {
 
 	const editListHandler = async (
@@ -102,7 +103,7 @@ export default function TaskView({
 		const filteredTodos = listTodos.filter((todo) => todo.complete === false);
 		
 		const currentList = lists.filter((list) => (list.id === currentView.id));
-		if (currentList.length !== 0){
+		if (currentList.length !== 0 && !isLoadingTodos){
 			console.log('This is the current list: ',currentList);
 			console.log('And here is the ordering: ',currentList[0].ordering, currentList[0].ordering?.order.length === 0);
 			const tmp = filteredTodos.map((todo) => todo.id) as number[];
@@ -133,7 +134,7 @@ export default function TaskView({
 						change = true;
 					}
 				}
-				console.log('Current list: ', tmp, ' And order: ', order);
+				console.log('Current fetched order: ', tmp, ' And stored order: ', order);
 				// Remove values
 				let idx;
 				for (let i = 0; i < toRemove.length; i++){
@@ -213,6 +214,9 @@ export default function TaskView({
 				isComplete={true}
 				items={todosTodo.length}
 			/>
+			{isLoadingTodos ? (
+				<p className='text-center text-gray-500'>Loading todos...</p>
+			) : (
 			<TaskList
 				todos={todosTodo}
 				lists={lists}
@@ -224,7 +228,7 @@ export default function TaskView({
 				editTodo={editTodo}
 				editTodoFull={editTodoFull}
 				isComplete={false}
-			/>
+			/>)}
 			<TaskListHeader
 				fieldDone={`Completed`}
 				fieldTask={''}
@@ -232,6 +236,9 @@ export default function TaskView({
 				isComplete={false}
 				items={todosCompleted.length}
 			/>
+			{isLoadingTodos ? (
+				<p className='text-center text-gray-500'>Loading todos...</p>
+			) : (
 			<TaskList
 				todos={todosCompleted}
 				lists={lists}
@@ -243,7 +250,7 @@ export default function TaskView({
 				editTodo={editTodo}
 				editTodoFull={editTodoFull}
 				isComplete={true}
-			/>
+			/>)}
 		</div>
 	);
 }
