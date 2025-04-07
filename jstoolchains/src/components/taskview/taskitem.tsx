@@ -60,12 +60,13 @@ export default function TaskItem({
 	): void => {
 		event.preventDefault();
 		if (todo.title !== newTodoEdit.title) {
-			editTodo(todo.id as number, newTodoEdit.title, setInFocus)
+			editTodo(todo.id as number, newTodoEdit.title)
 				.then(() => {
 					toast({
 						title: 'Task title was updated!',
 						description: '',
 					});
+					setInFocus(false);
 				})
 				.catch((error) => {
 					console.log('There was an error updating task title: ', error);
@@ -78,6 +79,9 @@ export default function TaskItem({
 		} else {
 			setInFocus(false);
 		}
+		// Explicitly blur the textarea to exit edit mode
+		textAreaTitle.current?.blur();
+		setNewTodoEdit(newTodoEdit);
 	};
 
 	const handleKeyDown = (
