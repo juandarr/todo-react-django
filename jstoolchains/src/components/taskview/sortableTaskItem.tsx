@@ -73,7 +73,11 @@ export default function SortableTaskItem({todo,
 						title: 'Task title was updated!',
 						description: '',
 					});
+          // Set inFocus to false to exit edit mode 
           setInFocus(false);
+          // Explicitly blur the textarea to exit edit mode
+          textAreaTitle.current?.blur();
+          setNewTodoEdit(newTodoEdit);
 				})
 				.catch((error) => {
 					console.log('There was an error updating task title: ', error);
@@ -82,13 +86,16 @@ export default function SortableTaskItem({todo,
 						title: 'There was an error updating task title: ',
 						description: error.message,
 					});
+          
 				});
 		} else {
+      // If the title hasn't changed, just set inFocus to false
 			setInFocus(false);
+      // Explicitly blur the textarea to exit edit mode
+      textAreaTitle.current?.blur();
+      setNewTodoEdit(newTodoEdit);
 		}
-    // Explicitly blur the textarea to exit edit mode
-    textAreaTitle.current?.blur();
-    setNewTodoEdit(newTodoEdit);
+    
 	};
 
 	const handleKeyDown = (
