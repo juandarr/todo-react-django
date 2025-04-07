@@ -291,8 +291,7 @@ export default function App(): React.JSX.Element {
 
 	const editTodo = async (
 		id: number,
-		title: string,
-		setInFocus: React.Dispatch<React.SetStateAction<boolean>>,
+		title: string
 	): Promise<void> => {
 		const todo = {
 			title,
@@ -310,7 +309,6 @@ export default function App(): React.JSX.Element {
 					}
 				});
 			});
-			setInFocus(false);
 		} catch (error) {
 			console.log('There was an error updating the field in Todo');
 			throw error;
