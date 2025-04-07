@@ -91,8 +91,7 @@ export interface TaskViewProps {
 	deleteTodo: (id: number) => Promise<void>;
 	editTodo: (
 		id: number,
-		title: string,
-		setInFocus: React.Dispatch<React.SetStateAction<boolean>>,
+		title: string
 	) => Promise<void>;
 	editTodoFull: (todo: todoType) => Promise<Todo>;
 	isLoadingTodos: boolean; // Add isLoading prop
@@ -109,8 +108,7 @@ export interface SortableTaskItemProps {
 	toggleTodo: (id: number, complete: boolean) => Promise<Todo>;
 	editTodo: (
 		id: number,
-		title: string,
-		setInFocus: React.Dispatch<React.SetStateAction<boolean>>,
+		title: string
 	) => Promise<void>;
 	editTodoFull: (todo: todoType) => Promise<Todo>;
 	deleteTodo: (id: number) => Promise<void>;
@@ -124,8 +122,7 @@ export interface TaskItemProps {
 	toggleTodo: (id: number, complete: boolean) => Promise<Todo>;
 	editTodo: (
 		id: number,
-		title: string,
-		setInFocus: React.Dispatch<React.SetStateAction<boolean>>,
+		title: string
 	) => Promise<void>;
 	editTodoFull: (todo: todoType) => Promise<Todo>;
 	deleteTodo: (id: number) => Promise<void>;
@@ -146,8 +143,7 @@ export interface TaskListProps {
 	deleteTodo: (id: number) => Promise<void>;
 	editTodo: (
 		id: number,
-		title: string,
-		setInFocus: React.Dispatch<React.SetStateAction<boolean>>,
+		title: string
 	) => Promise<void>;
 	editTodoFull: (todo: todoType) => Promise<Todo>;
 	isComplete: boolean;
