@@ -1,4 +1,4 @@
-import React, { useState, useRef, type CSSProperties, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 import {
 	Tooltip,
@@ -235,6 +235,7 @@ export default function EditModalTodo({
 					</div>
 					<TextEditor
 						editor={editorDesc}
+						charLimit={1000}
 						id='todoDescription'
 						className='mt-1 max-h-[40vh] overflow-y-auto rounded-b-lg bg-gray-300 text-sm text-gray-900 placeholder:text-gray-500'
 						onKeyDown={(e) => {
