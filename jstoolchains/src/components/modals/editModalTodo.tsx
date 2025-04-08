@@ -48,7 +48,7 @@ export default function EditModalTodo({
 		title: '',
 		description: '',
 	});
-	const editorDesc = useTextEditor('', 'Description', 1000);
+	const editorDesc = useTextEditor('', 'Description ...', 1000);
 	const [status, setStatus] = useState('typing');
 	const { toast } = useToast();
 
