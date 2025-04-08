@@ -121,7 +121,19 @@ export default function EditModalTodo({
 		};
 		setNewEditTodo(tmpTodo);
 		editorDesc?.commands.setContent(tmpTodo.description as string);
-		setStatus('typing');
+		waitForElementToExist('#todoEditTitle')
+			.then(() => {
+				// We need to reset the height momentarily to get the correct scrollHeight for the textarea
+				(textAreaRefTitle.current as HTMLTextAreaElement).style.height = '0px';
+				// We then set the height directly, outside of the render loop
+				// Trying to set this with state or a ref will product an incorrect value.
+				(
+					textAreaRefTitle.current as HTMLTextAreaElement
+				).style.height = `${textAreaRefTitle.current?.scrollHeight}px`;
+				setStatus('typing');
+			})
+			.catch(() => {});
+		
 		setIsOpen(true);
 
 		waitForElementToExist('#todoEditTitleCount')
