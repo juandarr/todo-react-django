@@ -28,7 +28,7 @@ export default function TextEditor({
 
 		if (editor) {
 			editor.on('blur', onBlur);
-			editor?.on('focus', onFocus);
+			editor.on('focus', onFocus);
 		}
 		
 		return () => {

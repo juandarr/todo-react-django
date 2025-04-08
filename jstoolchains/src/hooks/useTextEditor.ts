@@ -35,7 +35,7 @@ export default function useTextEditor(
 					'cursor-text before:content-[attr(data-placeholder)] before:absolute before:top-3 before:left-4 before:opacity-60 before-pointer-events-none',
 			}),
 			CharacterCount.configure({
-				limit,
+				limit
 			}),
 			Link.configure({
 				autolink: true,
