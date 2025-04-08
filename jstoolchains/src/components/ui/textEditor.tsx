@@ -26,11 +26,17 @@ export default function TextEditor({
 				'block';
 		};
 
-		editor?.on('blur', onBlur);
-		editor?.on('focus', onFocus);
+		if (editor) {
+			editor.on('blur', onBlur);
+			editor?.on('focus', onFocus);
+		}
+		
 		return () => {
-			editor?.off('blur', onBlur);
-			editor?.off('focus', onFocus);
+			if (editor) {
+				editor.off('blur', onBlur);
+				editor.off('focus', onFocus);
+			}
+			
 		};
 	}, []);
 
@@ -47,8 +53,9 @@ export default function TextEditor({
 			editor.extensionManager.extensions.find(
 				(ext) => ext.name === 'characterCount',
 			),
-		[],
-	);
+		[]);
+
+	console.log('EDITOR: ', editor.storage.characterCount.characters(), characterCountExtension?.storage.characters());
 	return (
 		<div className='relative mb-2 ml-4 mr-4 mt-2 flex flex-1 flex-col focus-within:rounded-lg focus-within:outline'>
 			<div className='flex max-h-[20vh] items-center justify-start overflow-y-auto rounded-t-lg bg-sky-50 px-1 py-1 text-sm text-gray-900'>
@@ -56,7 +63,7 @@ export default function TextEditor({
 					onClick={() => editor.chain().focus().toggleTaskList().run()}
 					className={`pl-3 ${
 						editor.isActive('taskList') ? 'is-active' : ''
-					} glowing cursor-pointer  text-violet-500 hover:text-violet-600`}>
+					} glowing cursor-pointer text-violet-500 hover:text-violet-600`}>
 					<TaskSquare size='18' variant='Broken' />
 				</div>
 			</div>
