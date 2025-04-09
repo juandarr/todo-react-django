@@ -37,7 +37,6 @@ import { isDescendantOf } from '../../lib/utils';
 import useAutosizeTextArea from '../../hooks/useAutosizeTextArea';
 import { DatePickerWithPresets } from '../ui/datepicker';
 import { UserContext } from '../../contexts/UserContext';
-import useTextEditor from '../../hooks/useTextEditor';
 import TextEditor from '../ui/textEditor';
 
 export default function CreateModalTodo({
@@ -54,8 +53,8 @@ export default function CreateModalTodo({
 		dueDate: undefined,
 		list: user.inboxListId.toString(),
 	});
-	const editorDesc = useTextEditor('', 'Description ...', 1000);
-
+	const editorRef = useRef<any>(null);
+	
 	const [status, setStatus] = useState('typing');
 
 	const { toast } = useToast();
@@ -91,9 +90,8 @@ export default function CreateModalTodo({
 
 	const createHandleSubmit = async (): Promise<void> => {
 		if (newTodo.title === '') return;
-		const updatedContent = editorDesc?.getHTML();
 		const tmpTodo = { ...newTodo };
-		tmpTodo.description = updatedContent;
+		tmpTodo.description = editorRef.current?.getHTMLContent() || '';
 		setStatus('submitting');
 
 		try {
@@ -106,7 +104,7 @@ export default function CreateModalTodo({
 				dueDate: undefined,
 			}));
 			setStatus('typing');
-			editorDesc?.commands.clearContent();
+			editorRef.current?.clearContent();
 			toast({
 				title: 'Task was created!',
 				description: '',
@@ -120,7 +118,7 @@ export default function CreateModalTodo({
 				});
 			}
 			setStatus('typing');
-		}
+		};
 	};
 
 	const handleKeyDown = (
@@ -144,7 +142,6 @@ export default function CreateModalTodo({
 			list: user.inboxListId.toString(),
 			dueDate: undefined,
 		});
-		editorDesc?.commands.clearContent();
 		setStatus('typing');
 		setIsOpen(true);
 	};
@@ -230,14 +227,15 @@ export default function CreateModalTodo({
 						</div>
 					</div>
 					<TextEditor
-						editor={editorDesc}
+						ref={editorRef}
+						todoDescription={newTodo.description}
 						charLimit={1000}
+						isDisabled={status === 'submitting'}
 						id='todoDescription'
 						className='mt-1 max-h-[40vh] overflow-y-auto rounded-b-lg bg-gray-300 text-sm text-gray-900 placeholder:text-gray-500'
 						onKeyDown={(e) => {
 							handleKeyDown(e);
 						}}
-						isDisabled={status === 'submitting'}
 					/>
 					<div className='mb-3 ml-4 mr-4 mt-3 flex items-center justify-around'>
 						<Select
