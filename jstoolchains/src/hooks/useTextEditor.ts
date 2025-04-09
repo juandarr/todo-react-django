@@ -7,8 +7,7 @@ import Link from '@tiptap/extension-link';
 
 export default function useTextEditor(
 	initialContent: string,
-	placeholder: string,
-	limit: number,
+	placeholder: string
 ): Editor | null {
 	const editor = useEditor({
 		extensions: [
