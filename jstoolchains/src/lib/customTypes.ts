@@ -1,4 +1,4 @@
-import { ActionDispatch } from 'react';
+import { ActionDispatch, HTMLProps } from 'react';
 import type {
 	List,
 	Todo,
@@ -161,6 +161,12 @@ export interface CreateModalTodoProps {
 	lists: List[];
 	userInfo: userInfoType;
 	addTodo: addTodoType;
+}
+
+export interface TextEditorProps extends HTMLProps<HTMLDivElement> {
+	todoDescription: string | undefined;
+	charLimit: number;
+	isDisabled: boolean;
 }
 
 export interface CreateModalListProps {
