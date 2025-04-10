@@ -18,8 +18,9 @@
 		"ecmaVersion": "latest",
 		"sourceType": "module"
 	},
-	"plugins": ["react"],
+	"plugins": ["react","eslint-plugin-react-compiler"],
 	"rules": {
+		"react-compiler/react-compiler": "error",
 		"react/prop-types": [
 			2,
 			{ "ignore": ["className","classNames", "align", "sideOffset", "position", "showOutsideDays", "mode"] }
