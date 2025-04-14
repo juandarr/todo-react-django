@@ -12,7 +12,7 @@ import { useToast } from '../ui/toast/use-toast';
 import { type Todo } from '../../../../todo-api-client/models';
 
 import DeleteModalTodo from '../modals/deleteModalTodo';
-import { Calendar2, Task, Flag, BookSaved, RowVertical } from 'iconsax-react';
+import { CalendarRange, ListChecks, Flag, Bookmark, GripVertical } from 'lucide-react';
 import EditModalTodo from '../modals/editModalTodo';
 import { UserContext } from '../../contexts/UserContext';
 import useAutosizeTextArea from '../../hooks/useAutosizeTextArea';
@@ -184,7 +184,7 @@ export default function SortableTaskItem({todo,
                   {/* Apply dragging styles also to the handle button if needed, or ensure parent style covers it */}
                   {/* Add 'invisible' class if another item is being dragged */}
                   <button className={`pr-3 pt-[1px] ${isDragging ? '':'cursor-grab'} ${draggingItemId !== null? 'invisible' : 'hidden-child'}`} {...attributes} {...listeners}>
-                    <RowVertical size="20" color="#f59e0b" variant="Outline"/>
+                    <GripVertical size="20" color="#f59e0b"/>
                  </button>
                   <Checkbox
                     id={'checkbox-' + todo.id}
@@ -252,7 +252,7 @@ export default function SortableTaskItem({todo,
                                   editHandler(event, todo);
                                 }}
                                 style={{ cursor: 'pointer' }}>
-                                <BookSaved size={'1.2rem'} />
+                                <Bookmark size={'1.2rem'} strokeWidth={'1.5px'}/>
                               </div>
                             </TooltipTrigger>
                             <TooltipContent className='bg-violet-500'>
@@ -283,7 +283,7 @@ export default function SortableTaskItem({todo,
                             : 'text-gray-400'
                         }`}
                         size={'1rem'}
-                        variant='Bold'
+                        strokeWidth={'1.5px'}
                       />
                     </div>
                     <div className='mr-2 w-fit text-center'>
@@ -292,7 +292,7 @@ export default function SortableTaskItem({todo,
                           className={`flex items-center justify-start text-gray-600 ${
                             (todo.complete as boolean) ? 'line-through' : ''
                           }`}>
-                          <Calendar2 className='mr-1' size={'1.2rem'} />
+                          <CalendarRange className='mr-1' size={'1.2rem'} strokeWidth={'1.5px'} />
                           <div
                             className={`text-xs ${
                               (todo.dueDate?.getTime() as number) < today &&
@@ -315,7 +315,7 @@ export default function SortableTaskItem({todo,
                     {(todo.complete as boolean) ? (
                       <div className='w-fit text-center'>
                         <div className='flex items-center justify-start text-gray-600'>
-                          <Task className='mr-1' size={'1.2rem'} />
+                          <ListChecks className='mr-1' size={'1.2rem'} />
                           <div className='text-xs'>
                             {(todo.completedAt as Date).toLocaleString('en-US', {
                               ...options,

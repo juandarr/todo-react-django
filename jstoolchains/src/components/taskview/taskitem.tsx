@@ -14,7 +14,7 @@ import { useToast } from '../ui/toast/use-toast';
 import { type Todo } from '../../../../todo-api-client/models';
 
 import DeleteModalTodo from '../modals/deleteModalTodo';
-import { Calendar2, Task, Flag, BookSaved } from 'iconsax-react';
+import { CalendarRange, ListChecks, Flag, Bookmark } from 'lucide-react';
 import EditModalTodo from '../modals/editModalTodo';
 import { UserContext } from '../../contexts/UserContext';
 import useAutosizeTextArea from '../../hooks/useAutosizeTextArea';
@@ -224,7 +224,7 @@ export default function TaskItem({
 													editHandler(event, todo);
 												}}
 												style={{ cursor: 'pointer' }}>
-												<BookSaved size={'1.2rem'} />
+												<Bookmark size={'1.2rem'} />
 											</div>
 										</TooltipTrigger>
 										<TooltipContent className='bg-violet-500'>
@@ -255,7 +255,7 @@ export default function TaskItem({
 										: 'text-gray-400'
 								}`}
 								size={'1rem'}
-								variant='Bold'
+								strokeWidth={'2.5px'}
 							/>
 						</div>
 						<div className='mr-2 w-fit text-center'>
@@ -264,7 +264,7 @@ export default function TaskItem({
 									className={`flex items-center justify-start text-gray-600 ${
 										(todo.complete as boolean) ? 'line-through' : ''
 									}`}>
-									<Calendar2 className='mr-1' size={'1.2rem'} />
+									<CalendarRange className='mr-1' size={'1.2rem'} strokeWidth={'1.5px'}/>
 									<div
 										className={`text-xs ${
 											(todo.dueDate?.getTime() as number) < today &&
@@ -287,7 +287,7 @@ export default function TaskItem({
 						{(todo.complete as boolean) ? (
 							<div className='w-fit text-center'>
 								<div className='flex items-center justify-start text-gray-600'>
-									<Task className='mr-1' size={'1.2rem'} />
+									<ListChecks className='mr-1' size={'1.2rem'} />
 									<div className='text-xs'>
 										{(todo.completedAt as Date).toLocaleString('en-US', {
 											...options,
