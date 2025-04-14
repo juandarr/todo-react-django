@@ -7,7 +7,7 @@ import {
 	TooltipTrigger,
 } from '../ui/tooltip';
 
-import { Edit, Flag } from 'iconsax-react';
+import { Edit, Flag } from 'lucide-react';
 
 import {
 	Popover,
@@ -160,7 +160,7 @@ export default function EditModalTodo({
 							openPopover();
 						}}>
 						<TooltipTrigger>
-							<Edit className='edit-todo' />
+							<Edit className='edit-todo' strokeWidth={'1.5px'} />
 						</TooltipTrigger>
 					</PopoverTrigger>
 					<TooltipContent className='bg-sky-500'>
@@ -279,7 +279,7 @@ export default function EditModalTodo({
 															: 'text-gray-400'
 													}`}
 													size={'1rem'}
-													variant='Bold'
+													strokeWidth={'2.5px'}
 												/>
 												<span>{item[0]}</span>
 											</div>
