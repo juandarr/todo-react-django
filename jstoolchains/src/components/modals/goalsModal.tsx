@@ -1,5 +1,6 @@
 import React, { useContext, useMemo, useState } from 'react';
-import { CalendarTick, CardEdit, Link21, StatusUp, Sun1 } from 'iconsax-react';
+
+import { CalendarDays, Calendar, Link, ChartSpline, Sun} from 'lucide-react';
 
 import {
 	Tooltip,
@@ -199,7 +200,7 @@ export default function GoalsModal({
 						}}>
 						<TooltipTrigger asChild={true}>
 							<button className='text-fuchsia-500 hover:text-fuchsia-600'>
-								<StatusUp size='1.8rem' />
+								<ChartSpline size='1.8rem' strokeWidth={'1.5px'}/>
 							</button>
 						</TooltipTrigger>
 					</PopoverTrigger>
@@ -238,21 +239,21 @@ export default function GoalsModal({
 						<div className='mb-6 ml-3 mr-3 flex items-center justify-around'>
 							<div className=' relative flex w-1/3 flex-col items-center justify-center text-yellow-500'>
 								<div className='pb-1 font-medium'>Today</div>
-								<Sun1 size='2rem' variant='Broken' />
+								<Sun size='2rem'/>
 								<div className='absolute -bottom-3 left-[68%] font-Maple text-2xl'>
 									{completedCounter.day}
 								</div>
 							</div>
 							<div className='relative flex w-1/3 flex-col items-center justify-center text-emerald-500'>
 								<div className='pb-1 font-medium'>Week</div>
-								<CardEdit size='2rem' variant='Broken' />
+								<Calendar size='2rem'/>
 								<div className='absolute -bottom-3 left-[68%] font-Maple text-2xl'>
 									{completedCounter.week}
 								</div>
 							</div>
 							<div className='relative flex w-1/3 flex-col items-center justify-center text-orange-500'>
 								<div className='pb-1 font-medium'>Month</div>
-								<CalendarTick size='2rem' variant='Broken' />
+								<CalendarDays size='2rem'/>
 								<div className='absolute -bottom-3 left-[68%] font-Maple text-2xl'>
 									{completedCounter.month}
 								</div>
@@ -266,7 +267,7 @@ export default function GoalsModal({
 						</div>
 						<div className='mb-4 ml-3 mr-3 flex items-center justify-around'>
 							<div className='relative flex w-1/3 items-center justify-center text-rose-500'>
-								<Link21 size='2rem' variant='Broken' />
+								<Link size='2rem'/>
 								<div className='absolute -bottom-3 left-[68%] font-Maple text-2xl'>
 									{streakCounter.streak}
 								</div>
