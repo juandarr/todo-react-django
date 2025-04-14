@@ -19,7 +19,7 @@ import {
 
 import { useToast } from '../ui/toast/use-toast';
 
-import { Trash } from 'iconsax-react';
+import { Trash2} from 'lucide-react';
 
 export default function DeleteModalTodo({
 	deleteFunction,
@@ -84,7 +84,7 @@ export default function DeleteModalTodo({
 							openPopover();
 						}}>
 						<TooltipTrigger>
-							<Trash className='delete-todo' />
+							<Trash2 className='delete-todo' strokeWidth={'1.5px'} />
 						</TooltipTrigger>
 					</PopoverTrigger>
 					<TooltipContent className='bg-rose-500'>
