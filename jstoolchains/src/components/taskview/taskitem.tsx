@@ -255,7 +255,7 @@ export default function TaskItem({
 										: 'text-gray-400'
 								}`}
 								size={'1rem'}
-								strokeWidth={'2.5px'}
+								strokeWidth={'1.5px'}
 							/>
 						</div>
 						<div className='mr-2 w-fit text-center'>
@@ -287,7 +287,7 @@ export default function TaskItem({
 						{(todo.complete as boolean) ? (
 							<div className='w-fit text-center'>
 								<div className='flex items-center justify-start text-gray-600'>
-									<ListChecks className='mr-1' size={'1.2rem'} />
+									<ListChecks className='mr-1' size={'1.2rem'} strokeWidth={'1.5px'}/>
 									<div className='text-xs'>
 										{(todo.completedAt as Date).toLocaleString('en-US', {
 											...options,
