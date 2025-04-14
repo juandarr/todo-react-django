@@ -2,13 +2,13 @@
 
 import * as React from 'react';
 import {
-	ArrowRight3,
+	Play,
 	Calendar1,
 	Calendar as CalendarIconSax,
-	CalendarRemove,
-	Forward,
-	SunFog,
-} from 'iconsax-react';
+	CalendarX2,
+	FastForward,
+	Sunrise,
+} from 'lucide-react';
 
 import {
 	Tooltip,
@@ -57,7 +57,7 @@ export function DatePickerWithPresets({
 					onClick={() => {
 						openPopover();
 					}}>
-					<CalendarIconSax className='mr-2 h-6 w-6' />
+					<CalendarIconSax strokeWidth={'1.5px'} className='mr-2 h-6 w-6' />
 					{newTodo.dueDate !== undefined ? (
 						format(newTodo.dueDate as Date, 'E, MMM do')
 					) : (
@@ -84,7 +84,7 @@ export function DatePickerWithPresets({
 										}));
 										closePopover();
 									}}>
-									<Calendar1 size='1.5rem' />
+									<Calendar1 size='1.5rem' strokeWidth={'1.5px'}/>
 								</button>
 							</TooltipTrigger>
 							<TooltipContent className='bg-green-500'>
@@ -104,7 +104,7 @@ export function DatePickerWithPresets({
 										}));
 										closePopover();
 									}}>
-									<SunFog size='1.5rem' />
+									<Sunrise size='1.5rem' strokeWidth={'1.5px'}/>
 								</button>
 							</TooltipTrigger>
 							<TooltipContent className='bg-amber-500'>
@@ -124,7 +124,7 @@ export function DatePickerWithPresets({
 										}));
 										closePopover();
 									}}>
-									<ArrowRight3 size='1.7rem' />
+									<Play size='1.5rem' strokeWidth={'1.5px'}/>
 								</button>
 							</TooltipTrigger>
 							<TooltipContent className='bg-sky-500'>
@@ -144,7 +144,7 @@ export function DatePickerWithPresets({
 										}));
 										closePopover();
 									}}>
-									<Forward size='1.5rem' />
+									<FastForward size='1.5rem' strokeWidth={'1.5px'}/>
 								</button>
 							</TooltipTrigger>
 							<TooltipContent className='bg-rose-500'>
@@ -164,7 +164,7 @@ export function DatePickerWithPresets({
 										}));
 										closePopover();
 									}}>
-									<CalendarRemove size='1.5rem' />
+									<CalendarX2 size='1.5rem' strokeWidth={'1.5px'}/>
 								</button>
 							</TooltipTrigger>
 							<TooltipContent className='bg-gray-500'>
