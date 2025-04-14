@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Setting2 } from 'iconsax-react';
+import { Settings} from 'lucide-react';
 
 import {
 	Popover,
@@ -77,7 +77,7 @@ export default function SettingsModal({
 					openPopover();
 				}}>
 				<a className='mb-2 flex cursor-pointer items-center justify-start font-semibold text-cyan-500 hover:text-cyan-600'>
-					<Setting2 size='1.8rem' />
+					<Settings size='1.8rem'strokeWidth={'1.5px'}/>
 					<p className='ml-4'>Settings</p>
 				</a>
 			</PopoverTrigger>
