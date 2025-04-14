@@ -12,7 +12,7 @@ import {
 	TooltipTrigger,
 } from '../ui/tooltip';
 
-import { AddCircle, Flag } from 'iconsax-react';
+import { CirclePlus, Flag } from 'lucide-react';
 
 import {
 	Popover,
@@ -154,8 +154,9 @@ export default function CreateModalTodo({
 					<PopoverTrigger asChild={true}>
 						<TooltipTrigger asChild={true}>
 							<button className='text-emerald-500 hover:text-emerald-600'>
-								<AddCircle
+								<CirclePlus
 									size='1.8rem'
+									strokeWidth={'1.5px'}
 									className='cursor-pointer'
 									onClick={() => {
 										openPopover();
@@ -272,7 +273,6 @@ export default function CreateModalTodo({
 															: 'text-gray-400'
 													}`}
 													size={'1rem'}
-													variant='Bold'
 												/>
 												<span>{item[0]}</span>
 											</div>
