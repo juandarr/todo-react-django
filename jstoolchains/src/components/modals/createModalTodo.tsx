@@ -273,6 +273,7 @@ export default function CreateModalTodo({
 															: 'text-gray-400'
 													}`}
 													size={'1rem'}
+													strokeWidth={'2.5px'}
 												/>
 												<span>{item[0]}</span>
 											</div>
