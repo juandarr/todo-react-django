@@ -17,13 +17,22 @@ import {
 
 import CreateModalTodo from '../modals/createModalTodo';
 import {
+	LogOut as Logout,
+	PanelRightOpen as SidebarLeft,
+	House,
+	KeyRound as PasswordCheck,
+	CircleUserRound as UserSquare,
+	Heart,
+} from 'lucide-react';
+/*
+import {
 	Logout,
 	SidebarLeft,
 	House,
 	PasswordCheck,
 	UserSquare,
 	Heart,
-} from 'iconsax-react';
+} from 'iconsax-react';*/
 
 import type { NavBarProps } from '../../lib/customTypes';
 import { isDescendantOf } from '../../lib/utils';
@@ -73,7 +82,7 @@ export default function NavBar({
 					<Tooltip>
 						<TooltipTrigger asChild={true}>
 							<button className='text-violet-500 hover:text-violet-600'>
-								<SidebarLeft size='1.8rem' />
+								<SidebarLeft size='1.8rem' strokeWidth={'1.5px'} />
 							</button>
 						</TooltipTrigger>
 						<TooltipContent className='bg-violet-500'>
@@ -91,7 +100,7 @@ export default function NavBar({
 					<Tooltip>
 						<TooltipTrigger asChild={true}>
 							<button className='text-rose-400 hover:text-rose-500'>
-								<House size='1.8rem' />
+								<House size='1.8rem' strokeWidth={'1.5px'} />
 							</button>
 						</TooltipTrigger>
 						<TooltipContent className='bg-rose-500'>
@@ -115,7 +124,7 @@ export default function NavBar({
 								className='flex cursor-pointer justify-center text-2xl'>
 								<TooltipTrigger asChild={true}>
 									<button className='text-amber-500 hover:text-amber-600'>
-										<UserSquare size='1.8rem' />
+										<UserSquare size='1.8rem' strokeWidth={'1.5px'} />
 									</button>
 								</TooltipTrigger>
 							</PopoverTrigger>
@@ -139,13 +148,13 @@ export default function NavBar({
 							<a
 								href='/accounts/password_change'
 								className='mb-2 flex items-center justify-start font-semibold text-rose-500 hover:text-rose-600'>
-								<PasswordCheck size='1.8rem' />
+								<PasswordCheck size='1.8rem' strokeWidth={'1.5px'} />
 								<p className='ml-4'>Change password</p>
 							</a>
 							<a
 								href='/logout'
 								className='mb-2 flex items-center justify-start font-semibold text-violet-500 hover:text-violet-600'>
-								<Logout size='1.8rem' />
+								<Logout size='1.8rem' strokeWidth={'1.5px'}/>
 								<p className='ml-4'>Logout</p>
 							</a>
 						</div>
@@ -155,7 +164,8 @@ export default function NavBar({
 			</div>
 			<Heart
 				size='12'
-				variant='Bulk'
+				strokeWidth={'3px'}
+				fill='none'
 				className={`${
 					isOnline ? 'text-emerald-500' : 'text-rose-500'
 				} absolute right-1 top-1`}
