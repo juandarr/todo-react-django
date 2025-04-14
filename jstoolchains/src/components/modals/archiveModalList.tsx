@@ -19,7 +19,7 @@ import {
 
 import { useToast } from '../ui/toast/use-toast';
 
-import { DirectboxReceive, DirectboxSend } from 'iconsax-react';
+import { Archive, ArchiveRestore} from 'lucide-react';
 
 export default function ArchiveModalList({
 	editFunction,
@@ -79,7 +79,7 @@ export default function ArchiveModalList({
 						}}>
 						<TooltipTrigger>
 							<div className='ml-4 mr-4 flex items-center text-violet-500 hover:cursor-pointer hover:text-violet-600'>
-								{listData.archived ? <DirectboxSend /> : <DirectboxReceive />}
+								{listData.archived ? <ArchiveRestore strokeWidth={'1.5px'} size={'1.4em'}/> : <Archive size={'1.4em'} strokeWidth={'1.5px'}/>}
 							</div>
 						</TooltipTrigger>
 					</PopoverTrigger>
