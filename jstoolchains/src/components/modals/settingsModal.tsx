@@ -136,8 +136,8 @@ export default function SettingsModal({
 							<VirtualizedSelect
 								placeholder='Select time zone...'
 								value={editSettings.timezone.value}
-								className='mb-3 mt-3 w-7/12 text-sm' // Pass className to the trigger
-								onValueChange={(selectedValue) => {
+								className='select__control mb-3 mt-3 h-2 w-7/12 px-2 py-4'
+								onValueChange={(selectedValue: string) => {
 									setEditSettings((old) => ({
 										...old,
 										timezone: {
@@ -150,9 +150,6 @@ export default function SettingsModal({
 										.catch(() => {});
 								}}
 								options={timeZonesTmp}
-								// Optional: Adjust height/itemHeight if needed
-								// height={250}
-								// itemHeight={40}
 							/>
 						</div>
 					</div>
