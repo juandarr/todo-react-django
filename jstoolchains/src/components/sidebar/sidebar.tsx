@@ -7,7 +7,8 @@ import { type SideBarProps } from '../../lib/customTypes';
 import CreateModalList from '../modals/createModalList';
 import EditModalList from '../modals/editModalList';
 import { UserContext } from '../../contexts/UserContext';
-import { ChevronDown} from 'lucide-react';
+
+import { ArrowDown3 as ChevronDown } from 'iconsax-reactjs';
 
 /*Drag and drop imports*/
 import {
