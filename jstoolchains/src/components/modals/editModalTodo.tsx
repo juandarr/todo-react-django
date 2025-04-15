@@ -193,7 +193,7 @@ export default function EditModalTodo({
 							name='title'
 							value={newEditTodo.title}
 							placeholder='Name this todo'
-							className='mb-3 ml-4 mr-4 mt-4 overflow-y-hidden rounded-lg bg-gray-300 px-4 py-3 text-base font-medium text-gray-900 placeholder:text-gray-500'
+							className='mb-3 ml-4 mr-4 mt-4 overflow-y-hidden rounded-lg bg-gray-300 px-4 py-3 text-base font-medium text-gray-900 placeholder:text-gray-500 focus-within:outline focus-within:outline-2 focus-within:outline-violet-500'
 							onChange={(event) => {
 								setNewEditTodo((old) => ({
 									...old,
