@@ -160,7 +160,7 @@ export default function EditModalTodo({
 							openPopover();
 						}}>
 						<TooltipTrigger>
-							<Edit className='edit-todo' strokeWidth={'1.5px'} />
+							<Edit className='edit-todo' />
 						</TooltipTrigger>
 					</PopoverTrigger>
 					<TooltipContent className='bg-sky-500'>

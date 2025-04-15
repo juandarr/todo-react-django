@@ -3,7 +3,7 @@
 import { Button, buttonVariants } from './button';
 import { cn } from '../../lib/utils'
 import { differenceInCalendarDays } from "date-fns"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { ArrowLeft2 as ChevronLeft, ArrowRight2 as ChevronRight } from "iconsax-reactjs";
 import * as React from "react"
 import {
   DayPicker,
@@ -198,7 +198,7 @@ function Calendar({
       components={{
         Chevron: ({ orientation }) => {
           const Icon = orientation === "left" ? ChevronLeft : ChevronRight
-          return <Icon className="h-4 w-4" />
+          return <Icon className="h-4 w-4" size='1.5rem' variant='Bold'/>
         },
         Nav: ({ className }) => (
           <Nav

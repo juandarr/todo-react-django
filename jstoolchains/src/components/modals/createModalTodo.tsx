@@ -160,6 +160,7 @@ export default function CreateModalTodo({
 									onClick={() => {
 										openPopover();
 									}}
+									variant='Bulk'
 								/>
 							</button>
 						</TooltipTrigger>

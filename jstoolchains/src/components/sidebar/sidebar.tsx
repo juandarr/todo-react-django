@@ -246,7 +246,6 @@ export default function SideBar({
 								archivedLists.length === 0 ? 'active' : ''
 							}`}
 							size='1.5rem'
-							strokeWidth={'1.5px'}
 						/>
 					</div>
 				</div>

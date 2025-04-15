@@ -1,6 +1,6 @@
 import React, { useContext, useMemo, useState } from 'react';
 
-import { CalendarTick as Week, CardEdit as Month, Link21 as Chain, StatusUp as GoalsIcon, Sun1 as Today } from 'iconsax-reactjs';
+import { CalendarTick as Week, CardEdit as Month, Link21 as Chain, MedalStar as GoalsIcon, Sun1 as Today } from 'iconsax-reactjs';
 
 import {
 	Tooltip,
@@ -200,7 +200,7 @@ export default function GoalsModal({
 						}}>
 						<TooltipTrigger asChild={true}>
 							<button className='text-fuchsia-500 hover:text-fuchsia-600'>
-								<GoalsIcon size='1.8rem' strokeWidth={'1.5px'}/>
+								<GoalsIcon size='1.8rem'/>
 							</button>
 						</TooltipTrigger>
 					</PopoverTrigger>

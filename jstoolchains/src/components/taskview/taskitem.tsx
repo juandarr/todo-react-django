@@ -14,7 +14,8 @@ import { useToast } from '../ui/toast/use-toast';
 import { type Todo } from '../../../../todo-api-client/models';
 
 import DeleteModalTodo from '../modals/deleteModalTodo';
-import { CalendarRange, ListChecks, Flag, Bookmark } from 'lucide-react';
+import { Calendar2 as CalendarIcon, Task as ListChecks, Flag, BookSaved} from 'iconsax-reactjs';
+
 import EditModalTodo from '../modals/editModalTodo';
 import { UserContext } from '../../contexts/UserContext';
 import useAutosizeTextArea from '../../hooks/useAutosizeTextArea';
@@ -228,7 +229,7 @@ export default function TaskItem({
 													editHandler(event, todo);
 												}}
 												style={{ cursor: 'pointer' }}>
-												<Bookmark size={'1.2rem'} />
+												<BookSaved size={'1.2rem'} />
 											</div>
 										</TooltipTrigger>
 										<TooltipContent className='bg-violet-500'>
@@ -259,7 +260,7 @@ export default function TaskItem({
 										: 'text-gray-400'
 								}`}
 								size={'1rem'}
-								strokeWidth={'1.5px'}
+								variant='Bold'
 							/>
 						</div>
 						<div className='mr-2 w-fit text-center'>
@@ -268,7 +269,7 @@ export default function TaskItem({
 									className={`flex items-center justify-start text-gray-600 ${
 										(todo.complete as boolean) ? 'line-through' : ''
 									}`}>
-									<CalendarRange className='mr-1' size={'1.2rem'} strokeWidth={'1.5px'}/>
+									<CalendarIcon className='mr-1' size={'1.2rem'}/>
 									<div
 										className={`text-xs ${
 											(todo.dueDate?.getTime() as number) < today &&
@@ -291,7 +292,7 @@ export default function TaskItem({
 						{(todo.complete as boolean) ? (
 							<div className='w-fit text-center'>
 								<div className='flex items-center justify-start text-gray-600'>
-									<ListChecks className='mr-1' size={'1.2rem'} strokeWidth={'1.5px'}/>
+									<ListChecks className='mr-1' size={'1.2rem'}/>
 									<div className='text-xs'>
 										{(todo.completedAt as Date).toLocaleString('en-US', {
 											...options,

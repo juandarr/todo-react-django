@@ -16,15 +16,7 @@ import {
 } from '../ui/popover';
 
 import CreateModalTodo from '../modals/createModalTodo';
-/*import {
-	LogOut as Logout,
-	PanelRightOpen as SidebarLeft,
-	House,
-	KeyRound as PasswordCheck,
-	CircleUserRound as UserSquare,
-	Heart,
-} from 'lucide-react';
-*/
+
 import {
 	Logout,
 	SidebarLeft,

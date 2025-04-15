@@ -77,7 +77,7 @@ export default function CreateModalList({
 							openPopover();
 						}}>
 						<TooltipTrigger>
-							<ArchiveAdd size='1.6rem' strokeWidth={'1.5px'} />
+							<ArchiveAdd size='1.6rem' variant='Bulk'/>
 						</TooltipTrigger>
 					</PopoverTrigger>
 					<TooltipContent className='bg-violet-500'>

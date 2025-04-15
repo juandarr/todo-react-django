@@ -59,7 +59,7 @@ export function DatePickerWithPresets({
 					onClick={() => {
 						openPopover();
 					}}>
-					<CalendarIcon strokeWidth={'1.5px'} className='mr-2 h-6 w-6' />
+					<CalendarIcon className='mr-2 h-6 w-6' />
 					{newTodo.dueDate !== undefined ? (
 						format(newTodo.dueDate as Date, 'E, MMM do')
 					) : (
@@ -86,7 +86,7 @@ export function DatePickerWithPresets({
 										}));
 										closePopover();
 									}}>
-									<Today size='1.5rem' strokeWidth={'1.5px'}/>
+									<Today size='1.5rem'/>
 								</button>
 							</TooltipTrigger>
 							<TooltipContent className='bg-green-500'>
@@ -106,7 +106,7 @@ export function DatePickerWithPresets({
 										}));
 										closePopover();
 									}}>
-									<Tomorrow size='1.5rem' strokeWidth={'1.5px'}/>
+									<Tomorrow size='1.5rem'/>
 								</button>
 							</TooltipTrigger>
 							<TooltipContent className='bg-amber-500'>
@@ -126,7 +126,7 @@ export function DatePickerWithPresets({
 										}));
 										closePopover();
 									}}>
-									<In3Days size='1.5rem' strokeWidth={'1.5px'}/>
+									<In3Days size='1.5rem'/>
 								</button>
 							</TooltipTrigger>
 							<TooltipContent className='bg-sky-500'>
@@ -146,7 +146,7 @@ export function DatePickerWithPresets({
 										}));
 										closePopover();
 									}}>
-									<InAWeek size='1.5rem' strokeWidth={'1.5px'}/>
+									<InAWeek size='1.5rem'/>
 								</button>
 							</TooltipTrigger>
 							<TooltipContent className='bg-rose-500'>
@@ -166,7 +166,7 @@ export function DatePickerWithPresets({
 										}));
 										closePopover();
 									}}>
-									<NoDate size='1.5rem' strokeWidth={'1.5px'}/>
+									<NoDate size='1.5rem'/>
 								</button>
 							</TooltipTrigger>
 							<TooltipContent className='bg-gray-500'>

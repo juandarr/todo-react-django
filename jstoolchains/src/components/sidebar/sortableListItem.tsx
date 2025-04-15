@@ -3,7 +3,7 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import EditModalList from '../modals/editModalList';
 import { SortableListItemProps } from '../../lib/customTypes';
-import { GripVertical } from 'lucide-react';
+import { GripVertical as Drag } from 'lucide-react';
 
 export default function SortableListItem({
 	list,
@@ -30,7 +30,7 @@ export default function SortableListItem({
 		<div ref={setNodeRef} style={style} className={`${isDragging ? 'cursor-grabbing bg-violet-100 shadow-lg opacity-90 border-[1px] border-black border-dashed' : ''} ${draggingItemId !== null && !isDragging ? 'opacity-70' : ''}`}>
 			<div key={list.id} className='parent flex items-center justify-between'>
 				<button className={`${isDragging ? '':'cursor-grab'} ${draggingItemId !== null? 'invisible' : 'hidden-child'}`} {...attributes} {...listeners}>
-				<GripVertical size="20" color="#f59e0b"/>
+				<Drag size="1.2rem" color="#38bdf8"/>
 				</button>
 				<button
 					className={`flex flex-1 cursor-pointer justify-start ${
