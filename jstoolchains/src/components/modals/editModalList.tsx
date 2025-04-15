@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect, type CSSProperties } from 'react';
 
 import { type EditModalListProps } from '../../lib/customTypes';
-import { SquareX, Edit } from 'lucide-react';
+
+import { CloseSquare, Edit } from 'iconsax-reactjs';
 
 import {
 	Tooltip,
@@ -105,7 +106,7 @@ export default function EditModalList({
 							openPopover();
 						}}>
 						<TooltipTrigger>
-							<Edit size={'1.4rem'} strokeWidth={'1.5px'} />
+							<Edit size={'1.4rem'} />
 						</TooltipTrigger>
 					</PopoverTrigger>
 					<TooltipContent className='bg-sky-500'>
@@ -188,7 +189,7 @@ export default function EditModalList({
 						<PopoverClose
 							className='absolute right-2 top-2 text-gray-400 hover:text-gray-500'
 							aria-label='Close'>
-							<SquareX strokeWidth={'1.5px'} />
+							<CloseSquare />
 						</PopoverClose>
 					</div>
 				</form>

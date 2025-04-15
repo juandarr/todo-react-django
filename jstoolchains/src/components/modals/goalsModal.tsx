@@ -1,6 +1,6 @@
 import React, { useContext, useMemo, useState } from 'react';
 
-import { CalendarDays, Calendar, Link, ChartSpline, Sun} from 'lucide-react';
+import { CalendarTick as Week, CardEdit as Month, Link21 as Chain, StatusUp as GoalsIcon, Sun1 as Today } from 'iconsax-reactjs';
 
 import {
 	Tooltip,
@@ -200,7 +200,7 @@ export default function GoalsModal({
 						}}>
 						<TooltipTrigger asChild={true}>
 							<button className='text-fuchsia-500 hover:text-fuchsia-600'>
-								<ChartSpline size='1.8rem' strokeWidth={'1.5px'}/>
+								<GoalsIcon size='1.8rem' strokeWidth={'1.5px'}/>
 							</button>
 						</TooltipTrigger>
 					</PopoverTrigger>
@@ -239,21 +239,21 @@ export default function GoalsModal({
 						<div className='mb-6 ml-3 mr-3 flex items-center justify-around'>
 							<div className=' relative flex w-1/3 flex-col items-center justify-center text-yellow-500'>
 								<div className='pb-1 font-medium'>Today</div>
-								<Sun size='2rem'/>
+								<Today size='2rem'/>
 								<div className='absolute -bottom-3 left-[68%] font-Maple text-2xl'>
 									{completedCounter.day}
 								</div>
 							</div>
 							<div className='relative flex w-1/3 flex-col items-center justify-center text-emerald-500'>
 								<div className='pb-1 font-medium'>Week</div>
-								<Calendar size='2rem'/>
+								<Week size='2rem'/>
 								<div className='absolute -bottom-3 left-[68%] font-Maple text-2xl'>
 									{completedCounter.week}
 								</div>
 							</div>
 							<div className='relative flex w-1/3 flex-col items-center justify-center text-orange-500'>
 								<div className='pb-1 font-medium'>Month</div>
-								<CalendarDays size='2rem'/>
+								<Month size='2rem'/>
 								<div className='absolute -bottom-3 left-[68%] font-Maple text-2xl'>
 									{completedCounter.month}
 								</div>
@@ -267,7 +267,7 @@ export default function GoalsModal({
 						</div>
 						<div className='mb-4 ml-3 mr-3 flex items-center justify-around'>
 							<div className='relative flex w-1/3 items-center justify-center text-rose-500'>
-								<Link size='2rem'/>
+								<Chain size='2rem'/>
 								<div className='absolute -bottom-3 left-[68%] font-Maple text-2xl'>
 									{streakCounter.streak}
 								</div>

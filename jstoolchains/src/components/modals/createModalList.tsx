@@ -7,7 +7,7 @@ import {
 	TooltipTrigger,
 } from '../ui/tooltip';
 
-import { BookmarkPlus} from 'lucide-react';
+import { ArchiveAdd} from 'iconsax-reactjs';
 
 import {
 	Popover,
@@ -77,7 +77,7 @@ export default function CreateModalList({
 							openPopover();
 						}}>
 						<TooltipTrigger>
-							<BookmarkPlus size='1.6rem' strokeWidth={'1.5px'} />
+							<ArchiveAdd size='1.6rem' strokeWidth={'1.5px'} />
 						</TooltipTrigger>
 					</PopoverTrigger>
 					<TooltipContent className='bg-violet-500'>

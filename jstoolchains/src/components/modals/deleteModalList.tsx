@@ -19,7 +19,7 @@ import {
 
 import { useToast } from '../ui/toast/use-toast';
 
-import { Trash2} from 'lucide-react';
+import { Trash} from 'iconsax-reactjs';
 
 export default function DeleteModalList({
 	deleteFunction,
@@ -79,7 +79,7 @@ export default function DeleteModalList({
 						}}>
 						<TooltipTrigger>
 							<a className='flex cursor-pointer justify-center text-rose-500 hover:text-rose-600'>
-								<Trash2 size={`${size}rem`} strokeWidth={'1.5px'} />
+								<Trash size={`${size}rem`} />
 							</a>
 						</TooltipTrigger>
 					</PopoverTrigger>
