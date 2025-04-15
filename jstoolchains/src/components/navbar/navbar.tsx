@@ -74,7 +74,7 @@ export default function NavBar({
 					<Tooltip>
 						<TooltipTrigger asChild={true}>
 							<button className='text-violet-500 hover:text-violet-600'>
-								<SidebarLeft size='1.8rem'  />
+								<SidebarLeft size='1.8rem'  variant='Bold'/>
 							</button>
 						</TooltipTrigger>
 						<TooltipContent className='bg-violet-500'>
@@ -92,7 +92,7 @@ export default function NavBar({
 					<Tooltip>
 						<TooltipTrigger asChild={true}>
 							<button className='text-rose-400 hover:text-rose-500'>
-								<House size='1.8rem' variant='Broken' />
+								<House size='1.8rem' variant='Bold' />
 							</button>
 						</TooltipTrigger>
 						<TooltipContent className='bg-rose-500'>

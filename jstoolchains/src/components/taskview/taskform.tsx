@@ -60,7 +60,7 @@ export default function TaskForm({
 				<input
 					type='text'
 					name='title'
-					className='mt-0 h-10 flex-1 rounded-xl bg-gray-300 px-4 py-3 text-gray-900 placeholder:text-gray-500 focus-within:outline focus-within:outline-2 focus-within:outline-violet-500'
+					className='mt-0 h-10 flex-1 rounded-xl bg-gray-300 px-4 py-3 text-gray-900 placeholder:text-gray-400 focus-within:outline focus-within:outline-2 focus-within:outline-emerald-500'
 					id='todoText'
 					value={newTodo.title}
 					onChange={(e) => {
@@ -76,7 +76,7 @@ export default function TaskForm({
 					onBlur={(e) => {
 						(inputRefCount.current as HTMLDivElement).style.display = 'none';
 					}}
-					placeholder='Enter your todo here'
+					placeholder='What is in your mind?'
 					ref={inputRef}
 					disabled={status === 'submitting'}
 					maxLength={100}
