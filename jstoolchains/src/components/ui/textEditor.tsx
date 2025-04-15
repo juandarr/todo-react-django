@@ -13,7 +13,7 @@ export default forwardRef(function TextEditor({
 	className,
 	...props
 }: TextEditorProps, ref): React.JSX.Element | null {
-	const editor = useTextEditor('', 'Description ...');
+	const editor = useTextEditor('', 'Describe it ...');
 	const textAreaDescriptionCount = useRef<HTMLDivElement>(null);
 	const [charCount, setCharCount] = useState(0);
 
