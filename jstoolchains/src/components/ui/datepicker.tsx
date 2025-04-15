@@ -1,14 +1,16 @@
 'use client';
 
 import * as React from 'react';
+
 import {
-	Play,
-	Calendar1,
-	Calendar as CalendarIconSax,
-	CalendarX2,
-	FastForward,
-	Sunrise,
-} from 'lucide-react';
+	
+	Calendar1 as Today,
+	SunFog as Tomorrow,
+	ArrowRight3 as In3Days,
+	Forward as InAWeek,
+	Calendar as CalendarIcon,
+	CalendarRemove as NoDate,
+} from 'iconsax-reactjs';
 
 import {
 	Tooltip,
@@ -57,7 +59,7 @@ export function DatePickerWithPresets({
 					onClick={() => {
 						openPopover();
 					}}>
-					<CalendarIconSax strokeWidth={'1.5px'} className='mr-2 h-6 w-6' />
+					<CalendarIcon strokeWidth={'1.5px'} className='mr-2 h-6 w-6' />
 					{newTodo.dueDate !== undefined ? (
 						format(newTodo.dueDate as Date, 'E, MMM do')
 					) : (
@@ -84,7 +86,7 @@ export function DatePickerWithPresets({
 										}));
 										closePopover();
 									}}>
-									<Calendar1 size='1.5rem' strokeWidth={'1.5px'}/>
+									<Today size='1.5rem' strokeWidth={'1.5px'}/>
 								</button>
 							</TooltipTrigger>
 							<TooltipContent className='bg-green-500'>
@@ -104,7 +106,7 @@ export function DatePickerWithPresets({
 										}));
 										closePopover();
 									}}>
-									<Sunrise size='1.5rem' strokeWidth={'1.5px'}/>
+									<Tomorrow size='1.5rem' strokeWidth={'1.5px'}/>
 								</button>
 							</TooltipTrigger>
 							<TooltipContent className='bg-amber-500'>
@@ -124,7 +126,7 @@ export function DatePickerWithPresets({
 										}));
 										closePopover();
 									}}>
-									<Play size='1.5rem' strokeWidth={'1.5px'}/>
+									<In3Days size='1.5rem' strokeWidth={'1.5px'}/>
 								</button>
 							</TooltipTrigger>
 							<TooltipContent className='bg-sky-500'>
@@ -144,7 +146,7 @@ export function DatePickerWithPresets({
 										}));
 										closePopover();
 									}}>
-									<FastForward size='1.5rem' strokeWidth={'1.5px'}/>
+									<InAWeek size='1.5rem' strokeWidth={'1.5px'}/>
 								</button>
 							</TooltipTrigger>
 							<TooltipContent className='bg-rose-500'>
@@ -164,7 +166,7 @@ export function DatePickerWithPresets({
 										}));
 										closePopover();
 									}}>
-									<CalendarX2 size='1.5rem' strokeWidth={'1.5px'}/>
+									<NoDate size='1.5rem' strokeWidth={'1.5px'}/>
 								</button>
 							</TooltipTrigger>
 							<TooltipContent className='bg-gray-500'>

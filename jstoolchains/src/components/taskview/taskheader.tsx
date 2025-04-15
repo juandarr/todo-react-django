@@ -1,7 +1,7 @@
 import React from 'react';
 
 import type { TaskListHeaderProps } from '../../lib/customTypes';
-import { ChevronDown } from 'lucide-react';
+import { ArrowDown3 as ChevronDown } from 'iconsax-reactjs';
 
 export default function TaskListHeader({
 	fieldDone,
@@ -30,7 +30,7 @@ export default function TaskListHeader({
 				<ChevronDown
 					className={`collapsible ${isComplete ? 'active' : ''}`}
 					size='1.5rem'
-					strokeWidth={'1.5px'}
+					variant='Linear'
 				/>
 			</div>
 		</div>

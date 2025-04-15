@@ -1,7 +1,7 @@
 import { EditorContent } from '@tiptap/react';
 import React, { useEffect, useRef, forwardRef, useImperativeHandle, useState } from 'react';
 import { cn } from '../../lib/utils';
-import { TaskSquare } from 'iconsax-react';
+import { TaskSquare } from 'iconsax-reactjs';
 import { TextEditorProps} from '../../lib/customTypes';
 import useTextEditor from '../../hooks/useTextEditor';
 
