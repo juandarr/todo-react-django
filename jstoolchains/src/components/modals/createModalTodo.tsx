@@ -193,7 +193,7 @@ export default function CreateModalTodo({
 							value={newTodo.title}
 							ref={textAreaTitle}
 							placeholder='Name this todo'
-							className='mb-3 ml-4 mr-4 mt-4 rounded-lg bg-gray-300 px-4 py-3 text-base font-medium text-gray-900 placeholder:text-gray-500'
+							className='mb-3 ml-4 mr-4 mt-4 rounded-lg bg-gray-300 px-4 py-3 text-base font-medium text-gray-900 placeholder:text-gray-500 focus-within:outline focus-within:outline-2 focus-within:outline-violet-500'
 							onChange={(event) => {
 								setNewTodo((old) => ({ ...old, title: event.target.value }));
 							}}
