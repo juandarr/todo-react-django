@@ -37,6 +37,10 @@ export default function TaskItem({
 
 	const textAreaTitle = useRef<HTMLTextAreaElement>(null);
 
+	 useEffect(() => {
+		setNewTodoEdit(todo);
+	  }, [todo]);
+	  
 	useAutosizeTextArea(
 		textAreaTitle.current,
 		`#todoTitle-${todo.id}`,

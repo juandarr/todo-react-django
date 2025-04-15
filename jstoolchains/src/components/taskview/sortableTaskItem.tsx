@@ -23,7 +23,8 @@ import {CSS} from '@dnd-kit/utilities';
 import { SortableTaskItemProps } from '../../lib/customTypes';
 
 
-export default function SortableTaskItem({todo,
+export default function SortableTaskItem({
+  todo,
   lists,
   userInfo,
   toggleTodo,
@@ -44,6 +45,10 @@ export default function SortableTaskItem({todo,
 
 	const textAreaTitle = useRef<HTMLTextAreaElement>(null);
 
+  useEffect(() => {
+    setNewTodoEdit(todo);
+  }, [todo]);
+  
 	useAutosizeTextArea(
 		textAreaTitle.current,
 		`#todoTitle-${todo.id}`,
