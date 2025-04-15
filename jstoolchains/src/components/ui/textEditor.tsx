@@ -103,7 +103,7 @@ export default forwardRef(function TextEditor({
 	  }), [editor]);
 
 	return (
-		<div className='relative mb-2 ml-4 mr-4 mt-2 flex flex-1 flex-col focus-within:rounded-lg focus-within:outline'>
+		<div className='relative mb-2 ml-4 mr-4 mt-2 flex flex-1 flex-col focus-within:rounded-lg focus-within:outline focus-within:outline-2 focus-within:outline-fuchsia-500'>
 			<div className='flex max-h-[20vh] items-center justify-start overflow-y-auto rounded-t-lg bg-sky-50 px-1 py-1 text-sm text-gray-900'>
 				<div
 					onClick={() => editor.chain().focus().toggleTaskList().run()}
