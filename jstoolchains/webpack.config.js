@@ -4,14 +4,14 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.(ts|tsx)$/,
+				test: /\.(js|jsx|ts|tsx)$/,
 				exclude: /node_modules/,
-				use: 'ts-loader',
+				use: 'babel-loader',
 			},
 		],
 	},
 	resolve: {
-		extensions: ['.tsx', '.ts', '.js'],
+		extensions: ['.tsx', '.ts', '.js', '.jsx'],
 	},
 	output: {
 		filename: 'index-bundle.js', // output bundle file name

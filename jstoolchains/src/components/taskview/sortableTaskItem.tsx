@@ -12,7 +12,9 @@ import { useToast } from '../ui/toast/use-toast';
 import { type Todo } from '../../../../todo-api-client/models';
 
 import DeleteModalTodo from '../modals/deleteModalTodo';
-import { Calendar2, Task, Flag, BookSaved, RowVertical } from 'iconsax-react';
+
+import { Calendar2 as CalendarIcon, Task as ListChecks, Flag, BookSaved} from 'iconsax-reactjs';
+import {GripVertical as Drag} from 'lucide-react';
 import EditModalTodo from '../modals/editModalTodo';
 import { UserContext } from '../../contexts/UserContext';
 import useAutosizeTextArea from '../../hooks/useAutosizeTextArea';
@@ -23,7 +25,8 @@ import {CSS} from '@dnd-kit/utilities';
 import { SortableTaskItemProps } from '../../lib/customTypes';
 
 
-export default function SortableTaskItem({todo,
+export default function SortableTaskItem({
+  todo,
   lists,
   userInfo,
   toggleTodo,
@@ -44,6 +47,10 @@ export default function SortableTaskItem({todo,
 
 	const textAreaTitle = useRef<HTMLTextAreaElement>(null);
 
+  useEffect(() => {
+    setNewTodoEdit(todo);
+  }, [todo]);
+  
 	useAutosizeTextArea(
 		textAreaTitle.current,
 		`#todoTitle-${todo.id}`,
@@ -184,7 +191,7 @@ export default function SortableTaskItem({todo,
                   {/* Apply dragging styles also to the handle button if needed, or ensure parent style covers it */}
                   {/* Add 'invisible' class if another item is being dragged */}
                   <button className={`pr-3 pt-[1px] ${isDragging ? '':'cursor-grab'} ${draggingItemId !== null? 'invisible' : 'hidden-child'}`} {...attributes} {...listeners}>
-                    <RowVertical size="20" color="#f59e0b" variant="Outline"/>
+                    <Drag size="1.5rem" color="#38bdf8"/>
                  </button>
                   <Checkbox
                     id={'checkbox-' + todo.id}
@@ -252,7 +259,7 @@ export default function SortableTaskItem({todo,
                                   editHandler(event, todo);
                                 }}
                                 style={{ cursor: 'pointer' }}>
-                                <BookSaved size={'1.2rem'} />
+                                <BookSaved size={'1.2rem'}/>
                               </div>
                             </TooltipTrigger>
                             <TooltipContent className='bg-violet-500'>
@@ -292,7 +299,7 @@ export default function SortableTaskItem({todo,
                           className={`flex items-center justify-start text-gray-600 ${
                             (todo.complete as boolean) ? 'line-through' : ''
                           }`}>
-                          <Calendar2 className='mr-1' size={'1.2rem'} />
+                          <CalendarIcon className='mr-1' size={'1.2rem'} />
                           <div
                             className={`text-xs ${
                               (todo.dueDate?.getTime() as number) < today &&
@@ -315,7 +322,7 @@ export default function SortableTaskItem({todo,
                     {(todo.complete as boolean) ? (
                       <div className='w-fit text-center'>
                         <div className='flex items-center justify-start text-gray-600'>
-                          <Task className='mr-1' size={'1.2rem'} />
+                          <ListChecks className='mr-1' size={'1.2rem'} />
                           <div className='text-xs'>
                             {(todo.completedAt as Date).toLocaleString('en-US', {
                               ...options,

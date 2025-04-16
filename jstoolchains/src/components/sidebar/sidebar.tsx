@@ -7,14 +7,13 @@ import { type SideBarProps } from '../../lib/customTypes';
 import CreateModalList from '../modals/createModalList';
 import EditModalList from '../modals/editModalList';
 import { UserContext } from '../../contexts/UserContext';
-import { ArrowDown3 } from 'iconsax-react';
+
+import { ArrowDown3 as ChevronDown } from 'iconsax-reactjs';
 
 /*Drag and drop imports*/
 import {
 	DndContext, 
 	closestCenter,
-	KeyboardSensor,
-	PointerSensor,
 	MouseSensor,
 	useSensor,
 	useSensors,
@@ -22,7 +21,6 @@ import {
 import {
 	arrayMove,
 	SortableContext,
-	sortableKeyboardCoordinates,
 	verticalListSortingStrategy,
   } from '@dnd-kit/sortable';
   
@@ -243,7 +241,7 @@ export default function SideBar({
 					</div>
 
 					<div className='flex items-center justify-center text-fuchsia-500 hover:text-fuchsia-600'>
-						<ArrowDown3
+						<ChevronDown
 							className={`collapsible ${
 								archivedLists.length === 0 ? 'active' : ''
 							}`}

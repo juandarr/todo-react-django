@@ -16,6 +16,7 @@ import {
 } from '../ui/popover';
 
 import CreateModalTodo from '../modals/createModalTodo';
+
 import {
 	Logout,
 	SidebarLeft,
@@ -23,7 +24,7 @@ import {
 	PasswordCheck,
 	UserSquare,
 	Heart,
-} from 'iconsax-react';
+} from 'iconsax-reactjs';
 
 import type { NavBarProps } from '../../lib/customTypes';
 import { isDescendantOf } from '../../lib/utils';
@@ -73,7 +74,7 @@ export default function NavBar({
 					<Tooltip>
 						<TooltipTrigger asChild={true}>
 							<button className='text-violet-500 hover:text-violet-600'>
-								<SidebarLeft size='1.8rem' />
+								<SidebarLeft size='1.8rem'  variant='Bold'/>
 							</button>
 						</TooltipTrigger>
 						<TooltipContent className='bg-violet-500'>
@@ -91,7 +92,7 @@ export default function NavBar({
 					<Tooltip>
 						<TooltipTrigger asChild={true}>
 							<button className='text-rose-400 hover:text-rose-500'>
-								<House size='1.8rem' />
+								<House size='1.8rem' variant='Bold' />
 							</button>
 						</TooltipTrigger>
 						<TooltipContent className='bg-rose-500'>
@@ -115,7 +116,7 @@ export default function NavBar({
 								className='flex cursor-pointer justify-center text-2xl'>
 								<TooltipTrigger asChild={true}>
 									<button className='text-amber-500 hover:text-amber-600'>
-										<UserSquare size='1.8rem' />
+										<UserSquare size='1.8rem'  />
 									</button>
 								</TooltipTrigger>
 							</PopoverTrigger>

@@ -7,7 +7,7 @@ import {
 	TooltipTrigger,
 } from '../ui/tooltip';
 
-import { ArchiveAdd } from 'iconsax-react';
+import { ArchiveAdd} from 'iconsax-reactjs';
 
 import {
 	Popover,
@@ -77,7 +77,7 @@ export default function CreateModalList({
 							openPopover();
 						}}>
 						<TooltipTrigger>
-							<ArchiveAdd size='1.6rem' />
+							<ArchiveAdd size='1.6rem' variant='Bulk'/>
 						</TooltipTrigger>
 					</PopoverTrigger>
 					<TooltipContent className='bg-violet-500'>
@@ -106,7 +106,7 @@ export default function CreateModalList({
 							type='text'
 							value={newList}
 							placeholder='Name this list'
-							className='m-4 h-10 rounded-xl bg-gray-300 p-4 text-gray-900 placeholder:text-gray-500'
+							className='m-4 h-10 rounded-xl bg-gray-300 p-4 text-gray-900 placeholder:text-gray-500 focus-within:outline focus-within:outline-2 focus-within:outline-violet-500'
 							onChange={(event) => {
 								setNewList(event.target.value);
 							}}

@@ -12,7 +12,7 @@ import {
 	TooltipTrigger,
 } from '../ui/tooltip';
 
-import { AddCircle, Flag } from 'iconsax-react';
+import { AddCircle, Flag } from 'iconsax-reactjs';
 
 import {
 	Popover,
@@ -160,6 +160,7 @@ export default function CreateModalTodo({
 									onClick={() => {
 										openPopover();
 									}}
+									variant='Bulk'
 								/>
 							</button>
 						</TooltipTrigger>
@@ -191,8 +192,8 @@ export default function CreateModalTodo({
 							name='title'
 							value={newTodo.title}
 							ref={textAreaTitle}
-							placeholder='Name this todo'
-							className='mb-3 ml-4 mr-4 mt-4 rounded-lg bg-gray-300 px-4 py-3 text-base font-medium text-gray-900 placeholder:text-gray-500'
+							placeholder='What is in your mind?'
+							className='mb-3 ml-4 mr-4 mt-4 rounded-lg bg-gray-300 px-4 py-3 text-base font-medium text-gray-900 placeholder:text-gray-400 focus-within:outline focus-within:outline-2 focus-within:outline-emerald-500'
 							onChange={(event) => {
 								setNewTodo((old) => ({ ...old, title: event.target.value }));
 							}}

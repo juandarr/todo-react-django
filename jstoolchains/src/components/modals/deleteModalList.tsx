@@ -19,7 +19,7 @@ import {
 
 import { useToast } from '../ui/toast/use-toast';
 
-import { Trash } from 'iconsax-react';
+import { Trash} from 'iconsax-reactjs';
 
 export default function DeleteModalList({
 	deleteFunction,

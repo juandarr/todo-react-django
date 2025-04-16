@@ -1,7 +1,7 @@
 import { EditorContent } from '@tiptap/react';
 import React, { useEffect, useRef, forwardRef, useImperativeHandle, useState } from 'react';
 import { cn } from '../../lib/utils';
-import { TaskSquare } from 'iconsax-react';
+import { TaskSquare } from 'iconsax-reactjs';
 import { TextEditorProps} from '../../lib/customTypes';
 import useTextEditor from '../../hooks/useTextEditor';
 
@@ -13,7 +13,7 @@ export default forwardRef(function TextEditor({
 	className,
 	...props
 }: TextEditorProps, ref): React.JSX.Element | null {
-	const editor = useTextEditor('', 'Description ...');
+	const editor = useTextEditor('', 'Describe it ...');
 	const textAreaDescriptionCount = useRef<HTMLDivElement>(null);
 	const [charCount, setCharCount] = useState(0);
 
@@ -103,7 +103,7 @@ export default forwardRef(function TextEditor({
 	  }), [editor]);
 
 	return (
-		<div className='relative mb-2 ml-4 mr-4 mt-2 flex flex-1 flex-col focus-within:rounded-lg focus-within:outline'>
+		<div className='relative mb-2 ml-4 mr-4 mt-2 flex flex-1 flex-col focus-within:rounded-lg focus-within:outline focus-within:outline-2 focus-within:outline-fuchsia-500'>
 			<div className='flex max-h-[20vh] items-center justify-start overflow-y-auto rounded-t-lg bg-sky-50 px-1 py-1 text-sm text-gray-900'>
 				<div
 					onClick={() => editor.chain().focus().toggleTaskList().run()}

@@ -14,7 +14,8 @@ import { useToast } from '../ui/toast/use-toast';
 import { type Todo } from '../../../../todo-api-client/models';
 
 import DeleteModalTodo from '../modals/deleteModalTodo';
-import { Calendar2, Task, Flag, BookSaved } from 'iconsax-react';
+import { Calendar2 as CalendarIcon, Task as ListChecks, Flag, BookSaved} from 'iconsax-reactjs';
+
 import EditModalTodo from '../modals/editModalTodo';
 import { UserContext } from '../../contexts/UserContext';
 import useAutosizeTextArea from '../../hooks/useAutosizeTextArea';
@@ -37,6 +38,10 @@ export default function TaskItem({
 
 	const textAreaTitle = useRef<HTMLTextAreaElement>(null);
 
+	 useEffect(() => {
+		setNewTodoEdit(todo);
+	  }, [todo]);
+	  
 	useAutosizeTextArea(
 		textAreaTitle.current,
 		`#todoTitle-${todo.id}`,
@@ -264,7 +269,7 @@ export default function TaskItem({
 									className={`flex items-center justify-start text-gray-600 ${
 										(todo.complete as boolean) ? 'line-through' : ''
 									}`}>
-									<Calendar2 className='mr-1' size={'1.2rem'} />
+									<CalendarIcon className='mr-1' size={'1.2rem'}/>
 									<div
 										className={`text-xs ${
 											(todo.dueDate?.getTime() as number) < today &&
@@ -287,7 +292,7 @@ export default function TaskItem({
 						{(todo.complete as boolean) ? (
 							<div className='w-fit text-center'>
 								<div className='flex items-center justify-start text-gray-600'>
-									<Task className='mr-1' size={'1.2rem'} />
+									<ListChecks className='mr-1' size={'1.2rem'}/>
 									<div className='text-xs'>
 										{(todo.completedAt as Date).toLocaleString('en-US', {
 											...options,

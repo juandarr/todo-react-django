@@ -1,7 +1,7 @@
 import React from 'react';
 
 import type { TaskListHeaderProps } from '../../lib/customTypes';
-import { ArrowDown3 } from 'iconsax-react';
+import { ArrowDown3 as ChevronDown } from 'iconsax-reactjs';
 
 export default function TaskListHeader({
 	fieldDone,
@@ -27,9 +27,10 @@ export default function TaskListHeader({
 				{fieldActions}
 			</div>
 			<div className='flex w-[5%] items-center justify-center text-rose-500 hover:text-rose-600'>
-				<ArrowDown3
+				<ChevronDown
 					className={`collapsible ${isComplete ? 'active' : ''}`}
 					size='1.5rem'
+					variant='Linear'
 				/>
 			</div>
 		</div>

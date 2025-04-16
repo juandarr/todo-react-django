@@ -7,7 +7,7 @@ import {
 	TooltipTrigger,
 } from '../ui/tooltip';
 
-import { Edit, Flag } from 'iconsax-react';
+import { Edit, Flag } from 'iconsax-reactjs';
 
 import {
 	Popover,
@@ -192,8 +192,8 @@ export default function EditModalTodo({
 							ref={textAreaRefTitle}
 							name='title'
 							value={newEditTodo.title}
-							placeholder='Name this todo'
-							className='mb-3 ml-4 mr-4 mt-4 overflow-y-hidden rounded-lg bg-gray-300 px-4 py-3 text-base font-medium text-gray-900 placeholder:text-gray-500'
+							placeholder='What is in your mind?'
+							className='mb-3 ml-4 mr-4 mt-4 overflow-y-hidden rounded-lg bg-gray-300 px-4 py-3 text-base font-medium text-gray-900 placeholder:text-gray-500 focus-within:outline focus-within:outline-2 focus-within:outline-emerald-500'
 							onChange={(event) => {
 								setNewEditTodo((old) => ({
 									...old,

@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import WindowedSelect from 'react-windowed-select';
-import { Setting2 } from 'iconsax-react';
+import { Setting2 as Settings} from 'iconsax-reactjs';
 
 import {
 	Popover,
@@ -16,6 +15,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '../ui/select';
+import { VirtualizedSelect } from '../ui/virtualizedSelect'; // Added import
 
 import { timeZones } from '../../lib/userSettings';
 import type { SettingsModalProps } from '../../lib/customTypes';
@@ -77,7 +77,7 @@ export default function SettingsModal({
 					openPopover();
 				}}>
 				<a className='mb-2 flex cursor-pointer items-center justify-start font-semibold text-cyan-500 hover:text-cyan-600'>
-					<Setting2 size='1.8rem' />
+					<Settings size='1.8rem'/>
 					<p className='ml-4'>Settings</p>
 				</a>
 			</PopoverTrigger>
@@ -131,32 +131,25 @@ export default function SettingsModal({
 								</SelectContent>
 							</Select>
 						</div>
-
 						<div className='ml-3 mr-3 flex items-center justify-between'>
 							<h3>Time zone</h3>
-							<WindowedSelect
-								defaultValue={{
-									label: editSettings.timezone.value,
-									value: editSettings.timezone.value,
-								}}
-								className='mb-3 mt-3 w-7/12 text-sm'
-								onChange={(option) => {
-									const selection = option as { label: string; value: string };
+							<VirtualizedSelect
+								placeholder='Select time zone...'
+								value={editSettings.timezone.value}
+								className='select__control mb-3 mt-3 h-2 w-7/12 px-2 py-4'
+								onValueChange={(selectedValue: string) => {
 									setEditSettings((old) => ({
 										...old,
 										timezone: {
 											...old.timezone,
-											value: selection.value,
+											value: selectedValue,
 										},
 									}));
-									editHandleSubmit(editSettings.timezone.id, selection.value)
+									editHandleSubmit(editSettings.timezone.id, selectedValue)
 										.then(() => {})
 										.catch(() => {});
 								}}
 								options={timeZonesTmp}
-								isMulti={false}
-								classNamePrefix='select'
-								windowThreshold={0}
 							/>
 						</div>
 					</div>

@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect, type CSSProperties } from 'react';
 
 import { type EditModalListProps } from '../../lib/customTypes';
-import { CloseSquare, Edit } from 'iconsax-react';
+
+import { CloseSquare, Edit } from 'iconsax-reactjs';
 
 import {
 	Tooltip,
@@ -130,7 +131,7 @@ export default function EditModalList({
 							ref={inputTitle}
 							value={listEdit}
 							placeholder='Name this list'
-							className='m-4 h-10 rounded-xl bg-gray-300 p-4 text-gray-900 placeholder:text-gray-500'
+							className='m-4 h-10 rounded-xl bg-gray-300 p-4 text-gray-900 placeholder:text-gray-500 focus-within:outline focus-within:outline-2 focus-within:outline-violet-500'
 							onChange={(event) => {
 								setListEdit(event.target.value);
 							}}
@@ -164,7 +165,7 @@ export default function EditModalList({
 								deleteFunction={deleteFunction}
 								deleteEntity='list'
 								id={listData.id}
-								size={1.6}
+								size={1.4}
 							/>
 							<ArchiveModalList editFunction={editList} listData={listData} />
 						</div>
