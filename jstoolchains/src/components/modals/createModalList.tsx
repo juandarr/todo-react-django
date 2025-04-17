@@ -1,13 +1,15 @@
 import React, { useState, type CSSProperties, useRef } from 'react';
 
+import type { CreateModalListProps } from '../../lib/customTypes';
+
+import { CloseSquare, ArchiveAdd} from 'iconsax-reactjs';
+
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
 } from '../ui/tooltip';
-
-import { ArchiveAdd} from 'iconsax-reactjs';
 
 import {
 	Popover,
@@ -16,9 +18,10 @@ import {
 	PopoverArrow,
 	PopoverClose,
 } from '../ui/popover';
+
 import { useToast } from '../ui/toast/use-toast';
 
-import type { CreateModalListProps } from '../../lib/customTypes';
+
 
 export default function CreateModalList({
 	addList,
@@ -27,7 +30,9 @@ export default function CreateModalList({
 
 	const [newList, setNewList] = useState('');
 	const [status, setStatus] = useState('typing');
+
 	const inputRefCount = useRef<HTMLDivElement>(null);
+
 	const { toast } = useToast();
 
 	const createHandleSubmit = async (
@@ -133,13 +138,6 @@ export default function CreateModalList({
 						</div>
 					</div>
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-end'>
-						<PopoverClose asChild={true}>
-							<button
-								className='flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-gray-300 p-3 text-lg text-black hover:bg-gray-400 focus-visible:ring focus-visible:ring-rose-300 disabled:bg-rose-200'
-								disabled={status === 'submitting'}>
-								Cancel
-							</button>
-						</PopoverClose>
 						<button
 							type='submit'
 							className='ml-4 flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'
@@ -152,6 +150,11 @@ export default function CreateModalList({
 								Save
 							</span>
 						</button>
+						<PopoverClose
+							className='absolute right-2 top-2 text-gray-400 hover:text-gray-500'
+							aria-label='Close'>
+							<CloseSquare />
+						</PopoverClose>
 					</div>
 				</form>
 				<PopoverArrow className='fill-violet-500' />
