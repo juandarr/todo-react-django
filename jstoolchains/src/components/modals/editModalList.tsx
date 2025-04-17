@@ -31,10 +31,13 @@ export default function EditModalList({
 	deleteFunction,
 }: EditModalListProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
+
 	const [listEdit, setListEdit] = useState<string>('');
 	const [status, setStatus] = useState('typing');
+
 	const inputTitle = useRef<HTMLInputElement>(null);
 	const inputTitleCount = useRef<HTMLDivElement>(null);
+
 	const { toast } = useToast();
 
 	useEffect(() => {
@@ -75,14 +78,15 @@ export default function EditModalList({
 		}
 	};
 
-	const closePopover = (): void => {
-		setIsOpen(false);
-	};
 	const openPopover = (): void => {
 		removeHidden();
 		setListEdit(listData.title);
 		setStatus('typing');
 		setIsOpen(true);
+	};
+
+	const closePopover = (): void => {
+		setIsOpen(false);
 	};
 
 	const removeHidden = (): void => {
@@ -122,7 +126,7 @@ export default function EditModalList({
 					addHidden();
 				}}
 				className='w-80 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
-				<form id='listform' className='flex flex-col'>
+				<form id='editlistform' className='flex flex-col'>
 					<div className='relative flex flex-1 flex-col'>
 						<input
 							id='listName'
