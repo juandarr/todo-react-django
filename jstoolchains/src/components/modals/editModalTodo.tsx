@@ -178,7 +178,7 @@ export default function EditModalTodo({
 				}}
 				className='max-h-[80vh] w-96 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
 				<form
-					id='listform'
+					id='edittodoform'
 					className='flex flex-col'
 					onSubmit={(e) => {
 						e.preventDefault();

@@ -99,7 +99,7 @@ export default function DeleteModalList({
 				}}
 				className='data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
 				<form
-					id='listform'
+					id='deletelistform'
 					className='flex flex-col'
 					onSubmit={(e) => {
 						handleSubmit(e).catch((error) => {

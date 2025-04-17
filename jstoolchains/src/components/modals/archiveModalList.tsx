@@ -98,7 +98,7 @@ export default function ArchiveModalList({
 				}}
 				className='data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
 				<form
-					id='listform'
+					id='archivelistform'
 					className='flex flex-col'
 					onSubmit={(e) => {
 						handleSubmit(e).catch((error) => {
