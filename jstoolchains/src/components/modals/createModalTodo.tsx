@@ -1,9 +1,4 @@
-import React, {
-	useState,
-	useRef,
-	useEffect,
-	useContext,
-} from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 
 import {
 	Tooltip,
@@ -12,7 +7,7 @@ import {
 	TooltipTrigger,
 } from '../ui/tooltip';
 
-import { AddCircle, Flag } from 'iconsax-reactjs';
+import { AddCircle, CloseSquare, Flag } from 'iconsax-reactjs';
 
 import {
 	Popover,
@@ -54,7 +49,7 @@ export default function CreateModalTodo({
 		list: user.inboxListId.toString(),
 	});
 	const editorRef = useRef<any>(null);
-	
+
 	const [status, setStatus] = useState('typing');
 
 	const { toast } = useToast();
@@ -118,7 +113,7 @@ export default function CreateModalTodo({
 				});
 			}
 			setStatus('typing');
-		};
+		}
 	};
 
 	const handleKeyDown = (
@@ -250,10 +245,10 @@ export default function CreateModalTodo({
 									newTodo.priority === '1'
 										? 'bg-rose-200'
 										: newTodo.priority === '2'
-										? 'bg-amber-200'
-										: newTodo.priority === '3'
-										? 'bg-sky-200'
-										: 'bg-white'
+											? 'bg-amber-200'
+											: newTodo.priority === '3'
+												? 'bg-sky-200'
+												: 'bg-white'
 								} `}>
 								<SelectValue placeholder='Priority' />
 							</SelectTrigger>
@@ -267,10 +262,10 @@ export default function CreateModalTodo({
 														idx === 3
 															? 'text-rose-400'
 															: idx === 2
-															? 'text-amber-400'
-															: idx === 1
-															? 'text-sky-400'
-															: 'text-gray-400'
+																? 'text-amber-400'
+																: idx === 1
+																	? 'text-sky-400'
+																	: 'text-gray-400'
 													}`}
 													size={'1rem'}
 													variant='Bold'
@@ -292,13 +287,20 @@ export default function CreateModalTodo({
 								<SelectValue placeholder='List' />
 							</SelectTrigger>
 							<SelectContent>
-								{lists.filter((list) => ((list.id !== userInfo.inboxListId+1) && (list.id !== userInfo.inboxListId+2) && (list.archived !== true))).map((list) => (
-									<SelectItem
-										key={list.id}
-										value={(list.id as number).toString()}>
-										{list.title}
-									</SelectItem>
-								))}
+								{lists
+									.filter(
+										(list) =>
+											list.id !== userInfo.inboxListId + 1 &&
+											list.id !== userInfo.inboxListId + 2 &&
+											list.archived !== true,
+									)
+									.map((list) => (
+										<SelectItem
+											key={list.id}
+											value={(list.id as number).toString()}>
+											{list.title}
+										</SelectItem>
+									))}
 							</SelectContent>
 						</Select>
 					</div>
@@ -310,13 +312,6 @@ export default function CreateModalTodo({
 						/>
 					</div>
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-end'>
-						<PopoverClose asChild={true}>
-							<button
-								className='flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-gray-300 p-3 text-lg text-black hover:bg-gray-400 focus-visible:ring focus-visible:ring-rose-300 disabled:bg-rose-200'
-								disabled={status === 'submitting'}>
-								Cancel
-							</button>
-						</PopoverClose>
 						<button
 							type='submit'
 							className='ml-4 flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'
@@ -331,6 +326,11 @@ export default function CreateModalTodo({
 								Create
 							</span>
 						</button>
+						<PopoverClose
+							className='absolute right-2 top-2 text-gray-400 hover:text-gray-500'
+							aria-label='Close'>
+							<CloseSquare />
+						</PopoverClose>
 					</div>
 				</form>
 				<PopoverArrow className='fill-emerald-500' />
