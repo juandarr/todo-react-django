@@ -7,7 +7,7 @@ import {
 	TooltipTrigger,
 } from '../ui/tooltip';
 
-import { Edit, Flag } from 'iconsax-reactjs';
+import { CloseSquare, Edit, Flag } from 'iconsax-reactjs';
 
 import {
 	Popover,
@@ -40,7 +40,7 @@ export default function EditModalTodo({
 	todo,
 	lists,
 	parentId,
-	userInfo
+	userInfo,
 }: EditModalTodoProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
 	const [newEditTodo, setNewEditTodo] = useState<todoType>({
@@ -49,7 +49,6 @@ export default function EditModalTodo({
 	});
 	const editorRef = useRef<any>(null);
 
-	
 	const [status, setStatus] = useState('typing');
 	const { toast } = useToast();
 
@@ -126,13 +125,12 @@ export default function EditModalTodo({
 				(textAreaRefTitle.current as HTMLTextAreaElement).style.height = '0px';
 				// We then set the height directly, outside of the render loop
 				// Trying to set this with state or a ref will product an incorrect value.
-				(
-					textAreaRefTitle.current as HTMLTextAreaElement
-				).style.height = `${textAreaRefTitle.current?.scrollHeight}px`;
+				(textAreaRefTitle.current as HTMLTextAreaElement).style.height =
+					`${textAreaRefTitle.current?.scrollHeight}px`;
 				setStatus('typing');
 			})
 			.catch(() => {});
-		
+
 		setIsOpen(true);
 
 		waitForElementToExist('#todoEditTitleCount')
@@ -242,7 +240,6 @@ export default function EditModalTodo({
 						onKeyDown={(e) => {
 							handleKeyDown(e);
 						}}
-						
 					/>
 					<div className='mb-3 ml-4 mr-4 mt-3 flex items-center justify-between'>
 						<Select
@@ -256,10 +253,10 @@ export default function EditModalTodo({
 									newEditTodo.priority === '1'
 										? 'bg-rose-200'
 										: newEditTodo.priority === '2'
-										? 'bg-amber-200'
-										: newEditTodo.priority === '3'
-										? 'bg-sky-200'
-										: 'bg-white'
+											? 'bg-amber-200'
+											: newEditTodo.priority === '3'
+												? 'bg-sky-200'
+												: 'bg-white'
 								} `}>
 								<SelectValue placeholder='Priority' />
 							</SelectTrigger>
@@ -273,10 +270,10 @@ export default function EditModalTodo({
 														idx === 3
 															? 'text-rose-400'
 															: idx === 2
-															? 'text-amber-400'
-															: idx === 1
-															? 'text-sky-400'
-															: 'text-gray-400'
+																? 'text-amber-400'
+																: idx === 1
+																	? 'text-sky-400'
+																	: 'text-gray-400'
 													}`}
 													size={'1rem'}
 													variant='Bold'
@@ -298,13 +295,20 @@ export default function EditModalTodo({
 								<SelectValue placeholder='List' />
 							</SelectTrigger>
 							<SelectContent>
-								{lists.filter((list) => ( (list.id !== userInfo.inboxListId+1) && (list.id !== userInfo.inboxListId+2) && (list.archived !== true))).map((list) => (
-									<SelectItem
-										key={list.id}
-										value={(list.id as number).toString()}>
-										{list.title}
-									</SelectItem>
-								))}
+								{lists
+									.filter(
+										(list) =>
+											list.id !== userInfo.inboxListId + 1 &&
+											list.id !== userInfo.inboxListId + 2 &&
+											list.archived !== true,
+									)
+									.map((list) => (
+										<SelectItem
+											key={list.id}
+											value={(list.id as number).toString()}>
+											{list.title}
+										</SelectItem>
+									))}
 							</SelectContent>
 						</Select>
 					</div>
@@ -317,13 +321,13 @@ export default function EditModalTodo({
 						/>
 					</div>
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-end'>
-						<PopoverClose asChild={true}>
+						{/*<PopoverClose asChild={true}>
 							<button
 								className='flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-gray-300 p-3 text-lg text-black hover:bg-gray-400 focus-visible:ring focus-visible:ring-rose-300 disabled:bg-rose-200'
 								disabled={status === 'submitting'}>
 								Cancel
 							</button>
-						</PopoverClose>
+						</PopoverClose>*/}
 						<button
 							type='submit'
 							className='ml-4 flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'
@@ -338,6 +342,11 @@ export default function EditModalTodo({
 								Save
 							</span>
 						</button>
+						<PopoverClose
+							className='absolute right-2 top-2 text-gray-400 hover:text-gray-500'
+							aria-label='Close'>
+							<CloseSquare />
+						</PopoverClose>
 					</div>
 				</form>
 				<PopoverArrow className='fill-sky-500' />
