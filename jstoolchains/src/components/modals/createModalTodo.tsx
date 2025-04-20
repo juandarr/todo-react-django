@@ -161,7 +161,7 @@ export default function CreateModalTodo({
 						</TooltipTrigger>
 					</PopoverTrigger>
 					<TooltipContent className='bg-emerald-500'>
-						<p className='bold text-white'>Create Task</p>
+						<p className='font-bold text-white'>Create Task</p>
 					</TooltipContent>
 				</Tooltip>
 			</TooltipProvider>
