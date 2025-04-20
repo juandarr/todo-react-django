@@ -161,10 +161,6 @@ body.hasHover svg.edit-todo {
   width: 1.6rem;
 }
 
-body.hasHover svg.delete-todo {
-  height: 1.6rem;
-  width: 1.6rem;
-}
 /* When using touch input devices hide .hidden-child for lists in sidebar unless is selected */
 body.noHover .parent .hidden-child {
   visibility: hidden;
@@ -204,10 +200,7 @@ body.noHover svg.edit-todo {
   height: 1.4rem;
   width: 1.4rem;
 }
-body.noHover svg.delete-todo {
-  height: 1.4rem;
-  width: 1.4rem;
-}
+
 /* Animation for modals */
 @keyframes popover-content-show {
   from {
