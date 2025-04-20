@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
-
 /* input.css */
 @tailwind base;
 @tailwind components;
@@ -79,6 +77,31 @@
     font-style: normal;
     font-display: swap;
   }
+
+  @font-face {
+    font-family: "Grape Nuts";
+    font-weight: 400;
+    src: url("./font/GrapeNuts/GrapeNuts-Regular.ttf") format("TrueType");
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Noto Sans";
+    font-weight: 400;
+    src: url("./font/NotoSans/NotoSans-Regular.ttf") format("TrueType");
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Noto Sans";
+    font-weight: 600;
+    src: url("./font/NotoSans/NotoSans-Bold.ttf") format("TrueType");
+    font-style: bold;
+    font-display: swap;
+  }
+
   * {
     @apply border-border;
   }
@@ -161,10 +184,6 @@ body.hasHover svg.edit-todo {
   width: 1.6rem;
 }
 
-body.hasHover svg.delete-todo {
-  height: 1.6rem;
-  width: 1.6rem;
-}
 /* When using touch input devices hide .hidden-child for lists in sidebar unless is selected */
 body.noHover .parent .hidden-child {
   visibility: hidden;
@@ -204,10 +223,7 @@ body.noHover svg.edit-todo {
   height: 1.4rem;
   width: 1.4rem;
 }
-body.noHover svg.delete-todo {
-  height: 1.4rem;
-  width: 1.4rem;
-}
+
 /* Animation for modals */
 @keyframes popover-content-show {
   from {
@@ -427,7 +443,7 @@ textarea {
 }
 
 .tiptap p.is-editor-empty:first-child::before {
-  color: #adb5bd;
+  color: #9ca3af;
   content: attr(data-placeholder);
   float: left;
   height: 0;

@@ -2,7 +2,7 @@ import React, { useState, type CSSProperties, useRef } from 'react';
 
 import type { CreateModalListProps } from '../../lib/customTypes';
 
-import { CloseSquare, ArchiveAdd} from 'iconsax-reactjs';
+import { CloseSquare, ArchiveAdd } from 'iconsax-reactjs';
 
 import {
 	Tooltip,
@@ -20,8 +20,6 @@ import {
 } from '../ui/popover';
 
 import { useToast } from '../ui/toast/use-toast';
-
-
 
 export default function CreateModalList({
 	addList,
@@ -82,11 +80,11 @@ export default function CreateModalList({
 							openPopover();
 						}}>
 						<TooltipTrigger>
-							<ArchiveAdd size='1.6rem' variant='Bulk'/>
+							<ArchiveAdd size='1.6rem' variant='Bulk' />
 						</TooltipTrigger>
 					</PopoverTrigger>
 					<TooltipContent className='bg-violet-500'>
-						<p className='font-bold text-white'>Add list</p>
+						<p className='font-bold text-white'>Create List</p>
 					</TooltipContent>
 				</Tooltip>
 			</TooltipProvider>
@@ -97,7 +95,7 @@ export default function CreateModalList({
 				}}
 				className='data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
 				<form
-					id='listform'
+					id='createlistform'
 					className='flex flex-col'
 					onSubmit={(e) => {
 						createHandleSubmit(e)
@@ -110,8 +108,8 @@ export default function CreateModalList({
 							name='title'
 							type='text'
 							value={newList}
-							placeholder='Name this list'
-							className='m-4 h-10 rounded-xl bg-gray-300 p-4 text-gray-900 placeholder:text-gray-500 focus-within:outline focus-within:outline-2 focus-within:outline-violet-500'
+							placeholder='Name new list'
+							className='m-4 h-10 rounded-xl bg-gray-300 p-4 text-gray-900 placeholder:text-gray-400 focus-within:outline focus-within:outline-2 focus-within:outline-violet-500'
 							onChange={(event) => {
 								setNewList(event.target.value);
 							}}
@@ -147,7 +145,7 @@ export default function CreateModalList({
 									status === 'submitting' ? 'block' : 'invisible'
 								}`}></span>
 							<span className={status === 'submitting' ? 'invisible' : 'block'}>
-								Save
+								Create
 							</span>
 						</button>
 						<PopoverClose

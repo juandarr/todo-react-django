@@ -1,11 +1,5 @@
-{% extends "base.html" %}
-
-{% block title %}
-JoyFlow
-{% endblock %}
-
-{% block content %}
-{% if user.is_authenticated %}
+{% extends "base.html" %} {% block title %} Ikigai (生きがい) {% endblock %}
+{% block content %} {% if user.is_authenticated %}
 <div id="root" class="flex flex-col items-center"></div>
 {% else %}
 <div class="flex flex-col items-center mt-3">
@@ -16,8 +10,4 @@ JoyFlow
     <a class="bg-white p-3 h-9 mt-2 font-semibold w-fit hover:bg-gray-200 rounded-md flex justify-center items-center"
         href="{% url 'signup' %}">Register</a>
 </div>
-{% endif %}
-{% endblock %}
-
-{% block js_script %}
-{% endblock %}
+{% endif %} {% endblock %} {% block js_script %} {% endblock %}

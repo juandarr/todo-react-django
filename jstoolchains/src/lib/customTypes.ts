@@ -79,20 +79,20 @@ export interface TaskViewProps {
 	userInfo: userInfoType;
 	todos: Todo[];
 	lists: List[];
-	editListOrder:(id: number, newList: {
-		ordering: {
-			order: number[];
-		};
-	}) => Promise<List>;
+	editListOrder: (
+		id: number,
+		newList: {
+			ordering: {
+				order: number[];
+			};
+		},
+	) => Promise<List>;
 	showSidebar: boolean;
 	currentView: viewType;
 	addTodo: (todo: todoType, origin: string) => Promise<Todo>;
 	toggleTodo: (id: number, complete: boolean) => Promise<Todo>;
 	deleteTodo: (id: number) => Promise<void>;
-	editTodo: (
-		id: number,
-		title: string
-	) => Promise<void>;
+	editTodo: (id: number, title: string) => Promise<void>;
 	editTodoFull: (todo: todoType) => Promise<Todo>;
 	isLoadingTodos: boolean; // Add isLoading prop
 }
@@ -106,10 +106,7 @@ export interface SortableTaskItemProps {
 	lists: List[];
 	userInfo: userInfoType;
 	toggleTodo: (id: number, complete: boolean) => Promise<Todo>;
-	editTodo: (
-		id: number,
-		title: string
-	) => Promise<void>;
+	editTodo: (id: number, title: string) => Promise<void>;
 	editTodoFull: (todo: todoType) => Promise<Todo>;
 	deleteTodo: (id: number) => Promise<void>;
 	draggingItemId: number | null; // Add the new prop type here
@@ -120,31 +117,27 @@ export interface TaskItemProps {
 	lists: List[];
 	userInfo: userInfoType;
 	toggleTodo: (id: number, complete: boolean) => Promise<Todo>;
-	editTodo: (
-		id: number,
-		title: string
-	) => Promise<void>;
+	editTodo: (id: number, title: string) => Promise<void>;
 	editTodoFull: (todo: todoType) => Promise<Todo>;
 	deleteTodo: (id: number) => Promise<void>;
-	
 }
 
 export interface TaskListProps {
 	todos: Todo[];
 	lists: List[];
-	editListHandler:(id: number, tmpList: {
-		ordering: {
-			order: number[];
-		};
-	}) => Promise<void>;
-	currentView:viewType;
+	editListHandler: (
+		id: number,
+		tmpList: {
+			ordering: {
+				order: number[];
+			};
+		},
+	) => Promise<void>;
+	currentView: viewType;
 	userInfo: userInfoType;
 	toggleTodo: (id: number, complete: boolean) => Promise<Todo>;
 	deleteTodo: (id: number) => Promise<void>;
-	editTodo: (
-		id: number,
-		title: string
-	) => Promise<void>;
+	editTodo: (id: number, title: string) => Promise<void>;
 	editTodoFull: (todo: todoType) => Promise<Todo>;
 	isComplete: boolean;
 }
@@ -188,6 +181,7 @@ export interface EditModalListProps {
 
 export interface EditModalTodoProps {
 	editTodoFull: (todo: todoType) => Promise<Todo>;
+	deleteTodo: (id: number) => Promise<void>;
 	todo: Todo;
 	lists: List[];
 	parentId: string;
@@ -230,7 +224,7 @@ export interface GoalsModalProps {
 type actionType = {
 	type: string;
 	payload?: any;
-  };
+};
 
 export interface SideBarProps {
 	lists: List[];

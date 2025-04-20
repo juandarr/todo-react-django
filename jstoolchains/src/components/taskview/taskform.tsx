@@ -101,7 +101,7 @@ export default function TaskForm({
 						status === 'submitting' ? 'block' : 'invisible'
 					}`}></span>
 				<span className={status === 'submitting' ? 'invisible' : 'block'}>
-					Add
+					Create
 				</span>
 			</button>
 		</form>

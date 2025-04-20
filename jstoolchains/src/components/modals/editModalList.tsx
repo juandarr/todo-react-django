@@ -2,7 +2,12 @@ import React, { useState, useRef, useEffect, type CSSProperties } from 'react';
 
 import { type EditModalListProps } from '../../lib/customTypes';
 
-import { CloseSquare, Edit } from 'iconsax-reactjs';
+import {
+	DirectboxReceive as Archive,
+	DirectboxSend as UnArchive,
+	CloseSquare,
+	Edit,
+} from 'iconsax-reactjs';
 
 import {
 	Tooltip,
@@ -22,7 +27,6 @@ import {
 import { useToast } from '../ui/toast/use-toast';
 
 import DeleteModalList from './deleteModalList';
-import ArchiveModalList from './archiveModalList';
 
 export default function EditModalList({
 	editList,
@@ -78,6 +82,35 @@ export default function EditModalList({
 		}
 	};
 
+	const archiveHandleSubmit = async (
+		event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+	): Promise<void> => {
+		event.preventDefault();
+		setStatus('submitting');
+
+		try {
+			await editList(listData.id, {
+				archived: !listData.archived,
+			});
+			toast({
+				title: `List was ${listData.archived ? 'restored' : 'archived'}`,
+				description: '',
+			});
+			closePopover();
+		} catch (error) {
+			if (error instanceof Error) {
+				toast({
+					variant: 'destructive',
+					title: `There was an error ${
+						!listData.archived ? 'restoring' : 'archiving'
+					} the list: `,
+					description: error.message,
+				});
+			}
+			setStatus('viewing');
+		}
+	};
+
 	const openPopover = (): void => {
 		removeHidden();
 		setListEdit(listData.title);
@@ -114,7 +147,7 @@ export default function EditModalList({
 						</TooltipTrigger>
 					</PopoverTrigger>
 					<TooltipContent className='bg-sky-500'>
-						<p className='font-bold text-white'>Edit</p>
+						<p className='font-bold text-white'>Edit List</p>
 					</TooltipContent>
 				</Tooltip>
 			</TooltipProvider>
@@ -135,7 +168,7 @@ export default function EditModalList({
 							ref={inputTitle}
 							value={listEdit}
 							placeholder='Name this list'
-							className='m-4 h-10 rounded-xl bg-gray-300 p-4 text-gray-900 placeholder:text-gray-500 focus-within:outline focus-within:outline-2 focus-within:outline-violet-500'
+							className='m-4 h-10 rounded-xl bg-gray-300 p-4 text-gray-900 placeholder:text-gray-400 focus-within:outline focus-within:outline-2 focus-within:outline-violet-500'
 							onChange={(event) => {
 								setListEdit(event.target.value);
 							}}
@@ -171,7 +204,33 @@ export default function EditModalList({
 								id={listData.id}
 								size={1.4}
 							/>
-							<ArchiveModalList editFunction={editList} listData={listData} />
+							<TooltipProvider>
+								<Tooltip>
+									<TooltipTrigger>
+										<button
+											className='ml-4 mr-4 flex items-center text-violet-500 hover:cursor-pointer hover:text-violet-600'
+											disabled={
+												!!(status === 'submitting' || listEdit.length === 0)
+											}
+											onClick={(e) => {
+												archiveHandleSubmit(e)
+													.then(() => {})
+													.catch(() => {});
+											}}>
+											{listData.archived ? (
+												<UnArchive size={'1.4em'} />
+											) : (
+												<Archive size={'1.4em'} />
+											)}
+										</button>
+									</TooltipTrigger>
+									<TooltipContent className='bg-violet-500'>
+										<p className='font-bold text-white'>
+											{listData.archived ? 'Restore ' : 'Archive '} List
+										</p>
+									</TooltipContent>
+								</Tooltip>
+							</TooltipProvider>
 						</div>
 						<button
 							type='submit'

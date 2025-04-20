@@ -1,4 +1,4 @@
-import React, {useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import type { TaskListProps } from '../../lib/customTypes';
 import TaskItem from './taskitem';
@@ -34,20 +34,18 @@ export default function TaskList({
 	editTodoFull,
 	isComplete,
 }: TaskListProps): React.JSX.Element {
-
-
 	const [todosList, setTodosList] = useState<Todo[]>(todos);
 	const [draggingItemId, setDraggingItemId] = useState<number | null>(null); // State to track the ID of the item being dragged
 
-	useEffect(()=> {
+	useEffect(() => {
 		setTodosList(todos);
 	}, [todos]);
 
 	/* Drag and drop definitions */
 	const sensors = useSensors(
 		useSensor(MouseSensor, {
-				activationConstraint: {distance: 5}
-			})
+			activationConstraint: { distance: 5 },
+		}),
 	);
 
 	async function handleDragEnd(event: any) {
@@ -57,41 +55,38 @@ export default function TaskList({
 			//Find index of item being dragged (active) and index of item being dragged over (over)
 			const oldIndex = todosList.findIndex((i) => i.id == active.id);
 			const newIndex = todosList.findIndex((i) => i.id == over.id);
-		
-			
+
 			//Move items in the array
-			if (oldIndex !== -1 && newIndex !==-1){
+			if (oldIndex !== -1 && newIndex !== -1) {
 				const newTodos = arrayMove(todosList, oldIndex, newIndex);
 
 				// Optimistic update of state
 				setTodosList(newTodos);
 				// Update state with new todos order in database, in case it fails restore previous state
-				editListHandler(currentView.id, { ordering: {order: newTodos.map((todo) => todo.id) as number[] } })
-									.then(() => {
-										
-									})
-									.catch(() => {
-										// Optional: Revert state or show error toast if API fails
-										toast({
-											title: "Error",
-											description: "Failed to reorder tasks. Please try again.",
-											variant: "destructive",
-										});
-										// Revert state on failure
-										setTodosList(todosList);
-									});
+				editListHandler(currentView.id, {
+					ordering: { order: newTodos.map((todo) => todo.id) as number[] },
+				})
+					.then(() => {})
+					.catch(() => {
+						// Optional: Revert state or show error toast if API fails
+						toast({
+							title: 'Error',
+							description: 'Failed to reorder tasks. Please try again.',
+							variant: 'destructive',
+						});
+						// Revert state on failure
+						setTodosList(todosList);
+					});
 			}
 		}
 		setDraggingItemId(null); // Reset dragging state on end
 		document.body.style.cursor = ''; // Reset body cursor on end
-	};
+	}
 
 	function handleDragStart(event: any) {
 		setDraggingItemId(event.active.id as number); // Set dragging state on start
 		document.body.style.cursor = 'grabbing'; // Set body cursor to grabbing on start
 	}
-
-
 
 	return (
 		<div className={`content mb-3 ${isComplete ? '' : 'is-open'}`}>
@@ -105,7 +100,7 @@ export default function TaskList({
 					</div>
 				</div>
 			) : (
-				<ul className='inner divide-gray-150 divide-y'>
+				<ul className='inner'>
 					{!isComplete && todosList && (
 						<DndContext
 							sensors={sensors}
@@ -118,6 +113,10 @@ export default function TaskList({
 								{todosList.map((todo, idx: number) => {
 									return (
 										<li key={todo.id} id={`item-${todo.id}`}>
+											{/* Conditionally render the divider */}
+											{idx > 0 && (
+												<div className='mx-auto h-px w-3/4 bg-gray-100'></div>
+											)}
 											<SortableTaskItem
 												todo={todo}
 												lists={lists}
@@ -138,6 +137,10 @@ export default function TaskList({
 						todosList.map((todo, idx: number) => {
 							return (
 								<li key={todo.id} id={`item-${todo.id}`}>
+									{/* Conditionally render the divider */}
+									{idx > 0 && (
+										<div className='mx-auto h-px w-4/5 bg-gray-100'></div>
+									)}
 									<TaskItem
 										todo={todo}
 										lists={lists}

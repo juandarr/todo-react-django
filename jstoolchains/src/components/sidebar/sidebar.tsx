@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 
-import { clientList} from '../../lib/api';
+import { clientList } from '../../lib/api';
 
 import { type SideBarProps } from '../../lib/customTypes';
 
@@ -12,18 +12,18 @@ import { ArrowDown3 as ChevronDown } from 'iconsax-reactjs';
 
 /*Drag and drop imports*/
 import {
-	DndContext, 
+	DndContext,
 	closestCenter,
 	MouseSensor,
 	useSensor,
 	useSensors,
-  } from '@dnd-kit/core';
+} from '@dnd-kit/core';
 import {
 	arrayMove,
 	SortableContext,
 	verticalListSortingStrategy,
-  } from '@dnd-kit/sortable';
-  
+} from '@dnd-kit/sortable';
+
 import SortableListItem from './sortableListItem';
 
 export default function SideBar({
@@ -41,13 +41,18 @@ export default function SideBar({
 	const user = useContext(UserContext);
 
 	const inbox = lists.find((list) => user.inboxListId === list.id);
-	const today = lists.find((list) => user.inboxListId+1 === list.id);
-	const upcoming = lists.find((list) => user.inboxListId+2 === list.id);
+	const today = lists.find((list) => user.inboxListId + 1 === list.id);
+	const upcoming = lists.find((list) => user.inboxListId + 2 === list.id);
 
-	const activeLists = lists
-		.filter((list) => ((user.inboxListId+2) < (list.id as number)) && list.archived === false);
+	const activeLists = lists.filter(
+		(list) =>
+			user.inboxListId + 2 < (list.id as number) && list.archived === false,
+	);
 	const archivedLists = lists
-		.filter((list) => ((user.inboxListId+2) < (list.id as number)) && list.archived === true)
+		.filter(
+			(list) =>
+				user.inboxListId + 2 < (list.id as number) && list.archived === true,
+		)
 		.map((list) => (
 			<div key={list.id} className='parent flex items-center justify-between'>
 				<button
@@ -84,67 +89,75 @@ export default function SideBar({
 	/* Drag and drop definitions */
 	const sensors = useSensors(
 		useSensor(MouseSensor, {
-			activationConstraint: {distance: 5}
+			activationConstraint: { distance: 5 },
 		}),
-	  );
-	
-	  async function handleDragEnd(event: any) {
-		const {active, over} = event;
-		
+	);
+
+	async function handleDragEnd(event: any) {
+		const { active, over } = event;
+
 		if (active.id !== over.id) {
-	
 			//Find index of item being dragged (active) and index of item being dragged over (over)
-			const oldIndex = lists.findIndex(i => i.id==active.id);
-			const newIndex = lists.findIndex(i => i.id==over.id);
+			const oldIndex = lists.findIndex((i) => i.id == active.id);
+			const newIndex = lists.findIndex((i) => i.id == over.id);
 
 			//Move items in the array
 			const newLists = arrayMove(lists, oldIndex, newIndex);
-			//Store index in list of final destination of dragged item 
+			//Store index in list of final destination of dragged item
 			const tmpIndex = lists[newIndex].index;
-			
+
 			/* Update active and over lists */
-			let tmpLists: {id:number; index:number;}[] = [];
+			let tmpLists: { id: number; index: number }[] = [];
 			/* Update indexes of lists between active and over lists */
 			if (newIndex < oldIndex) {
 				for (let i = newIndex; i < oldIndex; i++) {
-					tmpLists.push({id:lists[i].id as number, index: (lists[i].index as number)+1 });
-					newLists[i+1].index = (newLists[i+1].index as number)+1;
+					tmpLists.push({
+						id: lists[i].id as number,
+						index: (lists[i].index as number) + 1,
+					});
+					newLists[i + 1].index = (newLists[i + 1].index as number) + 1;
 				}
-				tmpLists.push({id:lists[oldIndex].id as number, index: tmpIndex as number });
-				
-			}else if (newIndex > oldIndex) {
+				tmpLists.push({
+					id: lists[oldIndex].id as number,
+					index: tmpIndex as number,
+				});
+			} else if (newIndex > oldIndex) {
 				for (let i = newIndex; i > oldIndex; i--) {
-					tmpLists.push({id:lists[i].id as number, index: (lists[i].index as number)-1 });
-					newLists[i-1].index = (newLists[i-1].index as number)-1;
+					tmpLists.push({
+						id: lists[i].id as number,
+						index: (lists[i].index as number) - 1,
+					});
+					newLists[i - 1].index = (newLists[i - 1].index as number) - 1;
 				}
-				
 			}
-			tmpLists.push({id:lists[oldIndex].id as number, index: tmpIndex as number });
+			tmpLists.push({
+				id: lists[oldIndex].id as number,
+				index: tmpIndex as number,
+			});
 			newLists[newIndex].index = tmpIndex;
 
 			// Update indexes of items between over and active lists indexes in database
-			tmpLists.map(async list => {
-			try {
-						await clientList.listsPartialUpdate({
-							id: list.id as number,
-							patchedList:{ index: list.index }}
-						);
+			tmpLists.map(async (list) => {
+				try {
+					await clientList.listsPartialUpdate({
+						id: list.id as number,
+						patchedList: { index: list.index },
+					});
 
-						console.log('List was patched!');
-						
-					} catch (error) {
-						console.log('There was an error updating the field in List');
-						throw error;
-					}
-				});
-			
+					console.log('List was patched!');
+				} catch (error) {
+					console.log('There was an error updating the field in List');
+					throw error;
+				}
+			});
+
 			// Update state with new lists order
-		    dispatchLists({ type: 'changed', payload: newLists });
+			dispatchLists({ type: 'changed', payload: newLists });
 		}
 		setDraggingItemId(null); // Reset dragging state on end
 		document.body.style.cursor = ''; // Reset body cursor on end
-	  };
-	
+	}
+
 	function handleDragStart(event: any) {
 		setDraggingItemId(event.active.id as number); // Set dragging state on start
 		document.body.style.cursor = 'grabbing'; // Set body cursor to grabbing on start
@@ -162,74 +175,87 @@ export default function SideBar({
 				Welcome, {user.username} ;)
 			</div>
 			<div className='mb-1 flex flex-col'>
-				<div className='mb-2 text-lg font-bold text-cyan-600'>Tareas</div>
+				<div className='mb-2 flex flex-col text-cyan-600 lg:flex-row'>
+					<div className='font-Grape text-2xl font-bold'>Ikigai</div>
+					<div className='font-Grape ml-4 mt-1 bg-gradient-to-r from-orange-300 via-green-400 to-violet-500 bg-clip-text text-lg font-bold text-transparent lg:ml-2'>
+						( 生きがい )
+					</div>
+				</div>
 				{isLoadingLists ? (
 					<p className='text-center text-gray-500'>Loading lists...</p>
-				) :(<>
-				<button
-					className={`flex cursor-pointer justify-start ${
-						currentView.id === user.inboxListId
-							? 'rounded-md bg-cyan-200 font-semibold'
-							: ''
-					} rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-cyan-500 hover:decoration-2 hover:underline-offset-4`}
-					onClick={() => {
-						changeCurrentView(user.inboxListId);
-					}}>
-					{inbox !== undefined ? inbox.title : ''}
-				</button>
-				<button
-					className={`flex cursor-pointer justify-start ${
-						currentView.id === (user.inboxListId+1)
-							? 'rounded-md bg-cyan-200 font-semibold'
-							: ''
-					} rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-cyan-500 hover:decoration-2 hover:underline-offset-4`}
-					onClick={() => {
-						changeCurrentView(user.inboxListId+1);
-					}}>
-					{today !== undefined ? today.title : ''}
-				</button>
-				<button
-					className={`flex cursor-pointer justify-start ${
-						currentView.id === (user.inboxListId+2)
-							? 'rounded-md bg-cyan-200 font-semibold'
-							: ''
-					} rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-cyan-500 hover:decoration-2 hover:underline-offset-4`}
-					onClick={() => {
-						changeCurrentView(user.inboxListId+2);
-					}}>
-					{upcoming !== undefined ? upcoming.title : ''}
-				</button>
-				</>)}
+				) : (
+					<>
+						<button
+							className={`flex cursor-pointer justify-start ${
+								currentView.id === user.inboxListId
+									? 'rounded-md bg-cyan-200 font-semibold'
+									: ''
+							} rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-cyan-500 hover:decoration-2 hover:underline-offset-4`}
+							onClick={() => {
+								changeCurrentView(user.inboxListId);
+							}}>
+							{inbox !== undefined ? inbox.title : ''}
+						</button>
+						<button
+							className={`flex cursor-pointer justify-start ${
+								currentView.id === user.inboxListId + 1
+									? 'rounded-md bg-cyan-200 font-semibold'
+									: ''
+							} rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-cyan-500 hover:decoration-2 hover:underline-offset-4`}
+							onClick={() => {
+								changeCurrentView(user.inboxListId + 1);
+							}}>
+							{today !== undefined ? today.title : ''}
+						</button>
+						<button
+							className={`flex cursor-pointer justify-start ${
+								currentView.id === user.inboxListId + 2
+									? 'rounded-md bg-cyan-200 font-semibold'
+									: ''
+							} rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-cyan-500 hover:decoration-2 hover:underline-offset-4`}
+							onClick={() => {
+								changeCurrentView(user.inboxListId + 2);
+							}}>
+							{upcoming !== undefined ? upcoming.title : ''}
+						</button>
+					</>
+				)}
 			</div>
 			<div className='mt-4 flex flex-col'>
 				<div className='mb-2 flex justify-between'>
 					<div className='text-lg font-bold text-violet-600'>Lists</div>
 					<CreateModalList addList={addList} />
 				</div>
-			{activeLists.length === 0 ? (
+				{activeLists.length === 0 ? (
 					<div className='inner'>
 						<div className={`p-1 pl-2 text-base text-gray-600`}>
 							🦕 No lists yet
 						</div>
 					</div>
 				) : (
-					<DndContext 
-					sensors={sensors}
-					collisionDetection={closestCenter}
-					onDragStart={handleDragStart}
-					onDragEnd={handleDragEnd}
-					>
-					<SortableContext 
-						items={activeLists.map(list => list.id as number)}
-						strategy={verticalListSortingStrategy}
-					>
-						{activeLists.map(list => <SortableListItem key={list.id} list={list} dispatchLists={dispatchLists}
-							currentView={currentView} changeCurrentView={changeCurrentView} deleteList={deleteList} editList={editList} draggingItemId={draggingItemId}/>)}
-					</SortableContext>
-				</DndContext>
-					
+					<DndContext
+						sensors={sensors}
+						collisionDetection={closestCenter}
+						onDragStart={handleDragStart}
+						onDragEnd={handleDragEnd}>
+						<SortableContext
+							items={activeLists.map((list) => list.id as number)}
+							strategy={verticalListSortingStrategy}>
+							{activeLists.map((list) => (
+								<SortableListItem
+									key={list.id}
+									list={list}
+									dispatchLists={dispatchLists}
+									currentView={currentView}
+									changeCurrentView={changeCurrentView}
+									deleteList={deleteList}
+									editList={editList}
+									draggingItemId={draggingItemId}
+								/>
+							))}
+						</SortableContext>
+					</DndContext>
 				)}
-			
 			</div>
 			<div className='mt-4 flex flex-col'>
 				<div className='mb-2 flex justify-between'>
