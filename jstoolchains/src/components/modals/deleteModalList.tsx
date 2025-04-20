@@ -90,12 +90,9 @@ export default function DeleteModalList({
 			</TooltipProvider>
 			<PopoverContent
 				align={'center'}
-				onOpenAutoFocus={(event) => {
-					// toggleHidden();
-				}}
+				onOpenAutoFocus={(event) => {}}
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
-					// toggleHidden();
 				}}
 				className='data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
 				<form
@@ -121,7 +118,7 @@ export default function DeleteModalList({
 									status === 'submitting' ? 'block' : 'invisible'
 								}`}></span>
 							<span className={status === 'submitting' ? 'invisible' : 'block'}>
-								Confirm deletion
+								Confirm Deletion
 							</span>
 						</button>
 						<PopoverClose
