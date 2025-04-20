@@ -34,9 +34,11 @@ import { waitForElementToExist } from '../../lib/utils';
 import { DatePickerWithPresets } from '../ui/datepicker';
 import TextEditor from '../ui/textEditor';
 import useAutosizeTextArea from '../../hooks/useAutosizeTextArea';
+import DeleteModalTodo from './deleteModalTodo';
 
 export default function EditModalTodo({
 	editTodoFull,
+	deleteTodo,
 	todo,
 	lists,
 	parentId,
@@ -112,7 +114,7 @@ export default function EditModalTodo({
 	};
 
 	const openPopover = (): void => {
-		toggleHidden();
+		removeHidden();
 		const tmpTodo: todoType = {
 			...todo,
 			list: todo.list?.toString(),
@@ -140,9 +142,15 @@ export default function EditModalTodo({
 			.catch(() => {});
 	};
 
-	const toggleHidden = (): void => {
-		const el: HTMLElement = document.getElementById(parentId) as HTMLElement;
-		if (el !== null) el.classList.toggle('hidden-child');
+	const removeHidden = (): void => {
+		(document.getElementById(parentId) as HTMLElement).classList.remove(
+			'hidden-child',
+		);
+	};
+	const addHidden = (): void => {
+		(document.getElementById(parentId) as HTMLElement).classList.add(
+			'hidden-child',
+		);
 	};
 
 	console.log('Modal todo edition opened');
@@ -162,7 +170,7 @@ export default function EditModalTodo({
 						</TooltipTrigger>
 					</PopoverTrigger>
 					<TooltipContent className='bg-sky-500'>
-						<p className='font-bold text-white'>Edit todo</p>
+						<p className='font-bold text-white'>Edit task</p>
 					</TooltipContent>
 				</Tooltip>
 			</TooltipProvider>
@@ -172,7 +180,7 @@ export default function EditModalTodo({
 				onOpenAutoFocus={(event) => {}}
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
-					toggleHidden();
+					addHidden();
 				}}
 				className='max-h-[80vh] w-96 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
 				<form
@@ -320,7 +328,16 @@ export default function EditModalTodo({
 							isDisabled={status === 'submitting'}
 						/>
 					</div>
-					<div className='mb-4 ml-4 mr-4 flex items-center justify-end'>
+					<div className='mb-4 ml-4 mr-4 flex items-center justify-between'>
+						<div className='flex justify-end'>
+							<DeleteModalTodo
+								deleteFunction={deleteTodo}
+								deleteEntity={'todo'}
+								parentId={`todo-${todo.id}`}
+								id={todo.id as number}
+								key={`del-${todo.id}`}
+							/>
+						</div>
 						<button
 							type='submit'
 							className='ml-4 flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'
