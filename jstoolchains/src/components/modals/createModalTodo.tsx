@@ -161,7 +161,7 @@ export default function CreateModalTodo({
 						</TooltipTrigger>
 					</PopoverTrigger>
 					<TooltipContent className='bg-emerald-500'>
-						<p className='bold text-white'>New task</p>
+						<p className='bold text-white'>Create Task</p>
 					</TooltipContent>
 				</Tooltip>
 			</TooltipProvider>
@@ -323,7 +323,7 @@ export default function CreateModalTodo({
 									status === 'submitting' ? 'block' : 'invisible'
 								}`}></span>
 							<span className={status === 'submitting' ? 'invisible' : 'block'}>
-								Create Task
+								Create
 							</span>
 						</button>
 						<PopoverClose

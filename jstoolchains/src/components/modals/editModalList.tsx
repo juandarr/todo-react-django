@@ -114,7 +114,7 @@ export default function EditModalList({
 						</TooltipTrigger>
 					</PopoverTrigger>
 					<TooltipContent className='bg-sky-500'>
-						<p className='font-bold text-white'>Edit</p>
+						<p className='font-bold text-white'>Edit List</p>
 					</TooltipContent>
 				</Tooltip>
 			</TooltipProvider>

@@ -84,7 +84,7 @@ export default function CreateModalList({
 						</TooltipTrigger>
 					</PopoverTrigger>
 					<TooltipContent className='bg-violet-500'>
-						<p className='font-bold text-white'>New List</p>
+						<p className='font-bold text-white'>Create List</p>
 					</TooltipContent>
 				</Tooltip>
 			</TooltipProvider>
@@ -145,7 +145,7 @@ export default function CreateModalList({
 									status === 'submitting' ? 'block' : 'invisible'
 								}`}></span>
 							<span className={status === 'submitting' ? 'invisible' : 'block'}>
-								Create List
+								Create
 							</span>
 						</button>
 						<PopoverClose
