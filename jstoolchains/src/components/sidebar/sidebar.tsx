@@ -175,9 +175,9 @@ export default function SideBar({
 				Welcome, {user.username} ;)
 			</div>
 			<div className='mb-1 flex flex-col'>
-				<div className='mb-2 flex flex-row text-cyan-600'>
+				<div className='mb-2 flex flex-col text-cyan-600 lg:flex-row'>
 					<div className='font-Grape text-2xl font-bold'>Ikigai</div>
-					<div className='font-Grape ml-2 mt-1 bg-gradient-to-r from-orange-300 via-green-400 to-violet-500 bg-clip-text text-lg font-bold text-transparent'>
+					<div className='font-Grape ml-4 mt-1 bg-gradient-to-r from-orange-300 via-green-400 to-violet-500 bg-clip-text text-lg font-bold text-transparent lg:ml-2'>
 						( 生きがい )
 					</div>
 				</div>
