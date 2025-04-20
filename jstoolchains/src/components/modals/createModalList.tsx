@@ -2,7 +2,7 @@ import React, { useState, type CSSProperties, useRef } from 'react';
 
 import type { CreateModalListProps } from '../../lib/customTypes';
 
-import { CloseSquare, ArchiveAdd} from 'iconsax-reactjs';
+import { CloseSquare, ArchiveAdd } from 'iconsax-reactjs';
 
 import {
 	Tooltip,
@@ -20,8 +20,6 @@ import {
 } from '../ui/popover';
 
 import { useToast } from '../ui/toast/use-toast';
-
-
 
 export default function CreateModalList({
 	addList,
@@ -82,11 +80,11 @@ export default function CreateModalList({
 							openPopover();
 						}}>
 						<TooltipTrigger>
-							<ArchiveAdd size='1.6rem' variant='Bulk'/>
+							<ArchiveAdd size='1.6rem' variant='Bulk' />
 						</TooltipTrigger>
 					</PopoverTrigger>
 					<TooltipContent className='bg-violet-500'>
-						<p className='font-bold text-white'>Add list</p>
+						<p className='font-bold text-white'>New List</p>
 					</TooltipContent>
 				</Tooltip>
 			</TooltipProvider>
@@ -147,7 +145,7 @@ export default function CreateModalList({
 									status === 'submitting' ? 'block' : 'invisible'
 								}`}></span>
 							<span className={status === 'submitting' ? 'invisible' : 'block'}>
-								Save
+								Create List
 							</span>
 						</button>
 						<PopoverClose
