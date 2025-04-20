@@ -17,7 +17,8 @@ module.exports = {
 		},
 		fontFamily: {
 			Noto: ['Noto Sans', 'Segoe UI Emoji', 'Apple Color Emoji'],
-			Maple: ['Maple', 'Noto Sans']
+			Maple: ['Maple'],
+			Grape: ['Grape Nuts'],
 		},
 		extend: {
 			spacing: {
@@ -86,5 +87,5 @@ module.exports = {
 			},
 		},
 	},
-	plugins: [require('tailwindcss-animate')]
-}
+	plugins: [require('tailwindcss-animate')],
+};
