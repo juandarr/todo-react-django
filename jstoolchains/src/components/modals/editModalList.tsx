@@ -224,10 +224,9 @@ export default function EditModalList({
 											)}
 										</button>
 									</TooltipTrigger>
-
 									<TooltipContent className='bg-violet-500'>
 										<p className='font-bold text-white'>
-											{listData.archived ? 'Restore' : 'Archive'}
+											{listData.archived ? 'Restore ' : 'Archive '} List
 										</p>
 									</TooltipContent>
 								</Tooltip>
