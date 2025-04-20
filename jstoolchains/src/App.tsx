@@ -51,11 +51,12 @@ export default function App(): React.JSX.Element {
 		clientTodo.todosList(),
 	);
 
-	const [settings, setSettings, loadingSettings]: settingModelFetch = useModelFetch(
-		clientSetting.settingsList(),
-	);
+	const [settings, setSettings, loadingSettings]: settingModelFetch =
+		useModelFetch(clientSetting.settingsList());
 
-	const [user, , loadingUser]: userModelFetch = useModelFetch(clientUser.usersList()); // Ignore user setter if not used directly
+	const [user, , loadingUser]: userModelFetch = useModelFetch(
+		clientUser.usersList(),
+	); // Ignore user setter if not used directly
 	const [userInfo, setUserInfo] = useState(userInfoInitial);
 	const [lists, dispatchLists] = useReducer(listsReducer, initialListsState);
 	const [loadingLists, setLoadingLists] = useState(true); // Add loading state for lists
@@ -78,7 +79,7 @@ export default function App(): React.JSX.Element {
 				id: tmp.id,
 				username: tmp.username,
 				inboxListId: tmp.inboxId as number,
-				homeListId:parseInt(homeView.value),
+				homeListId: parseInt(homeView.value),
 				timeZone: timeZone.value,
 			});
 			console.log('This is the homeView: ', homeView, ' with user: ', userInfo);
@@ -124,12 +125,12 @@ export default function App(): React.JSX.Element {
 			console.log('Setting currentView');
 			setCurrentView((oldView) => {
 				let tmp: viewType;
-				
-					const list = lists.find(
-						(list) => list.id === userInfo.homeListId,
-					) as listType;
-					tmp = { id: list.id, title: list.title, archived: list.archived };
-				
+
+				const list = lists.find(
+					(list) => list.id === userInfo.homeListId,
+				) as listType;
+				tmp = { id: list.id, title: list.title, archived: list.archived };
+
 				return tmp;
 			});
 			initializationCompleted.current = true;
@@ -141,7 +142,13 @@ export default function App(): React.JSX.Element {
 	useEffect(() => {
 		const toggleSidebarCallback = (event: KeyboardEvent): void => {
 			if (!isDescendantOf(event.target as HTMLElement, 'form')) {
-				if (event.key === 's') {
+				if (
+					event.key === 's' &&
+					!event.metaKey &&
+					!event.ctrlKey &&
+					!event.altKey &&
+					!event.shiftKey
+				) {
 					event.preventDefault();
 					setShowSidebar((old) => !old);
 				}
@@ -155,14 +162,14 @@ export default function App(): React.JSX.Element {
 
 	const changeCurrentView = (newViewId: number): void => {
 		let newView: viewType;
-		
+
 		const newList: List = lists.find((list) => list.id === newViewId) as List;
 		newView = {
 			id: newList.id as number,
 			title: newList.title,
 			archived: newList.archived as boolean,
 		};
-	
+
 		const e = document.getElementById('currentView-title');
 		e?.classList.remove('fade-in');
 		// eslint-disable-next-line @typescript-eslint/no-unused-expressions
@@ -184,7 +191,10 @@ export default function App(): React.JSX.Element {
 			tmp.list = parseInt(todo.list as string);
 		} else {
 			if (origin === 'taskList') {
-				if (currentView.id !== userInfo.inboxListId+1 && currentView.id !== userInfo.inboxListId+2) {
+				if (
+					currentView.id !== userInfo.inboxListId + 1 &&
+					currentView.id !== userInfo.inboxListId + 2
+				) {
 					tmp.list = currentView.id;
 				} else {
 					tmp.list = userInfo.inboxListId;
@@ -196,9 +206,9 @@ export default function App(): React.JSX.Element {
 		if ('dueDate' in todo) {
 			tmp.dueDate = todo.dueDate as Date;
 		} else {
-			if (currentView.id === (userInfo.inboxListId+1)) {
+			if (currentView.id === userInfo.inboxListId + 1) {
 				tmp.dueDate = new Date();
-			} else if (currentView.id === (userInfo.inboxListId+2)) {
+			} else if (currentView.id === userInfo.inboxListId + 2) {
 				const tmpD = new Date();
 				tmp.dueDate = new Date(
 					new Date(
@@ -289,10 +299,7 @@ export default function App(): React.JSX.Element {
 		}
 	};
 
-	const editTodo = async (
-		id: number,
-		title: string
-	): Promise<void> => {
+	const editTodo = async (id: number, title: string): Promise<void> => {
 		const todo = {
 			title,
 		};
@@ -352,13 +359,13 @@ export default function App(): React.JSX.Element {
 	): Promise<List> => {
 		let list;
 		if (newList.archived === undefined) {
-			if (newList.ordering === undefined){
+			if (newList.ordering === undefined) {
 				list = {
 					title: newList.title,
 				};
 			} else {
 				list = {
-					ordering: newList.ordering
+					ordering: newList.ordering,
 				};
 			}
 		} else {
@@ -405,12 +412,12 @@ export default function App(): React.JSX.Element {
 
 	const editListOrder = async (
 		id: number,
-		newList: { ordering: {order: number[]} },
+		newList: { ordering: { order: number[] } },
 	): Promise<List> => {
 		let list = {
-					ordering: newList.ordering
-				};
-		
+			ordering: newList.ordering,
+		};
+
 		try {
 			const updatedList = await clientList.listsPartialUpdate({
 				id,
@@ -422,7 +429,7 @@ export default function App(): React.JSX.Element {
 				type: 'edited',
 				payload: updatedList,
 			});
-			
+
 			return updatedList;
 		} catch (error) {
 			console.log('There was an error updating the List ordering');
@@ -440,16 +447,14 @@ export default function App(): React.JSX.Element {
 			// If current view is the one being deleted, default current view to the home view
 			if (id === currentView.id) {
 				setCurrentView(() => {
-			
-						const list = lists.find(
-							(list) => list.id === userInfo.homeListId,
-						) as List;
-						return {
-							id: list.id as number,
-							title: list.title,
-							archived: list.archived as boolean,
-						};
-				
+					const list = lists.find(
+						(list) => list.id === userInfo.homeListId,
+					) as List;
+					return {
+						id: list.id as number,
+						title: list.title,
+						archived: list.archived as boolean,
+					};
 				});
 			}
 			console.log('List was deleted');
