@@ -350,6 +350,7 @@ export default function SortableTaskItem({
 				className={`todo-actions mt-3 flex w-2/12 items-start justify-center ${draggingItemId !== null ? 'invisible' : 'hidden-child'}`}>
 				<EditModalTodo
 					editTodoFull={editTodoFull}
+					deleteTodo={deleteTodo}
 					todo={todo}
 					lists={lists}
 					userInfo={userInfo}

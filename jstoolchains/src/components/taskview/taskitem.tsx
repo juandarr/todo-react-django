@@ -315,6 +315,7 @@ export default function TaskItem({
 					className='hidden-child todo-actions mt-3 flex w-2/12 items-start justify-center'>
 					<EditModalTodo
 						editTodoFull={editTodoFull}
+						deleteTodo={deleteTodo}
 						todo={todo}
 						lists={lists}
 						parentId={`todo-${todo.id}`}
