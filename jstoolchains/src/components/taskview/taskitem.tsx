@@ -14,7 +14,12 @@ import { useToast } from '../ui/toast/use-toast';
 import { type Todo } from '../../../../todo-api-client/models';
 
 import DeleteModalTodo from '../modals/deleteModalTodo';
-import { Calendar2 as CalendarIcon, Task as ListChecks, Flag, BookSaved} from 'iconsax-reactjs';
+import {
+	Calendar2 as CalendarIcon,
+	Task as ListChecks,
+	Flag,
+	BookSaved,
+} from 'iconsax-reactjs';
 
 import EditModalTodo from '../modals/editModalTodo';
 import { UserContext } from '../../contexts/UserContext';
@@ -27,8 +32,7 @@ export default function TaskItem({
 	toggleTodo,
 	editTodo,
 	editTodoFull,
-	deleteTodo
-	
+	deleteTodo,
 }: TaskItemProps): React.JSX.Element {
 	const user = useContext(UserContext);
 	const { toast } = useToast();
@@ -38,10 +42,10 @@ export default function TaskItem({
 
 	const textAreaTitle = useRef<HTMLTextAreaElement>(null);
 
-	 useEffect(() => {
+	useEffect(() => {
 		setNewTodoEdit(todo);
-	  }, [todo]);
-	  
+	}, [todo]);
+
 	useAutosizeTextArea(
 		textAreaTitle.current,
 		`#todoTitle-${todo.id}`,
@@ -71,7 +75,7 @@ export default function TaskItem({
 						title: 'Task title was updated!',
 						description: '',
 					});
-					// Set inFocus to false to exit edit mode 
+					// Set inFocus to false to exit edit mode
 					setInFocus(false);
 					// Explicitly blur the textarea to exit edit mode
 					textAreaTitle.current?.blur();
@@ -91,7 +95,6 @@ export default function TaskItem({
 			// Explicitly blur the textarea to exit edit mode
 			textAreaTitle.current?.blur();
 			setNewTodoEdit(newTodoEdit);
-			
 		}
 		// Explicitly blur the textarea to exit edit mode
 		textAreaTitle.current?.blur();
@@ -254,10 +257,10 @@ export default function TaskItem({
 									todo.priority === 1
 										? 'text-rose-400'
 										: todo.priority === 2
-										? 'text-amber-400'
-										: todo.priority === 3
-										? 'text-sky-400'
-										: 'text-gray-400'
+											? 'text-amber-400'
+											: todo.priority === 3
+												? 'text-sky-400'
+												: 'text-gray-400'
 								}`}
 								size={'1rem'}
 								variant='Bold'
@@ -269,7 +272,7 @@ export default function TaskItem({
 									className={`flex items-center justify-start text-gray-600 ${
 										(todo.complete as boolean) ? 'line-through' : ''
 									}`}>
-									<CalendarIcon className='mr-1' size={'1.2rem'}/>
+									<CalendarIcon className='mr-1' size={'1.2rem'} />
 									<div
 										className={`text-xs ${
 											(todo.dueDate?.getTime() as number) < today &&
@@ -281,7 +284,7 @@ export default function TaskItem({
 											? (todo.dueDate as Date).toLocaleDateString(
 													'en-US',
 													options,
-											  )
+												)
 											: ''}
 									</div>
 								</div>
@@ -292,7 +295,7 @@ export default function TaskItem({
 						{(todo.complete as boolean) ? (
 							<div className='w-fit text-center'>
 								<div className='flex items-center justify-start text-gray-600'>
-									<ListChecks className='mr-1' size={'1.2rem'}/>
+									<ListChecks className='mr-1' size={'1.2rem'} />
 									<div className='text-xs'>
 										{(todo.completedAt as Date).toLocaleString('en-US', {
 											...options,
@@ -309,7 +312,7 @@ export default function TaskItem({
 				</form>
 				<div
 					id={`todo-${todo.id}`}
-					className='hidden-child todo-actions mt-3 flex w-2/12 items-start justify-end'>
+					className='hidden-child todo-actions mt-3 flex w-2/12 items-start justify-center'>
 					<EditModalTodo
 						editTodoFull={editTodoFull}
 						todo={todo}
@@ -318,14 +321,14 @@ export default function TaskItem({
 						userInfo={userInfo}
 						key={`edit-${todo.id}`}
 					/>
-					<span className='mr-2'></span>
+					{/*<span className='mr-2'></span>
 					<DeleteModalTodo
 						deleteFunction={deleteTodo}
 						deleteEntity={'todo'}
 						parentId={`todo-${todo.id}`}
 						id={todo.id as number}
 						key={`del-${todo.id}`}
-					/>
+					/>*/}
 				</div>
 			</div>
 		</>
