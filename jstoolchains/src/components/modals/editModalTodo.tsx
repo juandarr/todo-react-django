@@ -191,7 +191,7 @@ export default function EditModalTodo({
 							name='title'
 							value={newEditTodo.title}
 							placeholder='What is in your mind?'
-							className='mb-3 ml-4 mr-4 mt-4 overflow-y-hidden rounded-lg bg-gray-300 px-4 py-3 text-base font-medium text-gray-900 placeholder:text-gray-500 focus-within:outline focus-within:outline-2 focus-within:outline-emerald-500'
+							className='mb-3 ml-4 mr-4 mt-4 overflow-y-hidden rounded-lg bg-gray-300 px-4 py-3 text-base font-medium text-gray-900 placeholder:text-gray-400 focus-within:outline focus-within:outline-2 focus-within:outline-emerald-500'
 							onChange={(event) => {
 								setNewEditTodo((old) => ({
 									...old,
@@ -236,7 +236,7 @@ export default function EditModalTodo({
 						charLimit={1000}
 						isDisabled={status === 'submitting'}
 						id='todoDescription'
-						className='mt-1 max-h-[40vh] overflow-y-auto rounded-b-lg bg-gray-300 text-sm text-gray-900 placeholder:text-gray-500'
+						className='mt-1 max-h-[40vh] overflow-y-auto rounded-b-lg bg-gray-300 text-sm text-gray-900 placeholder:text-gray-400'
 						onKeyDown={(e) => {
 							handleKeyDown(e);
 						}}
