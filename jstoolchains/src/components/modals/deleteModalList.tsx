@@ -1,4 +1,4 @@
-import React, { useState, type CSSProperties } from 'react';
+import React, { useState } from 'react';
 
 import type { DeleteModalListProps } from '../../lib/customTypes';
 

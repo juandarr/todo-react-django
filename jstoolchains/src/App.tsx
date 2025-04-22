@@ -59,13 +59,12 @@ export default function App(): React.JSX.Element {
 	); // Ignore user setter if not used directly
 	const [userInfo, setUserInfo] = useState(userInfoInitial);
 	const [lists, dispatchLists] = useReducer(listsReducer, initialListsState);
-	const [loadingLists, setLoadingLists] = useState(true); // Add loading state for lists
+	const [loadingLists, setLoadingLists] = useState(true); // Add loading state for lists since Reducer is being used
 
 	const initializationCompleted = useRef(false);
 
 	// Initialization effects
 	// This effect initializes the userInfo configuration
-	// tmp.inboxId as number
 	useEffect(() => {
 		if (user.length !== 0 && settings.length !== 0) {
 			const tmp = user[0];
@@ -513,7 +512,7 @@ export default function App(): React.JSX.Element {
 						deleteList={deleteList}
 						editList={editList}
 						showSidebar={showSidebar}
-						isLoadingLists={loadingLists} // Pass loading state
+						isLoadingLists={loadingLists}
 					/>
 					<TaskView
 						userInfo={userInfo}
@@ -527,7 +526,7 @@ export default function App(): React.JSX.Element {
 						editTodo={editTodo}
 						editTodoFull={editTodoFull}
 						showSidebar={showSidebar}
-						isLoadingTodos={loadingTodos} // Pass loading state here
+						isLoadingTodos={loadingTodos}
 					/>
 				</div>
 				<Toaster />

@@ -1,4 +1,4 @@
-import React, { useState, type CSSProperties, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 
 import type { CreateModalListProps } from '../../lib/customTypes';
 

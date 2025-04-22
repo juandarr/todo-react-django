@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Setting2 as Settings} from 'iconsax-reactjs';
+import { Setting2 as Settings } from 'iconsax-reactjs';
 
 import {
 	Popover,
@@ -77,7 +77,7 @@ export default function SettingsModal({
 					openPopover();
 				}}>
 				<a className='mb-2 flex cursor-pointer items-center justify-start font-semibold text-cyan-500 hover:text-cyan-600'>
-					<Settings size='1.8rem'/>
+					<Settings size='1.8rem' />
 					<p className='ml-4'>Settings</p>
 				</a>
 			</PopoverTrigger>
@@ -119,15 +119,17 @@ export default function SettingsModal({
 									<SelectValue placeholder='Homeview' />
 								</SelectTrigger>
 								<SelectContent>
-									{lists.filter((list) => list.archived !== true).map((list) => {
-										return (
-											<SelectItem key={list.id} value={list.id+''}>
-												<div className='flex items-center justify-start'>
-													<span>{list.title}</span>
-												</div>
-											</SelectItem>
-										);
-									})}
+									{lists
+										.filter((list) => list.archived !== true)
+										.map((list) => {
+											return (
+												<SelectItem key={list.id} value={list.id + ''}>
+													<div className='flex items-center justify-start'>
+														<span>{list.title}</span>
+													</div>
+												</SelectItem>
+											);
+										})}
 								</SelectContent>
 							</Select>
 						</div>
