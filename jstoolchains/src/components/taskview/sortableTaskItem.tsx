@@ -169,7 +169,6 @@ export default function SortableTaskItem({
 	).getTime();
 
 	/* Code blocks required for dnd-kit functionality */
-
 	const {
 		attributes,
 		listeners,
@@ -344,7 +343,6 @@ export default function SortableTaskItem({
 					)}
 				</div>
 			</form>
-			{/* Add 'invisible' class if another item is being dragged */}
 			<div
 				id={`todo-${todo.id}`}
 				className={`todo-actions mt-3 flex w-2/12 items-start justify-center ${draggingItemId !== null ? 'invisible' : 'hidden-child'}`}>
@@ -357,14 +355,6 @@ export default function SortableTaskItem({
 					parentId={`todo-${todo.id}`}
 					key={`edit-${todo.id}`}
 				/>
-				{/*<span className='mr-2'></span>
-                  <DeleteModalTodo
-                    deleteFunction={deleteTodo}
-                    deleteEntity={'todo'}
-                    parentId={`todo-${todo.id}`}
-                    id={todo.id as number}
-                    key={`del-${todo.id}`}
-                  />*/}
 			</div>
 		</div>
 	);

@@ -10,8 +10,6 @@ export default function TaskListHeader({
 	isComplete,
 	items,
 }: TaskListHeaderProps): React.JSX.Element {
-	/* TODO: make it responsive. A good initial break point
-	seems to be 900px width */
 	return (
 		<div className={`text-md flex rounded-xl bg-gray-100 py-3 font-bold`}>
 			<div className='w-2/12 px-6 text-center font-bold text-gray-700'>

@@ -20,28 +20,27 @@ export default function TaskView({
 	editTodoFull,
 	isLoadingTodos, // Add isLoading here
 }: TaskViewProps): React.JSX.Element {
-
 	const editListHandler = async (
-					id: number,
-					tmpList: { ordering:{order: number[]}},
-				): Promise<void> => {
-					try {
-						const updatedList = await editListOrder(id, tmpList);
-						console.log('Updated ordering of list: ', updatedList);
-						toast({
-							title: 'List ordering was updated!',
-							description: '',
-						});
-					} catch (error) {
-						if (error instanceof Error) {
-							toast({
-								variant: 'destructive',
-								title: 'There was an error updating the list ordering: ',
-								description: error.message,
-							});
-						}
-					}
-				};
+		id: number,
+		tmpList: { ordering: { order: number[] } },
+	): Promise<void> => {
+		try {
+			const updatedList = await editListOrder(id, tmpList);
+			console.log('Updated ordering of list: ', updatedList);
+			toast({
+				title: 'List ordering was updated!',
+				description: '',
+			});
+		} catch (error) {
+			if (error instanceof Error) {
+				toast({
+					variant: 'destructive',
+					title: 'There was an error updating the list ordering: ',
+					description: error.message,
+				});
+			}
+		}
+	};
 
 	useEffect(() => {
 		const coll = document.getElementsByClassName('collapsible');
@@ -72,17 +71,17 @@ export default function TaskView({
 	const listTodos = useMemo(() => {
 		let customFilter;
 		// Current view is today view
-		if (currentView.id=== userInfo.inboxListId+1){
+		if (currentView.id === userInfo.inboxListId + 1) {
 			customFilter = (todo: Todo) => {
-							const tmp = new Date();
-							const tomorrow =
-								new Date(tmp.getFullYear(), tmp.getMonth(), tmp.getDate()).getTime() +
-								24 * 60 * 60 * 1000;
-							return (todo.dueDate?.getTime() as number) < tomorrow;
-						};
+				const tmp = new Date();
+				const tomorrow =
+					new Date(tmp.getFullYear(), tmp.getMonth(), tmp.getDate()).getTime() +
+					24 * 60 * 60 * 1000;
+				return (todo.dueDate?.getTime() as number) < tomorrow;
+			};
 		}
 		// Current view is upcoming view
-		else if (currentView.id=== userInfo.inboxListId+2){
+		else if (currentView.id === userInfo.inboxListId + 2) {
 			customFilter = (todo: Todo) => {
 				const tmp = new Date();
 				const tomorrow =
@@ -93,79 +92,87 @@ export default function TaskView({
 		} else {
 			customFilter = (todo: Todo) => todo.list === currentView.id;
 		}
-		
+
 		return todos.filter(customFilter as filterType);
-		
 	}, [todos, currentView]);
 
 	const todosTodo = useMemo(() => {
 		//Todos are by default retrieved by id
 		const filteredTodos = listTodos.filter((todo) => todo.complete === false);
-		
-		const currentList = lists.filter((list) => (list.id === currentView.id));
-		if (currentList.length !== 0 && !isLoadingTodos){
-			console.log('This is the current list: ',currentList);
-			console.log('And here is the ordering: ',currentList[0].ordering, currentList[0].ordering?.order.length === 0);
+
+		const currentList = lists.filter((list) => list.id === currentView.id);
+		if (currentList.length !== 0 && !isLoadingTodos) {
+			console.log('This is the current list: ', currentList);
+			console.log(
+				'And here is the ordering: ',
+				currentList[0].ordering,
+				currentList[0].ordering?.order.length === 0,
+			);
 			const tmp = filteredTodos.map((todo) => todo.id) as number[];
 			if (currentList[0].ordering?.order.length === 0 && tmp.length > 0) {
-				
-				console.log('Order of todos: ' ,tmp);
+				console.log('Order of todos: ', tmp);
 				//Store initial order of todos. Implement such operation here
-				editListHandler(currentView.id, { ordering: {order: tmp } })
-									.then(() => {})
-									.catch(() => {});
+				editListHandler(currentView.id, { ordering: { order: tmp } })
+					.then(() => {})
+					.catch(() => {});
 			} else {
-				//If order is already defined, check existence of todos. Remove the ones not present from ordering array, add new ones to the end, store new ordering array, this is next
+				//If order is already defined, check existence of todos. Remove the ones not present from ordering array, add new ones to the end, store new ordering array
 				//compare current list to sorted one, new todos won´t be on sorted, add to the end
 				const order = [...currentList[0].ordering?.order];
 				const toRemove = [];
 				const toAdd = [];
 				let change = false;
-				for (let i =0; i< order.length; i++){
-					if (!(tmp.includes(order[i]))){
+				for (let i = 0; i < order.length; i++) {
+					if (!tmp.includes(order[i])) {
 						toRemove.push(order[i]);
-						change =true;
-
+						change = true;
 					}
 				}
-				for (let i=0; i<tmp.length; i++){
-					if (!(order.includes(tmp[i]))){
+				for (let i = 0; i < tmp.length; i++) {
+					if (!order.includes(tmp[i])) {
 						toAdd.push(tmp[i]);
 						change = true;
 					}
 				}
-				console.log('Current fetched order: ', tmp, ' And stored order: ', order);
+				console.log(
+					'Current fetched order: ',
+					tmp,
+					' And stored order: ',
+					order,
+				);
 				// Remove values
 				let idx;
-				for (let i = 0; i < toRemove.length; i++){
+				for (let i = 0; i < toRemove.length; i++) {
 					idx = order.indexOf(toRemove[i]);
-					order.splice(idx,1);
+					order.splice(idx, 1);
 				}
 				// Add values
-				console.log('Here is what is going to be added: ', toAdd, ' and removed: ', toRemove);
+				console.log(
+					'Here is what is going to be added: ',
+					toAdd,
+					' and removed: ',
+					toRemove,
+				);
 				order.push(...toAdd);
 				console.log('The value of change is: ', change);
 				if (change) {
 					console.log('New order: ', order);
-					editListHandler(currentView.id, { ordering: {order: order } })
-									.then(() => {})
-									.catch(() => {});
+					editListHandler(currentView.id, { ordering: { order: order } })
+						.then(() => {})
+						.catch(() => {});
 				}
-				return order.map((id) => filteredTodos.find((todo) => todo.id===id)) as Todo[];
+				return order.map((id) =>
+					filteredTodos.find((todo) => todo.id === id),
+				) as Todo[];
 			}
 		}
 
-		// This filter is useful when filtering by priority
-		/*
-		return filteredTodos.sort(
-			(a, b) => (a.priority as number) - (b.priority as number),
-		);*/
 		return filteredTodos;
 	}, [todos, currentView]);
 
 	const todosCompleted = useMemo(() => {
 		let filteredTodos = listTodos.filter((todo) => todo.complete === true);
-		if (currentView.id === (userInfo.inboxListId+1)) {
+		if (currentView.id === userInfo.inboxListId + 1) {
 			filteredTodos = filteredTodos.filter(
 				(todo) =>
 					todo.completedAt?.toDateString() === new Date().toDateString(),
@@ -188,21 +195,24 @@ export default function TaskView({
 				className='absolute left-3 top-2 text-sm font-bold text-violet-600'
 				id='currentView-title'>
 				{currentView.title +
-					(currentView.id === (userInfo.inboxListId+1)
+					(currentView.id === userInfo.inboxListId + 1
 						? ': ' +
-						  new Date().toLocaleDateString('en-US', {
+							new Date().toLocaleDateString('en-US', {
 								weekday: 'short',
 								month: 'short',
 								day: 'numeric',
-						  })
-						: '') + 
-						(currentView.id === (userInfo.inboxListId+2)
+							})
+						: '') +
+					(currentView.id === userInfo.inboxListId + 2
 						? ': ' +
-						  new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toLocaleDateString('en-US', {
+							new Date(
+								new Date().getTime() + 24 * 60 * 60 * 1000,
+							).toLocaleDateString('en-US', {
 								weekday: 'short',
 								month: 'short',
 								day: 'numeric',
-						  }) + ', and beyond'
+							}) +
+							', and beyond'
 						: '') +
 					(currentView.archived ? ' (Archived)' : '')}
 			</div>
@@ -217,18 +227,19 @@ export default function TaskView({
 			{isLoadingTodos ? (
 				<p className='text-center text-gray-500'>Loading todos...</p>
 			) : (
-			<TaskList
-				todos={todosTodo}
-				lists={lists}
-				editListHandler={editListHandler}
-				currentView={currentView}
-				userInfo={userInfo}
-				toggleTodo={toggleTodo}
-				deleteTodo={deleteTodo}
-				editTodo={editTodo}
-				editTodoFull={editTodoFull}
-				isComplete={false}
-			/>)}
+				<TaskList
+					todos={todosTodo}
+					lists={lists}
+					editListHandler={editListHandler}
+					currentView={currentView}
+					userInfo={userInfo}
+					toggleTodo={toggleTodo}
+					deleteTodo={deleteTodo}
+					editTodo={editTodo}
+					editTodoFull={editTodoFull}
+					isComplete={false}
+				/>
+			)}
 			<TaskListHeader
 				fieldDone={`Completed`}
 				fieldTask={''}
@@ -239,18 +250,19 @@ export default function TaskView({
 			{isLoadingTodos ? (
 				<p className='text-center text-gray-500'>Loading todos...</p>
 			) : (
-			<TaskList
-				todos={todosCompleted}
-				lists={lists}
-				editListHandler={editListHandler}
-				currentView={currentView}
-				userInfo={userInfo}
-				toggleTodo={toggleTodo}
-				deleteTodo={deleteTodo}
-				editTodo={editTodo}
-				editTodoFull={editTodoFull}
-				isComplete={true}
-			/>)}
+				<TaskList
+					todos={todosCompleted}
+					lists={lists}
+					editListHandler={editListHandler}
+					currentView={currentView}
+					userInfo={userInfo}
+					toggleTodo={toggleTodo}
+					deleteTodo={deleteTodo}
+					editTodo={editTodo}
+					editTodoFull={editTodoFull}
+					isComplete={true}
+				/>
+			)}
 		</div>
 	);
 }

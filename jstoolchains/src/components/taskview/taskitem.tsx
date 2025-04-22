@@ -322,14 +322,6 @@ export default function TaskItem({
 						userInfo={userInfo}
 						key={`edit-${todo.id}`}
 					/>
-					{/*<span className='mr-2'></span>
-					<DeleteModalTodo
-						deleteFunction={deleteTodo}
-						deleteEntity={'todo'}
-						parentId={`todo-${todo.id}`}
-						id={todo.id as number}
-						key={`del-${todo.id}`}
-					/>*/}
 				</div>
 			</div>
 		</>
