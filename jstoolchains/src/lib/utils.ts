@@ -76,13 +76,3 @@ export const checkOnlineStatus = async (): Promise<boolean> => {
 		return false; // It is offline
 	}
 };
-/* Use the following portion of code to test every async api function */
-// setTimeout(() => {
-//   const value = Math.random();
-//   if (value > 0.5) {
-//     closePopover();
-//   } else {
-//     setError("Invented error");
-//     setStatus("viewing");
-//   }
-// }, 2000);
