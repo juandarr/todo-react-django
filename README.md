@@ -12,16 +12,14 @@ My goal right now is to update every dependency to 2024, improve the code and ad
 
 - [x] Update to last React version, 19, including the optimizations provided by the React compiler and using other tools to check suboptimal configuration in the app.
 - [ ] Add new features (In progress)
-  - [50%] Add the option to use drag and drop to set a customized order. It is working for lists now. But needs some improvements. Next, need to implements for todos. 
-    - I am using DnD-kit, to add drag and drop in TaskList type components
-    - Another candidate is [react-dnd](https://react-dnd.github.io/react-dnd/about). Pick the best library and move on
   - [ ] Better description box (as a kind of note)
   - [ ] Add filters to sort the tasks by certain parameters
-  
+  - [x] Add the option to use drag and drop to set a customized order. It is working for lists now. But needs some improvements. Next, need to implements for todos. 
+    - I am using DnD-kit, to add drag and drop in TaskList type components
+    - Another candidate is [react-dnd](https://react-dnd.github.io/react-dnd/about). Pick the best library and move on
+- [ ] Avoid unnecessary rendering, and familiarize with the code again (heavy development of the app was done a couple of years ago)
 - [ ] Update tailwindcss to 4.0 - in progress
 - [ ] Check other dependencies.
-- [ ] Avoid unnecessary rendering, and familiarize with the code again (heavy development of the app was done a couple of years ago)
-
 - [ ] Create documentation of the app. The features, how to use them, best practices
 
 ## Stack
@@ -117,4 +115,4 @@ The overal background of the app is `rbg(56,189,248)` (`sky-400`). The backgroun
 
 # License
 
-MIT 2025
+Pending
