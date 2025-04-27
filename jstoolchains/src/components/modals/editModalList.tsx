@@ -6,14 +6,14 @@ import {
 	DirectboxReceive as Archive,
 	DirectboxSend as UnArchive,
 	CloseSquare,
-	Edit,
+	Edit
 } from 'iconsax-reactjs';
 
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
-	TooltipTrigger,
+	TooltipTrigger
 } from '../ui/tooltip';
 
 import {
@@ -21,7 +21,7 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 	PopoverArrow,
-	PopoverClose,
+	PopoverClose
 } from '../ui/popover';
 
 import { useToast } from '../ui/toast/use-toast';
@@ -32,7 +32,7 @@ export default function EditModalList({
 	editList,
 	listData,
 	parentId,
-	deleteFunction,
+	deleteFunction
 }: EditModalListProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
 
@@ -53,10 +53,11 @@ export default function EditModalList({
 	}, [status]);
 
 	const editHandleSubmit = async (
-		event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-
+		event:
+			| React.MouseEvent<HTMLButtonElement, MouseEvent>
+			| React.FormEvent<HTMLFormElement>,
 		id: number,
-		tmpList: { title?: string; archived?: boolean },
+		tmpList: { title?: string; archived?: boolean }
 	): Promise<void> => {
 		event.preventDefault();
 		if (tmpList.title === '') return;
@@ -67,7 +68,7 @@ export default function EditModalList({
 			console.log('Updated list: ', updatedList);
 			toast({
 				title: 'List was updated!',
-				description: '',
+				description: ''
 			});
 			closePopover();
 		} catch (error) {
@@ -75,7 +76,7 @@ export default function EditModalList({
 				toast({
 					variant: 'destructive',
 					title: 'There was an error updating the list: ',
-					description: error.message,
+					description: error.message
 				});
 			}
 			setStatus('typing');
@@ -83,18 +84,18 @@ export default function EditModalList({
 	};
 
 	const archiveHandleSubmit = async (
-		event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+		event: React.MouseEvent<HTMLButtonElement, MouseEvent>
 	): Promise<void> => {
 		event.preventDefault();
 		setStatus('submitting');
 
 		try {
 			await editList(listData.id, {
-				archived: !listData.archived,
+				archived: !listData.archived
 			});
 			toast({
 				title: `List was ${listData.archived ? 'restored' : 'archived'}`,
-				description: '',
+				description: ''
 			});
 			closePopover();
 		} catch (error) {
@@ -104,7 +105,7 @@ export default function EditModalList({
 					title: `There was an error ${
 						!listData.archived ? 'restoring' : 'archiving'
 					} the list: `,
-					description: error.message,
+					description: error.message
 				});
 			}
 			setStatus('viewing');
@@ -124,12 +125,12 @@ export default function EditModalList({
 
 	const removeHidden = (): void => {
 		(document.getElementById(parentId) as HTMLElement).classList.remove(
-			'hidden-child',
+			'hidden-child'
 		);
 	};
 	const addHidden = (): void => {
 		(document.getElementById(parentId) as HTMLElement).classList.add(
-			'hidden-child',
+			'hidden-child'
 		);
 	};
 	return (
@@ -159,7 +160,14 @@ export default function EditModalList({
 					addHidden();
 				}}
 				className='w-80 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
-				<form id='editlistform' className='flex flex-col'>
+				<form
+					id='editlistform'
+					className='flex flex-col'
+					onSubmit={(e) => {
+						editHandleSubmit(e, listData.id, { title: listEdit })
+							.then(() => {})
+							.catch(() => {});
+					}}>
 					<div className='relative flex flex-1 flex-col'>
 						<input
 							id='listName'
