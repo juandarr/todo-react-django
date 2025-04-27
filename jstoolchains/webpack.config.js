@@ -7,7 +7,7 @@ module.exports = {
 		new BundleTracker({
 			// Path where webpack-stats.json will be generated
 			// Needs to be accessible by Django
-			path: path.resolve(__dirname, 'webpack-stats/'), // Example: Put it in a sibling dir
+			path: path.resolve(__dirname, '../static/webpack-stats/'), // Example: Put it in a sibling dir
 			filename: 'webpack-stats.json', // Standard name
 		}),
 	],
@@ -26,6 +26,7 @@ module.exports = {
 	output: {
 		filename: '[name].[contenthash].js', // output bundle file name
 		path: path.resolve(__dirname, '../static/js'), // path to our Django static directory
+		clean: true,
 	},
 	devtool: 'eval-source-map',
 	optimization: {
