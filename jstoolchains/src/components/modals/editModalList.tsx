@@ -243,12 +243,7 @@ export default function EditModalList({
 						<button
 							type='submit'
 							className='flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'
-							disabled={!!(status === 'submitting' || listEdit.length === 0)}
-							onClick={(e) => {
-								editHandleSubmit(e, listData.id, { title: listEdit })
-									.then(() => {})
-									.catch(() => {});
-							}}>
+							disabled={!!(status === 'submitting' || listEdit.length === 0)}>
 							<span
 								className={`loader ${
 									status === 'submitting' ? 'block' : 'invisible'
