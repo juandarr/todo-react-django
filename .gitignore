@@ -2,6 +2,7 @@ todo_react_django/__pycache__
 jstoolchains/node_modules
 database/
 static/css/output.css
+static/webpack-stats/
 static/js
 todo/__pycache__
 todo/migrations/__pycache__
