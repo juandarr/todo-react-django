@@ -1,4 +1,6 @@
 {% load static %}
+{% comment %} Load the webpack_loader tags {% endcomment %}
+{% load render_bundle from webpack_loader %}
 <!DOCTYPE html>
 <html lang="en" style="margin:0px; height:100%;">
 
@@ -6,8 +8,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock %}</title>
-    <link rel=" shortcut icon" type="image/x-icon"
-        href="{% static 'images/favicon.ico' %}">
+    <link rel=" shortcut icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
     <link rel="stylesheet" href="{% static 'css/output.css' %}">
 </head>
 
@@ -15,10 +16,8 @@
     {% include 'messages.html' %}
     {% block content %}
     {% endblock %}
-    <script src="{% static 'js/index-bundle.js' %}">
-
-
-    </script>
+    {% comment %} Render the necessary JS bundles in the correct order {% endcomment %}
+    {% render_bundle 'main' 'js' %}
     <script>
         document.body.addEventListener('mousedown', event => {
             console.log(event.target.localName)
