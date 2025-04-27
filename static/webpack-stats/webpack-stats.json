@@ -1,0 +1,24 @@
+{
+  "status": "done",
+  "assets": {
+    "main.77789e3f9e41106a441f.js": {
+      "name": "main.77789e3f9e41106a441f.js",
+      "path": "/home/juanda/Disks/things/Documents/Repositories/todo-react-django/static/js/main.77789e3f9e41106a441f.js"
+    },
+    "runtime.04580057bc0c001675ae.js": {
+      "name": "runtime.04580057bc0c001675ae.js",
+      "path": "/home/juanda/Disks/things/Documents/Repositories/todo-react-django/static/js/runtime.04580057bc0c001675ae.js"
+    },
+    "vendors.cf5acf55a95ed7679eff.js": {
+      "name": "vendors.cf5acf55a95ed7679eff.js",
+      "path": "/home/juanda/Disks/things/Documents/Repositories/todo-react-django/static/js/vendors.cf5acf55a95ed7679eff.js"
+    }
+  },
+  "chunks": {
+    "main": [
+      "runtime.04580057bc0c001675ae.js",
+      "vendors.cf5acf55a95ed7679eff.js",
+      "main.77789e3f9e41106a441f.js"
+    ]
+  }
+}
