@@ -1,8 +1,9 @@
 todo_react_django/__pycache__
 jstoolchains/node_modules
+jstoolchains/webpack-stats
 database/
 static/css/output.css
-static/js/index-bundle.js
+static/js
 todo/__pycache__
 todo/migrations/__pycache__
 django/
