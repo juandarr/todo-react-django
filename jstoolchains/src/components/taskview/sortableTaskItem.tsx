@@ -5,7 +5,7 @@ import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
-	TooltipTrigger,
+	TooltipTrigger
 } from '../ui/tooltip';
 import { useToast } from '../ui/toast/use-toast';
 
@@ -17,7 +17,7 @@ import {
 	Calendar2 as CalendarIcon,
 	Task as ListChecks,
 	Flag,
-	BookSaved,
+	BookSaved
 } from 'iconsax-reactjs';
 import { GripVertical as Drag } from 'lucide-react';
 import EditModalTodo from '../modals/editModalTodo';
@@ -37,7 +37,7 @@ export default function SortableTaskItem({
 	editTodo,
 	editTodoFull,
 	deleteTodo,
-	draggingItemId, // <-- Add draggingItemId prop here
+	draggingItemId // <-- Add draggingItemId prop here
 }: SortableTaskItemProps) {
 	if (todo.complete === true) {
 		return null;
@@ -58,7 +58,7 @@ export default function SortableTaskItem({
 	useAutosizeTextArea(
 		textAreaTitle.current,
 		`#todoTitle-${todo.id}`,
-		newTodoEdit.title,
+		newTodoEdit.title
 	);
 
 	const options: Intl.DateTimeFormatOptions = {
@@ -66,7 +66,7 @@ export default function SortableTaskItem({
 		year: 'numeric',
 		month: 'short',
 		day: 'numeric',
-		timeZone: user.timeZone,
+		timeZone: user.timeZone
 	};
 
 	const editHandler = (
@@ -74,7 +74,7 @@ export default function SortableTaskItem({
 			| React.MouseEvent<HTMLDivElement>
 			| React.KeyboardEvent<HTMLTextAreaElement>
 			| React.KeyboardEvent<HTMLDivElement>,
-		todo: Todo,
+		todo: Todo
 	): void => {
 		event.preventDefault();
 		if (todo.title !== newTodoEdit.title) {
@@ -82,7 +82,7 @@ export default function SortableTaskItem({
 				.then(() => {
 					toast({
 						title: 'Task title was updated!',
-						description: '',
+						description: ''
 					});
 					// Set inFocus to false to exit edit mode
 					setInFocus(false);
@@ -95,7 +95,7 @@ export default function SortableTaskItem({
 					toast({
 						variant: 'destructive',
 						title: 'There was an error updating task title: ',
-						description: error.message,
+						description: error.message
 					});
 				});
 		} else {
@@ -111,7 +111,7 @@ export default function SortableTaskItem({
 		e:
 			| React.KeyboardEvent<HTMLTextAreaElement>
 			| React.KeyboardEvent<HTMLDivElement>,
-		todo: Todo,
+		todo: Todo
 	): void => {
 		if (e.key === 'Enter') {
 			// Submit the form when Enter is pressed
@@ -127,7 +127,7 @@ export default function SortableTaskItem({
 					toast({
 						variant: 'destructive',
 						title: 'There was an error updating task: ',
-						description: error.message,
+						description: error.message
 					});
 				}
 			});
@@ -165,7 +165,7 @@ export default function SortableTaskItem({
 	const today = new Date(
 		tmp.getFullYear(),
 		tmp.getMonth(),
-		tmp.getDate(),
+		tmp.getDate()
 	).getTime();
 
 	/* Code blocks required for dnd-kit functionality */
@@ -175,26 +175,28 @@ export default function SortableTaskItem({
 		setNodeRef,
 		transform,
 		transition,
-		isDragging,
+		isDragging
 	} = useSortable({
-		id: todo.id as number,
+		id: todo.id as number
 	});
 
 	const style = {
 		transform: CSS.Transform.toString(transform),
-		transition,
+		transition
 	};
 
 	return (
 		<div
 			ref={setNodeRef}
 			style={style}
-			className={`parent flex ${isDragging ? 'cursor-grabbing border-[1px] border-dashed border-black bg-violet-100 opacity-90 shadow-lg' : ''} ${draggingItemId !== null && !isDragging ? 'opacity-70' : ''}`}>
+			// Apply opacity if this item is the one being dragged (placeholder)
+			className={`parent flex ${draggingItemId === todo.id ? 'opacity-50' : ''}`}>
 			<div className='mt-3 flex w-2/12 items-start justify-center'>
 				{/* Apply dragging styles also to the handle button if needed, or ensure parent style covers it */}
 				{/* Add 'invisible' class if another item is being dragged */}
 				<button
-					className={`pr-3 pt-[1px] ${isDragging ? '' : 'cursor-grab'} ${draggingItemId !== null ? 'invisible' : 'hidden-child'}`}
+					// Make invisible if any item is dragging, keep hidden-child for hover effect
+					className={`cursor-grab pr-3 pt-[1px] ${draggingItemId !== null ? 'invisible' : 'hidden-child'}`}
 					{...attributes}
 					{...listeners}>
 					<Drag size='1.5rem' color='#38bdf8' />
@@ -233,7 +235,7 @@ export default function SortableTaskItem({
 						onChange={(event) => {
 							setNewTodoEdit((old) => ({
 								...old,
-								title: event.target.value,
+								title: event.target.value
 							}));
 						}}
 						onKeyDown={(e) => {
@@ -316,7 +318,7 @@ export default function SortableTaskItem({
 									{todo.dueDate !== undefined
 										? (todo.dueDate as Date).toLocaleDateString(
 												'en-US',
-												options,
+												options
 											)
 										: ''}
 								</div>
@@ -333,7 +335,7 @@ export default function SortableTaskItem({
 									{(todo.completedAt as Date).toLocaleString('en-US', {
 										...options,
 										hour: 'numeric',
-										minute: 'numeric',
+										minute: 'numeric'
 									})}
 								</div>
 							</div>
