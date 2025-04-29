@@ -157,9 +157,28 @@ export default function SortableTaskItem({
 		};
 	}, []);
 
-	const el = document.createElement('html');
-	el.innerHTML = todo.description as string;
-	const description = el.innerText;
+	function getTextContentWithSpaces(htmlString: string): string {
+		if (!htmlString) return '';
+
+		const parser = new DOMParser();
+		const doc = parser.parseFromString(htmlString, 'text/html');
+		// Use a TreeWalker to efficiently get all text nodes
+		const walker = doc.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT, null);
+		let textNodesContent: string[] = [];
+		let currentNode: Node | null;
+
+		while ((currentNode = walker.nextNode())) {
+			// Trim whitespace from each text node and only add if non-empty
+			const trimmedText = currentNode.nodeValue?.trim();
+			if (trimmedText) {
+				textNodesContent.push(trimmedText);
+			}
+		}
+
+		// Join the non-empty text pieces with a single space
+		return textNodesContent.join(' ');
+	}
+
 	const tmp = new Date();
 	const today = new Date(
 		tmp.getFullYear(),
@@ -287,7 +306,7 @@ export default function SortableTaskItem({
 				</div>
 				<div className='flex w-[90%] items-center justify-start'>
 					<div className='mr-2 block overflow-hidden text-ellipsis whitespace-nowrap px-4 py-1 text-xs'>
-						{description}
+						{getTextContentWithSpaces(todo.description as string)}
 					</div>
 				</div>
 				<div className='mt-0 flex justify-start pb-2 pt-0 text-sm text-gray-400'>
