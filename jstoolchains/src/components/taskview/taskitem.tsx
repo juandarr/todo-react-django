@@ -7,7 +7,7 @@ import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
-	TooltipTrigger,
+	TooltipTrigger
 } from '../ui/tooltip';
 import { useToast } from '../ui/toast/use-toast';
 
@@ -18,7 +18,7 @@ import {
 	Calendar2 as CalendarIcon,
 	Task as ListChecks,
 	Flag,
-	BookSaved,
+	BookSaved
 } from 'iconsax-reactjs';
 
 import EditModalTodo from '../modals/editModalTodo';
@@ -32,7 +32,7 @@ export default function TaskItem({
 	toggleTodo,
 	editTodo,
 	editTodoFull,
-	deleteTodo,
+	deleteTodo
 }: TaskItemProps): React.JSX.Element {
 	const user = useContext(UserContext);
 	const { toast } = useToast();
@@ -49,7 +49,7 @@ export default function TaskItem({
 	useAutosizeTextArea(
 		textAreaTitle.current,
 		`#todoTitle-${todo.id}`,
-		newTodoEdit.title,
+		newTodoEdit.title
 	);
 
 	const options: Intl.DateTimeFormatOptions = {
@@ -57,7 +57,7 @@ export default function TaskItem({
 		year: 'numeric',
 		month: 'short',
 		day: 'numeric',
-		timeZone: user.timeZone,
+		timeZone: user.timeZone
 	};
 
 	const editHandler = (
@@ -65,7 +65,7 @@ export default function TaskItem({
 			| React.MouseEvent<HTMLDivElement>
 			| React.KeyboardEvent<HTMLTextAreaElement>
 			| React.KeyboardEvent<HTMLDivElement>,
-		todo: Todo,
+		todo: Todo
 	): void => {
 		event.preventDefault();
 		if (todo.title !== newTodoEdit.title) {
@@ -73,7 +73,7 @@ export default function TaskItem({
 				.then(() => {
 					toast({
 						title: 'Task title was updated!',
-						description: '',
+						description: ''
 					});
 					// Set inFocus to false to exit edit mode
 					setInFocus(false);
@@ -86,7 +86,7 @@ export default function TaskItem({
 					toast({
 						variant: 'destructive',
 						title: 'There was an error updating task title: ',
-						description: error.message,
+						description: error.message
 					});
 				});
 		} else {
@@ -105,7 +105,7 @@ export default function TaskItem({
 		e:
 			| React.KeyboardEvent<HTMLTextAreaElement>
 			| React.KeyboardEvent<HTMLDivElement>,
-		todo: Todo,
+		todo: Todo
 	): void => {
 		if (e.key === 'Enter') {
 			// Submit the form when Enter is pressed
@@ -121,7 +121,7 @@ export default function TaskItem({
 					toast({
 						variant: 'destructive',
 						title: 'There was an error updating task: ',
-						description: error.message,
+						description: error.message
 					});
 				}
 			});
@@ -152,14 +152,33 @@ export default function TaskItem({
 		};
 	}, []);
 
-	const el = document.createElement('html');
-	el.innerHTML = todo.description as string;
-	const description = el.innerText;
+	function getTextContentWithSpaces(htmlString: string): string {
+		if (!htmlString) return '';
+
+		const parser = new DOMParser();
+		const doc = parser.parseFromString(htmlString, 'text/html');
+		// Use a TreeWalker to efficiently get all text nodes
+		const walker = doc.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT, null);
+		let textNodesContent: string[] = [];
+		let currentNode: Node | null;
+
+		while ((currentNode = walker.nextNode())) {
+			// Trim whitespace from each text node and only add if non-empty
+			const trimmedText = currentNode.nodeValue?.trim();
+			if (trimmedText) {
+				textNodesContent.push(trimmedText);
+			}
+		}
+
+		// Join the non-empty text pieces with a single space
+		return textNodesContent.join(' ');
+	}
+
 	const tmp = new Date();
 	const today = new Date(
 		tmp.getFullYear(),
 		tmp.getMonth(),
-		tmp.getDate(),
+		tmp.getDate()
 	).getTime();
 
 	return (
@@ -200,7 +219,7 @@ export default function TaskItem({
 							onChange={(event) => {
 								setNewTodoEdit((old) => ({
 									...old,
-									title: event.target.value,
+									title: event.target.value
 								}));
 							}}
 							onKeyDown={(e) => {
@@ -247,7 +266,7 @@ export default function TaskItem({
 					</div>
 					<div className='flex w-[90%] items-center justify-start'>
 						<div className='mr-2 block overflow-hidden text-ellipsis whitespace-nowrap px-4 py-1 text-xs'>
-							{description}
+							{getTextContentWithSpaces(todo.description as string)}
 						</div>
 					</div>
 					<div className='mt-0 flex justify-start pb-2 pt-0 text-sm text-gray-400'>
@@ -283,7 +302,7 @@ export default function TaskItem({
 										{todo.dueDate !== undefined
 											? (todo.dueDate as Date).toLocaleDateString(
 													'en-US',
-													options,
+													options
 												)
 											: ''}
 									</div>
@@ -300,7 +319,7 @@ export default function TaskItem({
 										{(todo.completedAt as Date).toLocaleString('en-US', {
 											...options,
 											hour: 'numeric',
-											minute: 'numeric',
+											minute: 'numeric'
 										})}
 									</div>
 								</div>
