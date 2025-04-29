@@ -36,7 +36,7 @@ export default function SortableListItem({
 		<div
 			ref={setNodeRef}
 			style={style}
-			className={`${isDragging ? 'cursor-grabbing border-[1px] border-dashed border-black bg-white opacity-90 shadow-xl' : ''} ${draggingItemId !== null && !isDragging ? 'opacity-70' : ''}`}>
+			className={`${isDragging ? 'z-50 cursor-grabbing border-[1px] border-dashed border-black bg-white shadow-xl' : ''} ${draggingItemId !== null && !isDragging ? 'opacity-60' : ''}`}>
 			<div key={list.id} className='parent flex items-center justify-between'>
 				<button
 					className={`${isDragging ? '' : 'cursor-grab'} ${draggingItemId !== null ? 'invisible' : 'hidden-child'}`}
