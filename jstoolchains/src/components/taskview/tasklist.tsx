@@ -10,12 +10,13 @@ import {
 	MouseSensor,
 	useSensor,
 	useSensors,
+	DragOverlay // Import DragOverlay
 } from '@dnd-kit/core';
 
 import {
 	arrayMove,
 	SortableContext,
-	verticalListSortingStrategy,
+	verticalListSortingStrategy
 } from '@dnd-kit/sortable';
 
 import SortableTaskItem from './sortableTaskItem';
@@ -32,10 +33,11 @@ export default function TaskList({
 	deleteTodo,
 	editTodo,
 	editTodoFull,
-	isComplete,
+	isComplete
 }: TaskListProps): React.JSX.Element {
 	const [todosList, setTodosList] = useState<Todo[]>(todos);
 	const [draggingItemId, setDraggingItemId] = useState<number | null>(null); // State to track the ID of the item being dragged
+	const [activeTodo, setActiveTodo] = useState<Todo | null>(null); // State to hold the full data of the dragged item
 
 	useEffect(() => {
 		setTodosList(todos);
@@ -44,8 +46,8 @@ export default function TaskList({
 	/* Drag and drop definitions */
 	const sensors = useSensors(
 		useSensor(MouseSensor, {
-			activationConstraint: { distance: 5 },
-		}),
+			activationConstraint: { distance: 5 }
+		})
 	);
 
 	async function handleDragEnd(event: any) {
@@ -64,7 +66,7 @@ export default function TaskList({
 				setTodosList(newTodos);
 				// Update state with new todos order in database, in case it fails restore previous state
 				editListHandler(currentView.id, {
-					ordering: { order: newTodos.map((todo) => todo.id) as number[] },
+					ordering: { order: newTodos.map((todo) => todo.id) as number[] }
 				})
 					.then(() => {})
 					.catch(() => {
@@ -72,7 +74,7 @@ export default function TaskList({
 						toast({
 							title: 'Error',
 							description: 'Failed to reorder tasks. Please try again.',
-							variant: 'destructive',
+							variant: 'destructive'
 						});
 						// Revert state on failure
 						setTodosList(todosList);
@@ -80,11 +82,15 @@ export default function TaskList({
 			}
 		}
 		setDraggingItemId(null); // Reset dragging state on end
+		setActiveTodo(null); // Clear the active todo data
 		document.body.style.cursor = ''; // Reset body cursor on end
 	}
 
 	function handleDragStart(event: any) {
-		setDraggingItemId(event.active.id as number); // Set dragging state on start
+		const activeId = event.active.id as number;
+		setDraggingItemId(activeId); // Set dragging state on start
+		// Find the full todo object and store it
+		setActiveTodo(todosList.find((todo) => todo.id === activeId) || null);
 		document.body.style.cursor = 'grabbing'; // Set body cursor to grabbing on start
 	}
 
@@ -110,27 +116,40 @@ export default function TaskList({
 							<SortableContext
 								items={todosList.map((todo) => todo.id as number)}
 								strategy={verticalListSortingStrategy}>
-								{todosList.map((todo, idx: number) => {
-									return (
-										<li key={todo.id} id={`item-${todo.id}`}>
-											{/* Conditionally render the divider */}
-											{idx > 0 && (
-												<div className='mx-auto h-px w-3/4 bg-gray-100'></div>
-											)}
-											<SortableTaskItem
-												todo={todo}
-												lists={lists}
-												userInfo={userInfo}
-												toggleTodo={toggleTodo}
-												editTodo={editTodo}
-												editTodoFull={editTodoFull}
-												deleteTodo={deleteTodo}
-												draggingItemId={draggingItemId} // Pass dragging state down
-											/>
-										</li>
-									);
-								})}
+								{todosList.map((todo, idx: number) => (
+									<li key={todo.id} id={`item-${todo.id}`}>
+										{/* Conditionally render the divider */}
+										{idx > 0 && (
+											<div className='mx-auto h-px w-3/4 bg-gray-100'></div>
+										)}
+										<SortableTaskItem
+											todo={todo}
+											lists={lists}
+											userInfo={userInfo}
+											toggleTodo={toggleTodo}
+											editTodo={editTodo}
+											editTodoFull={editTodoFull}
+											deleteTodo={deleteTodo}
+											draggingItemId={draggingItemId} // Pass dragging state down
+										/>
+									</li>
+								))}
 							</SortableContext>
+							{/* DragOverlay renders the item being dragged */}
+							<DragOverlay>
+								{activeTodo ? (
+									<SortableTaskItem
+										todo={activeTodo}
+										lists={lists}
+										userInfo={userInfo}
+										toggleTodo={toggleTodo}
+										editTodo={editTodo}
+										editTodoFull={editTodoFull}
+										deleteTodo={deleteTodo}
+										draggingItemId={draggingItemId} // Pass dragging state down
+									/>
+								) : null}
+							</DragOverlay>
 						</DndContext>
 					)}
 					{isComplete &&
