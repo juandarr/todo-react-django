@@ -130,7 +130,8 @@ export default function TaskList({
 											editTodo={editTodo}
 											editTodoFull={editTodoFull}
 											deleteTodo={deleteTodo}
-											draggingItemId={draggingItemId} // Pass dragging state down
+											draggingItemId={draggingItemId}
+											isOverlayItem={false}
 										/>
 									</li>
 								))}
@@ -146,7 +147,8 @@ export default function TaskList({
 										editTodo={editTodo}
 										editTodoFull={editTodoFull}
 										deleteTodo={deleteTodo}
-										draggingItemId={draggingItemId} // Pass dragging state down
+										draggingItemId={draggingItemId}
+										isOverlayItem={true}
 									/>
 								) : null}
 							</DragOverlay>
