@@ -3,7 +3,7 @@ import type {
 	List,
 	Todo,
 	User,
-	Setting,
+	Setting
 } from '../../../todo-api-client/models';
 
 export interface todoType {
@@ -55,24 +55,24 @@ export type addListType = (title: string) => Promise<List>;
 export type todoModelFetch = [
 	Todo[],
 	React.Dispatch<React.SetStateAction<Todo[]>>,
-	boolean,
+	boolean
 ];
 
 export type listModelFetch = [
 	List[],
 	React.Dispatch<React.SetStateAction<List[]>>,
-	boolean,
+	boolean
 ];
 
 export type settingModelFetch = [
 	Setting[],
 	React.Dispatch<React.SetStateAction<Setting[]>>,
-	boolean,
+	boolean
 ];
 export type userModelFetch = [
 	User[],
 	React.Dispatch<React.SetStateAction<User[]>>,
-	boolean,
+	boolean
 ];
 
 export interface TaskViewProps {
@@ -85,7 +85,7 @@ export interface TaskViewProps {
 			ordering: {
 				order: number[];
 			};
-		},
+		}
 	) => Promise<List>;
 	showSidebar: boolean;
 	currentView: viewType;
@@ -110,6 +110,7 @@ export interface SortableTaskItemProps {
 	editTodoFull: (todo: todoType) => Promise<Todo>;
 	deleteTodo: (id: number) => Promise<void>;
 	draggingItemId: number | null; // Add the new prop type here
+	isOverlayItem?: boolean; // Indicate if the item is rendered in DragOverlay
 }
 
 export interface TaskItemProps {
@@ -131,7 +132,7 @@ export interface TaskListProps {
 			ordering: {
 				order: number[];
 			};
-		},
+		}
 	) => Promise<void>;
 	currentView: viewType;
 	userInfo: userInfoType;
@@ -172,7 +173,7 @@ export interface EditModalListProps {
 		newList: {
 			title?: string;
 			archived?: boolean;
-		},
+		}
 	) => Promise<List>;
 	listData: { id: number; title: string; archived: boolean };
 	parentId: string;
@@ -208,7 +209,7 @@ export interface ArchiveModalListProps {
 		newList: {
 			title?: string;
 			archived?: boolean;
-		},
+		}
 	) => Promise<List>;
 	listData: { id: number; title: string; archived: boolean };
 }
@@ -237,7 +238,7 @@ export interface SideBarProps {
 		newList: {
 			title?: string;
 			archived?: boolean;
-		},
+		}
 	) => Promise<List>;
 	showSidebar: boolean;
 	dispatchLists: ActionDispatch<[action: actionType]>;
@@ -254,7 +255,7 @@ export interface SortableListItemProps {
 		newList: {
 			title?: string;
 			archived?: boolean;
-		},
+		}
 	) => Promise<List>;
 	dispatchLists: ActionDispatch<[action: actionType]>;
 	draggingItemId: number | null;
