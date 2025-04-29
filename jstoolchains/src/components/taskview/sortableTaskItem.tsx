@@ -11,8 +11,6 @@ import { useToast } from '../ui/toast/use-toast';
 
 import { type Todo } from '../../../../todo-api-client/models';
 
-import DeleteModalTodo from '../modals/deleteModalTodo';
-
 import {
 	Calendar2 as CalendarIcon,
 	Task as ListChecks,
@@ -37,7 +35,8 @@ export default function SortableTaskItem({
 	editTodo,
 	editTodoFull,
 	deleteTodo,
-	draggingItemId // <-- Add draggingItemId prop here
+	draggingItemId,
+	isOverlayItem
 }: SortableTaskItemProps) {
 	if (todo.complete === true) {
 		return null;
@@ -185,18 +184,22 @@ export default function SortableTaskItem({
 		transition
 	};
 
+	// Determine dynamic classes based on dragging state and overlay status
+	const dynamicClasses = isOverlayItem
+		? 'shadow-xl scale-105 bg-white z-50' // Styles for the overlay item
+		: isDragging
+			? 'opacity-25' // Style for the original item being dragged (ghost)
+			: ''; // Default: no extra styles
+
 	return (
 		<div
 			ref={setNodeRef}
 			style={style}
-			// Apply opacity if this item is the one being dragged (placeholder)
-			className={`parent flex ${draggingItemId === todo.id ? 'opacity-50' : ''}`}>
+			// Apply dynamic classes and transitions
+			className={`parent flex ${dynamicClasses} transition-shadow transition-transform duration-100 ease-in-out`}>
 			<div className='mt-3 flex w-2/12 items-start justify-center'>
-				{/* Apply dragging styles also to the handle button if needed, or ensure parent style covers it */}
-				{/* Add 'invisible' class if another item is being dragged */}
-				<button
-					// Make invisible if any item is dragging, keep hidden-child for hover effect
-					className={`cursor-grab pr-3 pt-[1px] ${draggingItemId !== null ? 'invisible' : 'hidden-child'}`}
+				<button // Make invisible if it's the overlay or if any item is dragging
+					className={`cursor-grab pr-3 pt-[1px] ${isOverlayItem || draggingItemId !== null ? 'invisible' : 'hidden-child'}`}
 					{...attributes}
 					{...listeners}>
 					<Drag size='1.5rem' color='#38bdf8' />
@@ -347,7 +350,8 @@ export default function SortableTaskItem({
 			</form>
 			<div
 				id={`todo-${todo.id}`}
-				className={`todo-actions mt-3 flex w-2/12 items-start justify-center ${draggingItemId !== null ? 'invisible' : 'hidden-child'}`}>
+				// Hide actions if it's the overlay or if any item is dragging
+				className={`todo-actions mt-3 flex w-2/12 items-start justify-center ${isOverlayItem || draggingItemId !== null ? 'invisible' : 'hidden-child'}`}>
 				<EditModalTodo
 					editTodoFull={editTodoFull}
 					deleteTodo={deleteTodo}
