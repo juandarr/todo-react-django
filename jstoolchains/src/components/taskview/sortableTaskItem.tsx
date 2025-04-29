@@ -196,7 +196,7 @@ export default function SortableTaskItem({
 			ref={setNodeRef}
 			style={style}
 			// Apply dynamic classes and transitions
-			className={`parent flex ${dynamicClasses} transition-shadow transition-transform duration-75 ease-in-out ${draggingItemId !== null && !isDragging && !isOverlayItem ? 'opacity-60' : ''}`}>
+			className={`parent flex ${dynamicClasses} transition-shadow transition-transform duration-75 ease-in-out ${draggingItemId !== null && !isDragging && !isOverlayItem ? 'opacity-70' : ''}`}>
 			<div className='mt-3 flex w-2/12 items-start justify-center'>
 				<button // Make invisible if it's the overlay or if any item is dragging
 					className={`cursor-grab pr-3 pt-[1px] ${isOverlayItem || draggingItemId !== null ? 'invisible' : 'hidden-child'}`}
