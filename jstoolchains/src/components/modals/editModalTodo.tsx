@@ -4,7 +4,7 @@ import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
-	TooltipTrigger,
+	TooltipTrigger
 } from '../ui/tooltip';
 
 import { CloseSquare, Edit, Flag } from 'iconsax-reactjs';
@@ -14,7 +14,7 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 	PopoverArrow,
-	PopoverClose,
+	PopoverClose
 } from '../ui/popover';
 
 import {
@@ -22,7 +22,7 @@ import {
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
-	SelectValue,
+	SelectValue
 } from '../ui/select';
 
 import { useToast } from '../ui/toast/use-toast';
@@ -31,8 +31,14 @@ import type { EditModalTodoProps, todoType } from '../../lib/customTypes';
 import { PriorityEnum } from '../../lib/userSettings';
 
 import { waitForElementToExist } from '../../lib/utils';
-import { DatePickerWithPresets } from '../ui/datepicker';
-import TextEditor from '../ui/textEditor';
+// import { DatePickerWithPresets } from '../ui/datepicker'; // Removed static import
+const DatePickerWithPresets = React.lazy(() =>
+	import('../ui/datepicker').then((module) => ({
+		default: module.DatePickerWithPresets
+	}))
+); // Added lazy import
+// import TextEditor from '../ui/textEditor'; // Removed static import
+const TextEditor = React.lazy(() => import('../ui/textEditor')); // Added lazy import
 import useAutosizeTextArea from '../../hooks/useAutosizeTextArea';
 import DeleteModalTodo from './deleteModalTodo';
 
@@ -42,12 +48,12 @@ export default function EditModalTodo({
 	todo,
 	lists,
 	parentId,
-	userInfo,
+	userInfo
 }: EditModalTodoProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
 	const [newEditTodo, setNewEditTodo] = useState<todoType>({
 		title: '',
-		description: '',
+		description: ''
 	});
 	const editorRef = useRef<any>(null);
 
@@ -60,7 +66,7 @@ export default function EditModalTodo({
 	useAutosizeTextArea(
 		textAreaRefTitle.current,
 		'#todoEditTitle',
-		newEditTodo.title,
+		newEditTodo.title
 	);
 
 	useEffect(() => {
@@ -82,14 +88,14 @@ export default function EditModalTodo({
 			closePopover();
 			toast({
 				title: 'Task was updated!',
-				description: '',
+				description: ''
 			});
 		} catch (error) {
 			if (error instanceof Error) {
 				toast({
 					variant: 'destructive',
 					title: 'There was an error updating the task: ',
-					description: error.toString(),
+					description: error.toString()
 				});
 			}
 			setStatus('typing');
@@ -99,7 +105,7 @@ export default function EditModalTodo({
 	const handleKeyDown = (
 		e:
 			| React.KeyboardEvent<HTMLTextAreaElement>
-			| React.KeyboardEvent<HTMLDivElement>,
+			| React.KeyboardEvent<HTMLDivElement>
 	): void => {
 		if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
 			// Submit the form when Ctrl (Windows/Linux) or Command (Mac) + Enter is pressed
@@ -118,7 +124,7 @@ export default function EditModalTodo({
 		const tmpTodo: todoType = {
 			...todo,
 			list: todo.list?.toString(),
-			priority: todo.priority?.toString(),
+			priority: todo.priority?.toString()
 		};
 		setNewEditTodo(tmpTodo);
 		waitForElementToExist('#todoEditTitle')
@@ -144,12 +150,12 @@ export default function EditModalTodo({
 
 	const removeHidden = (): void => {
 		(document.getElementById(parentId) as HTMLElement).classList.remove(
-			'hidden-child',
+			'hidden-child'
 		);
 	};
 	const addHidden = (): void => {
 		(document.getElementById(parentId) as HTMLElement).classList.add(
-			'hidden-child',
+			'hidden-child'
 		);
 	};
 
@@ -203,13 +209,13 @@ export default function EditModalTodo({
 							onChange={(event) => {
 								setNewEditTodo((old) => ({
 									...old,
-									title: event.target.value,
+									title: event.target.value
 								}));
 							}}
 							onFocus={(e) => {
 								e.target.setSelectionRange(
 									e.target.value.length,
-									e.target.value.length,
+									e.target.value.length
 								);
 								if (textAreaTitleCount.current !== null) {
 									textAreaTitleCount.current.style.display = 'block';
@@ -238,17 +244,19 @@ export default function EditModalTodo({
 							<span>/100</span>
 						</div>
 					</div>
-					<TextEditor
-						ref={editorRef}
-						todoDescription={todo.description}
-						charLimit={1000}
-						isDisabled={status === 'submitting'}
-						id='todoDescription'
-						className='mt-1 max-h-[40vh] overflow-y-auto rounded-b-lg bg-gray-300 text-sm text-gray-900 placeholder:text-gray-400'
-						onKeyDown={(e) => {
-							handleKeyDown(e);
-						}}
-					/>
+					<React.Suspense fallback={<div>Loading editor...</div>}>
+						<TextEditor
+							ref={editorRef}
+							todoDescription={todo.description}
+							charLimit={1000}
+							isDisabled={status === 'submitting'}
+							id='todoDescription'
+							className='mt-1 max-h-[40vh] overflow-y-auto rounded-b-lg bg-gray-300 text-sm text-gray-900 placeholder:text-gray-400'
+							onKeyDown={(e) => {
+								handleKeyDown(e);
+							}}
+						/>
+					</React.Suspense>
 					<div className='mb-3 ml-4 mr-4 mt-3 flex items-center justify-between'>
 						<Select
 							value={newEditTodo.priority}
@@ -308,7 +316,7 @@ export default function EditModalTodo({
 										(list) =>
 											list.id !== userInfo.inboxListId + 1 &&
 											list.id !== userInfo.inboxListId + 2 &&
-											list.archived !== true,
+											list.archived !== true
 									)
 									.map((list) => (
 										<SelectItem
@@ -322,11 +330,13 @@ export default function EditModalTodo({
 					</div>
 
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-between'>
-						<DatePickerWithPresets
-							newTodo={newEditTodo}
-							setNewTodo={setNewEditTodo}
-							isDisabled={status === 'submitting'}
-						/>
+						<React.Suspense fallback={<div>Loading date picker...</div>}>
+							<DatePickerWithPresets
+								newTodo={newEditTodo}
+								setNewTodo={setNewEditTodo}
+								isDisabled={status === 'submitting'}
+							/>
+						</React.Suspense>
 					</div>
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-between'>
 						<div className='flex justify-end'>
