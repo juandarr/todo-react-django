@@ -4,7 +4,7 @@ import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
-	TooltipTrigger,
+	TooltipTrigger
 } from '../ui/tooltip';
 
 import { AddCircle, CloseSquare, Flag } from 'iconsax-reactjs';
@@ -14,7 +14,7 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 	PopoverArrow,
-	PopoverClose,
+	PopoverClose
 } from '../ui/popover';
 
 import {
@@ -22,7 +22,7 @@ import {
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
-	SelectValue,
+	SelectValue
 } from '../ui/select';
 import { useToast } from '../ui/toast/use-toast';
 
@@ -30,14 +30,20 @@ import type { CreateModalTodoProps, todoType } from '../../lib/customTypes';
 import { PriorityEnum } from '../../lib/userSettings';
 import { isDescendantOf } from '../../lib/utils';
 import useAutosizeTextArea from '../../hooks/useAutosizeTextArea';
-import { DatePickerWithPresets } from '../ui/datepicker';
+//import { DatePickerWithPresets } from '../ui/datepicker'; // Removed static import
+const DatePickerWithPresets = React.lazy(() =>
+	import('../ui/datepicker').then((module) => ({
+		default: module.DatePickerWithPresets
+	}))
+); // Added lazy import
 import { UserContext } from '../../contexts/UserContext';
-import TextEditor from '../ui/textEditor';
+// import TextEditor from '../ui/textEditor'; // Removed static import
+const TextEditor = React.lazy(() => import('../ui/textEditor')); // Added lazy import
 
 export default function CreateModalTodo({
 	lists,
 	userInfo,
-	addTodo,
+	addTodo
 }: CreateModalTodoProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
 	const user = useContext(UserContext);
@@ -46,7 +52,7 @@ export default function CreateModalTodo({
 		description: '',
 		priority: PriorityEnum.None,
 		dueDate: undefined,
-		list: user.inboxListId.toString(),
+		list: user.inboxListId.toString()
 	});
 	const editorRef = useRef<any>(null);
 
@@ -96,20 +102,20 @@ export default function CreateModalTodo({
 				title: '',
 				description: '',
 				priority: PriorityEnum.None,
-				dueDate: undefined,
+				dueDate: undefined
 			}));
 			setStatus('typing');
 			editorRef.current?.clearContent();
 			toast({
 				title: 'Task was created!',
-				description: '',
+				description: ''
 			});
 		} catch (error) {
 			if (error instanceof Error) {
 				toast({
 					variant: 'destructive',
 					title: 'There was an error creating the task: ',
-					description: error.message,
+					description: error.message
 				});
 			}
 			setStatus('typing');
@@ -119,7 +125,7 @@ export default function CreateModalTodo({
 	const handleKeyDown = (
 		e:
 			| React.KeyboardEvent<HTMLTextAreaElement>
-			| React.KeyboardEvent<HTMLDivElement>,
+			| React.KeyboardEvent<HTMLDivElement>
 	): void => {
 		if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
 			// Submit the form when Ctrl (Windows/Linux) or Command (Mac) + Enter is pressed
@@ -135,7 +141,7 @@ export default function CreateModalTodo({
 			description: '',
 			priority: PriorityEnum.None,
 			list: user.inboxListId.toString(),
-			dueDate: undefined,
+			dueDate: undefined
 		});
 		setStatus('typing');
 		setIsOpen(true);
@@ -197,7 +203,7 @@ export default function CreateModalTodo({
 									'block';
 								e.target.setSelectionRange(
 									e.target.value.length,
-									e.target.value.length,
+									e.target.value.length
 								);
 							}}
 							onBlur={(e) => {
@@ -222,17 +228,19 @@ export default function CreateModalTodo({
 							<span>/100</span>
 						</div>
 					</div>
-					<TextEditor
-						ref={editorRef}
-						todoDescription={newTodo.description}
-						charLimit={1000}
-						isDisabled={status === 'submitting'}
-						id='todoDescription'
-						className='mt-1 max-h-[40vh] overflow-y-auto rounded-b-lg bg-gray-300 text-sm text-gray-900 placeholder:text-gray-400'
-						onKeyDown={(e) => {
-							handleKeyDown(e);
-						}}
-					/>
+					<React.Suspense fallback={<div>Loading editor...</div>}>
+						<TextEditor
+							ref={editorRef}
+							todoDescription={newTodo.description}
+							charLimit={1000}
+							isDisabled={status === 'submitting'}
+							id='todoDescription'
+							className='mt-1 max-h-[40vh] overflow-y-auto rounded-b-lg bg-gray-300 text-sm text-gray-900 placeholder:text-gray-400'
+							onKeyDown={(e) => {
+								handleKeyDown(e);
+							}}
+						/>
+					</React.Suspense>
 					<div className='mb-3 ml-4 mr-4 mt-3 flex items-center justify-around'>
 						<Select
 							value={newTodo.priority}
@@ -292,7 +300,7 @@ export default function CreateModalTodo({
 										(list) =>
 											list.id !== userInfo.inboxListId + 1 &&
 											list.id !== userInfo.inboxListId + 2 &&
-											list.archived !== true,
+											list.archived !== true
 									)
 									.map((list) => (
 										<SelectItem
@@ -305,11 +313,13 @@ export default function CreateModalTodo({
 						</Select>
 					</div>
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-start'>
-						<DatePickerWithPresets
-							newTodo={newTodo}
-							setNewTodo={setNewTodo}
-							isDisabled={status === 'submitting'}
-						/>
+						<React.Suspense fallback={<div>Loading date picker...</div>}>
+							<DatePickerWithPresets
+								newTodo={newTodo}
+								setNewTodo={setNewTodo}
+								isDisabled={status === 'submitting'}
+							/>
+						</React.Suspense>
 					</div>
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-end'>
 						<button
