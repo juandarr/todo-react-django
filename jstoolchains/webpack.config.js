@@ -38,10 +38,23 @@ module.exports = {
 		splitChunks: {
 			cacheGroups: {
 				vendor: {
-					test: /[\\/]node_modules[\\/]/,
-
+					test: /[\\/]node_modules[\\/](?!react-day-picker|@tiptap|prosemirror-*)/, // Exclude react-day-picker and tiptap
 					name: 'vendors',
-
+					chunks: 'all'
+				},
+				reactDayPicker: {
+					test: /[\\/]node_modules[\\/]react-day-picker/,
+					name: 'react-day-picker',
+					chunks: 'all'
+				},
+				tiptap: {
+					test: /[\\/]node_modules[\\/]@tiptap/,
+					name: 'tiptap',
+					chunks: 'all'
+				},
+				prosemirror: {
+					test: /[\\/]node_modules[\\/]prosemirror-*/,
+					name: 'prosemirror',
 					chunks: 'all'
 				}
 			}
