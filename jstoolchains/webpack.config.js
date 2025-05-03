@@ -3,17 +3,22 @@ const BundleTracker = require('webpack-bundle-tracker');
 const BundleAnalyzerPlugin =
 	require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
+const plugins = [
+	new BundleTracker({
+		// Path where webpack-stats.json will be generated
+		// Needs to be accessible by Django
+		path: path.resolve(__dirname, '../static/webpack-stats/'), // Example: Put it in a sibling dir
+		filename: 'webpack-stats.json' // Standard name
+	})
+];
+
+// Use env variable ANALYZE=true as prefix when running `npm run dev/build`
+if (process.env.ANALYZE) {
+	plugins.push(new BundleAnalyzerPlugin());
+}
 module.exports = {
 	entry: './src/index.tsx',
-	plugins: [
-		new BundleTracker({
-			// Path where webpack-stats.json will be generated
-			// Needs to be accessible by Django
-			path: path.resolve(__dirname, '../static/webpack-stats/'), // Example: Put it in a sibling dir
-			filename: 'webpack-stats.json' // Standard name
-		}),
-		new BundleAnalyzerPlugin() // Add this line
-	],
+	plugins: plugins,
 	module: {
 		rules: [
 			{
