@@ -149,12 +149,12 @@ export default function EditModalTodo({
 	};
 
 	const removeHidden = (): void => {
-		(document.getElementById(parentId) as HTMLElement).classList.remove(
+		(document.getElementById(parentId) as HTMLElement)?.classList.remove(
 			'hidden-child'
 		);
 	};
 	const addHidden = (): void => {
-		(document.getElementById(parentId) as HTMLElement).classList.add(
+		(document.getElementById(parentId) as HTMLElement)?.classList.add(
 			'hidden-child'
 		);
 	};
