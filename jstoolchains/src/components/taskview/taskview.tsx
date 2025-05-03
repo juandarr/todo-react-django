@@ -18,25 +18,21 @@ export default function TaskView({
 	deleteTodo,
 	editTodo,
 	editTodoFull,
-	isLoadingTodos, // Add isLoading here
+	isLoadingTodos // Add isLoading here
 }: TaskViewProps): React.JSX.Element {
 	const editListHandler = async (
 		id: number,
-		tmpList: { ordering: { order: number[] } },
+		tmpList: { ordering: { order: number[] } }
 	): Promise<void> => {
 		try {
 			const updatedList = await editListOrder(id, tmpList);
 			console.log('Updated ordering of list: ', updatedList);
-			toast({
-				title: 'List ordering was updated!',
-				description: '',
-			});
 		} catch (error) {
 			if (error instanceof Error) {
 				toast({
 					variant: 'destructive',
 					title: 'There was an error updating the list ordering: ',
-					description: error.message,
+					description: error.message
 				});
 			}
 		}
@@ -106,7 +102,7 @@ export default function TaskView({
 			console.log(
 				'And here is the ordering: ',
 				currentList[0].ordering,
-				currentList[0].ordering?.order.length === 0,
+				currentList[0].ordering?.order.length === 0
 			);
 			const tmp = filteredTodos.map((todo) => todo.id) as number[];
 			if (currentList[0].ordering?.order.length === 0 && tmp.length > 0) {
@@ -138,7 +134,7 @@ export default function TaskView({
 					'Current fetched order: ',
 					tmp,
 					' And stored order: ',
-					order,
+					order
 				);
 				// Remove values
 				let idx;
@@ -151,7 +147,7 @@ export default function TaskView({
 					'Here is what is going to be added: ',
 					toAdd,
 					' and removed: ',
-					toRemove,
+					toRemove
 				);
 				order.push(...toAdd);
 				console.log('The value of change is: ', change);
@@ -162,7 +158,7 @@ export default function TaskView({
 						.catch(() => {});
 				}
 				return order.map((id) =>
-					filteredTodos.find((todo) => todo.id === id),
+					filteredTodos.find((todo) => todo.id === id)
 				) as Todo[];
 			}
 		}
@@ -174,14 +170,13 @@ export default function TaskView({
 		let filteredTodos = listTodos.filter((todo) => todo.complete === true);
 		if (currentView.id === userInfo.inboxListId + 1) {
 			filteredTodos = filteredTodos.filter(
-				(todo) =>
-					todo.completedAt?.toDateString() === new Date().toDateString(),
+				(todo) => todo.completedAt?.toDateString() === new Date().toDateString()
 			);
 		}
 		return filteredTodos.sort(
 			(a, b) =>
 				new Date(b.completedAt as Date).valueOf() -
-				new Date(a.completedAt as Date).valueOf(),
+				new Date(a.completedAt as Date).valueOf()
 		);
 	}, [todos, currentView]);
 
@@ -200,17 +195,17 @@ export default function TaskView({
 							new Date().toLocaleDateString('en-US', {
 								weekday: 'short',
 								month: 'short',
-								day: 'numeric',
+								day: 'numeric'
 							})
 						: '') +
 					(currentView.id === userInfo.inboxListId + 2
 						? ': ' +
 							new Date(
-								new Date().getTime() + 24 * 60 * 60 * 1000,
+								new Date().getTime() + 24 * 60 * 60 * 1000
 							).toLocaleDateString('en-US', {
 								weekday: 'short',
 								month: 'short',
-								day: 'numeric',
+								day: 'numeric'
 							}) +
 							', and beyond'
 						: '') +
