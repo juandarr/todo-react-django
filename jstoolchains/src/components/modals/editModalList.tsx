@@ -84,7 +84,7 @@ export default function EditModalList({
 	};
 
 	const archiveHandleSubmit = async (
-		event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+		event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
 	): Promise<void> => {
 		event.preventDefault();
 		setStatus('submitting');
@@ -124,12 +124,12 @@ export default function EditModalList({
 	};
 
 	const removeHidden = (): void => {
-		(document.getElementById(parentId) as HTMLElement).classList.remove(
+		(document.getElementById(parentId) as HTMLElement)?.classList.remove(
 			'hidden-child'
 		);
 	};
 	const addHidden = (): void => {
-		(document.getElementById(parentId) as HTMLElement).classList.add(
+		(document.getElementById(parentId) as HTMLElement)?.classList.add(
 			'hidden-child'
 		);
 	};
@@ -215,11 +215,8 @@ export default function EditModalList({
 							<TooltipProvider>
 								<Tooltip>
 									<TooltipTrigger>
-										<button
+										<a
 											className='ml-4 mr-4 flex items-center text-violet-500 hover:cursor-pointer hover:text-violet-600'
-											disabled={
-												!!(status === 'submitting' || listEdit.length === 0)
-											}
 											onClick={(e) => {
 												archiveHandleSubmit(e)
 													.then(() => {})
@@ -230,7 +227,7 @@ export default function EditModalList({
 											) : (
 												<Archive size={'1.4em'} />
 											)}
-										</button>
+										</a>
 									</TooltipTrigger>
 									<TooltipContent className='bg-violet-500'>
 										<p className='font-bold text-white'>
