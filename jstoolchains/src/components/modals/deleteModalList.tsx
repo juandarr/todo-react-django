@@ -6,7 +6,7 @@ import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
-	TooltipTrigger,
+	TooltipTrigger
 } from '../ui/tooltip';
 
 import {
@@ -14,7 +14,7 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 	PopoverArrow,
-	PopoverClose,
+	PopoverClose
 } from '../ui/popover';
 
 import { useToast } from '../ui/toast/use-toast';
@@ -25,16 +25,17 @@ export default function DeleteModalList({
 	deleteFunction,
 	deleteEntity,
 	id,
-	size,
+	size
 }: DeleteModalListProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
 	const [status, setStatus] = useState('viewing');
 	const { toast } = useToast();
 
 	const handleSubmit = async (
-		event: React.FormEvent<HTMLFormElement>,
+		event: React.FormEvent<HTMLFormElement>
 	): Promise<void> => {
 		event.preventDefault();
+		event.stopPropagation();
 		setStatus('submitting');
 
 		try {
@@ -43,7 +44,7 @@ export default function DeleteModalList({
 				title: `${
 					deleteEntity.charAt(0).toUpperCase() + deleteEntity.slice(1)
 				} was deleted!`,
-				description: '',
+				description: ''
 			});
 			closePopover();
 		} catch (error) {
@@ -51,7 +52,7 @@ export default function DeleteModalList({
 				toast({
 					variant: 'destructive',
 					title: `There was an error deleting ${deleteEntity}: `,
-					description: error.message,
+					description: error.message
 				});
 			}
 			setStatus('viewing');
