@@ -14,7 +14,7 @@ My goal right now is to update every dependency to 2024, improve the code and ad
 - [ ] Add new features (In progress)
   - [ ] Better description box (as a kind of note)
   - [ ] Add filters to sort the tasks by certain parameters
-  - [x] Add the option to use drag and drop to set a customized order. It is working for lists now. But needs some improvements. Next, need to implements for todos. 
+  - [x] Add the option to use drag and drop to set a customized order. It is working for lists now. But needs some improvements. Next, need to implements for todos.
     - I am using DnD-kit, to add drag and drop in TaskList type components
     - Another candidate is [react-dnd](https://react-dnd.github.io/react-dnd/about). Pick the best library and move on
 - [ ] Avoid unnecessary rendering, and familiarize with the code again (heavy development of the app was done a couple of years ago)
@@ -85,16 +85,27 @@ Once the initial setup is completed, generally you just need the following three
 
 When doing a modification to the database you can use the `migration` tool from Django to propagate your changes in your models to your database schema. Here are the common steps (for more information refer to [Migrations Django documentation](https://docs.djangoproject.com/en/5.1/topics/migrations/)):
 
-- `python manage.py makemigrations`, and after 
+- `python manage.py makemigrations`, and after
 - `python manage.py migrate`
 
 You also need to get a new `schema.yml` file, since the structure was changed. Make sure you have installed `drf-spectacular` with `pip install drf-spectacular` and run the following command:
+
 - `python manage.py spectacular --file schema.yml` at the root of the project
 
 > Temporary workaround
-  Once you get the new file, make sure that the schema for List and Todo only have `title` as required field
+> Once you get the new file, make sure that the schema for List and Todo only have `title` as required field
 
 Once you have your `schema.yml` file set, you can create your own API using `openapitools` according to the instruction at the beginning of the `development` section.
+
+### Performance diagnostics
+
+#### Webpack
+
+There is plugin included in the repo aimed to detect which modules are the ones taken most of the space in runtime, as part of the main app or from third party vendors. The module in question is `webpack-bundle-analyzer`, and can be enable while running `npm run dev/build` by using the prefix flag `ANALYZER=true` as follows:
+
+```js
+ANALYZER=true npm run build
+```
 
 ## Design
 
