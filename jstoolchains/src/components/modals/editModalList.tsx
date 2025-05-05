@@ -27,6 +27,7 @@ import {
 import { useToast } from '../ui/toast/use-toast';
 
 import DeleteModalList from './deleteModalList';
+import { ToastAction } from '@radix-ui/react-toast';
 
 export default function EditModalList({
 	editList,
@@ -95,7 +96,21 @@ export default function EditModalList({
 			});
 			toast({
 				title: `List was ${listData.archived ? 'restored' : 'archived'}`,
-				description: ''
+				description: '',
+				action: (
+					<ToastAction
+						altText='Undo archive/restore'
+						className='rounded-md bg-violet-500 px-3 py-1 text-white hover:bg-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:ring-offset-2'
+						onClick={() => {
+							editList(listData.id, {
+								archived: listData.archived
+							})
+								.then(() => {})
+								.catch(() => {});
+						}}>
+						Undo
+					</ToastAction>
+				)
 			});
 			closePopover();
 		} catch (error) {
