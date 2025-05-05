@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'fallback-insecure-key-for-local-dev
 DEBUG = False # Set to False for production
 
 # Define the hosts/domains allowed to access this site
-ALLOWED_HOSTS = ['localhost', '127.0.0.1'] # Add your server's IP or domain name if needed
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.1.50', 'task.pi.lan'] # Add your server's IP or domain name if needed
 
 # Application definition
 INSTALLED_APPS = [
