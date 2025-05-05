@@ -205,7 +205,7 @@ export default function SortableTaskItem({
 
 	// Determine dynamic classes based on dragging state and overlay status
 	const dynamicClasses = isOverlayItem
-		? 'border-[1px] border-dashed border-black shadow-xl scale-105 bg-white z-50' // Styles for the overlay item
+		? 'border-[1px] border-dashed border-black shadow-xl bg-white z-50' // Styles for the overlay item
 		: isDragging
 			? 'opacity-25' // Style for the original item being dragged (ghost)
 			: draggingItemId !== null && !isDragging && !isOverlayItem
@@ -220,7 +220,7 @@ export default function SortableTaskItem({
 			className={`parent flex ${dynamicClasses} transition-shadow`}>
 			<div className='mt-3 flex w-2/12 items-start justify-center'>
 				<button // Make invisible if it's the overlay or if any item is dragging
-					className={`cursor-grab pr-3 pt-[1px] ${isOverlayItem || draggingItemId !== null ? 'invisible' : 'hidden-child'}`}
+					className={`cursor-grab pr-3 pt-[1px] ${draggingItemId !== null && !isDragging ? 'invisible' : 'hidden-child'}`}
 					{...attributes}
 					{...listeners}>
 					<Drag size='1.5rem' color='#38bdf8' />
