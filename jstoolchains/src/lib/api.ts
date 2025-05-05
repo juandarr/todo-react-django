@@ -8,7 +8,7 @@ import { Configuration } from '../../../todo-api-client/runtime';
 import { getCookie } from './utils';
 
 const apiConfig = new Configuration({
-	basePath: 'http://127.0.0.1:8000',
+	basePath: 'https://task.pi.lan',
 	headers: {
 		'X-CSRFToken': getCookie('csrftoken')
 	}
