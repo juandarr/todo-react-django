@@ -23,12 +23,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-(h6^!51s8=u$oi*^a_@b^oiq84hr2l+1i__v^wo)a*(usxl)oy'
+# Load SECRET_KEY from environment variable
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'fallback-insecure-key-for-local-dev') # Add a fallback for convenience if var isn't set
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False # Set to False for production
 
-ALLOWED_HOSTS = ['*']
+# Define the hosts/domains allowed to access this site
+ALLOWED_HOSTS = ['localhost', '127.0.0.1'] # Add your server's IP or domain name if needed
 
 # Application definition
 INSTALLED_APPS = [
@@ -40,9 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'todo',
-    'django_browser_reload',
+    # 'django_browser_reload', # Development only
     'webpack_loader',
-    'drf_spectacular'
+    'drf_spectacular',
+    'whitenoise.runserver_nostatic', # Add this if using whitenoise storage but not middleware for dev
 ]
 
 REST_FRAMEWORK = {
@@ -50,13 +53,14 @@ REST_FRAMEWORK = {
 }
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', # Add WhiteNoise middleware
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_browser_reload.middleware.BrowserReloadMiddleware'
+    # 'django_browser_reload.middleware.BrowserReloadMiddleware', # Development only
 ]
 
 ROOT_URLCONF = 'todo_react_django.urls'
@@ -133,6 +137,12 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_URL = '/static/'
+
+# Directory where collectstatic will gather static files for deployment
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Use WhiteNoise's storage backend for compression and caching support
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 WEBPACK_LOADER = {
     'DEFAULT': {
