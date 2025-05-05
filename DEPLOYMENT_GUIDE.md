@@ -37,9 +37,9 @@ sudo apt install -y caddy
 Create a directory to hold the application code.
 
 ```bash
-sudo mkdir /var/www/todo-app
-sudo chown $USER:$USER /var/www/todo-app # Give your user ownership for now
-cd /var/www/todo-app
+sudo mkdir /path/to/app
+sudo chown $USER:$USER /path/to/app # Give your user ownership for now
+cd /path/to/app
 ```
 
 ## 2. Application Setup
@@ -142,20 +142,20 @@ Description=gunicorn daemon for todo-react-django
 After=network.target
 
 [Service]
-User=www-data # Or your deployment user
-Group=www-data # Or your deployment user group
-WorkingDirectory=/var/www/todo-app
-EnvironmentFile=/var/www/todo-app/.env # Load environment variables
-ExecStart=/var/www/todo-app/venv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/run/gunicorn.sock todo_react_django.wsgi:application
+User=user # Or your deployment user
+Group=group # Or your deployment user group
+WorkingDirectory=/path/to/app
+# Create a 'run' directory in your project: mkdir /var/www/todo-app/run
+ExecStart=/path/to/app/venv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/path/to/app/run/gunicorn.sock todo_react_django.wsgi:application
 Restart=always
 
 [Install]
 WantedBy=multi-user.target
 ```
 
-- **User/Group:** Often `www-data` is used for web server processes. Ensure this user has necessary permissions for the project directory and database file. You might need to adjust ownership: `sudo chown -R www-data:www-data /var/www/todo-app`. Pay special attention to the SQLite database file (`database/db.sqlite3`) and its directory - `www-data` needs write access.
+- **User/Group:** Often `www-data` is used for web server processes. Ensure this user has necessary permissions for the project directory and database file. You might need to adjust ownership: `sudo chown -R www-data:www-data /var/www/todo-app`. Pay special attention to the SQLite database file (`database/db.sqlite3`) and its directory - `www-data` needs write access. Ensure the user also has write access to the `/var/www/todo-app/run` directory to create the socket.
 - **Workers:** Adjust the number of workers (e.g., `2 * num_cores + 1`). `3` is a reasonable starting point.
-- **Bind:** Using a Unix socket (`unix:/run/gunicorn.sock`) is generally preferred for local communication between Caddy and Gunicorn.
+- **Bind:** Using a Unix socket within the project directory (`unix:/path/to/app/run/gunicorn.sock`) avoids potential permission issues with `/run`. Ensure the directory exists (`mkdir /path/to/app/run`) and the Gunicorn user can write to it.
 
 Enable and start the Gunicorn service:
 
@@ -175,26 +175,26 @@ Caddy's default configuration file is at `/etc/caddy/Caddyfile`. Replace its con
 your_domain.com { # Or localhost if only accessing locally
 
     # Directory where your static files are collected
-    root * /var/www/todo-app/staticfiles
+    root * /path/to/app/staticfiles
 
     # Serve static files directly
     file_server
 
     # Handle API and other Django requests by proxying to Gunicorn
     handle /api/* {
-        reverse_proxy unix//run/gunicorn.sock
+        reverse_proxy unix//path/to/app/run/gunicorn.sock
     }
     handle /admin/* {
-        reverse_proxy unix//run/gunicorn.sock
+        reverse_proxy unix//path/to/app/run/gunicorn.sock
     }
     handle /accounts/* {
-        reverse_proxy unix//run/gunicorn.sock
+        reverse_proxy unix//path/to/app/run/gunicorn.sock
     }
     # Add other Django URL paths here if needed
 
     # Handle the root path (React app) by proxying to Gunicorn
     handle {
-        reverse_proxy unix//run/gunicorn.sock
+        reverse_proxy unix//path/to/app/run/gunicorn.sock
     }
 
     # Enable compression
@@ -225,13 +225,13 @@ your_domain.com { # Or localhost if only accessing locally
 
 # If accessing via IP address or localhost without a domain:
 # localhost {
-#     root * /var/www/todo-app/staticfiles
+#     root * /path/to/app/staticfiles
 #     file_server
-#     reverse_proxy /api/* unix//run/gunicorn.sock
-#     reverse_proxy /admin/* unix//run/gunicorn.sock
-#     reverse_proxy /accounts/* unix//run/gunicorn.sock
+#     reverse_proxy /api/* unix//path/to/app/run/gunicorn.sock
+#     reverse_proxy /admin/* unix//path/to/app/run/gunicorn.sock
+#     reverse_proxy /accounts/* unix//path/to/app/run/gunicorn.sock
 #     # Add other Django URL paths here if needed
-#     reverse_proxy unix//run/gunicorn.sock # Fallback for root/other paths
+#     reverse_proxy unix//path/to/app/run/gunicorn.sock # Fallback for root/other paths
 #     encode gzip zstd
 #     log {
 #         output file /var/log/caddy/access.log
@@ -241,7 +241,7 @@ your_domain.com { # Or localhost if only accessing locally
 ```
 
 - Replace `your_domain.com` with your actual domain or use `localhost` if accessing locally. Caddy will automatically provision HTTPS for public domains.
-- The `handle` blocks ensure that requests for static files are served directly by Caddy, while other requests (API, admin, root for the React app) are proxied to Gunicorn. Adjust the paths in `handle` blocks if your Django URL structure is different.
+- The `handle` blocks ensure that requests for static files are served directly by Caddy, while other requests (API, admin, root for the React app) are proxied to Gunicorn via the socket in `/path/to/app/run/gunicorn.sock`. Adjust the paths in `handle` blocks if your Django URL structure is different.
 
 Reload Caddy to apply the changes:
 
@@ -267,6 +267,32 @@ sudo chmod 664 /var/www/todo-app/database/db.sqlite3 # Adjust if needed
 
 _(Permissions can be tricky. Start with these and adjust if you encounter permission errors in logs (`journalctl -u gunicorn`, `/var/log/caddy/access.log`))_
 
+### 5.1 Socket Permissions (Caddy <-> Gunicorn)
+
+If Caddy logs show "permission denied" when trying to connect to the Gunicorn socket:
+
+1.  **Add Caddy User to Gunicorn Group:** Add the user running Caddy (usually `caddy`) to the group running Gunicorn (e.g., `www-data` in the guide example, or `ubuntu` in your specific case).
+    ```bash
+    # Example using 'www-data' group from guide:
+    # sudo usermod -a -G www-data caddy
+    # Example using your 'ubuntu' group:
+    sudo usermod -a -G ubuntu caddy
+    ```
+2.  **Set Directory Permissions:** Ensure the directory containing the socket allows group access.
+    ```bash
+    # Example using guide paths/groups:
+    # sudo chown www-data:www-data /var/www/todo-app/run
+    # sudo chmod 775 /var/www/todo-app/run
+    # Example using your paths/groups:
+    sudo chown pi:ubuntu /home/pi/projects/ikigaiFlow/run
+    sudo chmod 775 /home/pi/projects/ikigaiFlow/run
+    ```
+3.  **Restart Services:** Restart both Gunicorn and Caddy.
+    ```bash
+    sudo systemctl restart gunicorn
+    sudo systemctl restart caddy
+    ```
+
 ## 6. Firewall
 
 Allow HTTP and HTTPS traffic if using a firewall like `ufw`.
@@ -287,3 +313,4 @@ Your application should now be accessible at your domain (or localhost).
 - Check Caddy logs: `/var/log/caddy/access.log` (or as configured)
 - Check permissions issues.
 - Ensure the virtual environment is activated when running `manage.py` commands manually.
+- **Gunicorn 'resources' error / 'Failed to load environment files'**: If `journalctl -u gunicorn` shows errors like `Failed to load environment files: No such file or directory` or `Failed with result 'resources'`, double-check that the `.env` file specified in `EnvironmentFile=` within `/etc/systemd/system/gunicorn.service` exists at the correct path and that the user specified in the `User=` directive has read permissions for it. Verify the path and filename (`.env`) carefully.
