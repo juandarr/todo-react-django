@@ -34,7 +34,7 @@ export default function SortableListItem({
 
 	// Determine dynamic classes based on dragging state and overlay status
 	const dynamicClasses = isDragging
-		? 'z-50 cursor-grabbing border-[1px] border-dashed border-black bg-white shadow-xl'
+		? 'z-50 border-[1px] border-dashed border-black bg-white shadow-xl'
 		: draggingItemId !== null && !isDragging
 			? 'opacity-70'
 			: '';
@@ -43,7 +43,7 @@ export default function SortableListItem({
 		<div ref={setNodeRef} style={style} className={`${dynamicClasses}`}>
 			<div key={list.id} className='parent flex items-center justify-between'>
 				<button
-					className={`${isDragging ? '' : 'cursor-grab'} ${draggingItemId !== null ? 'invisible' : 'hidden-child'}`}
+					className={`cursor-grab ${draggingItemId !== null && !isDragging ? 'invisible' : 'hidden-child'}`}
 					{...attributes}
 					{...listeners}>
 					<Drag size='1.2rem' color='#38bdf8' />
