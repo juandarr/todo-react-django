@@ -16,7 +16,11 @@ const plugins = [
 if (process.env.ANALYZE) {
 	plugins.push(new BundleAnalyzerPlugin());
 }
+
+const isProduction = process.env.NODE_ENV === 'production';
+
 module.exports = {
+	mode: isProduction ? 'production' : 'development', // Set mode based on NODE_ENV
 	entry: './src/index.tsx',
 	plugins: plugins,
 	module: {
@@ -36,8 +40,9 @@ module.exports = {
 		path: path.resolve(__dirname, '../static/js'), // path to our Django static directory
 		clean: true
 	},
-	devtool: 'eval-source-map',
+	devtool: isProduction ? 'source-map' : 'eval-source-map', // Use 'source-map' for prod, 'eval-source-map' for dev
 	optimization: {
+		minimize: isProduction, // Ensure minification is enabled in production
 		moduleIds: 'deterministic',
 		runtimeChunk: 'single',
 		splitChunks: {
