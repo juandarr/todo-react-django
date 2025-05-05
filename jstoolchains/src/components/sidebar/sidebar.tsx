@@ -16,12 +16,12 @@ import {
 	closestCenter,
 	MouseSensor,
 	useSensor,
-	useSensors,
+	useSensors
 } from '@dnd-kit/core';
 import {
 	arrayMove,
 	SortableContext,
-	verticalListSortingStrategy,
+	verticalListSortingStrategy
 } from '@dnd-kit/sortable';
 
 import SortableListItem from './sortableListItem';
@@ -35,7 +35,7 @@ export default function SideBar({
 	deleteList,
 	editList,
 	showSidebar,
-	isLoadingLists, // Add isLoadingLists here
+	isLoadingLists // Add isLoadingLists here
 }: SideBarProps): React.JSX.Element {
 	const [draggingItemId, setDraggingItemId] = useState<number | null>(null); // State to track the ID of the item being dragged
 	const user = useContext(UserContext);
@@ -46,12 +46,12 @@ export default function SideBar({
 
 	const activeLists = lists.filter(
 		(list) =>
-			user.inboxListId + 2 < (list.id as number) && list.archived === false,
+			user.inboxListId + 2 < (list.id as number) && list.archived === false
 	);
 	const archivedLists = lists
 		.filter(
 			(list) =>
-				user.inboxListId + 2 < (list.id as number) && list.archived === true,
+				user.inboxListId + 2 < (list.id as number) && list.archived === true
 		)
 		.map((list) => (
 			<div key={list.id} className='parent flex items-center justify-between'>
@@ -77,7 +77,7 @@ export default function SideBar({
 						listData={{
 							id: list.id as number,
 							title: list.title,
-							archived: list.archived as boolean,
+							archived: list.archived as boolean
 						}}
 						parentId={`list-${list.id}`}
 						deleteFunction={deleteList}
@@ -89,8 +89,8 @@ export default function SideBar({
 	/* Drag and drop definitions */
 	const sensors = useSensors(
 		useSensor(MouseSensor, {
-			activationConstraint: { distance: 5 },
-		}),
+			activationConstraint: { distance: 5 }
+		})
 	);
 
 	async function handleDragEnd(event: any) {
@@ -113,26 +113,26 @@ export default function SideBar({
 				for (let i = newIndex; i < oldIndex; i++) {
 					tmpLists.push({
 						id: lists[i].id as number,
-						index: (lists[i].index as number) + 1,
+						index: (lists[i].index as number) + 1
 					});
 					newLists[i + 1].index = (newLists[i + 1].index as number) + 1;
 				}
 				tmpLists.push({
 					id: lists[oldIndex].id as number,
-					index: tmpIndex as number,
+					index: tmpIndex as number
 				});
 			} else if (newIndex > oldIndex) {
 				for (let i = newIndex; i > oldIndex; i--) {
 					tmpLists.push({
 						id: lists[i].id as number,
-						index: (lists[i].index as number) - 1,
+						index: (lists[i].index as number) - 1
 					});
 					newLists[i - 1].index = (newLists[i - 1].index as number) - 1;
 				}
 			}
 			tmpLists.push({
 				id: lists[oldIndex].id as number,
-				index: tmpIndex as number,
+				index: tmpIndex as number
 			});
 			newLists[newIndex].index = tmpIndex;
 
@@ -141,7 +141,7 @@ export default function SideBar({
 				try {
 					await clientList.listsPartialUpdate({
 						id: list.id as number,
-						patchedList: { index: list.index },
+						patchedList: { index: list.index }
 					});
 
 					console.log('List was patched!');
@@ -165,7 +165,7 @@ export default function SideBar({
 
 	return (
 		<div
-			className={`flexflex-col absolute left-0 top-0 my-6 w-30%  rounded-xl border-2 border-black bg-white p-10 ${
+			className={`absolute left-0 top-0 my-6 flex w-30% flex-col  rounded-xl border-2 border-black bg-white p-10 ${
 				showSidebar
 					? 'animate-[sidebar-content-show_300ms]'
 					: 'animate-[sidebar-content-hide_300ms]'
@@ -177,7 +177,7 @@ export default function SideBar({
 			<div className='mb-1 flex flex-col'>
 				<div className='mb-2 flex flex-col text-cyan-600 lg:flex-row'>
 					<div className='font-Grape text-2xl font-bold'>Ikigai</div>
-					<div className='font-Grape ml-4 mt-1 bg-gradient-to-r from-orange-300 via-green-400 to-violet-500 bg-clip-text text-lg font-bold text-transparent lg:ml-2'>
+					<div className='ml-4 mt-1 bg-gradient-to-r from-orange-300 via-green-400 to-violet-500 bg-clip-text font-Grape text-lg font-bold text-transparent lg:ml-2'>
 						( 生きがい )
 					</div>
 				</div>
