@@ -118,10 +118,6 @@ export default function TaskList({
 								strategy={verticalListSortingStrategy}>
 								{todosList.map((todo, idx: number) => (
 									<li key={todo.id} id={`item-${todo.id}`}>
-										{/* Conditionally render the divider */}
-										{idx > 0 && (
-											<div className='mx-auto h-px w-3/4 bg-gray-100'></div>
-										)}
 										<SortableTaskItem
 											todo={todo}
 											lists={lists}
