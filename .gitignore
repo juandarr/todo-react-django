@@ -10,3 +10,5 @@ django/
 todo-api-client/
 .env
 .vscode/
+venv/
+staticfiles/
