@@ -20,7 +20,7 @@ if (process.env.ANALYZE) {
 
 module.exports = (env, argv) => {
 	const isProduction = argv.mode === 'production';
-	
+
 	return {
 		mode: isProduction ? 'production' : 'development', // Set mode based on NODE_ENV
 		entry: './src/index.tsx',
@@ -82,6 +82,6 @@ module.exports = (env, argv) => {
 					}
 			}
 		}
-	}
+	};
 };
 };
