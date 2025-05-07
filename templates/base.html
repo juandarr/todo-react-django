@@ -20,7 +20,6 @@
     {% render_bundle 'main' 'js' %}
     <script>
         document.body.addEventListener('mousedown', event => {
-            console.log(event.target.localName)
             if (event.detail > 1) {
                 if (!(['input', 'textarea', 'p'].includes(event.target.localName))) {
 

@@ -5,8 +5,7 @@
 {% block content %}
 
 <div class="flex justify-center items-center">
-    <div
-        class="flex flex-col items-center justify-center bg-white w-fit rounded-xl mt-10 m-4 p-8">
+    <div class="flex flex-col items-center justify-center bg-white w-fit rounded-xl mt-10 m-4 p-8">
         <h2 class="text-xl mb-2 font-bold">Register</h2>
         <form class="ml-2 mr-2 admin-form" method="post" id="signup-form">
             {% csrf_token %}
@@ -21,8 +20,7 @@
                 {{ signup_form.password1 }}
             </div>
             <div class="mb-4">
-                <label for="{{ signup_form.password2.id_for_label }}"
-                    class="block text-gray-700 font-semibold">Password
+                <label for="{{ signup_form.password2.id_for_label }}" class="block text-gray-700 font-semibold">Password
                     confirmation:</label>
                 {{ signup_form.password2 }}
             </div>
@@ -30,8 +28,7 @@
                 <button
                     class="mt-2 mb-4 h-9 flex justify-center items-center bg-cyan-500 p-3 w-fit rounded-xl font-semibold text-lg hover:bg-cyan-600"
                     type="submit" id="registerBtn">
-                    <span class='loader invisible'
-                        id="registerBtnSpinner"></span>
+                    <span class='loader invisible' id="registerBtnSpinner"></span>
                     <span class='block' id="registerBtnLabel">
                         Register
                     </span>
@@ -86,12 +83,14 @@
                     headers: headers, // Include the CSRF token in the headers
                 }).then(response => {
                     // Handle the response from the server, e.g., redirect to a success page.
+                    // Replace these with toast elements
                     console.log(response)
                     console.log("Request was sent from the frontend")
                     window.location.href = "/"
                 })
                     .catch(error => {
                         // Handle errors, e.g., display an error message to the user.
+                        // Replace this with toast element
                         console.log("Error locating endpoint, could't send request")
                     });
             });
