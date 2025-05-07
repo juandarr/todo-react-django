@@ -2,6 +2,7 @@ const path = require('path');
 const BundleTracker = require('webpack-bundle-tracker');
 const BundleAnalyzerPlugin =
 	require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const TerserPlugin = require('terser-webpack-plugin');
 
 const plugins = [
 	new BundleTracker({
@@ -17,9 +18,10 @@ if (process.env.ANALYZE) {
 	plugins.push(new BundleAnalyzerPlugin());
 }
 
-const isProduction = process.env.NODE_ENV === 'production';
-
-module.exports = {
+module.exports = (env, argv) => {
+	const isProduction = argv.mode === 'production';
+	
+	return {
 	mode: isProduction ? 'production' : 'development', // Set mode based on NODE_ENV
 	entry: './src/index.tsx',
 	plugins: plugins,
@@ -43,6 +45,17 @@ module.exports = {
 	devtool: isProduction ? 'source-map' : 'eval-source-map', // Use 'source-map' for prod, 'eval-source-map' for dev
 	optimization: {
 		minimize: isProduction, // Ensure minification is enabled in production
+		minimizer: isProduction
+				? [
+						new TerserPlugin({
+							terserOptions: {
+								compress: {
+									drop_console: true //ensures console statements are dropped
+								}
+							}
+						})
+					]
+				: [], // No minimizers in development
 		moduleIds: 'deterministic',
 		runtimeChunk: 'single',
 		splitChunks: {
@@ -70,4 +83,5 @@ module.exports = {
 			}
 		}
 	}
+};
 };
