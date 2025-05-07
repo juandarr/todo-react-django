@@ -46,16 +46,16 @@ module.exports = (env, argv) => {
 		optimization: {
 			minimize: isProduction, // Ensure minification is enabled in production
 			minimizer: isProduction
-					? [
-							new TerserPlugin({
-								terserOptions: {
-									compress: {
-										drop_console: true //ensures console statements are dropped
-									}
+				? [
+						new TerserPlugin({
+							terserOptions: {
+								compress: {
+									drop_console: true //ensures console statements are dropped
 								}
-							})
-						]
-					: [], // No minimizers in development
+							}
+						})
+					]
+				: [], // No minimizers in development
 			moduleIds: 'deterministic',
 			runtimeChunk: 'single',
 			splitChunks: {
@@ -79,7 +79,7 @@ module.exports = (env, argv) => {
 						test: /[\\/]node_modules[\\/]prosemirror-*/,
 						name: 'prosemirror',
 						chunks: 'all'
-				}
+					}
 			}
 		}
 	}
