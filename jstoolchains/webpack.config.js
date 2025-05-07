@@ -20,32 +20,32 @@ if (process.env.ANALYZE) {
 
 module.exports = (env, argv) => {
 	const isProduction = argv.mode === 'production';
-
+	
 	return {
-		mode: isProduction ? 'production' : 'development', // Set mode based on NODE_ENV
-		entry: './src/index.tsx',
-		plugins: plugins,
-		module: {
-			rules: [
-				{
-					test: /\.(js|jsx|ts|tsx)$/,
-					exclude: /node_modules/,
-					use: 'babel-loader'
-				}
-			]
-		},
-		resolve: {
-			extensions: ['.tsx', '.ts', '.js', '.jsx']
-		},
-		output: {
-			filename: '[name].[contenthash].js', // output bundle file name
-			path: path.resolve(__dirname, '../static/js'), // path to our Django static directory
-			clean: true
-		},
-		devtool: isProduction ? 'source-map' : 'eval-source-map', // Use 'source-map' for prod, 'eval-source-map' for dev
-		optimization: {
-			minimize: isProduction, // Ensure minification is enabled in production
-			minimizer: isProduction
+	mode: isProduction ? 'production' : 'development', // Set mode based on NODE_ENV
+	entry: './src/index.tsx',
+	plugins: plugins,
+	module: {
+		rules: [
+			{
+				test: /\.(js|jsx|ts|tsx)$/,
+				exclude: /node_modules/,
+				use: 'babel-loader'
+			}
+		]
+	},
+	resolve: {
+		extensions: ['.tsx', '.ts', '.js', '.jsx']
+	},
+	output: {
+		filename: '[name].[contenthash].js', // output bundle file name
+		path: path.resolve(__dirname, '../static/js'), // path to our Django static directory
+		clean: true
+	},
+	devtool: isProduction ? 'source-map' : 'eval-source-map', // Use 'source-map' for prod, 'eval-source-map' for dev
+	optimization: {
+		minimize: isProduction, // Ensure minification is enabled in production
+		minimizer: isProduction
 				? [
 						new TerserPlugin({
 							terserOptions: {
@@ -56,32 +56,32 @@ module.exports = (env, argv) => {
 						})
 					]
 				: [], // No minimizers in development
-			moduleIds: 'deterministic',
-			runtimeChunk: 'single',
-			splitChunks: {
-				cacheGroups: {
-					vendor: {
-						test: /[\\/]node_modules[\\/](?!react-day-picker|@tiptap|prosemirror-*)/, // Exclude react-day-picker and tiptap
-						name: 'vendors',
-						chunks: 'all'
-					},
-					reactDayPicker: {
-						test: /[\\/]node_modules[\\/]react-day-picker/,
-						name: 'react-day-picker',
-						chunks: 'all'
-					},
-					tiptap: {
-						test: /[\\/]node_modules[\\/]@tiptap/,
-						name: 'tiptap',
-						chunks: 'all'
-					},
-					prosemirror: {
-						test: /[\\/]node_modules[\\/]prosemirror-*/,
-						name: 'prosemirror',
-						chunks: 'all'
-					}
+		moduleIds: 'deterministic',
+		runtimeChunk: 'single',
+		splitChunks: {
+			cacheGroups: {
+				vendor: {
+					test: /[\\/]node_modules[\\/](?!react-day-picker|@tiptap|prosemirror-*)/, // Exclude react-day-picker and tiptap
+					name: 'vendors',
+					chunks: 'all'
+				},
+				reactDayPicker: {
+					test: /[\\/]node_modules[\\/]react-day-picker/,
+					name: 'react-day-picker',
+					chunks: 'all'
+				},
+				tiptap: {
+					test: /[\\/]node_modules[\\/]@tiptap/,
+					name: 'tiptap',
+					chunks: 'all'
+				},
+				prosemirror: {
+					test: /[\\/]node_modules[\\/]prosemirror-*/,
+					name: 'prosemirror',
+					chunks: 'all'
 				}
 			}
 		}
 	};
+};
 };
