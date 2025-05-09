@@ -313,4 +313,3 @@ Your application should now be accessible at your domain (or localhost).
 - Check Caddy logs: `/var/log/caddy/access.log` (or as configured)
 - Check permissions issues.
 - Ensure the virtual environment is activated when running `manage.py` commands manually.
-- **Gunicorn 'resources' error / 'Failed to load environment files'**: If `journalctl -u gunicorn` shows errors like `Failed to load environment files: No such file or directory` or `Failed with result 'resources'`, double-check that the `.env` file specified in `EnvironmentFile=` within `/etc/systemd/system/gunicorn.service` exists at the correct path and that the user specified in the `User=` directive has read permissions for it. Verify the path and filename (`.env`) carefully.
