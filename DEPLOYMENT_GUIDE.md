@@ -38,7 +38,7 @@ Create a directory to hold the application code.
 
 ```bash
 sudo mkdir /path/to/app
-sudo chown $USER:$USER /path/to/app # Give your user ownership for now
+sudo chown $USER:$GROUP /path/to/app # Give your user ownership for now
 cd /path/to/app
 ```
 
@@ -284,8 +284,8 @@ If Caddy logs show "permission denied" when trying to connect to the Gunicorn so
     # sudo chown www-data:www-data /var/www/todo-app/run
     # sudo chmod 775 /var/www/todo-app/run
     # Example using your paths/groups:
-    sudo chown pi:ubuntu /home/pi/projects/ikigaiFlow/run
-    sudo chmod 775 /home/pi/projects/ikigaiFlow/run
+    sudo chown pi:ubuntu /var/www/todo-app/run
+    sudo chmod 775 /var/www/todo-app/run
     ```
 3.  **Restart Services:** Restart both Gunicorn and Caddy.
     ```bash
