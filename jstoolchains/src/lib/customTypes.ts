@@ -111,6 +111,7 @@ export interface SortableTaskItemProps {
 	deleteTodo: (id: number) => Promise<void>;
 	draggingItemId: number | null; // Add the new prop type here
 	isOverlayItem?: boolean; // Indicate if the item is rendered in DragOverlay
+	isDragAndDropEnabled: boolean; // Add this prop to control drag handle visibility
 }
 
 export interface TaskItemProps {
