@@ -42,7 +42,7 @@ export default function SortableTaskItem({
 	if (todo.complete === true) {
 		return null;
 	}
-	console.log(todo);
+
 	const user = useContext(UserContext);
 	const { toast } = useToast();
 	const [inFocus, setInFocus] = useState(false);
