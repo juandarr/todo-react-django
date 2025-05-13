@@ -17,7 +17,7 @@ import {
 	MouseSensor,
 	useSensor,
 	useSensors,
-	DragOverlay // Import DragOverlay
+	DragOverlay
 } from '@dnd-kit/core';
 
 import {
@@ -42,7 +42,9 @@ export default function TaskList({
 	editTodoFull,
 	isComplete
 }: TaskListProps): React.JSX.Element {
-	const [sortType, setSortType] = useState<'custom' | 'dueDate'>('custom');
+	const [sortType, setSortType] = useState<'custom' | 'dueDate' | 'priority'>(
+		'custom'
+	);
 	const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 	const [internalTodos, setInternalTodos] = useState<Todo[]>(todos);
 	const [draggingItemId, setDraggingItemId] = useState<number | null>(null); // State to track the ID of the item being dragged
@@ -60,6 +62,19 @@ export default function TaskList({
 					return dateA - dateB;
 				} else {
 					return dateB - dateA;
+				}
+			});
+		} else if (sortType === 'priority') {
+			sortedTodos.sort((a, b) => {
+				const priorityA = a.priority !== undefined ? a.priority : 4; // Treat undefined priority as 4 (None)
+				const priorityB = b.priority !== undefined ? b.priority : 4; // Treat undefined priority as 4 (None)
+
+				if (sortDirection === 'asc') {
+					// Ascending: 4 (None) to 1 (High)
+					return priorityB - priorityA;
+				} else {
+					// Descending: 1 (High) to 4 (None)
+					return priorityA - priorityB;
 				}
 			});
 		}
@@ -119,7 +134,7 @@ export default function TaskList({
 		document.body.style.cursor = 'grabbing'; // Set body cursor to grabbing on start
 	}
 
-	// Disable D&D when sorting by due date
+	// Disable D&D when sorting by due date or priority
 	const isDragAndDropEnabled = sortType === 'custom';
 
 	return (
@@ -129,10 +144,10 @@ export default function TaskList({
 				<div className='flex items-center space-x-2 px-6 py-3'>
 					<Select
 						value={sortType}
-						onValueChange={(value: 'custom' | 'dueDate') => {
+						onValueChange={(value: 'custom' | 'dueDate' | 'priority') => {
 							setSortType(value);
-							// If switching to due date, reset direction to ascending
-							if (value === 'dueDate') {
+							// If switching to due date or priority, reset direction to ascending
+							if (value === 'dueDate' || value === 'priority') {
 								setSortDirection('asc');
 							}
 						}}>
@@ -142,10 +157,11 @@ export default function TaskList({
 						<SelectContent>
 							<SelectItem value='custom'>Custom Order</SelectItem>
 							<SelectItem value='dueDate'>Due Date</SelectItem>
+							<SelectItem value='priority'>Priority</SelectItem>
 						</SelectContent>
 					</Select>
 
-					{sortType === 'dueDate' && (
+					{(sortType === 'dueDate' || sortType === 'priority') && (
 						<Select
 							value={sortDirection}
 							onValueChange={(value: 'asc' | 'desc') =>
