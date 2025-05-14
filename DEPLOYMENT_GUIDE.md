@@ -38,7 +38,7 @@ Create a directory to hold the application code.
 
 ```bash
 sudo mkdir /path/to/app
-sudo chown $USER:$USER /path/to/app # Give your user ownership for now
+sudo chown $USER:$GROUP /path/to/app # Give your user ownership for now
 cd /path/to/app
 ```
 
@@ -284,8 +284,8 @@ If Caddy logs show "permission denied" when trying to connect to the Gunicorn so
     # sudo chown www-data:www-data /var/www/todo-app/run
     # sudo chmod 775 /var/www/todo-app/run
     # Example using your paths/groups:
-    sudo chown pi:ubuntu /home/pi/projects/ikigaiFlow/run
-    sudo chmod 775 /home/pi/projects/ikigaiFlow/run
+    sudo chown pi:ubuntu /var/www/todo-app/run
+    sudo chmod 775 /var/www/todo-app/run
     ```
 3.  **Restart Services:** Restart both Gunicorn and Caddy.
     ```bash
@@ -313,4 +313,3 @@ Your application should now be accessible at your domain (or localhost).
 - Check Caddy logs: `/var/log/caddy/access.log` (or as configured)
 - Check permissions issues.
 - Ensure the virtual environment is activated when running `manage.py` commands manually.
-- **Gunicorn 'resources' error / 'Failed to load environment files'**: If `journalctl -u gunicorn` shows errors like `Failed to load environment files: No such file or directory` or `Failed with result 'resources'`, double-check that the `.env` file specified in `EnvironmentFile=` within `/etc/systemd/system/gunicorn.service` exists at the correct path and that the user specified in the `User=` directive has read permissions for it. Verify the path and filename (`.env`) carefully.

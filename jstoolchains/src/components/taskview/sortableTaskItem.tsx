@@ -36,7 +36,8 @@ export default function SortableTaskItem({
 	editTodoFull,
 	deleteTodo,
 	draggingItemId,
-	isOverlayItem
+	isOverlayItem,
+	isDragAndDropEnabled
 }: SortableTaskItemProps) {
 	if (todo.complete === true) {
 		return null;
@@ -219,12 +220,14 @@ export default function SortableTaskItem({
 			// Apply dynamic classes and transitions
 			className={`parent flex ${dynamicClasses} transition-shadow`}>
 			<div className='mt-3 flex w-2/12 items-start justify-center'>
-				<button // Make invisible if it's the overlay or if any item is dragging
-					className={`cursor-grab pr-3 pt-[1px] ${draggingItemId !== null && !isDragging ? 'invisible' : 'hidden-child'}`}
-					{...attributes}
-					{...listeners}>
-					<Drag size='1.5rem' color='#38bdf8' />
-				</button>
+				{isDragAndDropEnabled && (
+					<button // Make invisible if it's the overlay or if any item is dragging
+						className={`cursor-grab pr-3 pt-[1px] ${draggingItemId !== null && !isDragging ? 'invisible' : 'hidden-child'}`}
+						{...attributes}
+						{...listeners}>
+						<Drag size='1.5rem' color='#38bdf8' />
+					</button>
+				)}
 				<Checkbox
 					id={'checkbox-' + todo.id}
 					checked={todo.complete}

@@ -18,7 +18,7 @@ import type {
 	todoModelFetch,
 	userModelFetch,
 	settingModelFetch,
-	listsType,
+	listsType
 } from './lib/customTypes';
 
 import type { Todo, List, Setting } from '../../todo-api-client/models';
@@ -33,7 +33,7 @@ const userInfoInitial: userInfoType = {
 	username: '',
 	inboxListId: 0,
 	homeListId: 0,
-	timeZone: '',
+	timeZone: ''
 };
 
 const initialListsState: listsType = [];
@@ -43,19 +43,19 @@ export default function App(): React.JSX.Element {
 	const [currentView, setCurrentView] = useState<viewType>({
 		id: 0,
 		title: '',
-		archived: false,
+		archived: false
 	});
 	const [showSidebar, setShowSidebar] = useState(true);
 
 	const [todos, setTodos, loadingTodos]: todoModelFetch = useModelFetch(
-		clientTodo.todosList(),
+		clientTodo.todosList()
 	);
 
 	const [settings, setSettings, loadingSettings]: settingModelFetch =
 		useModelFetch(clientSetting.settingsList());
 
 	const [user, , loadingUser]: userModelFetch = useModelFetch(
-		clientUser.usersList(),
+		clientUser.usersList()
 	); // Ignore user setter if not used directly
 	const [userInfo, setUserInfo] = useState(userInfoInitial);
 	const [lists, dispatchLists] = useReducer(listsReducer, initialListsState);
@@ -69,17 +69,17 @@ export default function App(): React.JSX.Element {
 		if (user.length !== 0 && settings.length !== 0) {
 			const tmp = user[0];
 			const homeView = settings.find(
-				(setting) => setting.parameter === 'home_view',
+				(setting) => setting.parameter === 'home_view'
 			) as Setting;
 			const timeZone = settings.find(
-				(setting) => setting.parameter === 'timezone',
+				(setting) => setting.parameter === 'timezone'
 			) as Setting;
 			setUserInfo({
 				id: tmp.id,
 				username: tmp.username,
 				inboxListId: tmp.inboxId as number,
 				homeListId: parseInt(homeView.value),
-				timeZone: timeZone.value,
+				timeZone: timeZone.value
 			});
 			console.log('This is the homeView: ', homeView, ' with user: ', userInfo);
 		}
@@ -95,7 +95,7 @@ export default function App(): React.JSX.Element {
 				if (!ignore) {
 					dispatchLists({
 						type: 'added',
-						payload: result,
+						payload: result
 					});
 				}
 			})
@@ -126,7 +126,7 @@ export default function App(): React.JSX.Element {
 				let tmp: viewType;
 
 				const list = lists.find(
-					(list) => list.id === userInfo.homeListId,
+					(list) => list.id === userInfo.homeListId
 				) as listType;
 				tmp = { id: list.id, title: list.title, archived: list.archived };
 
@@ -166,7 +166,7 @@ export default function App(): React.JSX.Element {
 		newView = {
 			id: newList.id as number,
 			title: newList.title,
-			archived: newList.archived as boolean,
+			archived: newList.archived as boolean
 		};
 
 		const e = document.getElementById('currentView-title');
@@ -181,7 +181,7 @@ export default function App(): React.JSX.Element {
 		const tmp: { priority: number; list: number; dueDate: Date | undefined } = {
 			priority: 4,
 			list: 0,
-			dueDate: undefined,
+			dueDate: undefined
 		};
 		if ('priority' in todo) {
 			tmp.priority = parseInt(todo.priority as string);
@@ -213,9 +213,9 @@ export default function App(): React.JSX.Element {
 					new Date(
 						tmpD.getFullYear(),
 						tmpD.getMonth(),
-						tmpD.getDate(),
+						tmpD.getDate()
 					).getTime() +
-						24 * 60 * 60 * 1000,
+						24 * 60 * 60 * 1000
 				);
 			}
 		}
@@ -233,21 +233,21 @@ export default function App(): React.JSX.Element {
 
 	const toggleTodo = async (id: number, complete: boolean): Promise<Todo> => {
 		const todo = {
-			complete,
+			complete
 		};
 
 		const [x, y] = getPoint('checkbox-' + id);
 		try {
 			const updatedTodo = await clientTodo.todosPartialUpdate({
 				id,
-				patchedTodo: todo,
+				patchedTodo: todo
 			});
 			if (complete) {
 				confetti({
 					angle: randomInRange(55, 125),
 					spread: randomInRange(50, 70),
 					particleCount: randomInRange(50, 100),
-					origin: { x, y },
+					origin: { x, y }
 				})?.catch((error) => {
 					console.log(error);
 				});
@@ -274,12 +274,12 @@ export default function App(): React.JSX.Element {
 			...todo,
 			list: parseInt(todo.list as string),
 			priority: parseInt(todo.priority as string),
-			dueDate: todo.dueDate !== undefined ? todo.dueDate : null,
+			dueDate: todo.dueDate !== undefined ? todo.dueDate : null
 		};
 		try {
 			const todoUpdated = await clientTodo.todosPartialUpdate({
 				id: todo.id as number,
-				patchedTodo: tmpTodo,
+				patchedTodo: tmpTodo
 			});
 			console.log('Todo was patched!');
 			setTodos((prevTodos) => {
@@ -300,7 +300,7 @@ export default function App(): React.JSX.Element {
 
 	const editTodo = async (id: number, title: string): Promise<void> => {
 		const todo = {
-			title,
+			title
 		};
 
 		try {
@@ -336,14 +336,14 @@ export default function App(): React.JSX.Element {
 
 	const addList = async (title: string): Promise<List> => {
 		const list = {
-			title,
+			title
 		};
 		try {
 			const listCreated = await clientList.listsCreate({ list });
 			console.log('List was created!', listCreated);
 			dispatchLists({
 				type: 'added',
-				payload: listCreated,
+				payload: listCreated
 			});
 			return listCreated;
 		} catch (error) {
@@ -354,17 +354,17 @@ export default function App(): React.JSX.Element {
 
 	const editList = async (
 		id: number,
-		newList: { title?: string; archived?: boolean; ordering?: object },
+		newList: { title?: string; archived?: boolean; ordering?: object }
 	): Promise<List> => {
 		let list;
 		if (newList.archived === undefined) {
 			if (newList.ordering === undefined) {
 				list = {
-					title: newList.title,
+					title: newList.title
 				};
 			} else {
 				list = {
-					ordering: newList.ordering,
+					ordering: newList.ordering
 				};
 			}
 		} else {
@@ -374,13 +374,13 @@ export default function App(): React.JSX.Element {
 		try {
 			const updatedList = await clientList.listsPartialUpdate({
 				id,
-				patchedList: list,
+				patchedList: list
 			});
 			console.log('List was patched!');
 
 			dispatchLists({
 				type: 'edited',
-				payload: updatedList,
+				payload: updatedList
 			});
 			// If the current view is the one being edited, update the current view
 			if (id === currentView.id) {
@@ -394,12 +394,12 @@ export default function App(): React.JSX.Element {
 						newList.archived === undefined ||
 						currentView.archived === newList.archived
 							? currentView.archived
-							: newList.archived,
+							: newList.archived
 				};
 				setCurrentView((oldCurrentView) => ({
 					...oldCurrentView,
 					title: tmp.title,
-					archived: tmp.archived,
+					archived: tmp.archived
 				}));
 			}
 			return updatedList;
@@ -411,22 +411,22 @@ export default function App(): React.JSX.Element {
 
 	const editListOrder = async (
 		id: number,
-		newList: { ordering: { order: number[] } },
+		newList: { ordering: { order: number[] } }
 	): Promise<List> => {
 		let list = {
-			ordering: newList.ordering,
+			ordering: newList.ordering
 		};
 
 		try {
 			const updatedList = await clientList.listsPartialUpdate({
 				id,
-				patchedList: list,
+				patchedList: list
 			});
 			console.log('Ordering was updated!');
 
 			dispatchLists({
 				type: 'edited',
-				payload: updatedList,
+				payload: updatedList
 			});
 
 			return updatedList;
@@ -441,18 +441,18 @@ export default function App(): React.JSX.Element {
 			await clientList.listsDestroy({ id });
 			dispatchLists({
 				type: 'deleted',
-				payload: { id },
+				payload: { id }
 			});
 			// If current view is the one being deleted, default current view to the home view
 			if (id === currentView.id) {
 				setCurrentView(() => {
 					const list = lists.find(
-						(list) => list.id === userInfo.homeListId,
+						(list) => list.id === userInfo.homeListId
 					) as List;
 					return {
 						id: list.id as number,
 						title: list.title,
-						archived: list.archived as boolean,
+						archived: list.archived as boolean
 					};
 				});
 			}
@@ -465,13 +465,13 @@ export default function App(): React.JSX.Element {
 
 	const editSetting = async (id: number, value: string): Promise<void> => {
 		const setting = {
-			value,
+			value
 		};
 		console.log('Updating new setting');
 		try {
 			await clientSetting.settingsPartialUpdate({
 				id,
-				patchedSetting: setting,
+				patchedSetting: setting
 			});
 			console.log('Setting was updated!');
 			setSettings((prevSettings) => {
