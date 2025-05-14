@@ -150,80 +150,97 @@ export default function TaskList({
 
 	return (
 		<div className={`content mb-3 ${isComplete ? '' : 'is-open'}`}>
-			{/* Sorting Controls */}
-			{!isComplete && (
-				<div className='flex items-center space-x-2 px-6 py-3'>
-					<Select
-						value={sortType}
-						onValueChange={(value: 'custom' | 'dueDate' | 'priority') => {
-							setSortType(value);
-							// If switching to due date or priority, reset direction to ascending
-							if (value === 'dueDate' || value === 'priority') {
-								setSortDirection('asc');
-							}
-						}}>
-						<SelectTrigger className='h-6 w-[120px] rounded-xl bg-violet-400 px-1 py-0.5 text-xs font-semibold'>
-							<SelectValue placeholder='Sort By' />
-						</SelectTrigger>
-						<SelectContent>
-							<SelectItem value='custom' className='text-xs'>
-								Custom
-							</SelectItem>
-							<SelectItem value='dueDate' className='text-xs'>
-								Due Date
-							</SelectItem>
-							<SelectItem value='priority' className='text-xs'>
-								Priority
-							</SelectItem>
-						</SelectContent>
-					</Select>
-
-					{(sortType === 'dueDate' || sortType === 'priority') && (
+			<div className='inner'>
+				{/* Sorting Controls */}
+				{!isComplete && (
+					<div className='flex items-center space-x-2 px-6 py-3'>
 						<Select
-							value={sortDirection}
-							onValueChange={(value: 'asc' | 'desc') =>
-								setSortDirection(value)
-							}>
-							<SelectTrigger className='h-6 w-[120px] rounded-xl bg-fuchsia-400 p-3 px-1 py-0.5 text-xs font-semibold'>
-								<SelectValue placeholder='Sort Direction' />
+							value={sortType}
+							onValueChange={(value: 'custom' | 'dueDate' | 'priority') => {
+								setSortType(value);
+								// If switching to due date or priority, reset direction to ascending
+								if (value === 'dueDate' || value === 'priority') {
+									setSortDirection('asc');
+								}
+							}}>
+							<SelectTrigger className='h-6 w-[120px] rounded-xl bg-violet-400 px-1 py-0.5 text-xs font-semibold'>
+								<SelectValue placeholder='Sort By' />
 							</SelectTrigger>
 							<SelectContent>
-								<SelectItem value='asc' className='text-xs'>
-									Ascending
+								<SelectItem value='custom' className='text-xs'>
+									Custom
 								</SelectItem>
-								<SelectItem value='desc' className='text-xs'>
-									Descending
+								<SelectItem value='dueDate' className='text-xs'>
+									Due Date
+								</SelectItem>
+								<SelectItem value='priority' className='text-xs'>
+									Priority
 								</SelectItem>
 							</SelectContent>
 						</Select>
-					)}
-				</div>
-			)}
 
-			{internalTodos.length === 0 ? (
-				<div className='inner'>
+						{(sortType === 'dueDate' || sortType === 'priority') && (
+							<Select
+								value={sortDirection}
+								onValueChange={(value: 'asc' | 'desc') =>
+									setSortDirection(value)
+								}>
+								<SelectTrigger className='h-6 w-[120px] rounded-xl bg-fuchsia-400 p-3 px-1 py-0.5 text-xs font-semibold'>
+									<SelectValue placeholder='Sort Direction' />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectItem value='asc' className='text-xs'>
+										Ascending
+									</SelectItem>
+									<SelectItem value='desc' className='text-xs'>
+										Descending
+									</SelectItem>
+								</SelectContent>
+							</Select>
+						)}
+					</div>
+				)}
+
+				{internalTodos.length === 0 ? (
 					<div
 						className={`text-md flex-1 px-6 ${
 							isComplete ? 'pt-6' : 'py-6'
 						} font-bold text-violet-600`}>
 						No todos {isComplete ? 'completed yet' : 'at the moment'}
 					</div>
-				</div>
-			) : (
-				<ul className='inner'>
-					{!isComplete && internalTodos && (
-						<DndContext
-							sensors={sensors}
-							collisionDetection={closestCenter}
-							onDragStart={handleDragStart} // Add onDragStart handler
-							onDragEnd={handleDragEnd}>
-							<SortableContext
-								items={internalTodos.map((todo) => todo.id as number)}
-								strategy={verticalListSortingStrategy}>
-								{internalTodos.map((todo, idx: number) => (
-									<li key={todo.id} id={`item-${todo.id}`}>
+				) : (
+					<ul className=''>
+						{!isComplete && internalTodos && (
+							<DndContext
+								sensors={sensors}
+								collisionDetection={closestCenter}
+								onDragStart={handleDragStart} // Add onDragStart handler
+								onDragEnd={handleDragEnd}>
+								<SortableContext
+									items={internalTodos.map((todo) => todo.id as number)}
+									strategy={verticalListSortingStrategy}>
+									{internalTodos.map((todo, idx: number) => (
+										<li key={todo.id} id={`item-${todo.id}`}>
+											<SortableTaskItem
+												todo={todo}
+												lists={lists}
+												userInfo={userInfo}
+												toggleTodo={toggleTodo}
+												editTodo={editTodo}
+												editTodoFull={editTodoFull}
+												deleteTodo={deleteTodo}
+												draggingItemId={draggingItemId}
+												isOverlayItem={false}
+												isDragAndDropEnabled={isDragAndDropEnabled}
+											/>
+										</li>
+									))}
+								</SortableContext>
+								{/* DragOverlay renders the item being dragged */}
+								<DragOverlay>
+									{activeTodo ? (
 										<SortableTaskItem
-											todo={todo}
+											todo={activeTodo}
 											lists={lists}
 											userInfo={userInfo}
 											toggleTodo={toggleTodo}
@@ -231,53 +248,36 @@ export default function TaskList({
 											editTodoFull={editTodoFull}
 											deleteTodo={deleteTodo}
 											draggingItemId={draggingItemId}
-											isOverlayItem={false}
+											isOverlayItem={true}
 											isDragAndDropEnabled={isDragAndDropEnabled}
 										/>
+									) : null}
+								</DragOverlay>
+							</DndContext>
+						)}
+						{isComplete &&
+							internalTodos.map((todo, idx: number) => {
+								return (
+									<li key={todo.id} id={`item-${todo.id}`}>
+										{/* Conditionally render the divider */}
+										{idx > 0 && (
+											<div className='mx-auto h-px w-4/5 bg-gray-100'></div>
+										)}
+										<TaskItem
+											todo={todo}
+											lists={lists}
+											userInfo={userInfo}
+											toggleTodo={toggleTodo}
+											editTodo={editTodo}
+											editTodoFull={editTodoFull}
+											deleteTodo={deleteTodo}
+										/>
 									</li>
-								))}
-							</SortableContext>
-							{/* DragOverlay renders the item being dragged */}
-							<DragOverlay>
-								{activeTodo ? (
-									<SortableTaskItem
-										todo={activeTodo}
-										lists={lists}
-										userInfo={userInfo}
-										toggleTodo={toggleTodo}
-										editTodo={editTodo}
-										editTodoFull={editTodoFull}
-										deleteTodo={deleteTodo}
-										draggingItemId={draggingItemId}
-										isOverlayItem={true}
-										isDragAndDropEnabled={isDragAndDropEnabled}
-									/>
-								) : null}
-							</DragOverlay>
-						</DndContext>
-					)}
-					{isComplete &&
-						internalTodos.map((todo, idx: number) => {
-							return (
-								<li key={todo.id} id={`item-${todo.id}`}>
-									{/* Conditionally render the divider */}
-									{idx > 0 && (
-										<div className='mx-auto h-px w-4/5 bg-gray-100'></div>
-									)}
-									<TaskItem
-										todo={todo}
-										lists={lists}
-										userInfo={userInfo}
-										toggleTodo={toggleTodo}
-										editTodo={editTodo}
-										editTodoFull={editTodoFull}
-										deleteTodo={deleteTodo}
-									/>
-								</li>
-							);
-						})}
-				</ul>
-			)}
+								);
+							})}
+					</ul>
+				)}
+			</div>
 		</div>
 	);
 }
