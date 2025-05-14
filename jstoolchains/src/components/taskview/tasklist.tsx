@@ -53,7 +53,20 @@ export default function TaskList({
 	useEffect(() => {
 		let sortedTodos = [...todos];
 
-		if (sortType === 'dueDate') {
+		if (sortType === 'custom') {
+			// Sort by custom order using the ordering from the current list
+			const currentList = lists.find((list) => list.id === currentView.id);
+			const order = currentList?.ordering?.order || [];
+			sortedTodos.sort((a, b) => {
+				const indexA = order.indexOf(a.id);
+				const indexB = order.indexOf(b.id);
+				// Handle cases where a todo might not be in the order array (e.g., new todos)
+				if (indexA === -1 && indexB === -1) return 0;
+				if (indexA === -1) return 1;
+				if (indexB === -1) return -1;
+				return indexA - indexB;
+			});
+		} else if (sortType === 'dueDate') {
 			sortedTodos.sort((a, b) => {
 				const dateA = a.dueDate ? new Date(a.dueDate).getTime() : Infinity;
 				const dateB = b.dueDate ? new Date(b.dueDate).getTime() : Infinity;
@@ -78,10 +91,8 @@ export default function TaskList({
 				}
 			});
 		}
-		// If sortType is 'custom', the order is already in the 'todos' prop due to order defined in parent component (taskview)
-		// and drag-and-drop updates.
 		setInternalTodos(sortedTodos);
-	}, [todos, sortType, sortDirection]);
+	}, [todos, sortType, sortDirection, lists, currentView.id]);
 
 	/* Drag and drop definitions */
 	const sensors = useSensors(
