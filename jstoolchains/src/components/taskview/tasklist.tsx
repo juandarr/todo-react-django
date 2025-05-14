@@ -162,13 +162,19 @@ export default function TaskList({
 								setSortDirection('asc');
 							}
 						}}>
-						<SelectTrigger className='w-[180px]'>
+						<SelectTrigger className='w-[120px] rounded-xl bg-violet-400 px-1 py-0.5 text-xs font-semibold'>
 							<SelectValue placeholder='Sort By' />
 						</SelectTrigger>
 						<SelectContent>
-							<SelectItem value='custom'>Custom Order</SelectItem>
-							<SelectItem value='dueDate'>Due Date</SelectItem>
-							<SelectItem value='priority'>Priority</SelectItem>
+							<SelectItem value='custom' className='text-xs'>
+								Custom
+							</SelectItem>
+							<SelectItem value='dueDate' className='text-xs'>
+								Due Date
+							</SelectItem>
+							<SelectItem value='priority' className='text-xs'>
+								Priority
+							</SelectItem>
 						</SelectContent>
 					</Select>
 
@@ -178,12 +184,16 @@ export default function TaskList({
 							onValueChange={(value: 'asc' | 'desc') =>
 								setSortDirection(value)
 							}>
-							<SelectTrigger className='w-[180px]'>
+							<SelectTrigger className='w-[120px] rounded-xl bg-violet-400 px-1 py-0.5 text-xs font-semibold'>
 								<SelectValue placeholder='Sort Direction' />
 							</SelectTrigger>
 							<SelectContent>
-								<SelectItem value='asc'>Ascending</SelectItem>
-								<SelectItem value='desc'>Descending</SelectItem>
+								<SelectItem value='asc' className='text-xs'>
+									Ascending
+								</SelectItem>
+								<SelectItem value='desc' className='text-xs'>
+									Descending
+								</SelectItem>
 							</SelectContent>
 						</Select>
 					)}
