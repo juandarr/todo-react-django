@@ -233,7 +233,7 @@ export default function GoalsModal({
 						<h1 className='mb-2 ml-3 mr-3 mt-3 text-xl font-bold text-fuchsia-500'>
 							Progress
 						</h1>
-						<div className='mb-3 ml-3 text-sm'>
+						<div className='mb-3 ml-3 font-Grape text-xl font-semibold'>
 							The home of your goals and progress.
 						</div>
 						<div className='relative mb-6 ml-3 mr-3 text-lg font-bold text-cyan-500'>
@@ -274,7 +274,7 @@ export default function GoalsModal({
 						<div className='mb-4 ml-3 mr-3 flex items-center justify-around'>
 							<div className='relative flex w-1/3 items-center justify-center text-rose-500'>
 								<Chain size='2rem' />
-								<div className='absolute -bottom-3 left-[68%] font-Maple text-2xl'>
+								<div className='absolute -bottom-3 left-[68%] font-Maple text-2xl font-bold'>
 									{streakCounter.streak}
 								</div>
 							</div>
