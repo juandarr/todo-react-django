@@ -163,7 +163,7 @@ export default function TaskList({
 									setSortDirection('asc');
 								}
 							}}>
-							<SelectTrigger className='h-6 w-[120px] rounded-xl bg-violet-400 px-1 py-0.5 text-xs font-semibold'>
+							<SelectTrigger className='h-6 w-[120px] rounded-xl bg-violet-300 px-1 py-0.5 text-xs font-semibold text-violet-600'>
 								<SelectValue placeholder='Sort By' />
 							</SelectTrigger>
 							<SelectContent>
@@ -185,7 +185,7 @@ export default function TaskList({
 								onValueChange={(value: 'asc' | 'desc') =>
 									setSortDirection(value)
 								}>
-								<SelectTrigger className='h-6 w-[120px] rounded-xl bg-fuchsia-400 p-3 px-1 py-0.5 text-xs font-semibold'>
+								<SelectTrigger className='h-6 w-[120px] rounded-xl bg-fuchsia-300 p-3 px-1 py-0.5 text-xs font-semibold text-fuchsia-600'>
 									<SelectValue placeholder='Sort Direction' />
 								</SelectTrigger>
 								<SelectContent>
