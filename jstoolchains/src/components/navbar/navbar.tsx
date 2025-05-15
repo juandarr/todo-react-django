@@ -5,14 +5,14 @@ import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
-	TooltipTrigger,
+	TooltipTrigger
 } from '../ui/tooltip';
 
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
-	PopoverArrow,
+	PopoverArrow
 } from '../ui/popover';
 
 import CreateModalTodo from '../modals/createModalTodo';
@@ -23,7 +23,7 @@ import {
 	House,
 	PasswordCheck,
 	UserSquare,
-	Heart,
+	Heart
 } from 'iconsax-reactjs';
 
 import type { NavBarProps } from '../../lib/customTypes';
@@ -40,7 +40,7 @@ export default function NavBar({
 	addTodo,
 	setShowSidebar,
 	settings,
-	editSetting,
+	editSetting
 }: NavBarProps): React.JSX.Element {
 	const isOnline = useOnlineStatus();
 	const user = useContext(UserContext);
@@ -74,7 +74,7 @@ export default function NavBar({
 					<Tooltip>
 						<TooltipTrigger asChild={true}>
 							<button className='text-violet-500 hover:text-violet-600'>
-								<SidebarLeft size='1.8rem'  variant='Bold'/>
+								<SidebarLeft size='1.8rem' variant='Bold' />
 							</button>
 						</TooltipTrigger>
 						<TooltipContent className='bg-violet-500'>
@@ -116,7 +116,7 @@ export default function NavBar({
 								className='flex cursor-pointer justify-center text-2xl'>
 								<TooltipTrigger asChild={true}>
 									<button className='text-amber-500 hover:text-amber-600'>
-										<UserSquare size='1.8rem'  />
+										<UserSquare size='1.8rem' variant='Bold' />
 									</button>
 								</TooltipTrigger>
 							</PopoverTrigger>
@@ -140,13 +140,13 @@ export default function NavBar({
 							<a
 								href='/accounts/password_change'
 								className='mb-2 flex items-center justify-start font-semibold text-rose-500 hover:text-rose-600'>
-								<PasswordCheck size='1.8rem' />
+								<PasswordCheck size='1.8rem' variant='Bold' />
 								<p className='ml-4'>Change password</p>
 							</a>
 							<a
 								href='/logout'
 								className='mb-2 flex items-center justify-start font-semibold text-violet-500 hover:text-violet-600'>
-								<Logout size='1.8rem' />
+								<Logout size='1.8rem' variant='Bold' />
 								<p className='ml-4'>Logout</p>
 							</a>
 						</div>

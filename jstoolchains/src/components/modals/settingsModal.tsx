@@ -5,7 +5,7 @@ import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
-	PopoverArrow,
+	PopoverArrow
 } from '../ui/popover';
 
 import {
@@ -13,7 +13,7 @@ import {
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
-	SelectValue,
+	SelectValue
 } from '../ui/select';
 import { VirtualizedSelect } from '../ui/virtualizedSelect'; // Added import
 
@@ -24,7 +24,7 @@ import { useToast } from '../ui/toast/use-toast';
 export default function SettingsModal({
 	lists,
 	settings,
-	editSetting,
+	editSetting
 }: SettingsModalProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
 
@@ -33,7 +33,7 @@ export default function SettingsModal({
 		settings.forEach((setting, index) => {
 			tmp[setting.parameter] = {
 				value: setting.value,
-				id: setting.id as number,
+				id: setting.id as number
 			};
 		});
 		return tmp;
@@ -47,14 +47,14 @@ export default function SettingsModal({
 			await editSetting(id, value);
 			toast({
 				title: 'Setting was updated!',
-				description: '',
+				description: ''
 			});
 		} catch (error) {
 			if (error instanceof Error) {
 				toast({
 					variant: 'destructive',
 					title: 'There was an error updating the setting: ',
-					description: error.toString(),
+					description: error.toString()
 				});
 			}
 		}
@@ -77,7 +77,7 @@ export default function SettingsModal({
 					openPopover();
 				}}>
 				<a className='mb-2 flex cursor-pointer items-center justify-start font-semibold text-cyan-500 hover:text-cyan-600'>
-					<Settings size='1.8rem' />
+					<Settings size='1.8rem' variant='Bold' />
 					<p className='ml-4'>Settings</p>
 				</a>
 			</PopoverTrigger>
@@ -109,7 +109,7 @@ export default function SettingsModal({
 								onValueChange={(value) => {
 									setEditSettings((old) => ({
 										...old,
-										home_view: { ...old.home_view, value },
+										home_view: { ...old.home_view, value }
 									}));
 									editHandleSubmit(editSettings.home_view.id, value)
 										.then(() => {})
@@ -144,8 +144,8 @@ export default function SettingsModal({
 										...old,
 										timezone: {
 											...old.timezone,
-											value: selectedValue,
-										},
+											value: selectedValue
+										}
 									}));
 									editHandleSubmit(editSettings.timezone.id, selectedValue)
 										.then(() => {})
