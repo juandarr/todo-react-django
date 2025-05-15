@@ -5,28 +5,28 @@ import {
 	CardEdit as Month,
 	Link21 as Chain,
 	MedalStar as GoalsIcon,
-	Sun1 as Today,
+	Sun1 as Today
 } from 'iconsax-reactjs';
 
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
-	TooltipTrigger,
+	TooltipTrigger
 } from '../ui/tooltip';
 
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
-	PopoverArrow,
+	PopoverArrow
 } from '../ui/popover';
 
 import type { GoalsModalProps } from '../../lib/customTypes';
 import { UserContext } from '../../contexts/UserContext';
 
 export default function GoalsModal({
-	todos,
+	todos
 }: GoalsModalProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
 
@@ -38,7 +38,7 @@ export default function GoalsModal({
 
 	const options: Intl.DateTimeFormatOptions = {
 		month: 'long',
-		timeZone: user.timeZone,
+		timeZone: user.timeZone
 	};
 
 	const monthLabel = useMemo(() => {
@@ -52,13 +52,13 @@ export default function GoalsModal({
 		if (user.timeZone !== '') {
 			// todos in day
 			const today = new Date().toLocaleDateString('en-US', {
-				timeZone: user.timeZone,
+				timeZone: user.timeZone
 			});
 			const day = todos.reduce((accum, todo) => {
 				if (
 					todo.complete === true &&
 					todo.completedAt?.toLocaleDateString('en-US', {
-						timeZone: user.timeZone,
+						timeZone: user.timeZone
 					}) === today
 				) {
 					return accum + 1;
@@ -71,7 +71,7 @@ export default function GoalsModal({
 			const first = new Date(
 				tmp.getFullYear(),
 				tmp.getMonth(),
-				tmp.getDate() - tmp.getDay() + 1,
+				tmp.getDate() - tmp.getDay() + 1
 			);
 			const last = new Date(
 				tmp.getFullYear(),
@@ -79,7 +79,7 @@ export default function GoalsModal({
 				tmp.getDate() - tmp.getDay() + 7,
 				23,
 				59,
-				59,
+				59
 			);
 			const week = todos.reduce((accum, todo) => {
 				if (
@@ -98,7 +98,7 @@ export default function GoalsModal({
 			// todos in month
 			const thisMonth = new Date()
 				.toLocaleDateString('en-US', {
-					timeZone: user.timeZone,
+					timeZone: user.timeZone
 				})
 				.split('/');
 			const month = todos.reduce((accum, todo) => {
@@ -110,7 +110,7 @@ export default function GoalsModal({
 				) {
 					tmpMonth = todo.completedAt
 						.toLocaleDateString('en-US', {
-							timeZone: user.timeZone,
+							timeZone: user.timeZone
 						})
 						.split('/');
 					if (thisMonth[0] === tmpMonth[0] && thisMonth[2] === tmpMonth[2]) {
@@ -132,7 +132,7 @@ export default function GoalsModal({
 				previousDays.push({
 					[date.getDate() +
 					'-' +
-					date.toLocaleDateString('en-US', { weekday: 'short' })]: false,
+					date.toLocaleDateString('en-US', { weekday: 'short' })]: false
 				});
 				date.setDate(date.getDate() - 1);
 			}
@@ -144,7 +144,7 @@ export default function GoalsModal({
 			let tmp = todos.find(
 				(todo) =>
 					todo.complete === true &&
-					todo.completedAt?.toDateString() === date.toDateString(),
+					todo.completedAt?.toDateString() === date.toDateString()
 			);
 			if (tmp !== undefined) {
 				previousDays[idx][
@@ -156,7 +156,7 @@ export default function GoalsModal({
 			}
 			let penalty = 0;
 			// Allow gaps (penaltyLimit = 2, can miss one day max) or not (penaltyLimit = 1, no misses allowed)
-			const penaltyLimit = 1;
+			const penaltyLimit = 2;
 			// Use to stop the streak counter once penalty limit is reached
 			let streakCompleted = false;
 			/* TODO : This algorithm is not efficient at all. Streak should be calculated based on a historic collection of past streak data. Redoit in the future */
@@ -167,7 +167,7 @@ export default function GoalsModal({
 				tmp = todos.find(
 					(todo) =>
 						todo.complete === true &&
-						todo.completedAt?.toDateString() === date.toDateString(),
+						todo.completedAt?.toDateString() === date.toDateString()
 				);
 				if (tmp !== undefined) {
 					if (idx <= 6) {
