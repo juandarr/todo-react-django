@@ -77,7 +77,7 @@ export default function SettingsModal({
 					openPopover();
 				}}>
 				<a className='mb-2 flex cursor-pointer items-center justify-start font-semibold text-cyan-500 hover:text-cyan-600'>
-					<Settings size='1.8rem' variant='Bold' />
+					<Settings size='1.8rem' variant='Bulk' />
 					<p className='ml-4'>Settings</p>
 				</a>
 			</PopoverTrigger>

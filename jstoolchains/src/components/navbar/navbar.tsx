@@ -116,7 +116,7 @@ export default function NavBar({
 								className='flex cursor-pointer justify-center text-2xl'>
 								<TooltipTrigger asChild={true}>
 									<button className='text-amber-500 hover:text-amber-600'>
-										<UserSquare size='1.8rem' variant='Bold' />
+										<UserSquare size='1.8rem' variant='Bulk' />
 									</button>
 								</TooltipTrigger>
 							</PopoverTrigger>
@@ -140,13 +140,13 @@ export default function NavBar({
 							<a
 								href='/accounts/password_change'
 								className='mb-2 flex items-center justify-start font-semibold text-rose-500 hover:text-rose-600'>
-								<PasswordCheck size='1.8rem' variant='Bold' />
+								<PasswordCheck size='1.8rem' variant='Bulk' />
 								<p className='ml-4'>Change password</p>
 							</a>
 							<a
 								href='/logout'
 								className='mb-2 flex items-center justify-start font-semibold text-violet-500 hover:text-violet-600'>
-								<Logout size='1.8rem' variant='Bold' />
+								<Logout size='1.8rem' variant='Bulk' />
 								<p className='ml-4'>Logout</p>
 							</a>
 						</div>

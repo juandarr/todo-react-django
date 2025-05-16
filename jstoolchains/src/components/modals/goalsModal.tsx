@@ -206,7 +206,7 @@ export default function GoalsModal({
 						}}>
 						<TooltipTrigger asChild={true}>
 							<button className='text-fuchsia-500 hover:text-fuchsia-600'>
-								<GoalsIcon size='1.8rem' variant='Bold' />
+								<GoalsIcon size='1.8rem' variant='Bulk' />
 							</button>
 						</TooltipTrigger>
 					</PopoverTrigger>
