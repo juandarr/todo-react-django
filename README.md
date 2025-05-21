@@ -1,8 +1,8 @@
 # JoyFlow
 
-A task manager app with lists, day to day todo tracking and a pomodoro timer (pending feature)
+A task manager app with lists, day to day todo tracking and other useful features to organize your day.
 
-The main purpose of this app is to help you organize and manage your personal projects with lists and tasks. It also provides the tools to manage your time during the day (e. g., pomodoro, priorities, due date).
+This application was designed to help you organize and manage your personal projects and the set of action you need to take to make them happen. It also provides the tools to manage your time during the day (e. g., priorities, due date and completion tracker).
 
 ![Overview of Todo app](./images/todo-overview.png)
 
