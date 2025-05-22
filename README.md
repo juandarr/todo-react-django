@@ -30,12 +30,12 @@ My goal right now is to update every dependency to 2024, improve the code and ad
 
 ## Features
 
-- Tasks: The concept of task/todo is used to represent something that you will eventually do with at least a definition, purpose or topic (title). Tasks have the following properties:
+- Tasks: The concept of task/todo is used to represent an action to be taken with at least a title. Tasks have the following properties:
   - Title
   - Description
-    - An optional description of the task
+    - An optional description of the task. May be used for note taking, the limit is about 1000 characters. Supports markdown for substaks, headers (h1, h2, h3 and h4), bullet points and more.
   - Completed
-    - Represents whether the task has been completed or not
+    - Represents whether the task has been completed or not. False when created, becomes true upon completion.
   - Due date
     - A past/present/future date at which the task is suppose to be completed
   - Priority
