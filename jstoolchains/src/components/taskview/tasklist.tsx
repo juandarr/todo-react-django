@@ -79,16 +79,26 @@ export default function TaskList({
 			});
 		} else if (sortType === 'priority') {
 			sortedTodos.sort((a, b) => {
-				const priorityA = a.priority !== undefined ? a.priority : 4; // Treat undefined priority as 4 (None)
-				const priorityB = b.priority !== undefined ? b.priority : 4; // Treat undefined priority as 4 (None)
+				// Primary sort: by priority
+				const priorityA = a.priority !== undefined ? a.priority : 4; // Treat undefined as 4 (None)
+				const priorityB = b.priority !== undefined ? b.priority : 4; // Treat undefined as 4 (None)
 
-				if (sortDirection === 'asc') {
-					// Ascending: 4 (None) to 1 (High)
-					return priorityB - priorityA;
-				} else {
-					// Descending: 1 (High) to 4 (None)
-					return priorityA - priorityB;
+				// Determine the priority difference based on sort direction
+				const priorityDifference =
+					sortDirection === 'asc'
+						? priorityB - priorityA // Ascending: 4 (None) to 1 (High)
+						: priorityA - priorityB; // Descending: 1 (High) to 4 (None)
+
+				// If priorities are different, sort by priority
+				if (priorityDifference !== 0) {
+					return priorityDifference;
 				}
+
+				// Secondary sort: by dueDate (only if priorities are the same)
+				const dateA = a.dueDate ? new Date(a.dueDate).getTime() : Infinity;
+				const dateB = b.dueDate ? new Date(b.dueDate).getTime() : Infinity;
+
+				return dateA - dateB;
 			});
 		}
 		setInternalTodos(sortedTodos);
