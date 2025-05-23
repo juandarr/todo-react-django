@@ -3,20 +3,19 @@
 import * as React from 'react';
 
 import {
-	
 	Calendar1 as Today,
 	SunFog as Tomorrow,
 	ArrowRight3 as In3Days,
 	Forward as InAWeek,
 	Calendar as CalendarIcon,
-	CalendarRemove as NoDate,
+	CalendarRemove as NoDate
 } from 'iconsax-reactjs';
 
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
-	TooltipTrigger,
+	TooltipTrigger
 } from '../ui/tooltip';
 
 import { addDays, format } from 'date-fns';
@@ -31,7 +30,7 @@ import { type DatePickerProps } from '../../lib/customTypes';
 export function DatePickerWithPresets({
 	newTodo,
 	setNewTodo,
-	isDisabled,
+	isDisabled
 }: DatePickerProps): React.JSX.Element {
 	if (newTodo.dueDate !== undefined) {
 		console.log('Current date: ', newTodo.dueDate);
@@ -53,7 +52,7 @@ export function DatePickerWithPresets({
 					variant={'outline'}
 					className={cn(
 						'w-full justify-start text-left font-normal',
-						newTodo.dueDate === undefined && 'text-muted-foreground',
+						newTodo.dueDate === undefined && 'text-muted-foreground'
 					)}
 					disabled={isDisabled}
 					onClick={() => {
@@ -82,11 +81,11 @@ export function DatePickerWithPresets({
 									onClick={() => {
 										setNewTodo((old) => ({
 											...old,
-											dueDate: addDays(new Date(), 0),
+											dueDate: addDays(new Date(), 0)
 										}));
 										closePopover();
 									}}>
-									<Today size='1.5rem'/>
+									<Today size='1.5rem' />
 								</button>
 							</TooltipTrigger>
 							<TooltipContent className='bg-green-500'>
@@ -102,11 +101,11 @@ export function DatePickerWithPresets({
 									onClick={() => {
 										setNewTodo((old) => ({
 											...old,
-											dueDate: addDays(new Date(), 1),
+											dueDate: addDays(new Date(), 1)
 										}));
 										closePopover();
 									}}>
-									<Tomorrow size='1.5rem'/>
+									<Tomorrow size='1.5rem' />
 								</button>
 							</TooltipTrigger>
 							<TooltipContent className='bg-amber-500'>
@@ -122,11 +121,11 @@ export function DatePickerWithPresets({
 									onClick={() => {
 										setNewTodo((old) => ({
 											...old,
-											dueDate: addDays(new Date(), 3),
+											dueDate: addDays(new Date(), 3)
 										}));
 										closePopover();
 									}}>
-									<In3Days size='1.5rem'/>
+									<In3Days size='1.5rem' />
 								</button>
 							</TooltipTrigger>
 							<TooltipContent className='bg-sky-500'>
@@ -142,11 +141,11 @@ export function DatePickerWithPresets({
 									onClick={() => {
 										setNewTodo((old) => ({
 											...old,
-											dueDate: addDays(new Date(), 7),
+											dueDate: addDays(new Date(), 7)
 										}));
 										closePopover();
 									}}>
-									<InAWeek size='1.5rem'/>
+									<InAWeek size='1.5rem' />
 								</button>
 							</TooltipTrigger>
 							<TooltipContent className='bg-rose-500'>
@@ -162,11 +161,11 @@ export function DatePickerWithPresets({
 									onClick={() => {
 										setNewTodo((old) => ({
 											...old,
-											dueDate: undefined,
+											dueDate: undefined
 										}));
 										closePopover();
 									}}>
-									<NoDate size='1.5rem'/>
+									<NoDate size='1.5rem' />
 								</button>
 							</TooltipTrigger>
 							<TooltipContent className='bg-gray-500'>
@@ -182,12 +181,17 @@ export function DatePickerWithPresets({
 						onSelect={(date) => {
 							setNewTodo((old) => ({
 								...old,
-								dueDate: date,
+								dueDate: date
 							}));
 							closePopover();
 						}}
 					/>
 				</div>
+				<form style={{ marginBlockEnd: '1em' }} className='flex flex-col'>
+					<label className='justify-around'>
+						Set the time: <input type='time' value={0} />
+					</label>
+				</form>
 			</PopoverContent>
 		</Popover>
 	);
