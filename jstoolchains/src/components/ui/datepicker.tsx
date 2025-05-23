@@ -8,7 +8,8 @@ import {
 	ArrowRight3 as In3Days,
 	Forward as InAWeek,
 	Calendar as CalendarIcon,
-	CalendarRemove as NoDate
+	CalendarRemove as NoDate,
+	Clock
 } from 'iconsax-reactjs';
 
 import {
@@ -18,7 +19,7 @@ import {
 	TooltipTrigger
 } from '../ui/tooltip';
 
-import { addDays, format } from 'date-fns';
+import { addDays, format, setHours, setMinutes } from 'date-fns';
 
 import { cn } from '../../lib/utils';
 import { Button } from './button';
@@ -32,11 +33,11 @@ export function DatePickerWithPresets({
 	setNewTodo,
 	isDisabled
 }: DatePickerProps): React.JSX.Element {
-	if (newTodo.dueDate !== undefined) {
-		console.log('Current date: ', newTodo.dueDate);
-	}
-
 	const [isOpen, setIsOpen] = React.useState(false);
+	// If dueDate exists, take it from current dueDate value, otherwise default to 12AM
+	const [timeInput, setTimeInput] = React.useState<string>(
+		newTodo.dueDate ? format(newTodo.dueDate as Date, 'HH:mm') : '00:00'
+	);
 
 	const openPopover = (): void => {
 		setIsOpen(true);
@@ -45,6 +46,57 @@ export function DatePickerWithPresets({
 	const closePopover = (): void => {
 		setIsOpen(false);
 	};
+
+	const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+		const newTime = e.target.value;
+		setTimeInput(newTime);
+
+		if (newTodo.dueDate && newTime.match(/^([01]\d|2[0-3]):([0-5]\d)$/)) {
+			const [hours, minutes] = newTime.split(':').map(Number);
+			let updatedDate = setHours(newTodo.dueDate as Date, hours);
+			updatedDate = setMinutes(updatedDate, minutes);
+			setNewTodo((old) => ({
+				...old,
+				dueDate: updatedDate
+			}));
+		}
+	};
+
+	const handleDateSelect = (date: Date | undefined): void => {
+		if (date) {
+			let updatedDate = date;
+			if (timeInput.match(/^([01]\d|2[0-3]):([0-5]\d)$/)) {
+				const [hours, minutes] = timeInput.split(':').map(Number);
+				updatedDate = setHours(updatedDate, hours);
+				updatedDate = setMinutes(updatedDate, minutes);
+			} else if (newTodo.dueDate) {
+				// If no valid time input, but a previous dueDate exists, retain its time
+				updatedDate = setHours(
+					updatedDate,
+					(newTodo.dueDate as Date).getHours()
+				);
+				updatedDate = setMinutes(
+					updatedDate,
+					(newTodo.dueDate as Date).getMinutes()
+				);
+			} else {
+				// If no valid time input and no previous dueDate, default to current time
+				updatedDate = setHours(updatedDate, new Date().getHours());
+				updatedDate = setMinutes(updatedDate, new Date().getMinutes());
+			}
+			setNewTodo((old) => ({
+				...old,
+				dueDate: updatedDate
+			}));
+			//setTimeInput(format(updatedDate as Date, 'HH:mm'));
+		} else {
+			setNewTodo((old) => ({
+				...old,
+				dueDate: undefined
+			}));
+		}
+	};
+
 	return (
 		<Popover modal={true} open={isOpen} onOpenChange={setIsOpen}>
 			<PopoverTrigger asChild>
@@ -54,13 +106,10 @@ export function DatePickerWithPresets({
 						'w-full justify-start text-left font-normal',
 						newTodo.dueDate === undefined && 'text-muted-foreground'
 					)}
-					disabled={isDisabled}
-					onClick={() => {
-						openPopover();
-					}}>
+					disabled={isDisabled}>
 					<CalendarIcon className='mr-2 h-6 w-6' />
 					{newTodo.dueDate !== undefined ? (
-						format(newTodo.dueDate as Date, 'E, MMM do')
+						format(newTodo.dueDate as Date, 'E, MMM do, hh:mm a')
 					) : (
 						<span>Due date</span>
 					)}
@@ -79,11 +128,8 @@ export function DatePickerWithPresets({
 								<button
 									className='text-emerald-500 hover:text-emerald-600'
 									onClick={() => {
-										setNewTodo((old) => ({
-											...old,
-											dueDate: addDays(new Date(), 0)
-										}));
-										closePopover();
+										const today = addDays(new Date(), 0);
+										handleDateSelect(today);
 									}}>
 									<Today size='1.5rem' />
 								</button>
@@ -99,11 +145,8 @@ export function DatePickerWithPresets({
 								<button
 									className='text-amber-500 hover:text-amber-600'
 									onClick={() => {
-										setNewTodo((old) => ({
-											...old,
-											dueDate: addDays(new Date(), 1)
-										}));
-										closePopover();
+										const tomorrow = addDays(new Date(), 1);
+										handleDateSelect(tomorrow);
 									}}>
 									<Tomorrow size='1.5rem' />
 								</button>
@@ -119,11 +162,8 @@ export function DatePickerWithPresets({
 								<button
 									className='text-cyan-500 hover:text-cyan-600'
 									onClick={() => {
-										setNewTodo((old) => ({
-											...old,
-											dueDate: addDays(new Date(), 3)
-										}));
-										closePopover();
+										const in3Days = addDays(new Date(), 3);
+										handleDateSelect(in3Days);
 									}}>
 									<In3Days size='1.5rem' />
 								</button>
@@ -139,11 +179,8 @@ export function DatePickerWithPresets({
 								<button
 									className='text-rose-500 hover:text-rose-600'
 									onClick={() => {
-										setNewTodo((old) => ({
-											...old,
-											dueDate: addDays(new Date(), 7)
-										}));
-										closePopover();
+										const inAWeek = addDays(new Date(), 7);
+										handleDateSelect(inAWeek);
 									}}>
 									<InAWeek size='1.5rem' />
 								</button>
@@ -159,11 +196,7 @@ export function DatePickerWithPresets({
 								<button
 									className='text-gray-500 hover:text-gray-600'
 									onClick={() => {
-										setNewTodo((old) => ({
-											...old,
-											dueDate: undefined
-										}));
-										closePopover();
+										handleDateSelect(undefined);
 									}}>
 									<NoDate size='1.5rem' />
 								</button>
@@ -178,20 +211,26 @@ export function DatePickerWithPresets({
 					<Calendar
 						mode='single'
 						selected={newTodo.dueDate as Date}
-						onSelect={(date) => {
-							setNewTodo((old) => ({
-								...old,
-								dueDate: date
-							}));
-							closePopover();
-						}}
+						onSelect={handleDateSelect}
 					/>
 				</div>
-				<form style={{ marginBlockEnd: '1em' }} className='flex flex-col'>
-					<label className='justify-around'>
-						Set the time: <input type='time' value={0} />
+				<div className='flex items-center justify-center p-2'>
+					<Clock size='1.5rem' className='mr-2 text-fuchsia-500' />
+					<label className='flex items-center gap-2'>
+						<div className='text-sm'>
+							Set <span className='mr-1 font-semibold'>time:</span>
+						</div>
+						<input
+							type='time'
+							value={timeInput}
+							onChange={handleTimeChange}
+							className='rounded-md border p-1 text-sm hover:cursor-pointer'
+						/>
 					</label>
-				</form>
+				</div>
+				<Button onClick={closePopover} className='mt-2 w-full'>
+					Done
+				</Button>
 			</PopoverContent>
 		</Popover>
 	);
