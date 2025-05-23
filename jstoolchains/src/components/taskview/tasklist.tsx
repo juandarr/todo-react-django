@@ -152,7 +152,7 @@ export default function TaskList({
 		<div className={`content mb-3 ${isComplete ? '' : 'is-open'}`}>
 			<div className='inner'>
 				{/* Sorting Controls */}
-				{!isComplete && (
+				{!isComplete && internalTodos.length !== 0 && (
 					<div className='flex items-center space-x-2 px-6 py-3'>
 						<Select
 							value={sortType}
