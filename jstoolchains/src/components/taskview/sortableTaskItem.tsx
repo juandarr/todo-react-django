@@ -66,7 +66,10 @@ export default function SortableTaskItem({
 		year: 'numeric',
 		month: 'short',
 		day: 'numeric',
-		timeZone: user.timeZone
+		hour: 'numeric',
+		minute: 'numeric',
+		timeZone: user.timeZone,
+		hour12: true
 	};
 
 	const editHandler = (
@@ -343,10 +346,7 @@ export default function SortableTaskItem({
 											: ''
 									} `}>
 									{todo.dueDate !== undefined
-										? (todo.dueDate as Date).toLocaleDateString(
-												'en-US',
-												options
-											)
+										? (todo.dueDate as Date).toLocaleString('en-US', options)
 										: ''}
 								</div>
 							</div>
