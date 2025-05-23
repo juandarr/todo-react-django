@@ -32,9 +32,9 @@ import { PriorityEnum } from '../../lib/userSettings';
 
 import { waitForElementToExist } from '../../lib/utils';
 // import { DatePickerWithPresets } from '../ui/datepicker'; // Removed static import
-const DatePickerWithPresets = React.lazy(() =>
-	import('../ui/datepicker').then((module) => ({
-		default: module.DatePickerWithPresets
+const DateTimePickerWithPresets = React.lazy(() =>
+	import('../ui/datetimepicker').then((module) => ({
+		default: module.DateTimePickerWithPresets
 	}))
 ); // Added lazy import
 // import TextEditor from '../ui/textEditor'; // Removed static import
@@ -331,7 +331,7 @@ export default function EditModalTodo({
 
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-between'>
 						<React.Suspense fallback={<div>Loading date picker...</div>}>
-							<DatePickerWithPresets
+							<DateTimePickerWithPresets
 								newTodo={newEditTodo}
 								setNewTodo={setNewEditTodo}
 								isDisabled={status === 'submitting'}
