@@ -227,7 +227,9 @@ export function DateTimePickerWithPresets({
 						/>
 					</label>
 				</div>
-				<Button onClick={closePopover} className='mt-2 w-full'>
+				<Button
+					onClick={closePopover}
+					className='mt-2 flex w-full items-center justify-center rounded-xl border-2 border-black bg-violet-500 p-3 text-black hover:bg-violet-600 focus-visible:ring-2 focus-visible:ring-violet-500 disabled:bg-violet-200'>
 					Done
 				</Button>
 			</PopoverContent>
