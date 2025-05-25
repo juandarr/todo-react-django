@@ -17,7 +17,7 @@ import {
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger
-} from '../ui/tooltip';
+} from './tooltip';
 
 import { addDays, format, setHours, setMinutes } from 'date-fns';
 
@@ -28,7 +28,7 @@ import { Popover, PopoverContent, PopoverTrigger } from './popover';
 
 import { type DatePickerProps } from '../../lib/customTypes';
 
-export function DatePickerWithPresets({
+export function DateTimePickerWithPresets({
 	newTodo,
 	setNewTodo,
 	isDisabled
@@ -88,7 +88,6 @@ export function DatePickerWithPresets({
 				...old,
 				dueDate: updatedDate
 			}));
-			//setTimeInput(format(updatedDate as Date, 'HH:mm'));
 		} else {
 			setNewTodo((old) => ({
 				...old,

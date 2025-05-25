@@ -43,7 +43,7 @@ export default function TaskList({
 	isComplete
 }: TaskListProps): React.JSX.Element {
 	const [sortType, setSortType] = useState<'custom' | 'dueDate' | 'priority'>(
-		'custom'
+		'dueDate'
 	);
 	const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 	const [internalTodos, setInternalTodos] = useState<Todo[]>(todos);
@@ -79,16 +79,26 @@ export default function TaskList({
 			});
 		} else if (sortType === 'priority') {
 			sortedTodos.sort((a, b) => {
-				const priorityA = a.priority !== undefined ? a.priority : 4; // Treat undefined priority as 4 (None)
-				const priorityB = b.priority !== undefined ? b.priority : 4; // Treat undefined priority as 4 (None)
+				// Primary sort: by priority
+				const priorityA = a.priority !== undefined ? a.priority : 4; // Treat undefined as 4 (None)
+				const priorityB = b.priority !== undefined ? b.priority : 4; // Treat undefined as 4 (None)
 
-				if (sortDirection === 'asc') {
-					// Ascending: 4 (None) to 1 (High)
-					return priorityB - priorityA;
-				} else {
-					// Descending: 1 (High) to 4 (None)
-					return priorityA - priorityB;
+				// Determine the priority difference based on sort direction
+				const priorityDifference =
+					sortDirection === 'asc'
+						? priorityB - priorityA // Ascending: 4 (None) to 1 (High)
+						: priorityA - priorityB; // Descending: 1 (High) to 4 (None)
+
+				// If priorities are different, sort by priority
+				if (priorityDifference !== 0) {
+					return priorityDifference;
 				}
+
+				// Secondary sort: by dueDate (only if priorities are the same)
+				const dateA = a.dueDate ? new Date(a.dueDate).getTime() : Infinity;
+				const dateB = b.dueDate ? new Date(b.dueDate).getTime() : Infinity;
+
+				return dateA - dateB;
 			});
 		}
 		setInternalTodos(sortedTodos);
@@ -152,16 +162,18 @@ export default function TaskList({
 		<div className={`content mb-3 ${isComplete ? '' : 'is-open'}`}>
 			<div className='inner'>
 				{/* Sorting Controls */}
-				{!isComplete && (
+				{!isComplete && internalTodos.length !== 0 && (
 					<div className='flex items-center space-x-2 px-6 py-3'>
 						<Select
 							value={sortType}
 							onValueChange={(value: 'custom' | 'dueDate' | 'priority') => {
-								setSortType(value);
 								// If switching to due date or priority, reset direction to ascending
-								if (value === 'dueDate' || value === 'priority') {
+								if (value === 'dueDate' && value !== sortType) {
 									setSortDirection('asc');
+								} else if (value === 'priority' && value !== sortType) {
+									setSortDirection('desc');
 								}
+								setSortType(value);
 							}}>
 							<SelectTrigger className='h-6 w-[120px] rounded-xl bg-violet-300 px-1 py-0.5 text-xs font-semibold text-violet-600'>
 								<SelectValue placeholder='Sort By' />

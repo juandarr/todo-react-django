@@ -30,10 +30,10 @@ import type { CreateModalTodoProps, todoType } from '../../lib/customTypes';
 import { PriorityEnum } from '../../lib/userSettings';
 import { isDescendantOf } from '../../lib/utils';
 import useAutosizeTextArea from '../../hooks/useAutosizeTextArea';
-//import { DatePickerWithPresets } from '../ui/datepicker'; // Removed static import
-const DatePickerWithPresets = React.lazy(() =>
-	import('../ui/datepicker').then((module) => ({
-		default: module.DatePickerWithPresets
+
+const DateTimePickerWithPresets = React.lazy(() =>
+	import('../ui/datetimepicker').then((module) => ({
+		default: module.DateTimePickerWithPresets
 	}))
 ); // Added lazy import
 import { UserContext } from '../../contexts/UserContext';
@@ -314,7 +314,7 @@ export default function CreateModalTodo({
 					</div>
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-start'>
 						<React.Suspense fallback={<div>Loading date picker...</div>}>
-							<DatePickerWithPresets
+							<DateTimePickerWithPresets
 								newTodo={newTodo}
 								setNewTodo={setNewTodo}
 								isDisabled={status === 'submitting'}
