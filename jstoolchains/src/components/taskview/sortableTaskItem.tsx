@@ -61,17 +61,24 @@ export default function SortableTaskItem({
 		newTodoEdit.title
 	);
 
-	const options: Intl.DateTimeFormatOptions = {
+	const optionsFull: Intl.DateTimeFormatOptions = {
 		weekday: 'short',
 		year: 'numeric',
 		month: 'short',
 		day: 'numeric',
+		timeZone: user.timeZone,
 		hour: 'numeric',
 		minute: 'numeric',
-		timeZone: user.timeZone,
 		hour12: true
 	};
 
+	const optionsShort: Intl.DateTimeFormatOptions = {
+		weekday: 'short',
+		year: 'numeric',
+		month: 'short',
+		day: 'numeric',
+		timeZone: user.timeZone
+	};
 	const editHandler = (
 		event:
 			| React.MouseEvent<HTMLDivElement>
@@ -346,7 +353,16 @@ export default function SortableTaskItem({
 											: ''
 									} `}>
 									{todo.dueDate !== undefined
-										? (todo.dueDate as Date).toLocaleString('en-US', options)
+										? todo.dueDate?.getHours() === 0 &&
+											todo.dueDate?.getMinutes() === 0
+											? (todo.dueDate as Date).toLocaleString(
+													'en-US',
+													optionsShort
+												) + ', all day'
+											: (todo.dueDate as Date).toLocaleString(
+													'en-US',
+													optionsFull
+												)
 										: ''}
 								</div>
 							</div>
@@ -359,11 +375,10 @@ export default function SortableTaskItem({
 							<div className='flex items-center justify-start text-gray-600'>
 								<ListChecks className='mr-1' size={'1.2rem'} />
 								<div className='text-xs'>
-									{(todo.completedAt as Date).toLocaleString('en-US', {
-										...options,
-										hour: 'numeric',
-										minute: 'numeric'
-									})}
+									{(todo.completedAt as Date).toLocaleString(
+										'en-US',
+										optionsFull
+									)}
 								</div>
 							</div>
 						</div>
