@@ -43,7 +43,7 @@ export default function TaskList({
 	isComplete
 }: TaskListProps): React.JSX.Element {
 	const [sortType, setSortType] = useState<'custom' | 'dueDate' | 'priority'>(
-		'custom'
+		'dueDate'
 	);
 	const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 	const [internalTodos, setInternalTodos] = useState<Todo[]>(todos);
@@ -167,11 +167,13 @@ export default function TaskList({
 						<Select
 							value={sortType}
 							onValueChange={(value: 'custom' | 'dueDate' | 'priority') => {
-								setSortType(value);
 								// If switching to due date or priority, reset direction to ascending
-								if (value === 'dueDate' || value === 'priority') {
+								if (value === 'dueDate' && value !== sortType) {
 									setSortDirection('asc');
+								} else if (value === 'priority' && value !== sortType) {
+									setSortDirection('desc');
 								}
+								setSortType(value);
 							}}>
 							<SelectTrigger className='h-6 w-[120px] rounded-xl bg-violet-300 px-1 py-0.5 text-xs font-semibold text-violet-600'>
 								<SelectValue placeholder='Sort By' />
