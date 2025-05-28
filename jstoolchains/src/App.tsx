@@ -205,15 +205,21 @@ export default function App(): React.JSX.Element {
 		if ('dueDate' in todo) {
 			tmp.dueDate = todo.dueDate as Date;
 		} else {
+			const tmpDate = new Date();
+			// If view is today view
 			if (currentView.id === userInfo.inboxListId + 1) {
-				tmp.dueDate = new Date();
-			} else if (currentView.id === userInfo.inboxListId + 2) {
-				const tmpD = new Date();
+				tmp.dueDate = new Date(
+					tmpDate.getFullYear(),
+					tmpDate.getMonth(),
+					tmpDate.getDate()
+				);
+			} //If view is upcoming view
+			else if (currentView.id === userInfo.inboxListId + 2) {
 				tmp.dueDate = new Date(
 					new Date(
-						tmpD.getFullYear(),
-						tmpD.getMonth(),
-						tmpD.getDate()
+						tmpDate.getFullYear(),
+						tmpDate.getMonth(),
+						tmpDate.getDate()
 					).getTime() +
 						24 * 60 * 60 * 1000
 				);
