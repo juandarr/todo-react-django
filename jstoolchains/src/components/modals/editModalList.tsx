@@ -219,7 +219,7 @@ export default function EditModalList({
 							<span id='maximum'>/75</span>
 						</div>
 					</div>
-					<div className='mb-4 ml-4 mr-4 mt-1 flex items-center justify-between'>
+					<div className='m-4 mt-1 flex items-center justify-between'>
 						<div className='flex justify-end'>
 							<DeleteModalList
 								deleteFunction={deleteFunction}
