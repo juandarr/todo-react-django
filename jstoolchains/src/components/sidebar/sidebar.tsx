@@ -275,7 +275,7 @@ export default function SideBar({
 						/>
 					</div>
 				</div>
-				<div className='content'>
+				<div className='content ml-[0.7rem]'>
 					{archivedLists.length === 0 ? (
 						<div className='inner'>
 							<div className={`p-1 pl-2 text-base text-gray-600`}>
