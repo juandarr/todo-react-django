@@ -42,7 +42,7 @@ export default function TaskList({
 	editTodoFull,
 	isComplete
 }: TaskListProps): React.JSX.Element {
-	const [sortType, setSortType] = useState<'custom' | 'dueDate' | 'priority'>(
+	const [sortType, setSortType] = useState<'manual' | 'dueDate' | 'priority'>(
 		'dueDate'
 	);
 	const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
@@ -53,8 +53,8 @@ export default function TaskList({
 	useEffect(() => {
 		let sortedTodos = [...todos];
 
-		if (sortType === 'custom') {
-			// Sort by custom order using the ordering from the current list
+		if (sortType === 'manual') {
+			// Sort by manually defined order using the ordering from the current list
 			const currentList = lists.find((list) => list.id === currentView.id);
 			const order = currentList?.ordering?.order || [];
 			sortedTodos.sort((a, b) => {
@@ -156,7 +156,7 @@ export default function TaskList({
 	}
 
 	// Disable D&D when sorting by due date or priority
-	const isDragAndDropEnabled = sortType === 'custom';
+	const isDragAndDropEnabled = sortType === 'manual';
 
 	return (
 		<div className={`content mb-3 ${isComplete ? '' : 'is-open'}`}>
@@ -166,7 +166,7 @@ export default function TaskList({
 					<div className='flex items-center space-x-2 px-6 py-3'>
 						<Select
 							value={sortType}
-							onValueChange={(value: 'custom' | 'dueDate' | 'priority') => {
+							onValueChange={(value: 'manual' | 'dueDate' | 'priority') => {
 								// If switching to due date or priority, reset direction to ascending
 								if (value === 'dueDate' && value !== sortType) {
 									setSortDirection('asc');
@@ -179,8 +179,8 @@ export default function TaskList({
 								<SelectValue placeholder='Sort By' />
 							</SelectTrigger>
 							<SelectContent>
-								<SelectItem value='custom' className='text-xs'>
-									Custom
+								<SelectItem value='manual' className='text-xs'>
+									Manual
 								</SelectItem>
 								<SelectItem value='dueDate' className='text-xs'>
 									Due Date
