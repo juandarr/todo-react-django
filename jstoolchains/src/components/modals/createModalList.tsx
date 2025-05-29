@@ -8,7 +8,7 @@ import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
-	TooltipTrigger,
+	TooltipTrigger
 } from '../ui/tooltip';
 
 import {
@@ -16,13 +16,13 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 	PopoverArrow,
-	PopoverClose,
+	PopoverClose
 } from '../ui/popover';
 
 import { useToast } from '../ui/toast/use-toast';
 
 export default function CreateModalList({
-	addList,
+	addList
 }: CreateModalListProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
 
@@ -34,7 +34,7 @@ export default function CreateModalList({
 	const { toast } = useToast();
 
 	const createHandleSubmit = async (
-		event: React.FormEvent<HTMLFormElement>,
+		event: React.FormEvent<HTMLFormElement>
 	): Promise<void> => {
 		event.preventDefault();
 		if (newList === '') return;
@@ -44,7 +44,7 @@ export default function CreateModalList({
 			await addList(newList);
 			toast({
 				title: 'List was created!',
-				description: '',
+				description: ''
 			});
 			closePopover();
 		} catch (error) {
@@ -52,7 +52,7 @@ export default function CreateModalList({
 				toast({
 					variant: 'destructive',
 					title: 'There was an error creating list: ',
-					description: error.message,
+					description: error.message
 				});
 			}
 			setStatus('typing');
@@ -135,7 +135,8 @@ export default function CreateModalList({
 							<span id='maximum'>/75</span>
 						</div>
 					</div>
-					<div className='mb-4 ml-4 mr-4 flex items-center justify-end'>
+
+					<div className='m-4 mt-1 flex items-center justify-end'>
 						<button
 							type='submit'
 							className='ml-4 flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'
