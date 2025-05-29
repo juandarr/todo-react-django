@@ -31,14 +31,15 @@ import { PriorityEnum } from '../../lib/userSettings';
 import { isDescendantOf } from '../../lib/utils';
 import useAutosizeTextArea from '../../hooks/useAutosizeTextArea';
 
-const DateTimePickerWithPresets = React.lazy(() =>
+/*const DateTimePickerWithPresets = React.lazy(() =>
 	import('../ui/datetimepicker').then((module) => ({
 		default: module.DateTimePickerWithPresets
 	}))
-); // Added lazy import
+);*/ // Added lazy import
+import { DateTimePickerWithPresets } from '../ui/datetimepicker'; // static import
 import { UserContext } from '../../contexts/UserContext';
-// import TextEditor from '../ui/textEditor'; // Removed static import
-const TextEditor = React.lazy(() => import('../ui/textEditor')); // Added lazy import
+//const TextEditor = React.lazy(() => import('../ui/textEditor')); // lazy import
+import TextEditor from '../ui/textEditor'; // static import
 
 export default function CreateModalTodo({
 	lists,
@@ -228,19 +229,19 @@ export default function CreateModalTodo({
 							<span>/100</span>
 						</div>
 					</div>
-					<React.Suspense fallback={<div>Loading editor...</div>}>
-						<TextEditor
-							ref={editorRef}
-							todoDescription={newTodo.description}
-							charLimit={1000}
-							isDisabled={status === 'submitting'}
-							id='todoDescription'
-							className='mt-1 max-h-[40vh] overflow-y-auto rounded-b-lg bg-gray-300 text-sm text-gray-900 placeholder:text-gray-400'
-							onKeyDown={(e) => {
-								handleKeyDown(e);
-							}}
-						/>
-					</React.Suspense>
+					{/*<React.Suspense fallback={<div>Loading editor...</div>}>*/}
+					<TextEditor
+						ref={editorRef}
+						todoDescription={newTodo.description}
+						charLimit={1000}
+						isDisabled={status === 'submitting'}
+						id='todoDescription'
+						className='mt-1 max-h-[40vh] overflow-y-auto rounded-b-lg bg-gray-300 text-sm text-gray-900 placeholder:text-gray-400'
+						onKeyDown={(e) => {
+							handleKeyDown(e);
+						}}
+					/>
+					{/*</React.Suspense>*/}
 					<div className='mb-3 ml-4 mr-4 mt-3 flex items-center justify-around'>
 						<Select
 							value={newTodo.priority}
@@ -313,13 +314,13 @@ export default function CreateModalTodo({
 						</Select>
 					</div>
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-start'>
-						<React.Suspense fallback={<div>Loading date picker...</div>}>
-							<DateTimePickerWithPresets
-								newTodo={newTodo}
-								setNewTodo={setNewTodo}
-								isDisabled={status === 'submitting'}
-							/>
-						</React.Suspense>
+						{/* 						<React.Suspense fallback={<div>Loading date picker...</div>}> */}
+						<DateTimePickerWithPresets
+							newTodo={newTodo}
+							setNewTodo={setNewTodo}
+							isDisabled={status === 'submitting'}
+						/>
+						{/* 						</React.Suspense> */}
 					</div>
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-end'>
 						<button

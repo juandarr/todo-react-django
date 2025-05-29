@@ -31,14 +31,14 @@ import type { EditModalTodoProps, todoType } from '../../lib/customTypes';
 import { PriorityEnum } from '../../lib/userSettings';
 
 import { waitForElementToExist } from '../../lib/utils';
-// import { DatePickerWithPresets } from '../ui/datepicker'; // Removed static import
-const DateTimePickerWithPresets = React.lazy(() =>
+/*const DateTimePickerWithPresets = React.lazy(() =>
 	import('../ui/datetimepicker').then((module) => ({
 		default: module.DateTimePickerWithPresets
 	}))
-); // Added lazy import
-// import TextEditor from '../ui/textEditor'; // Removed static import
-const TextEditor = React.lazy(() => import('../ui/textEditor')); // Added lazy import
+);*/ // Lazy import
+import { DateTimePickerWithPresets } from '../ui/datetimepicker'; // Static import
+//const TextEditor = React.lazy(() => import('../ui/textEditor')); // Lazy import
+import TextEditor from '../ui/textEditor'; // Static import
 import useAutosizeTextArea from '../../hooks/useAutosizeTextArea';
 import DeleteModalTodo from './deleteModalTodo';
 
@@ -244,19 +244,19 @@ export default function EditModalTodo({
 							<span>/100</span>
 						</div>
 					</div>
-					<React.Suspense fallback={<div>Loading editor...</div>}>
-						<TextEditor
-							ref={editorRef}
-							todoDescription={todo.description}
-							charLimit={1000}
-							isDisabled={status === 'submitting'}
-							id='todoDescription'
-							className='mt-1 max-h-[40vh] overflow-y-auto rounded-b-lg bg-gray-300 text-sm text-gray-900 placeholder:text-gray-400'
-							onKeyDown={(e) => {
-								handleKeyDown(e);
-							}}
-						/>
-					</React.Suspense>
+					{/* 					<React.Suspense fallback={<div>Loading editor...</div>}> */}
+					<TextEditor
+						ref={editorRef}
+						todoDescription={todo.description}
+						charLimit={1000}
+						isDisabled={status === 'submitting'}
+						id='todoDescription'
+						className='mt-1 max-h-[40vh] overflow-y-auto rounded-b-lg bg-gray-300 text-sm text-gray-900 placeholder:text-gray-400'
+						onKeyDown={(e) => {
+							handleKeyDown(e);
+						}}
+					/>
+					{/* 					</React.Suspense> */}
 					<div className='mb-3 ml-4 mr-4 mt-3 flex items-center justify-between'>
 						<Select
 							value={newEditTodo.priority}
@@ -330,13 +330,13 @@ export default function EditModalTodo({
 					</div>
 
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-between'>
-						<React.Suspense fallback={<div>Loading date picker...</div>}>
-							<DateTimePickerWithPresets
-								newTodo={newEditTodo}
-								setNewTodo={setNewEditTodo}
-								isDisabled={status === 'submitting'}
-							/>
-						</React.Suspense>
+						{/* 						<React.Suspense fallback={<div>Loading date picker...</div>}> */}
+						<DateTimePickerWithPresets
+							newTodo={newEditTodo}
+							setNewTodo={setNewEditTodo}
+							isDisabled={status === 'submitting'}
+						/>
+						{/* 						</React.Suspense> */}
 					</div>
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-between'>
 						<div className='flex justify-end'>
