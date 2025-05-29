@@ -41,7 +41,9 @@ export default function SortableListItem({
 
 	return (
 		<div ref={setNodeRef} style={style} className={`${dynamicClasses}`}>
-			<div key={list.id} className='parent flex items-center justify-between'>
+			<div
+				key={list.id}
+				className='parent ml-[-1rem] flex items-center justify-between'>
 				<button
 					className={`cursor-grab ${draggingItemId !== null && !isDragging ? 'invisible' : 'hidden-child'}`}
 					{...attributes}
@@ -53,7 +55,7 @@ export default function SortableListItem({
 						currentView.id === list.id
 							? 'list-active-selected rounded-md bg-cyan-200 font-semibold'
 							: ''
-					} lists-active truncate rounded-xl p-1 pl-2 text-base`}
+					} lists-active truncate rounded-xl p-1 text-base`}
 					onClick={() => {
 						changeCurrentView(list.id as number);
 					}}>
