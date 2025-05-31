@@ -9,6 +9,7 @@ import {
 	Edit
 } from 'iconsax-reactjs';
 
+import EmojiPicker, { EmojiClickData, EmojiStyle } from 'emoji-picker-react';
 import {
 	Tooltip,
 	TooltipContent,
@@ -38,6 +39,8 @@ export default function EditModalList({
 	const [isOpen, setIsOpen] = useState(false);
 
 	const [listEdit, setListEdit] = useState<string>('');
+	const [selectedEmoji, setSelectedEmoji] = useState('');
+
 	const [status, setStatus] = useState('typing');
 
 	const inputTitle = useRef<HTMLInputElement>(null);
@@ -65,6 +68,8 @@ export default function EditModalList({
 		setStatus('submitting');
 
 		try {
+			const listTitleWithEmoji = `${selectedEmoji} ${tmpList.title}`;
+			tmpList.title = listTitleWithEmoji;
 			const updatedList = await editList(id, tmpList);
 			console.log('Updated list: ', updatedList);
 			toast({
@@ -127,9 +132,15 @@ export default function EditModalList({
 		}
 	};
 
+	const onEmojiClick = (emojiData: EmojiClickData) => {
+		setSelectedEmoji(emojiData.emoji);
+	};
+
 	const openPopover = (): void => {
 		removeHidden();
-		setListEdit(listData.title);
+		const [emoji, ...titleStr] = listData.title.split(' ');
+		setSelectedEmoji(emoji);
+		setListEdit(titleStr.join(' '));
 		setStatus('typing');
 		setIsOpen(true);
 	};
@@ -174,7 +185,7 @@ export default function EditModalList({
 					event.preventDefault();
 					addHidden();
 				}}
-				className='w-80 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
+				className='min-w-80 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
 				<form
 					id='editlistform'
 					className='flex flex-col'
@@ -184,31 +195,51 @@ export default function EditModalList({
 							.catch(() => {});
 					}}>
 					<div className='relative flex flex-1 flex-col'>
-						<input
-							id='listName'
-							name='title'
-							type='text'
-							ref={inputTitle}
-							value={listEdit}
-							placeholder='Name this list'
-							className='m-4 h-10 rounded-xl bg-gray-300 p-4 text-gray-900 placeholder:text-gray-400 focus-within:outline focus-within:outline-2 focus-within:outline-violet-500'
-							onChange={(event) => {
-								setListEdit(event.target.value);
-							}}
-							onFocus={(e) => {
-								if (inputTitleCount.current instanceof HTMLDivElement) {
-									inputTitleCount.current.style.display = 'block';
-								}
-							}}
-							onBlur={(e) => {
-								(inputTitleCount.current as HTMLDivElement).style.display =
-									'none';
-							}}
-							disabled={status === 'submitting'}
-							autoFocus
-							maxLength={75}
-							required
-						/>
+						<div className='m-4 flex items-center'>
+							<Popover modal={true}>
+								<PopoverTrigger
+									asChild={true}
+									className='cursor-pointer text-4xl'>
+									<span className='flex-shrink-0 pl-0 pr-2'>
+										{selectedEmoji}
+									</span>
+								</PopoverTrigger>
+								<PopoverContent className='w-fit p-0'>
+									<EmojiPicker
+										onEmojiClick={onEmojiClick}
+										emojiStyle={EmojiStyle.GOOGLE}
+										lazyLoadEmojis={true}
+										skinTonesDisabled={true}
+										searchDisabled={false}
+									/>
+								</PopoverContent>
+							</Popover>
+							<input
+								id='listName'
+								name='title'
+								type='text'
+								ref={inputTitle}
+								value={listEdit}
+								placeholder='Name this list'
+								className='h-10 min-w-0 flex-1 rounded-xl bg-gray-300 p-4 text-gray-900 placeholder:text-gray-400 focus-within:outline focus-within:outline-2 focus-within:outline-violet-500'
+								onChange={(event) => {
+									setListEdit(event.target.value);
+								}}
+								onFocus={(e) => {
+									if (inputTitleCount.current instanceof HTMLDivElement) {
+										inputTitleCount.current.style.display = 'block';
+									}
+								}}
+								onBlur={(e) => {
+									(inputTitleCount.current as HTMLDivElement).style.display =
+										'none';
+								}}
+								disabled={status === 'submitting'}
+								autoFocus
+								maxLength={75}
+								required
+							/>
+						</div>
 						<div
 							id='listTitleCount'
 							ref={inputTitleCount}
