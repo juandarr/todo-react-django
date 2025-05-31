@@ -118,7 +118,7 @@ export default function CreateModalList({
 								<PopoverTrigger
 									asChild={true}
 									className='cursor-pointer text-4xl'>
-									<span className='flex-shrink-0 pl-0 pr-2'>
+									<span className='flex-shrink-0 pl-0 pr-2 hover:opacity-70'>
 										{selectedEmoji}
 									</span>
 								</PopoverTrigger>
@@ -130,6 +130,8 @@ export default function CreateModalList({
 										skinTonesDisabled={true}
 										searchDisabled={false}
 									/>
+
+									<PopoverArrow className='fill-amber-500' />
 								</PopoverContent>
 							</Popover>
 							<input
