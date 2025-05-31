@@ -46,7 +46,10 @@ export default function NavBar({
 	const user = useContext(UserContext);
 
 	const homeCallback = (event: KeyboardEvent): void => {
-		if (!isDescendantOf(event.target as HTMLElement, 'form')) {
+		if (
+			!isDescendantOf(event.target as HTMLElement, 'form') &&
+			!isDescendantOf(event.target as HTMLElement, 'aside')
+		) {
 			if (event.key === 'h') {
 				event.preventDefault();
 				changeCurrentView(user.homeListId);
