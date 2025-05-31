@@ -140,7 +140,10 @@ export default function App(): React.JSX.Element {
 	// HTMLElement with a form as an ancestor
 	useEffect(() => {
 		const toggleSidebarCallback = (event: KeyboardEvent): void => {
-			if (!isDescendantOf(event.target as HTMLElement, 'form')) {
+			if (
+				!isDescendantOf(event.target as HTMLElement, 'form') &&
+				!isDescendantOf(event.target as HTMLElement, 'aside')
+			) {
 				if (
 					event.key === 's' &&
 					!event.metaKey &&

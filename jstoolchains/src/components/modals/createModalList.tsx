@@ -3,6 +3,7 @@ import React, { useState, useRef } from 'react';
 import type { CreateModalListProps } from '../../lib/customTypes';
 
 import { CloseSquare, ArchiveAdd } from 'iconsax-reactjs';
+import EmojiPicker, { EmojiClickData, EmojiStyle } from 'emoji-picker-react';
 
 import {
 	Tooltip,
@@ -27,6 +28,7 @@ export default function CreateModalList({
 	const [isOpen, setIsOpen] = useState(false);
 
 	const [newList, setNewList] = useState('');
+	const [selectedEmoji, setSelectedEmoji] = useState('📓');
 	const [status, setStatus] = useState('typing');
 
 	const inputRefCount = useRef<HTMLDivElement>(null);
@@ -41,7 +43,10 @@ export default function CreateModalList({
 		setStatus('submitting');
 
 		try {
-			await addList(newList);
+			const listTitleWithEmoji = selectedEmoji
+				? `${selectedEmoji} ${newList}`
+				: newList;
+			await addList(listTitleWithEmoji);
 			toast({
 				title: 'List was created!',
 				description: ''
@@ -59,8 +64,13 @@ export default function CreateModalList({
 		}
 	};
 
+	const onEmojiClick = (emojiData: EmojiClickData) => {
+		setSelectedEmoji(emojiData.emoji);
+	};
+
 	function openPopover(): void {
 		setNewList('');
+		setSelectedEmoji('📓');
 		setStatus('typing');
 		setIsOpen(true);
 	}
@@ -93,7 +103,7 @@ export default function CreateModalList({
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
 				}}
-				className='data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
+				className='min-w-80 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
 				<form
 					id='createlistform'
 					className='flex flex-col'
@@ -103,28 +113,50 @@ export default function CreateModalList({
 							.catch(() => {});
 					}}>
 					<div className='relative flex flex-1 flex-col'>
-						<input
-							id='listName'
-							name='title'
-							type='text'
-							value={newList}
-							placeholder='Name new list'
-							className='m-4 h-10 rounded-xl bg-gray-300 p-4 text-gray-900 placeholder:text-gray-400 focus-within:outline focus-within:outline-2 focus-within:outline-violet-500'
-							onChange={(event) => {
-								setNewList(event.target.value);
-							}}
-							onFocus={(e) => {
-								(inputRefCount.current as HTMLDivElement).style.display =
-									'block';
-							}}
-							onBlur={(e) => {
-								(inputRefCount.current as HTMLDivElement).style.display =
-									'none';
-							}}
-							disabled={status === 'submitting'}
-							maxLength={75}
-							required
-						/>
+						<div className='m-4 flex items-center'>
+							<Popover modal={true}>
+								<PopoverTrigger
+									asChild={true}
+									className='cursor-pointer text-4xl'>
+									<span className='flex-shrink-0 pl-0 pr-2 hover:opacity-70'>
+										{selectedEmoji}
+									</span>
+								</PopoverTrigger>
+								<PopoverContent className='w-fit p-0'>
+									<EmojiPicker
+										onEmojiClick={onEmojiClick}
+										emojiStyle={EmojiStyle.GOOGLE}
+										lazyLoadEmojis={true}
+										skinTonesDisabled={true}
+										searchDisabled={false}
+									/>
+
+									<PopoverArrow className='fill-amber-500' />
+								</PopoverContent>
+							</Popover>
+							<input
+								id='listName'
+								name='title'
+								type='text'
+								value={newList}
+								placeholder='Name new list'
+								className='h-10 min-w-0 flex-1 rounded-xl bg-gray-300 pl-4 pr-4 text-gray-900 placeholder:text-gray-400 focus-within:outline focus-within:outline-2 focus-within:outline-violet-500'
+								onChange={(event) => {
+									setNewList(event.target.value);
+								}}
+								onFocus={(e) => {
+									(inputRefCount.current as HTMLDivElement).style.display =
+										'block';
+								}}
+								onBlur={(e) => {
+									(inputRefCount.current as HTMLDivElement).style.display =
+										'none';
+								}}
+								disabled={status === 'submitting'}
+								maxLength={75}
+								required
+							/>
+						</div>
 						<div
 							id='listTitleCount'
 							ref={inputRefCount}
@@ -135,11 +167,10 @@ export default function CreateModalList({
 							<span id='maximum'>/75</span>
 						</div>
 					</div>
-
 					<div className='m-4 mt-1 flex items-center justify-end'>
 						<button
 							type='submit'
-							className='ml-4 flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'
+							className='flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'
 							disabled={!!(status === 'submitting' || newList.length === 0)}>
 							<span
 								className={`loader ${
