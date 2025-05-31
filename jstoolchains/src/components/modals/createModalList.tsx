@@ -3,7 +3,9 @@ import React, { useState, useRef } from 'react';
 import type { CreateModalListProps } from '../../lib/customTypes';
 
 import { CloseSquare, ArchiveAdd } from 'iconsax-reactjs';
-import EmojiPicker, { EmojiClickData, EmojiStyle } from 'emoji-picker-react';
+
+import { Emoji } from 'frimousse';
+import { MyEmojiPicker } from '../ui/myemojipicker';
 
 import {
 	Tooltip,
@@ -64,9 +66,7 @@ export default function CreateModalList({
 		}
 	};
 
-	const onEmojiClick = (emojiData: EmojiClickData) => {
-		setSelectedEmoji(emojiData.emoji);
-	};
+	const onEmojiSelect = ({ emoji }: Emoji) => setSelectedEmoji(emoji);
 
 	function openPopover(): void {
 		setNewList('');
@@ -123,14 +123,7 @@ export default function CreateModalList({
 									</span>
 								</PopoverTrigger>
 								<PopoverContent className='w-fit p-0'>
-									<EmojiPicker
-										onEmojiClick={onEmojiClick}
-										emojiStyle={EmojiStyle.GOOGLE}
-										lazyLoadEmojis={true}
-										skinTonesDisabled={true}
-										searchDisabled={false}
-									/>
-
+									<MyEmojiPicker onEmojiSelect={onEmojiSelect} />
 									<PopoverArrow className='fill-amber-500' />
 								</PopoverContent>
 							</Popover>
