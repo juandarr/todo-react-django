@@ -9,7 +9,9 @@ import {
 	Edit
 } from 'iconsax-reactjs';
 
-import EmojiPicker, { EmojiClickData, EmojiStyle } from 'emoji-picker-react';
+import { Emoji } from 'frimousse';
+import { MyEmojiPicker } from '../ui/myemojipicker';
+
 import {
 	Tooltip,
 	TooltipContent,
@@ -132,9 +134,7 @@ export default function EditModalList({
 		}
 	};
 
-	const onEmojiClick = (emojiData: EmojiClickData) => {
-		setSelectedEmoji(emojiData.emoji);
-	};
+	const onEmojiSelect = ({ emoji }: Emoji) => setSelectedEmoji(emoji);
 
 	const openPopover = (): void => {
 		removeHidden();
@@ -205,13 +205,7 @@ export default function EditModalList({
 									</span>
 								</PopoverTrigger>
 								<PopoverContent className='w-fit p-0'>
-									<EmojiPicker
-										onEmojiClick={onEmojiClick}
-										emojiStyle={EmojiStyle.GOOGLE}
-										lazyLoadEmojis={true}
-										skinTonesDisabled={true}
-										searchDisabled={false}
-									/>
+									<MyEmojiPicker onEmojiSelect={onEmojiSelect} />
 									<PopoverArrow className='fill-amber-500' />
 								</PopoverContent>
 							</Popover>
