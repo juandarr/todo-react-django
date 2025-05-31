@@ -80,7 +80,7 @@ export default function CreateModalList({
 	}
 
 	return (
-		<Popover open={isOpen} onOpenChange={setIsOpen}>
+		<Popover modal={true} open={isOpen} onOpenChange={setIsOpen}>
 			<TooltipProvider>
 				<Tooltip>
 					<PopoverTrigger
@@ -103,7 +103,7 @@ export default function CreateModalList({
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
 				}}
-				className='data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
+				className='min-w-80 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'>
 				<form
 					id='createlistform'
 					className='flex flex-col'
@@ -168,7 +168,7 @@ export default function CreateModalList({
 					<div className='m-4 mt-1 flex items-center justify-end'>
 						<button
 							type='submit'
-							className='ml-4 flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'
+							className='flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'
 							disabled={!!(status === 'submitting' || newList.length === 0)}>
 							<span
 								className={`loader ${
