@@ -6,6 +6,8 @@ import type {
 	Setting
 } from '../../../todo-api-client/models';
 
+import { Emoji } from 'frimousse';
+
 export interface todoType {
 	id?: number;
 	title: string;
@@ -277,4 +279,8 @@ export interface DatePickerProps {
 	newTodo: todoType;
 	setNewTodo: React.Dispatch<React.SetStateAction<todoType>>;
 	isDisabled: boolean;
+}
+
+export interface MyEmojiPickerProps {
+	onEmojiSelect: ({ emoji }: Emoji) => void;
 }
