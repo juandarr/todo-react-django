@@ -16,7 +16,7 @@ import {
 
 import { PasswordCheck } from 'iconsax-reactjs';
 import { useModal } from '../../contexts/ModalContext';
-import { clientUser } from '../../lib/api'; // Assuming an API client for user operations
+import { changePasswordApi } from '../../lib/api'; // Import the new API function
 
 export default function PasswordChangeModal(): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
@@ -54,20 +54,14 @@ export default function PasswordChangeModal(): React.JSX.Element {
 		}
 
 		try {
-			// This is a placeholder for the actual API call.
-			// You will need to implement a Django API endpoint for password change.
-			// For now, it simulates a successful call.
-			// await clientUser.changePassword({ oldPassword, newPassword1, newPassword2 });
-			console.log('Simulating password change API call...');
-			await new Promise((resolve) => setTimeout(resolve, 1500)); // Simulate network delay
-
+			await changePasswordApi(oldPassword, newPassword1, newPassword2);
 			setSuccessMessage('Password changed successfully!');
 			setOldPassword('');
 			setNewPassword1('');
 			setNewPassword2('');
-		} catch (err) {
+		} catch (err: any) {
 			console.error('Password change failed:', err);
-			setError('Failed to change password. Please try again.');
+			setError(err.message || 'Failed to change password. Please try again.');
 		} finally {
 			setIsLoading(false);
 		}
