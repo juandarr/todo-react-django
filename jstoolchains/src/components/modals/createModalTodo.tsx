@@ -40,6 +40,7 @@ import { DateTimePickerWithPresets } from '../ui/datetimepicker'; // static impo
 import { UserContext } from '../../contexts/UserContext';
 //const TextEditor = React.lazy(() => import('../ui/textEditor')); // lazy import
 import TextEditor from '../ui/textEditor'; // static import
+import { useModal } from '../../contexts/ModalContext';
 
 export default function CreateModalTodo({
 	lists,
@@ -47,6 +48,13 @@ export default function CreateModalTodo({
 	addTodo
 }: CreateModalTodoProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
+
+	const { setIsModalOpen } = useModal();
+
+	useEffect(() => {
+		setIsModalOpen(isOpen);
+	}, [isOpen]);
+
 	const user = useContext(UserContext);
 	const [newTodo, setNewTodo] = useState<todoType>({
 		title: '',
@@ -145,7 +153,6 @@ export default function CreateModalTodo({
 			dueDate: undefined
 		});
 		setStatus('typing');
-		setIsOpen(true);
 	};
 
 	console.log('Modal todo creation opened');
@@ -159,9 +166,6 @@ export default function CreateModalTodo({
 								<AddCircle
 									size='1.8rem'
 									className='cursor-pointer'
-									onClick={() => {
-										openPopover();
-									}}
 									variant='Bulk'
 								/>
 							</button>
