@@ -5,7 +5,8 @@ from rest_framework import routers
 urlpatterns = [
 
     path('', views.todo, name="home"),
-    path('api/status', views.online_status, name='online_status')
+    path('api/status', views.online_status, name='online_status'),
+    path('api/password_change/', views.PasswordChangeApiView.as_view(), name='password_change_api'),
 ]
 router = routers.DefaultRouter()
 router.register('api/todos', views.TodoApiView, basename='TodoApi')
