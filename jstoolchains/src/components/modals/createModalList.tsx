@@ -1,6 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 import type { CreateModalListProps } from '../../lib/customTypes';
+import { useModal } from '../../contexts/ModalContext';
 
 import { CloseSquare, ArchiveAdd } from 'iconsax-reactjs';
 
@@ -28,6 +29,11 @@ export default function CreateModalList({
 	addList
 }: CreateModalListProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
+	const { setIsModalOpen } = useModal();
+
+	useEffect(() => {
+		setIsModalOpen(isOpen);
+	}, [isOpen]);
 
 	const [newList, setNewList] = useState('');
 	const [selectedEmoji, setSelectedEmoji] = useState('📓');
@@ -72,7 +78,6 @@ export default function CreateModalList({
 		setNewList('');
 		setSelectedEmoji('📓');
 		setStatus('typing');
-		setIsOpen(true);
 	}
 
 	function closePopover(): void {

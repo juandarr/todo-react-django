@@ -225,6 +225,12 @@ export interface GoalsModalProps {
 	todos: Todo[];
 }
 
+export interface ProfileModalProps {
+	settings: Setting[];
+	editSetting: (id: number, value: string) => Promise<void>;
+	lists: List[];
+}
+
 type actionType = {
 	type: string;
 	payload?: any;

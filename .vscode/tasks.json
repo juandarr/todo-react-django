@@ -23,7 +23,7 @@
       "path": "jstoolchains",
       "problemMatcher": [],
       "label": "tailwind-watch",
-      "detail": "tailwindcss -i ../input.css -o ../static/css/output.css --watch",
+      "detail": "tailwindcss -i static/css/input.css -o static/css/output.css --watch",
       "group": {
         "kind": "test",
         "isDefault": true
@@ -36,7 +36,7 @@
     {
       "label": "Django Server",
       "type": "shell",
-      "command": "source ../env/bin/activate;python manage.py runserver 127.0.0.1:8000",
+      "command": "source .venv/bin/activate;python manage.py runserver 127.0.0.1:8000",
       "group": {
         "kind": "test",
         "isDefault": true

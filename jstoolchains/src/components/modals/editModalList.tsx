@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 
 import { type EditModalListProps } from '../../lib/customTypes';
 
+import { useModal } from '../../contexts/ModalContext';
+
 import {
 	DirectboxReceive as Archive,
 	DirectboxSend as UnArchive,
@@ -49,6 +51,12 @@ export default function EditModalList({
 	const inputTitleCount = useRef<HTMLDivElement>(null);
 
 	const { toast } = useToast();
+
+	const { setIsModalOpen } = useModal();
+
+	useEffect(() => {
+		setIsModalOpen(isOpen);
+	}, [isOpen]);
 
 	useEffect(() => {
 		if (status === 'typing') {
@@ -142,7 +150,6 @@ export default function EditModalList({
 		setSelectedEmoji(emoji);
 		setListEdit(titleStr.join(' '));
 		setStatus('typing');
-		setIsOpen(true);
 	};
 
 	const closePopover = (): void => {

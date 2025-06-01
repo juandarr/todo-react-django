@@ -1,4 +1,6 @@
-import React, { useContext, useMemo, useState } from 'react';
+import React, { useContext, useMemo, useState, useEffect } from 'react';
+
+import { useModal } from '../../contexts/ModalContext';
 
 import {
 	CalendarTick as Week,
@@ -32,9 +34,11 @@ export default function GoalsModal({
 
 	const user = useContext(UserContext);
 
-	const openPopover = (): void => {
-		setIsOpen(true);
-	};
+	const { setIsModalOpen } = useModal();
+
+	useEffect(() => {
+		setIsModalOpen(isOpen);
+	}, [isOpen]);
 
 	const options: Intl.DateTimeFormatOptions = {
 		month: 'long',
@@ -199,11 +203,7 @@ export default function GoalsModal({
 		<Popover modal={false} open={isOpen} onOpenChange={setIsOpen}>
 			<TooltipProvider>
 				<Tooltip>
-					<PopoverTrigger
-						asChild={true}
-						onClick={(event) => {
-							openPopover();
-						}}>
+					<PopoverTrigger asChild={true}>
 						<TooltipTrigger asChild={true}>
 							<button className='text-fuchsia-500 hover:text-fuchsia-600'>
 								<GoalsIcon size='1.8rem' variant='Bulk' />

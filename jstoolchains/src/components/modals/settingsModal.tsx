@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+
 import { Setting2 as Settings } from 'iconsax-reactjs';
 
 import {
@@ -60,10 +61,6 @@ export default function SettingsModal({
 		}
 	};
 
-	const openPopover = (): void => {
-		setIsOpen(true);
-	};
-
 	const timeZonesTmp: Array<{ label: string; value: string }> = [];
 	for (let i = 0; i < timeZones.length; i += 1) {
 		timeZonesTmp.push({ label: timeZones[i], value: timeZones[i] });
@@ -71,11 +68,7 @@ export default function SettingsModal({
 	console.log('Modal settings opened');
 	return (
 		<Popover modal={false} open={isOpen} onOpenChange={setIsOpen}>
-			<PopoverTrigger
-				asChild={true}
-				onClick={(event) => {
-					openPopover();
-				}}>
+			<PopoverTrigger asChild={true}>
 				<a className='mb-2 flex cursor-pointer items-center justify-start font-semibold text-cyan-500 hover:text-cyan-600'>
 					<Settings size='1.8rem' variant='Bulk' />
 					<p className='ml-4'>Settings</p>

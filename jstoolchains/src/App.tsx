@@ -27,6 +27,7 @@ import { useModelFetch } from './hooks/useModelFetch';
 import TaskView from './components/taskview/taskview';
 import listsReducer from './reducers/listsReducer';
 import { UserContext } from './contexts/UserContext';
+import { ModalContext } from './contexts/ModalContext';
 
 const userInfoInitial: userInfoType = {
 	id: 0,
@@ -60,6 +61,7 @@ export default function App(): React.JSX.Element {
 	const [userInfo, setUserInfo] = useState(userInfoInitial);
 	const [lists, dispatchLists] = useReducer(listsReducer, initialListsState);
 	const [loadingLists, setLoadingLists] = useState(true); // Add loading state for lists since Reducer is being used
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const initializationCompleted = useRef(false);
 
@@ -140,10 +142,10 @@ export default function App(): React.JSX.Element {
 	// HTMLElement with a form as an ancestor
 	useEffect(() => {
 		const toggleSidebarCallback = (event: KeyboardEvent): void => {
-			if (
-				!isDescendantOf(event.target as HTMLElement, 'form') &&
-				!isDescendantOf(event.target as HTMLElement, 'aside')
-			) {
+			if (isModalOpen) {
+				return; // Do not toggle sidebar if a modal is open
+			}
+			if (!isDescendantOf(event.target as HTMLElement, 'form')) {
 				if (
 					event.key === 's' &&
 					!event.metaKey &&
@@ -160,7 +162,7 @@ export default function App(): React.JSX.Element {
 		return () => {
 			document.removeEventListener('keydown', toggleSidebarCallback);
 		};
-	}, []);
+	}, [isModalOpen]);
 
 	const changeCurrentView = (newViewId: number): void => {
 		let newView: viewType;
@@ -501,44 +503,46 @@ export default function App(): React.JSX.Element {
 	return (
 		<>
 			<UserContext.Provider value={userInfo}>
-				<NavBar
-					changeCurrentView={changeCurrentView}
-					lists={lists}
-					todos={todos}
-					userInfo={userInfo}
-					addTodo={addTodo}
-					setShowSidebar={setShowSidebar}
-					settings={settings}
-					editSetting={editSetting}
-				/>
-				<div className='relative mx-6 flex w-5/6 justify-end'>
-					<SideBar
-						lists={lists}
-						dispatchLists={dispatchLists}
-						currentView={currentView}
+				<ModalContext.Provider value={{ isModalOpen, setIsModalOpen }}>
+					<NavBar
 						changeCurrentView={changeCurrentView}
-						addList={addList}
-						deleteList={deleteList}
-						editList={editList}
-						showSidebar={showSidebar}
-						isLoadingLists={loadingLists}
-					/>
-					<TaskView
-						userInfo={userInfo}
-						todos={todos}
 						lists={lists}
-						editListOrder={editListOrder}
-						currentView={currentView}
+						todos={todos}
+						userInfo={userInfo}
 						addTodo={addTodo}
-						toggleTodo={toggleTodo}
-						deleteTodo={deleteTodo}
-						editTodo={editTodo}
-						editTodoFull={editTodoFull}
-						showSidebar={showSidebar}
-						isLoadingTodos={loadingTodos}
+						setShowSidebar={setShowSidebar}
+						settings={settings}
+						editSetting={editSetting}
 					/>
-				</div>
-				<Toaster />
+					<div className='relative mx-6 flex w-5/6 justify-end'>
+						<SideBar
+							lists={lists}
+							dispatchLists={dispatchLists}
+							currentView={currentView}
+							changeCurrentView={changeCurrentView}
+							addList={addList}
+							deleteList={deleteList}
+							editList={editList}
+							showSidebar={showSidebar}
+							isLoadingLists={loadingLists}
+						/>
+						<TaskView
+							userInfo={userInfo}
+							todos={todos}
+							lists={lists}
+							editListOrder={editListOrder}
+							currentView={currentView}
+							addTodo={addTodo}
+							toggleTodo={toggleTodo}
+							deleteTodo={deleteTodo}
+							editTodo={editTodo}
+							editTodoFull={editTodoFull}
+							showSidebar={showSidebar}
+							isLoadingTodos={loadingTodos}
+						/>
+					</div>
+					<Toaster />
+				</ModalContext.Provider>
 			</UserContext.Provider>
 		</>
 	);
