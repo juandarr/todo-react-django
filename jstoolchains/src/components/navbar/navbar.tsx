@@ -1,5 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import { UserContext } from '../../contexts/UserContext';
+import { useModal } from '../../contexts/ModalContext';
 
 import {
 	Tooltip,
@@ -8,29 +9,15 @@ import {
 	TooltipTrigger
 } from '../ui/tooltip';
 
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-	PopoverArrow
-} from '../ui/popover';
-
 import CreateModalTodo from '../modals/createModalTodo';
 
-import {
-	Logout,
-	SidebarLeft,
-	House,
-	PasswordCheck,
-	UserSquare,
-	Heart
-} from 'iconsax-reactjs';
+import { SidebarLeft, House, Heart } from 'iconsax-reactjs';
 
 import type { NavBarProps } from '../../lib/customTypes';
 import { isDescendantOf } from '../../lib/utils';
 import { useOnlineStatus } from '../../hooks/useOnlineStatus';
-import SettingsModal from '../modals/settingsModal';
 import GoalsModal from '../modals/goalsModal';
+import ProfileModal from '../modals/profileModal';
 
 export default function NavBar({
 	changeCurrentView,
@@ -44,12 +31,13 @@ export default function NavBar({
 }: NavBarProps): React.JSX.Element {
 	const isOnline = useOnlineStatus();
 	const user = useContext(UserContext);
+	const { isModalOpen } = useModal();
 
 	const homeCallback = (event: KeyboardEvent): void => {
-		if (
-			!isDescendantOf(event.target as HTMLElement, 'form') &&
-			!isDescendantOf(event.target as HTMLElement, 'aside')
-		) {
+		if (isModalOpen) {
+			return; // Home shortcut won't work when any modal is open
+		}
+		if (!isDescendantOf(event.target as HTMLElement, 'form')) {
 			if (event.key === 'h') {
 				event.preventDefault();
 				changeCurrentView(user.homeListId);
@@ -111,51 +99,11 @@ export default function NavBar({
 				<GoalsModal todos={todos} />
 			</div>
 			<div className='flex w-1/12 justify-end pl-3 pr-3 text-2xl '>
-				<Popover modal={true}>
-					<TooltipProvider>
-						<Tooltip>
-							<PopoverTrigger
-								asChild={true}
-								className='flex cursor-pointer justify-center text-2xl'>
-								<TooltipTrigger asChild={true}>
-									<button className='text-amber-500 hover:text-amber-600'>
-										<UserSquare size='1.8rem' variant='Bulk' />
-									</button>
-								</TooltipTrigger>
-							</PopoverTrigger>
-							<TooltipContent className='bg-amber-500'>
-								<p className='font-bold text-white'>Profile</p>
-							</TooltipContent>
-						</Tooltip>
-					</TooltipProvider>
-					<PopoverContent
-						align={'center'}
-						className='w-fit data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'
-						onCloseAutoFocus={(event) => {
-							event.preventDefault();
-						}}>
-						<div className='flex flex-col'>
-							<SettingsModal
-								lists={lists}
-								settings={settings}
-								editSetting={editSetting}
-							/>
-							<a
-								href='/accounts/password_change'
-								className='mb-2 flex items-center justify-start font-semibold text-rose-500 hover:text-rose-600'>
-								<PasswordCheck size='1.8rem' variant='Bulk' />
-								<p className='ml-4'>Change password</p>
-							</a>
-							<a
-								href='/logout'
-								className='mb-2 flex items-center justify-start font-semibold text-violet-500 hover:text-violet-600'>
-								<Logout size='1.8rem' variant='Bulk' />
-								<p className='ml-4'>Logout</p>
-							</a>
-						</div>
-						<PopoverArrow className='fill-amber-500' />
-					</PopoverContent>
-				</Popover>
+				<ProfileModal
+					settings={settings}
+					editSetting={editSetting}
+					lists={lists}
+				/>
 			</div>
 			<Heart
 				size='12'
