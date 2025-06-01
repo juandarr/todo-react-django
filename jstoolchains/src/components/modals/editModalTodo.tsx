@@ -41,6 +41,7 @@ import { DateTimePickerWithPresets } from '../ui/datetimepicker'; // Static impo
 import TextEditor from '../ui/textEditor'; // Static import
 import useAutosizeTextArea from '../../hooks/useAutosizeTextArea';
 import DeleteModalTodo from './deleteModalTodo';
+import { useModal } from '../../contexts/ModalContext';
 
 export default function EditModalTodo({
 	editTodoFull,
@@ -51,6 +52,9 @@ export default function EditModalTodo({
 	userInfo
 }: EditModalTodoProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
+
+	const { setIsModalOpen } = useModal();
+
 	const [newEditTodo, setNewEditTodo] = useState<todoType>({
 		title: '',
 		description: ''
@@ -68,6 +72,10 @@ export default function EditModalTodo({
 		'#todoEditTitle',
 		newEditTodo.title
 	);
+
+	useEffect(() => {
+		setIsModalOpen(isOpen);
+	}, [isOpen]);
 
 	useEffect(() => {
 		if (status === 'typing') {
@@ -139,8 +147,6 @@ export default function EditModalTodo({
 			})
 			.catch(() => {});
 
-		setIsOpen(true);
-
 		waitForElementToExist('#todoEditTitleCount')
 			.then((element) => {
 				(textAreaTitleCount.current as HTMLDivElement).style.display = 'block';
@@ -167,10 +173,7 @@ export default function EditModalTodo({
 				<Tooltip>
 					<PopoverTrigger
 						asChild={true}
-						className='flex cursor-pointer items-center text-sky-500 hover:text-sky-600'
-						onClick={(event) => {
-							openPopover();
-						}}>
+						className='flex cursor-pointer items-center text-sky-500 hover:text-sky-600'>
 						<TooltipTrigger>
 							<Edit className='edit-todo' />
 						</TooltipTrigger>
