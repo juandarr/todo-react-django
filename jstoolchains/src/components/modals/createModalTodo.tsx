@@ -164,6 +164,9 @@ export default function CreateModalTodo({
 						<TooltipTrigger asChild={true}>
 							<button className='text-emerald-500 hover:text-emerald-600'>
 								<AddCircle
+									onClick={() => {
+										openPopover();
+									}}
 									size='1.8rem'
 									className='cursor-pointer'
 									variant='Bulk'
