@@ -173,7 +173,10 @@ export default function EditModalTodo({
 				<Tooltip>
 					<PopoverTrigger
 						asChild={true}
-						className='flex cursor-pointer items-center text-sky-500 hover:text-sky-600'>
+						className='flex cursor-pointer items-center text-sky-500 hover:text-sky-600'
+						onClick={(event) => {
+							openPopover();
+						}}>
 						<TooltipTrigger>
 							<Edit className='edit-todo' />
 						</TooltipTrigger>
