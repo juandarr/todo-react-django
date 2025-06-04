@@ -82,7 +82,7 @@ export default function NavBar({
 				<TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger asChild={true}>
-							<button className='text-rose-400 hover:text-rose-500'>
+							<button className='text-cyan-400 hover:text-cyan-500'>
 								<House size='1.8rem' variant='Bold' />
 							</button>
 						</TooltipTrigger>

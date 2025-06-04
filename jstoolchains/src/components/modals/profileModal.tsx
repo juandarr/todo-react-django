@@ -16,9 +16,10 @@ import {
 
 import SettingsModal from '../modals/settingsModal';
 
-import { Logout, PasswordCheck, UserSquare } from 'iconsax-reactjs';
+import { Logout, UserSquare } from 'iconsax-reactjs';
 import { ProfileModalProps } from '../../lib/customTypes';
 import { useModal } from '../../contexts/ModalContext';
+import PasswordChangeModal from './PasswordChangeModal'; // Import the new modal
 
 export default function ProfileModal({
 	settings,
@@ -28,6 +29,10 @@ export default function ProfileModal({
 	const [isOpen, setIsOpen] = useState(false);
 
 	const { setIsModalOpen } = useModal();
+
+	const closeProfileModal = (): void => {
+		setIsOpen(false);
+	};
 
 	useEffect(() => {
 		setIsModalOpen(isOpen);
@@ -63,12 +68,7 @@ export default function ProfileModal({
 						settings={settings}
 						editSetting={editSetting}
 					/>
-					<a
-						href='/accounts/password_change'
-						className='mb-2 flex items-center justify-start font-semibold text-rose-500 hover:text-rose-600'>
-						<PasswordCheck size='1.8rem' variant='Bulk' />
-						<p className='ml-4'>Change password</p>
-					</a>
+					<PasswordChangeModal onClose={closeProfileModal} />
 					<a
 						href='/logout'
 						className='mb-2 flex items-center justify-start font-semibold text-violet-500 hover:text-violet-600'>
