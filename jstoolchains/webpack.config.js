@@ -80,8 +80,8 @@ module.exports = (env, argv) => {
 						name: 'prosemirror',
 						chunks: 'all'
 					}
-				}
 			}
 		}
-	};
+	}
+};
 };
