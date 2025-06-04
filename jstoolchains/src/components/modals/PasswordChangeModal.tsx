@@ -84,7 +84,13 @@ export default function PasswordChangeModal(): React.JSX.Element {
 					event.preventDefault();
 				}}>
 				<form className='flex flex-col p-4' onSubmit={handleSubmit}>
-					<h1 className='mb-4 font-bold text-rose-500'>Change Password</h1>
+					<h1 className='mb-3 text-xl font-bold text-rose-500'>
+						Change Password
+					</h1>
+					<div className='mb-3 ml-3 text-sm'>
+						Please enter your old password and then enter your new password
+						twice so we can verify you typed it correctly
+					</div>
 					{error && <p className='mb-2 text-red-500'>{error}</p>}
 					{successMessage && (
 						<p className='mb-2 text-green-500'>{successMessage}</p>
@@ -98,7 +104,7 @@ export default function PasswordChangeModal(): React.JSX.Element {
 							type='password'
 							value={oldPassword}
 							onChange={(e) => setOldPassword(e.target.value)}
-							className='w-full rounded-md border border-gray-300 p-2'
+							className='h-10 min-w-0 flex-1 rounded-xl bg-gray-300 pl-4 pr-4 text-gray-900 placeholder:text-gray-400 focus-within:outline focus-within:outline-2 focus-within:outline-violet-500'
 							required
 						/>
 					</div>
@@ -110,30 +116,30 @@ export default function PasswordChangeModal(): React.JSX.Element {
 							type='password'
 							value={newPassword1}
 							onChange={(e) => setNewPassword1(e.target.value)}
-							className='w-full rounded-md border border-gray-300 p-2'
+							className='h-10 min-w-0 flex-1 rounded-xl bg-gray-300 pl-4 pr-4 text-gray-900 placeholder:text-gray-400 focus-within:outline focus-within:outline-2 focus-within:outline-violet-500'
 							required
 						/>
 					</div>
 					<div className='mb-6'>
-						<label className='mb-1 block font-semibold text-gray-700'>
+						<label className='mb-1 block text-base font-semibold text-gray-700'>
 							Confirm new password:
 						</label>
 						<input
 							type='password'
 							value={newPassword2}
 							onChange={(e) => setNewPassword2(e.target.value)}
-							className='w-full rounded-md border border-gray-300 p-2'
+							className='h-10 min-w-0 flex-1 rounded-xl bg-gray-300 pl-4 pr-4 text-gray-900 placeholder:text-gray-400 focus-within:outline focus-within:outline-2 focus-within:outline-emerald-500'
 							required
 						/>
 					</div>
 					<button
 						type='submit'
-						className='flex h-9 w-fit items-center justify-center self-end rounded-xl bg-rose-500 p-3 text-lg font-semibold hover:bg-rose-600 disabled:bg-rose-200'
+						className='flex h-9 w-fit items-center justify-center self-end rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'
 						disabled={isLoading}>
 						{isLoading ? (
 							<span className='loader'></span>
 						) : (
-							<span className='block'>Change Password</span>
+							<span className='block'>Confirm</span>
 						)}
 					</button>
 				</form>
