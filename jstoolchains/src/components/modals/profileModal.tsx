@@ -30,6 +30,10 @@ export default function ProfileModal({
 
 	const { setIsModalOpen } = useModal();
 
+	const closeProfileModal = (): void => {
+		setIsOpen(false);
+	};
+
 	useEffect(() => {
 		setIsModalOpen(isOpen);
 	}, [isOpen]);
@@ -64,7 +68,7 @@ export default function ProfileModal({
 						settings={settings}
 						editSetting={editSetting}
 					/>
-					<PasswordChangeModal />
+					<PasswordChangeModal onClose={closeProfileModal} />
 					<a
 						href='/logout'
 						className='mb-2 flex items-center justify-start font-semibold text-violet-500 hover:text-violet-600'>
