@@ -7,16 +7,10 @@ import {
 	PopoverArrow
 } from '../ui/popover';
 
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipProvider,
-	TooltipTrigger
-} from '../ui/tooltip';
-
 import { PasswordCheck } from 'iconsax-reactjs';
 import { useModal } from '../../contexts/ModalContext';
 import { changePasswordApi } from '../../lib/api'; // Import the new API function
+import { toast } from '../ui/toast/use-toast';
 
 export default function PasswordChangeModal(): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
@@ -25,7 +19,6 @@ export default function PasswordChangeModal(): React.JSX.Element {
 	const [newPassword2, setNewPassword2] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState('');
-	const [successMessage, setSuccessMessage] = useState('');
 
 	const { setIsModalOpen } = useModal();
 
@@ -37,34 +30,42 @@ export default function PasswordChangeModal(): React.JSX.Element {
 			setNewPassword1('');
 			setNewPassword2('');
 			setError('');
-			setSuccessMessage('');
 		}
-	}, [isOpen, setIsModalOpen]);
+	}, [isOpen]);
 
 	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault();
 		setIsLoading(true);
 		setError('');
-		setSuccessMessage('');
 
 		if (newPassword1 !== newPassword2) {
-			setError('New passwords do not match.');
+			setError('New passwords do not match');
 			setIsLoading(false);
 			return;
 		}
 
 		try {
 			await changePasswordApi(oldPassword, newPassword1, newPassword2);
-			setSuccessMessage('Password changed successfully!');
-			setOldPassword('');
-			setNewPassword1('');
-			setNewPassword2('');
+			toast({
+				title: 'Password changed succesfully!',
+				description: ''
+			});
+			closePopover();
 		} catch (err: any) {
-			console.error('Password change failed:', err);
-			setError(err.message || 'Failed to change password. Please try again.');
+			console.error('Password change failed: ', err);
+			const errJSON = JSON.parse(err.message);
+			setError(
+				errJSON.old_password ||
+					errJSON.new_password2 ||
+					'Failed to change password. Try again'
+			);
 		} finally {
 			setIsLoading(false);
 		}
+	};
+
+	const closePopover = (): void => {
+		setIsOpen(false);
 	};
 
 	return (
@@ -91,11 +92,6 @@ export default function PasswordChangeModal(): React.JSX.Element {
 						Please enter your old password and then enter your new password{' '}
 						<b>twice</b> so we can verify you typed it correctly
 					</div>
-					{error && <p className='mb-2 text-red-500'>{error}</p>}
-					{successMessage && (
-						<p className='mb-2 text-green-500'>{successMessage}</p>
-					)}
-
 					<div className='mb-3'>
 						<label className='mb-1 block text-base font-bold text-gray-700'>
 							Old password
@@ -141,12 +137,15 @@ export default function PasswordChangeModal(): React.JSX.Element {
 							newPassword2.length === 0 ||
 							oldPassword.length === 0
 						}>
-						{isLoading ? (
-							<span className='loader'></span>
-						) : (
-							<span className='block'>Change</span>
-						)}
+						<span
+							className={`loader ${isLoading ? 'block' : 'invisible'}`}></span>
+						<span className={isLoading ? 'invisible' : 'block'}>Save</span>
 					</button>
+					{error && (
+						<p className='mb-2 mt-2 text-sm font-semibold text-red-500'>
+							{error}
+						</p>
+					)}
 				</form>
 				<PopoverArrow className='fill-rose-500' />
 			</PopoverContent>
