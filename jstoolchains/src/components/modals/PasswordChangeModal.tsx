@@ -72,74 +72,79 @@ export default function PasswordChangeModal(): React.JSX.Element {
 			<PopoverTrigger
 				asChild={true}
 				className='flex cursor-pointer justify-center'>
-				<button className='mb-2 flex items-center justify-start font-semibold text-rose-500 hover:text-rose-600'>
+				<button className='mb-2 flex items-center justify-start font-semibold text-orange-500 hover:text-orange-600'>
 					<PasswordCheck size='1.8rem' variant='Bulk' />
 					<p className='ml-4'>Change password</p>
 				</button>
 			</PopoverTrigger>
 			<PopoverContent
 				align={'center'}
-				className='w-fit data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'
+				className='w-80 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
 				}}>
-				<form className='flex flex-col p-4' onSubmit={handleSubmit}>
-					<h1 className='mb-3 text-xl font-bold text-rose-500'>
+				<form className='flex flex-col p-3' onSubmit={handleSubmit}>
+					<h1 className='mb-3 text-xl font-bold text-orange-500'>
 						Change Password
 					</h1>
-					<div className='mb-3 ml-3 text-sm'>
-						Please enter your old password and then enter your new password
-						twice so we can verify you typed it correctly
+					<div className='mb-3 text-balance text-sm'>
+						Please enter your old password and then enter your new password{' '}
+						<b>twice</b> so we can verify you typed it correctly
 					</div>
 					{error && <p className='mb-2 text-red-500'>{error}</p>}
 					{successMessage && (
 						<p className='mb-2 text-green-500'>{successMessage}</p>
 					)}
 
-					<div className='mb-4'>
-						<label className='mb-1 block font-semibold text-gray-700'>
-							Old password:
+					<div className='mb-3'>
+						<label className='mb-1 block text-base font-bold text-gray-700'>
+							Old password
 						</label>
 						<input
 							type='password'
 							value={oldPassword}
 							onChange={(e) => setOldPassword(e.target.value)}
-							className='h-10 min-w-0 flex-1 rounded-xl bg-gray-300 pl-4 pr-4 text-gray-900 placeholder:text-gray-400 focus-within:outline focus-within:outline-2 focus-within:outline-violet-500'
+							className='h-10 w-11/12 min-w-0 flex-1 rounded-xl bg-gray-300 pl-4 pr-4 text-gray-900 placeholder:text-gray-400 focus-within:outline focus-within:outline-2 focus-within:outline-violet-500'
 							required
 						/>
 					</div>
-					<div className='mb-4'>
-						<label className='mb-1 block font-semibold text-gray-700'>
-							New password:
+					<div className='mb-3'>
+						<label className='mb-1 block text-base font-bold text-gray-700'>
+							New password
 						</label>
 						<input
 							type='password'
 							value={newPassword1}
 							onChange={(e) => setNewPassword1(e.target.value)}
-							className='h-10 min-w-0 flex-1 rounded-xl bg-gray-300 pl-4 pr-4 text-gray-900 placeholder:text-gray-400 focus-within:outline focus-within:outline-2 focus-within:outline-violet-500'
+							className='h-10 w-11/12 min-w-0 flex-1 rounded-xl bg-gray-300 pl-4 pr-4 text-gray-900 placeholder:text-gray-400 focus-within:outline focus-within:outline-2 focus-within:outline-violet-500'
 							required
 						/>
 					</div>
-					<div className='mb-6'>
-						<label className='mb-1 block text-base font-semibold text-gray-700'>
-							Confirm new password:
+					<div className='mb-5'>
+						<label className='mb-1 block text-base font-bold text-gray-700'>
+							Confirm new password
 						</label>
 						<input
 							type='password'
 							value={newPassword2}
 							onChange={(e) => setNewPassword2(e.target.value)}
-							className='h-10 min-w-0 flex-1 rounded-xl bg-gray-300 pl-4 pr-4 text-gray-900 placeholder:text-gray-400 focus-within:outline focus-within:outline-2 focus-within:outline-emerald-500'
+							className='h-10 w-11/12 min-w-0 flex-1 rounded-xl bg-gray-300 pl-4 pr-4 text-gray-900 placeholder:text-gray-400 focus-within:outline focus-within:outline-2 focus-within:outline-emerald-500'
 							required
 						/>
 					</div>
 					<button
 						type='submit'
 						className='flex h-9 w-fit items-center justify-center self-end rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-200'
-						disabled={isLoading}>
+						disabled={
+							isLoading ||
+							newPassword1.length === 0 ||
+							newPassword2.length === 0 ||
+							oldPassword.length === 0
+						}>
 						{isLoading ? (
 							<span className='loader'></span>
 						) : (
-							<span className='block'>Confirm</span>
+							<span className='block'>Change</span>
 						)}
 					</button>
 				</form>
