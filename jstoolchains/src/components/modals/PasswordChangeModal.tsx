@@ -12,7 +12,13 @@ import { useModal } from '../../contexts/ModalContext';
 import { changePasswordApi } from '../../lib/api'; // Import the new API function
 import { toast } from '../ui/toast/use-toast';
 
-export default function PasswordChangeModal(): React.JSX.Element {
+interface PasswordChangeModalProps {
+	onClose: () => void;
+}
+
+export default function PasswordChangeModal({
+	onClose
+}: PasswordChangeModalProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
 	const [oldPassword, setOldPassword] = useState('');
 	const [newPassword1, setNewPassword1] = useState('');
@@ -51,6 +57,7 @@ export default function PasswordChangeModal(): React.JSX.Element {
 				description: ''
 			});
 			closePopover();
+			onClose(); // Close the parent modal
 		} catch (err: any) {
 			console.error('Password change failed: ', err);
 			const errJSON = JSON.parse(err.message);
