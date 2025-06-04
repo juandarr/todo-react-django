@@ -69,10 +69,10 @@ export default function SettingsModal({
 	return (
 		<Popover modal={false} open={isOpen} onOpenChange={setIsOpen}>
 			<PopoverTrigger asChild={true}>
-				<a className='mb-2 flex cursor-pointer items-center justify-start font-semibold text-cyan-500 hover:text-cyan-600'>
+				<button className='mb-2 flex cursor-pointer items-center justify-start font-semibold text-cyan-500 hover:text-cyan-600'>
 					<Settings size='1.8rem' variant='Bulk' />
 					<p className='ml-4'>Settings</p>
-				</a>
+				</button>
 			</PopoverTrigger>
 			<PopoverContent
 				align={'center'}
@@ -93,7 +93,7 @@ export default function SettingsModal({
 							Settings
 						</h1>
 						<div className='mb-3 ml-3 text-sm'>
-							Customize the application settings.
+							Customize the application settings
 						</div>
 						<div className='ml-3 mr-3 flex items-center justify-between'>
 							<h3>Home view</h3>

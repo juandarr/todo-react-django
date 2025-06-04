@@ -5,9 +5,12 @@ from rest_framework import viewsets
 from .models import Todo, List, User, Setting
 from .serializers import TodoSerializer, ListSerializer, UserSerializer, SettingSerializer
 from rest_framework.authentication import SessionAuthentication
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 
@@ -56,16 +59,38 @@ class ListApiView(viewsets.ModelViewSet):
         return self.request.user.lists.all()
 
 class SettingApiView(viewsets.ModelViewSet):
-    queryset = Setting.objects.all() 
+    queryset = Setting.objects.all()
     serializer_class = SettingSerializer
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
-    
+
     def get_queryset(self):
         return self.request.user.settings.all()
+
+class PasswordChangeApiView(APIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        old_password = request.data.get('old_password')
+        new_password1 = request.data.get('new_password1')
+        new_password2 = request.data.get('new_password2')
+
+        if not user.check_password(old_password):
+            return Response({'old_password': ['Wrong password. Try again']}, status=status.HTTP_400_BAD_REQUEST)
+
+        if new_password1 != new_password2:
+            return Response({'new_password2': ['New passwords do not match. Try again']}, status=status.HTTP_400_BAD_REQUEST)
+
+        user.set_password(new_password1)
+        user.save()
+        update_session_auth_hash(request, user) # Important to keep the user logged in
+
+        return Response({'detail': 'Password updated successfully'}, status=status.HTTP_200_OK)
 
 def signup_request(request):
 	print("Request received!")
