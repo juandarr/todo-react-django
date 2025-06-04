@@ -93,7 +93,7 @@ export default function SettingsModal({
 							Settings
 						</h1>
 						<div className='mb-3 ml-3 text-sm'>
-							Customize the application settings.
+							Customize the application settings
 						</div>
 						<div className='ml-3 mr-3 flex items-center justify-between'>
 							<h3>Home view</h3>
