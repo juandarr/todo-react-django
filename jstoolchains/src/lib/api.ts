@@ -7,8 +7,9 @@ import {
 import { Configuration } from '../../../todo-api-client/runtime';
 import { getCookie } from './utils';
 
+const baseURL = 'http://127.0.0.1:8000';
 const apiConfig = new Configuration({
-	basePath: 'http://127.0.0.1:8000',
+	basePath: baseURL,
 	headers: {
 		'X-CSRFToken': getCookie('csrftoken')
 	}
@@ -24,7 +25,7 @@ export const changePasswordApi = async (
 	newPassword1: string,
 	newPassword2: string
 ) => {
-	const response = await fetch('http://127.0.0.1:8000/api/password_change/', {
+	const response = await fetch(baseURL + '/api/password_change/', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
