@@ -101,7 +101,7 @@ export default function PasswordChangeModal({
 					</div>
 					<div className='mb-3'>
 						<label className='mb-1 block text-base font-bold text-gray-700'>
-							Old password
+							Current password
 						</label>
 						<input
 							type='password'
@@ -146,7 +146,7 @@ export default function PasswordChangeModal({
 						}>
 						<span
 							className={`loader ${isLoading ? 'block' : 'invisible'}`}></span>
-						<span className={isLoading ? 'invisible' : 'block'}>Save</span>
+						<span className={isLoading ? 'invisible' : 'block'}>Change</span>
 					</button>
 					{error && (
 						<p className='mb-2 mt-2 text-sm font-semibold text-red-500'>
