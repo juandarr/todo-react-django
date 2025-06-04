@@ -69,23 +69,14 @@ export default function PasswordChangeModal(): React.JSX.Element {
 
 	return (
 		<Popover open={isOpen} onOpenChange={setIsOpen}>
-			<TooltipProvider>
-				<Tooltip>
-					<PopoverTrigger
-						asChild={true}
-						className='flex cursor-pointer justify-center text-2xl'>
-						<TooltipTrigger asChild={true}>
-							<button className='mb-2 flex items-center justify-start font-semibold text-rose-500 hover:text-rose-600'>
-								<PasswordCheck size='1.8rem' variant='Bulk' />
-								<p className='ml-4'>Change password</p>
-							</button>
-						</TooltipTrigger>
-					</PopoverTrigger>
-					<TooltipContent className='bg-rose-500'>
-						<p className='font-bold text-white'>Change Password</p>
-					</TooltipContent>
-				</Tooltip>
-			</TooltipProvider>
+			<PopoverTrigger
+				asChild={true}
+				className='flex cursor-pointer justify-center'>
+				<button className='mb-2 flex items-center justify-start font-semibold text-rose-500 hover:text-rose-600'>
+					<PasswordCheck size='1.8rem' variant='Bulk' />
+					<p className='ml-4'>Change password</p>
+				</button>
+			</PopoverTrigger>
 			<PopoverContent
 				align={'center'}
 				className='w-fit data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'
@@ -93,9 +84,7 @@ export default function PasswordChangeModal(): React.JSX.Element {
 					event.preventDefault();
 				}}>
 				<form className='flex flex-col p-4' onSubmit={handleSubmit}>
-					<h1 className='mb-4 text-xl font-bold text-rose-500'>
-						Change Password
-					</h1>
+					<h1 className='mb-4 font-bold text-rose-500'>Change Password</h1>
 					{error && <p className='mb-2 text-red-500'>{error}</p>}
 					{successMessage && (
 						<p className='mb-2 text-green-500'>{successMessage}</p>
