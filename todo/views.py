@@ -81,16 +81,16 @@ class PasswordChangeApiView(APIView):
         new_password2 = request.data.get('new_password2')
 
         if not user.check_password(old_password):
-            return Response({'old_password': ['Wrong password.']}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'old_password': ['Wrong password. Try again']}, status=status.HTTP_400_BAD_REQUEST)
 
         if new_password1 != new_password2:
-            return Response({'new_password2': ['New passwords do not match.']}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'new_password2': ['New passwords do not match. Try again']}, status=status.HTTP_400_BAD_REQUEST)
 
         user.set_password(new_password1)
         user.save()
         update_session_auth_hash(request, user) # Important to keep the user logged in
 
-        return Response({'detail': 'Password updated successfully.'}, status=status.HTTP_200_OK)
+        return Response({'detail': 'Password updated successfully'}, status=status.HTTP_200_OK)
 
 def signup_request(request):
 	print("Request received!")
