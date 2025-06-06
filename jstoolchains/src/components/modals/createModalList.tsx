@@ -181,7 +181,7 @@ export default function CreateModalList({
 						<PopoverClose
 							className='absolute right-2 top-2 text-gray-400 hover:text-gray-500'
 							aria-label='Close'>
-							<CloseSquare size='1.8rem' />
+							<CloseSquare size='1.6rem' />
 						</PopoverClose>
 					</div>
 				</form>
