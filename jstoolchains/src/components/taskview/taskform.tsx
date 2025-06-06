@@ -6,11 +6,11 @@ import type { TaskFormProps, todoType } from '../../lib/customTypes';
 import { flushSync } from 'react-dom';
 
 export default function TaskForm({
-	addTodo,
+	addTodo
 }: TaskFormProps): React.JSX.Element {
 	const [newTodo, setNewTodo] = useState<todoType>({
 		title: '',
-		description: '',
+		description: ''
 	});
 	const [status, setStatus] = useState('typing');
 	const inputRef = useRef<HTMLInputElement>(null);
@@ -29,7 +29,7 @@ export default function TaskForm({
 				setNewTodo({ title: '', description: '' });
 				toast({
 					title: 'Task was created!',
-					description: '',
+					description: ''
 				});
 			})
 			.catch((error) => {
@@ -37,7 +37,7 @@ export default function TaskForm({
 					toast({
 						variant: 'destructive',
 						title: 'There was an error creating the task: ',
-						description: error.message,
+						description: error.message
 					});
 				}
 			})
@@ -69,7 +69,7 @@ export default function TaskForm({
 					onFocus={(e) => {
 						e.target.setSelectionRange(
 							e.target.value.length,
-							e.target.value.length,
+							e.target.value.length
 						);
 						(inputRefCount.current as HTMLDivElement).style.display = 'block';
 					}}
@@ -85,7 +85,7 @@ export default function TaskForm({
 				<div
 					id='todoTextCount'
 					ref={inputRefCount}
-					className={`absolute -bottom-[15px] right-3 hidden text-[10px] ${
+					className={`absolute -bottom-[15px] right-3 hidden text-xs ${
 						newTodo.title.length < 50 ? 'text-gray-400' : 'text-amber-500'
 					}`}>
 					<span id='current'>{newTodo.title.length}</span>
