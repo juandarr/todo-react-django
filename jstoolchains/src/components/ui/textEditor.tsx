@@ -138,7 +138,7 @@ export default forwardRef(function TextEditor(
 			<div
 				id='todoDescriptionCount'
 				ref={textAreaDescriptionCount}
-				className={`absolute -bottom-[17px] right-2 hidden text-[10px] ${
+				className={`absolute -bottom-[15px] right-2 hidden text-xs ${
 					charCount > 0.9 * charLimit ? 'text-rose-400' : 'text-gray-400'
 				}`}>
 				<span>{charCount}</span>
