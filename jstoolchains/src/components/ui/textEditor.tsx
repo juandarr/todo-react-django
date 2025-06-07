@@ -120,13 +120,13 @@ export default forwardRef(function TextEditor(
 
 	return (
 		<div className='relative mb-2 ml-4 mr-4 mt-2 flex flex-1 flex-col focus-within:rounded-lg focus-within:outline focus-within:outline-2 focus-within:outline-fuchsia-500'>
-			<div className='flex max-h-[20vh] items-center justify-start overflow-y-auto rounded-t-lg bg-sky-50 px-1 py-1 text-sm text-gray-900'>
+			<div className='flex items-center justify-start overflow-y-auto rounded-t-lg bg-sky-50 px-1 py-1 text-sm text-gray-900'>
 				<div
 					onClick={() => editor.chain().focus().toggleTaskList().run()}
 					className={`pl-3 ${
 						editor.isActive('taskList') ? 'is-active' : ''
 					} glowing cursor-pointer text-violet-500 hover:text-violet-600`}>
-					<TaskSquare size='18' variant='Broken' />
+					<TaskSquare size='1.4rem' variant='Broken' />
 				</div>
 			</div>
 			<EditorContent
@@ -138,7 +138,7 @@ export default forwardRef(function TextEditor(
 			<div
 				id='todoDescriptionCount'
 				ref={textAreaDescriptionCount}
-				className={`absolute -bottom-[17px] right-2 hidden text-[10px] ${
+				className={`absolute -bottom-[15px] right-2 hidden text-xs ${
 					charCount > 0.9 * charLimit ? 'text-rose-400' : 'text-gray-400'
 				}`}>
 				<span>{charCount}</span>

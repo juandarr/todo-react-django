@@ -158,7 +158,7 @@ export default function CreateModalList({
 						<div
 							id='listTitleCount'
 							ref={inputRefCount}
-							className={`absolute bottom-0 right-6 text-[10px] ${
+							className={`absolute bottom-0 right-6 text-xs ${
 								newList.length < 38 ? 'text-gray-400' : 'text-amber-500'
 							}`}>
 							<span id='current'>{newList.length}</span>
@@ -181,7 +181,7 @@ export default function CreateModalList({
 						<PopoverClose
 							className='absolute right-2 top-2 text-gray-400 hover:text-gray-500'
 							aria-label='Close'>
-							<CloseSquare />
+							<CloseSquare size='1.6rem' />
 						</PopoverClose>
 					</div>
 				</form>

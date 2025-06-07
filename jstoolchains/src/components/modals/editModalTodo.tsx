@@ -241,7 +241,7 @@ export default function EditModalTodo({
 						<div
 							id='todoEditTitleCount'
 							ref={textAreaTitleCount}
-							className={`absolute -bottom-1 right-6 hidden text-[10px] ${
+							className={`absolute -bottom-1 right-6 hidden text-xs ${
 								newEditTodo.title.length < 50
 									? 'text-gray-400'
 									: 'text-amber-500'
@@ -371,7 +371,7 @@ export default function EditModalTodo({
 						<PopoverClose
 							className='absolute right-2 top-2 text-gray-400 hover:text-gray-500'
 							aria-label='Close'>
-							<CloseSquare />
+							<CloseSquare size='1.6rem' />
 						</PopoverClose>
 					</div>
 				</form>
