@@ -486,9 +486,6 @@ input[type="checkbox"] {
 input[type="checkbox"]:checked {
   accent-color: rgb(232 121 249);
 }
-input[type="checkbox"]:checked:hover {
-  /** **/
-}
 
 /* Select react component styles */
 .select__control {
