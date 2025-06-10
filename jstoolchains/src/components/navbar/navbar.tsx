@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import { useModal } from '../../contexts/ModalContext';
 
@@ -11,7 +11,7 @@ import {
 
 import CreateModalTodo from '../modals/createModalTodo';
 
-import { SidebarLeft, House, Heart } from 'iconsax-reactjs';
+import { SidebarLeft, House, Heart, HamburgerMenu } from 'iconsax-reactjs';
 
 import type { NavBarProps } from '../../lib/customTypes';
 import { isDescendantOf } from '../../lib/utils';
@@ -32,6 +32,19 @@ export default function NavBar({
 	const isOnline = useOnlineStatus();
 	const user = useContext(UserContext);
 	const { isModalOpen } = useModal();
+	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+	useEffect(() => {
+		const handleResize = () => {
+			setWindowWidth(window.innerWidth);
+		};
+
+		window.addEventListener('resize', handleResize);
+
+		return () => {
+			window.removeEventListener('resize', handleResize);
+		};
+	}, []);
 
 	const homeCallback = (event: KeyboardEvent): void => {
 		if (isModalOpen) {
@@ -55,7 +68,7 @@ export default function NavBar({
 	return (
 		<nav className='relative mx-6 mb-6 mt-12 flex w-5/6 justify-between rounded-lg border-2 border-black bg-white p-2'>
 			<div
-				className='flex w-2/12 justify-start pl-3 text-2xl lg:w-1/12'
+				className='flex w-2/12 justify-start pl-3 text-2xl md:w-1/12'
 				onClick={() => {
 					setShowSidebar((old) => {
 						return !old;
@@ -65,17 +78,23 @@ export default function NavBar({
 					<Tooltip>
 						<TooltipTrigger asChild={true}>
 							<button className='text-violet-500 hover:text-violet-600'>
-								<SidebarLeft size='1.8rem' variant='Bold' />
+								{windowWidth < 768 ? ( // Tailwind's 'md' breakpoint is typically 768px
+									<HamburgerMenu size='1.8rem' variant='Bold' />
+								) : (
+									<SidebarLeft size='1.8rem' variant='Bold' />
+								)}
 							</button>
 						</TooltipTrigger>
 						<TooltipContent className='bg-violet-500'>
-							<p className='font-bold text-white'>Sidebar</p>
+							<p className='font-bold text-white'>
+								{windowWidth < 768 ? 'Menu' : 'Sidebar'}
+							</p>
 						</TooltipContent>
 					</Tooltip>
 				</TooltipProvider>
 			</div>
 			<div
-				className='flex w-2/12 justify-start pl-3 text-2xl lg:w-1/12'
+				className='flex w-2/12 justify-start pl-3 text-2xl md:w-1/12'
 				onClick={() => {
 					changeCurrentView(user.homeListId);
 				}}>
@@ -86,19 +105,19 @@ export default function NavBar({
 								<House size='1.8rem' variant='Bold' />
 							</button>
 						</TooltipTrigger>
-						<TooltipContent className='bg-rose-500'>
+						<TooltipContent className='bg-cyan-500'>
 							<p className='font-bold text-white'>Home</p>
 						</TooltipContent>
 					</Tooltip>
 				</TooltipProvider>
 			</div>
-			<div className='flex w-4/12 justify-center text-2xl lg:w-8/12'>
+			<div className='flex w-4/12 justify-center text-2xl md:w-8/12'>
 				<CreateModalTodo lists={lists} userInfo={userInfo} addTodo={addTodo} />
 			</div>
-			<div className='flex w-2/12 justify-end pl-3 pr-3 text-2xl lg:w-1/12 '>
+			<div className='flex w-2/12 justify-end pl-3 pr-3 text-2xl md:w-1/12 '>
 				<GoalsModal todos={todos} />
 			</div>
-			<div className='flex w-2/12 justify-end pl-3 pr-3 text-2xl lg:w-1/12 '>
+			<div className='flex w-2/12 justify-end pl-3 pr-3 text-2xl md:w-1/12 '>
 				<ProfileModal
 					settings={settings}
 					editSetting={editSetting}
