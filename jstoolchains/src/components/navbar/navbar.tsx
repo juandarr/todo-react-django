@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import { useModal } from '../../contexts/ModalContext';
 
@@ -11,7 +11,7 @@ import {
 
 import CreateModalTodo from '../modals/createModalTodo';
 
-import { SidebarLeft, House, Heart } from 'iconsax-reactjs';
+import { SidebarLeft, House, Heart, HamburgerMenu } from 'iconsax-reactjs';
 
 import type { NavBarProps } from '../../lib/customTypes';
 import { isDescendantOf } from '../../lib/utils';
@@ -32,6 +32,19 @@ export default function NavBar({
 	const isOnline = useOnlineStatus();
 	const user = useContext(UserContext);
 	const { isModalOpen } = useModal();
+	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+	useEffect(() => {
+		const handleResize = () => {
+			setWindowWidth(window.innerWidth);
+		};
+
+		window.addEventListener('resize', handleResize);
+
+		return () => {
+			window.removeEventListener('resize', handleResize);
+		};
+	}, []);
 
 	const homeCallback = (event: KeyboardEvent): void => {
 		if (isModalOpen) {
@@ -65,11 +78,17 @@ export default function NavBar({
 					<Tooltip>
 						<TooltipTrigger asChild={true}>
 							<button className='text-violet-500 hover:text-violet-600'>
-								<SidebarLeft size='1.8rem' variant='Bold' />
+								{windowWidth < 768 ? ( // Tailwind's 'md' breakpoint is typically 768px
+									<HamburgerMenu size='1.8rem' variant='Bold' />
+								) : (
+									<SidebarLeft size='1.8rem' variant='Bold' />
+								)}
 							</button>
 						</TooltipTrigger>
 						<TooltipContent className='bg-violet-500'>
-							<p className='font-bold text-white'>Sidebar</p>
+							<p className='font-bold text-white'>
+								{windowWidth < 768 ? 'Menu' : 'Sidebar'}
+							</p>
 						</TooltipContent>
 					</Tooltip>
 				</TooltipProvider>
