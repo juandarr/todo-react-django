@@ -165,7 +165,7 @@ export default function SideBar({
 
 	return (
 		<div
-			className={`absolute left-12 top-8 z-20 my-6 flex w-9/12 flex-col rounded-xl border-2 border-black bg-white p-5 pt-10 md:left-0 md:top-0 md:w-30% md:p-10 ${
+			className={`absolute left-12 top-8 z-20 my-6 flex w-9/12 flex-col rounded-xl border-2 border-black bg-white p-5 pt-10 md:left-0 md:top-0 md:w-30% lg:p-10 ${
 				showSidebar
 					? 'animate-[sidebar-content-show_300ms]'
 					: 'animate-[sidebar-content-hide_300ms]'
