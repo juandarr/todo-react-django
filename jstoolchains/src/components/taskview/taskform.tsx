@@ -56,11 +56,11 @@ export default function TaskForm({
 			id='myform'
 			className='mb-6 flex items-center space-x-4'
 			onSubmit={handleSubmit}>
-			<div className='text-md relative flex flex-1 flex-col'>
+			<div className='text-md relative flex w-8/12 flex-col md:w-full'>
 				<input
 					type='text'
 					name='title'
-					className='mt-0 h-10 flex-1 rounded-xl bg-gray-300 px-4 py-3 text-gray-900 placeholder:text-gray-400 focus-within:outline focus-within:outline-2 focus-within:outline-emerald-500'
+					className='mt-0 h-10 rounded-xl bg-gray-300 px-4 py-3 text-gray-900 placeholder:text-gray-400 focus-within:outline focus-within:outline-2 focus-within:outline-emerald-500'
 					id='todoText'
 					value={newTodo.title}
 					onChange={(e) => {
@@ -85,7 +85,7 @@ export default function TaskForm({
 				<div
 					id='todoTextCount'
 					ref={inputRefCount}
-					className={`absolute -bottom-[24px] right-3 hidden text-xs ${
+					className={`absolute -bottom-[16px] right-3 hidden text-xs ${
 						newTodo.title.length < 50 ? 'text-gray-400' : 'text-amber-500'
 					}`}>
 					<span id='current'>{newTodo.title.length}</span>
@@ -94,7 +94,7 @@ export default function TaskForm({
 			</div>
 			<button
 				type='submit'
-				className='flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-lg text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-100'
+				className='text-md flex h-10 items-center justify-center rounded-xl border-2 border-black bg-cyan-500 p-3 text-black hover:bg-cyan-600 focus-visible:ring focus-visible:ring-cyan-300 disabled:bg-cyan-100 md:text-lg'
 				disabled={!!(newTodo.title.length === 0 || status === 'submitting')}>
 				<span
 					className={`loader ${
