@@ -76,7 +76,6 @@ export default function SettingsModal({
 			</PopoverTrigger>
 			<PopoverContent
 				align={'center'}
-				side={'left'}
 				onOpenAutoFocus={(event) => {}}
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
