@@ -134,11 +134,11 @@
 }
 
 @media screen and (max-width: 750px) {
-  html {
+  /* html {
     font-size: 12px;
-  }
+  }*/
   body {
-    min-width: 650px;
+    min-width: 500px;
   }
 }
 /* Body style */

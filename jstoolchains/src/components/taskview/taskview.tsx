@@ -183,7 +183,7 @@ export default function TaskView({
 	return (
 		<div
 			className={`relative my-6 duration-300 ease-in-out ${
-				showSidebar ? 'w-65%' : 'w-full'
+				showSidebar ? 'w-full md:w-65%' : 'w-full'
 			} rounded-xl border-2 border-black bg-white p-10 fill-mode-forwards`}
 			id='taskView'>
 			<div
