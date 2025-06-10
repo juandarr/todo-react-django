@@ -85,7 +85,7 @@ export default function TaskForm({
 				<div
 					id='todoTextCount'
 					ref={inputRefCount}
-					className={`absolute -bottom-[15px] right-3 hidden text-xs ${
+					className={`absolute -bottom-[24px] right-3 hidden text-xs ${
 						newTodo.title.length < 50 ? 'text-gray-400' : 'text-amber-500'
 					}`}>
 					<span id='current'>{newTodo.title.length}</span>
