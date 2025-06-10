@@ -55,7 +55,7 @@ export default function NavBar({
 	return (
 		<nav className='relative mx-6 mb-6 mt-12 flex w-5/6 justify-between rounded-lg border-2 border-black bg-white p-2'>
 			<div
-				className='flex w-2/12 justify-start pl-3 text-2xl lg:w-1/12'
+				className='flex w-2/12 justify-start pl-3 text-2xl md:w-1/12'
 				onClick={() => {
 					setShowSidebar((old) => {
 						return !old;
@@ -75,7 +75,7 @@ export default function NavBar({
 				</TooltipProvider>
 			</div>
 			<div
-				className='flex w-2/12 justify-start pl-3 text-2xl lg:w-1/12'
+				className='flex w-2/12 justify-start pl-3 text-2xl md:w-1/12'
 				onClick={() => {
 					changeCurrentView(user.homeListId);
 				}}>
@@ -86,19 +86,19 @@ export default function NavBar({
 								<House size='1.8rem' variant='Bold' />
 							</button>
 						</TooltipTrigger>
-						<TooltipContent className='bg-rose-500'>
+						<TooltipContent className='bg-cyan-500'>
 							<p className='font-bold text-white'>Home</p>
 						</TooltipContent>
 					</Tooltip>
 				</TooltipProvider>
 			</div>
-			<div className='flex w-4/12 justify-center text-2xl lg:w-8/12'>
+			<div className='flex w-4/12 justify-center text-2xl md:w-8/12'>
 				<CreateModalTodo lists={lists} userInfo={userInfo} addTodo={addTodo} />
 			</div>
-			<div className='flex w-2/12 justify-end pl-3 pr-3 text-2xl lg:w-1/12 '>
+			<div className='flex w-2/12 justify-end pl-3 pr-3 text-2xl md:w-1/12 '>
 				<GoalsModal todos={todos} />
 			</div>
-			<div className='flex w-2/12 justify-end pl-3 pr-3 text-2xl lg:w-1/12 '>
+			<div className='flex w-2/12 justify-end pl-3 pr-3 text-2xl md:w-1/12 '>
 				<ProfileModal
 					settings={settings}
 					editSetting={editSetting}
