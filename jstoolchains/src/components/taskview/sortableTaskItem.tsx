@@ -247,7 +247,7 @@ export default function SortableTaskItem({
 						s?.classList.toggle('fade-out');
 						toggleHandler(checked as boolean);
 					}}
-					className='h-6 w-6 rounded-lg border-2 border-black md:h-7 md:w-7'
+					className={`${isOverlayItem ? 'mr-2' : ''} h-6 w-6 rounded-lg border-2 border-black md:h-7 md:w-7`}
 				/>
 			</div>
 			<form className='relative flex w-8/12 flex-col' id='editTitle-form'>
