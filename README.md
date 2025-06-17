@@ -1,24 +1,21 @@
 # JoyFlow
 
-A task manager app with lists, day to day todo tracking and other useful features to organize your day.
+A task manager app with lists, day to day task tracking and other useful features to organize your day.
 
-This application was designed to help you organize and manage your personal projects and the set of action you need to take to make them happen. It also provides the tools to manage your time during the day (e. g., priorities, due date and completion tracker).
+This application is designed to help you organize and manage your personal projects and time. It provides tools to manage your time during the day by criteria such as priority, due date/time and completion. It also includes drag and drop to define the location of lists in the lists sidebar and tasks in the task view.
 
 ![Overview of Todo app](./images/todo-overview.png)
 
-## Update roadmap
+## Improvements
 
-My goal right now is to update every dependency to 2024, improve the code and add some core features that will make the application more useful. Here are the main topics to explore in order:
+- [ ] When the viewport width is below `md`, hide sidebar/menu when clicking/touching outside of the sidebar/menu
+- [ ] Validate state management and storage procedure when the app goes offline or internet connection is lost. Find a way to manage state and have a unique source of truth.
+- [ ] Have a field to mark tasks set for all day instead of just defining it with a time (12AM as of right now)
 
-- [ ] Create documentation of the app. The features, how to use them, best practices
-- [x] Add new features (In progress)
-  - [x] Add filters to sort the tasks by certain parameters. In progress.
-  - [x] Add the option to use drag and drop to set a customized order. It is working for lists now. But needs some improvements. Next, need to implements for todos.
-    - [x] I am using DnD-kit, to add drag and drop in TaskList type components
-    - [x] Check another candidate is [react-dnd](https://react-dnd.github.io/react-dnd/about). Pick the best library and move on
-- [x] Avoid unnecessary rendering, and familiarize with the code again (heavy development of the app was done a couple of years ago)
-- [x] Check other dependencies.
-- [x] Update to last React version, 19, including the optimizations provided by the React compiler and using other tools to check suboptimal configuration in the app.
+## Planned features
+
+- [ ] Notifications
+- [ ] Pomodoro style timer for tasks
 
 ## Stack
 
