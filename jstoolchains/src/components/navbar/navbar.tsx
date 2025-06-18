@@ -32,11 +32,18 @@ export default function NavBar({
 	const isOnline = useOnlineStatus();
 	const user = useContext(UserContext);
 	const { isModalOpen } = useModal();
-	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+	const [isWindowWidthMedium, setIsWindowWidthMedium] = useState(
+		window.innerWidth < 768 ? true : false
+	);
 
 	useEffect(() => {
 		const handleResize = () => {
-			setWindowWidth(window.innerWidth);
+			// Tailwind's 'md' breakpoint is typically 768px
+			if (window.innerWidth < 768 && isWindowWidthMedium === false) {
+				setIsWindowWidthMedium(true);
+			} else if (window.innerWidth >= 768 && isWindowWidthMedium === true) {
+				setIsWindowWidthMedium(false);
+			}
 		};
 
 		window.addEventListener('resize', handleResize);
@@ -78,7 +85,7 @@ export default function NavBar({
 					<Tooltip>
 						<TooltipTrigger asChild={true}>
 							<button className='text-violet-500 hover:text-violet-600'>
-								{windowWidth < 768 ? ( // Tailwind's 'md' breakpoint is typically 768px
+								{isWindowWidthMedium ? (
 									<HamburgerMenu size='1.8rem' variant='Bold' />
 								) : (
 									<SidebarLeft size='1.8rem' variant='Bold' />
@@ -87,7 +94,7 @@ export default function NavBar({
 						</TooltipTrigger>
 						<TooltipContent className='bg-violet-500'>
 							<p className='font-bold text-white'>
-								{windowWidth < 768 ? 'Menu' : 'Sidebar'}
+								{isWindowWidthMedium ? 'Menu' : 'Sidebar'}
 							</p>
 						</TooltipContent>
 					</Tooltip>
@@ -119,6 +126,7 @@ export default function NavBar({
 			</div>
 			<div className='flex w-2/12 justify-end pl-3 pr-3 text-2xl md:w-1/12 '>
 				<ProfileModal
+					isWindowWidthMedium={isWindowWidthMedium}
 					settings={settings}
 					editSetting={editSetting}
 					lists={lists}
