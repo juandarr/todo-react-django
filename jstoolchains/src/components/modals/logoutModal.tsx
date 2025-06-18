@@ -18,8 +18,11 @@ import {
 import { useToast } from '../ui/toast/use-toast';
 
 import { Logout, CloseSquare } from 'iconsax-reactjs';
+import { LogoutModalProps } from '../../lib/customTypes';
 
-export default function LogoutModal({}): React.JSX.Element {
+export default function LogoutModal({
+	isWindowWidthMedium
+}: LogoutModalProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
 	const [status, setStatus] = useState('viewing');
 	const { toast } = useToast();
@@ -79,6 +82,8 @@ export default function LogoutModal({}): React.JSX.Element {
 			</TooltipProvider>
 			<PopoverContent
 				align={'center'}
+				side={isWindowWidthMedium ? 'bottom' : 'left'}
+				collisionPadding={{ top: 10, right: 20 }}
 				onOpenAutoFocus={(event) => {}}
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
