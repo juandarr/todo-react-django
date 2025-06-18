@@ -91,6 +91,7 @@ export default function DeleteModalList({
 			</TooltipProvider>
 			<PopoverContent
 				align={'center'}
+				collisionPadding={{ top: 10, right: 10, left: 10 }}
 				onOpenAutoFocus={(event) => {}}
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();

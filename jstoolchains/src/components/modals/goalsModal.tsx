@@ -218,6 +218,7 @@ export default function GoalsModal({
 			<PopoverContent
 				align={'center'}
 				side={'bottom'}
+				collisionPadding={{ top: 10, right: 10 }}
 				onOpenAutoFocus={(event) => {}}
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();

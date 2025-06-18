@@ -181,6 +181,7 @@ export default function CreateModalTodo({
 			</TooltipProvider>
 			<PopoverContent
 				align={'center'}
+				collisionPadding={{ top: 10, right: 10 }}
 				onOpenAutoFocus={() => {}}
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
