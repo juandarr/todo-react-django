@@ -19,7 +19,7 @@ import {
 
 import { useToast } from '../ui/toast/use-toast';
 
-import { Trash, CloseSquare } from 'iconsax-reactjs';
+import { Logout, CloseSquare } from 'iconsax-reactjs';
 
 export default function LogoutModal({}: DeleteModalListProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
@@ -71,9 +71,17 @@ export default function LogoutModal({}: DeleteModalListProps): React.JSX.Element
 							openPopover();
 						}}>
 						<TooltipTrigger>
-							<a className='flex cursor-pointer justify-center text-rose-500 hover:text-rose-600'>
-								<Trash size={`${size}rem`} />
-							</a>
+							<button className='mb-2 flex cursor-pointer items-center justify-start font-semibold text-violet-500 hover:text-violet-600'>
+								<Logout size='1.8rem' variant='Bulk' />
+								<p className='ml-4'>Settings</p>
+							</button>
+							{/*
+					<a
+						href='/logout'
+						className='mb-2 flex items-center justify-start font-semibold text-violet-500 hover:text-violet-600'>
+						<Logout size='1.8rem' variant='Bulk' />
+						<p className='ml-4'>Logout</p>
+					</a>*/}
 						</TooltipTrigger>
 					</PopoverTrigger>
 					<TooltipContent className='bg-rose-500'>
@@ -98,8 +106,8 @@ export default function LogoutModal({}: DeleteModalListProps): React.JSX.Element
 					}}>
 					<div className='m-4 rounded-xl text-left text-gray-900'>
 						Are you sure you want to{' '}
-						<span className='font-medium text-rose-500'> delete</span> this{' '}
-						<span className='font-medium'> list</span>?
+						<span className='font-medium text-rose-500'> leave </span> the{' '}
+						<span className='font-medium'> application?</span>?
 					</div>
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-end'>
 						<button
