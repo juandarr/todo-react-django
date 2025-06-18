@@ -15,6 +15,7 @@ import {
 } from '../ui/tooltip';
 
 import SettingsModal from '../modals/settingsModal';
+import LogoutModal from './logoutModal';
 
 import { Logout, UserSquare } from 'iconsax-reactjs';
 import { ProfileModalProps } from '../../lib/customTypes';
@@ -69,12 +70,7 @@ export default function ProfileModal({
 						editSetting={editSetting}
 					/>
 					<PasswordChangeModal onClose={closeProfileModal} />
-					<a
-						href='/logout'
-						className='mb-2 flex items-center justify-start font-semibold text-violet-500 hover:text-violet-600'>
-						<Logout size='1.8rem' variant='Bulk' />
-						<p className='ml-4'>Logout</p>
-					</a>
+					<LogoutModal />
 				</div>
 				<PopoverArrow className='fill-amber-500' />
 			</PopoverContent>
