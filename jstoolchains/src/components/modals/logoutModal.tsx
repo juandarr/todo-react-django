@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import type { DeleteModalListProps } from '../../lib/customTypes';
-
 import {
 	Tooltip,
 	TooltipContent,
@@ -21,7 +19,7 @@ import { useToast } from '../ui/toast/use-toast';
 
 import { Logout, CloseSquare } from 'iconsax-reactjs';
 
-export default function LogoutModal({}: DeleteModalListProps): React.JSX.Element {
+export default function LogoutModal({}): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
 	const [status, setStatus] = useState('viewing');
 	const { toast } = useToast();
@@ -34,10 +32,7 @@ export default function LogoutModal({}: DeleteModalListProps): React.JSX.Element
 		setStatus('submitting');
 
 		try {
-			toast({
-				title: 'You were logged out from the webapp',
-				description: ''
-			});
+			window.location.href = '/logout';
 			closePopover();
 		} catch (error) {
 			if (error instanceof Error) {
@@ -73,19 +68,12 @@ export default function LogoutModal({}: DeleteModalListProps): React.JSX.Element
 						<TooltipTrigger>
 							<button className='mb-2 flex cursor-pointer items-center justify-start font-semibold text-violet-500 hover:text-violet-600'>
 								<Logout size='1.8rem' variant='Bulk' />
-								<p className='ml-4'>Settings</p>
+								<p className='ml-4'>Log out</p>
 							</button>
-							{/*
-					<a
-						href='/logout'
-						className='mb-2 flex items-center justify-start font-semibold text-violet-500 hover:text-violet-600'>
-						<Logout size='1.8rem' variant='Bulk' />
-						<p className='ml-4'>Logout</p>
-					</a>*/}
 						</TooltipTrigger>
 					</PopoverTrigger>
-					<TooltipContent className='bg-rose-500'>
-						<p className='font-bold text-white'>Delete List</p>
+					<TooltipContent className='bg-violet-500'>
+						<p className='font-bold text-white'>Log out</p>
 					</TooltipContent>
 				</Tooltip>
 			</TooltipProvider>
@@ -101,25 +89,28 @@ export default function LogoutModal({}: DeleteModalListProps): React.JSX.Element
 					className='flex flex-col'
 					onSubmit={(e) => {
 						handleSubmit(e).catch((error) => {
-							console.log('Error deleting entity: ', error);
+							console.log('Error logging out: ', error);
 						});
 					}}>
 					<div className='m-4 rounded-xl text-left text-gray-900'>
-						Are you sure you want to{' '}
-						<span className='font-medium text-rose-500'> leave </span> the{' '}
-						<span className='font-medium'> application?</span>?
+						You are about to{' '}
+						<span className='font-medium text-violet-500'> leave </span> the{' '}
+						<span className='font-medium'>
+							{' '}
+							application. You can always log back in at any time.
+						</span>
 					</div>
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-end'>
 						<button
 							type='submit'
-							className='ml-4 flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-600 focus-visible:ring  focus-visible:ring-cyan-300 disabled:bg-rose-100'
+							className='ml-4 flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-violet-500 p-3 text-lg text-black hover:bg-violet-600 focus-visible:ring  focus-visible:ring-cyan-300 disabled:bg-violet-100'
 							disabled={status === 'submitting'}>
 							<span
 								className={`loader ${
 									status === 'submitting' ? 'block' : 'invisible'
 								}`}></span>
 							<span className={status === 'submitting' ? 'invisible' : 'block'}>
-								Confirm Deletion
+								Log out
 							</span>
 						</button>
 						<PopoverClose
@@ -129,7 +120,7 @@ export default function LogoutModal({}: DeleteModalListProps): React.JSX.Element
 						</PopoverClose>
 					</div>
 				</form>
-				<PopoverArrow className='fill-rose-500' />
+				<PopoverArrow className='fill-violet-500' />
 			</PopoverContent>
 		</Popover>
 	);
