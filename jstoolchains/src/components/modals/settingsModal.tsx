@@ -23,6 +23,7 @@ import type { SettingsModalProps } from '../../lib/customTypes';
 import { useToast } from '../ui/toast/use-toast';
 
 export default function SettingsModal({
+	isWindowWidthMedium,
 	lists,
 	settings,
 	editSetting
@@ -76,6 +77,8 @@ export default function SettingsModal({
 			</PopoverTrigger>
 			<PopoverContent
 				align={'center'}
+				side={isWindowWidthMedium ? 'bottom' : 'left'}
+				collisionPadding={{ top: 10, right: 20 }}
 				onOpenAutoFocus={(event) => {}}
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
