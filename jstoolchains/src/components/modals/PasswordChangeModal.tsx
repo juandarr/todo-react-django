@@ -11,12 +11,10 @@ import { PasswordCheck } from 'iconsax-reactjs';
 import { useModal } from '../../contexts/ModalContext';
 import { changePasswordApi } from '../../lib/api'; // Import the new API function
 import { toast } from '../ui/toast/use-toast';
-
-interface PasswordChangeModalProps {
-	onClose: () => void;
-}
+import { PasswordChangeModalProps } from '../../lib/customTypes';
 
 export default function PasswordChangeModal({
+	isWindowWidthMedium,
 	onClose
 }: PasswordChangeModalProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
@@ -87,6 +85,8 @@ export default function PasswordChangeModal({
 			</PopoverTrigger>
 			<PopoverContent
 				align={'center'}
+				side={isWindowWidthMedium ? 'bottom' : 'left'}
+				collisionPadding={{ top: 10, right: 20 }}
 				className='w-80 data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
@@ -154,7 +154,7 @@ export default function PasswordChangeModal({
 						</p>
 					)}
 				</form>
-				<PopoverArrow className='fill-rose-500' />
+				<PopoverArrow className='fill-orange-500' />
 			</PopoverContent>
 		</Popover>
 	);
