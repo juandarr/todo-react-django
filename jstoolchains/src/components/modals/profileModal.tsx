@@ -23,6 +23,7 @@ import { useModal } from '../../contexts/ModalContext';
 import PasswordChangeModal from './PasswordChangeModal'; // Import the new modal
 
 export default function ProfileModal({
+	isWindowWidthMedium,
 	settings,
 	editSetting,
 	lists
@@ -59,18 +60,23 @@ export default function ProfileModal({
 			</TooltipProvider>
 			<PopoverContent
 				align={'center'}
+				collisionPadding={{ top: 10, right: 10 }}
 				className='w-fit data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
 				}}>
 				<div className='flex flex-col'>
 					<SettingsModal
+						isWindowWidthMedium={isWindowWidthMedium}
 						lists={lists}
 						settings={settings}
 						editSetting={editSetting}
 					/>
-					<PasswordChangeModal onClose={closeProfileModal} />
-					<LogoutModal />
+					<PasswordChangeModal
+						isWindowWidthMedium={isWindowWidthMedium}
+						onClose={closeProfileModal}
+					/>
+					<LogoutModal isWindowWidthMedium={isWindowWidthMedium} />
 				</div>
 				<PopoverArrow className='fill-amber-500' />
 			</PopoverContent>
