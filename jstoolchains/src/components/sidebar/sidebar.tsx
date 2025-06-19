@@ -176,7 +176,7 @@ export default function SideBar({
 			<div className='absolute left-3 top-2 text-sm font-bold text-violet-600'>
 				Welcome, {user.username} ;)
 			</div>
-			<div className='max-h-[calc(100vh-10rem)] overflow-x-hidden overflow-y-scroll overscroll-contain'>
+			<div className='max-h-[calc(100vh-10rem)] overflow-y-auto overflow-x-hidden overscroll-contain'>
 				<div className='mb-1 flex flex-col'>
 					<div className='mb-2 flex flex-col text-cyan-600 lg:flex-row'>
 						<div className='font-Grape text-2xl font-bold'>Ikigai</div>
