@@ -62,6 +62,39 @@ export default function App(): React.JSX.Element {
 	const [lists, dispatchLists] = useReducer(listsReducer, initialListsState);
 	const [loadingLists, setLoadingLists] = useState(true); // Add loading state for lists since Reducer is being used
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const sidebarRef = useRef<HTMLDivElement>(null);
+	const menuButtonRef = useRef<HTMLDivElement>(null);
+	const [isWindowWidthMedium, setIsWindowWidthMedium] = useState(
+		window.innerWidth < 768
+	);
+
+	useEffect(() => {
+		const handleResize = () => {
+			// Tailwind's 'md' breakpoint is typically 768px
+			if (!isWindowWidthMedium && window.innerWidth < 768) {
+				setIsWindowWidthMedium(true);
+			} else if (isWindowWidthMedium && window.innerWidth >= 768) {
+				setIsWindowWidthMedium(false);
+			}
+		};
+
+		window.addEventListener('resize', handleResize);
+
+		return () => {
+			window.removeEventListener('resize', handleResize);
+		};
+	}, []);
+
+	// Effect to manage sidebar visibility based on screen width
+	useEffect(() => {
+		if (isWindowWidthMedium) {
+			// On small screens, hide sidebar by default
+			setShowSidebar(false);
+		} else {
+			// On large screens, show sidebar by default
+			setShowSidebar(true);
+		}
+	}, [isWindowWidthMedium]);
 
 	const initializationCompleted = useRef(false);
 
@@ -163,6 +196,28 @@ export default function App(): React.JSX.Element {
 			document.removeEventListener('keydown', toggleSidebarCallback);
 		};
 	}, [isModalOpen]);
+
+	// Handles clicks outside the sidebar to hide it
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent): void => {
+			if (isWindowWidthMedium) {
+				if (
+					showSidebar &&
+					sidebarRef.current &&
+					!sidebarRef.current.contains(event.target as Node) &&
+					menuButtonRef.current &&
+					!menuButtonRef.current.contains(event.target as Node)
+				) {
+					setShowSidebar(false);
+				}
+			}
+		};
+
+		document.addEventListener('mousedown', handleClickOutside);
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+	}, [showSidebar, isWindowWidthMedium]);
 
 	const changeCurrentView = (newViewId: number): void => {
 		let newView: viewType;
@@ -513,6 +568,8 @@ export default function App(): React.JSX.Element {
 						setShowSidebar={setShowSidebar}
 						settings={settings}
 						editSetting={editSetting}
+						menuButtonRef={menuButtonRef}
+						isWindowWidthMedium={isWindowWidthMedium}
 					/>
 					<div className='relative mx-6 flex w-5/6 justify-end'>
 						<SideBar
@@ -525,6 +582,7 @@ export default function App(): React.JSX.Element {
 							editList={editList}
 							showSidebar={showSidebar}
 							isLoadingLists={loadingLists}
+							sidebarRef={sidebarRef}
 						/>
 						<TaskView
 							userInfo={userInfo}
