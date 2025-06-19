@@ -65,9 +65,6 @@ export default function App(): React.JSX.Element {
 	const [isWindowWidthMedium, setIsWindowWidthMedium] = useState(
 		window.innerWidth < 768
 	);
-	// Used to detect when clicking outside the sidebar for small screen sizes (width < 768px)
-	const sidebarRef = useRef<HTMLDivElement>(null);
-	const menuButtonRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		// Effect to manage sidebar visibility based on screen width
@@ -194,28 +191,6 @@ export default function App(): React.JSX.Element {
 			document.removeEventListener('keydown', toggleSidebarCallback);
 		};
 	}, [isModalOpen]);
-
-	// Handles clicks outside the sidebar to hide it
-	useEffect(() => {
-		const handleClickOutside = (event: MouseEvent): void => {
-			if (isWindowWidthMedium) {
-				if (
-					showSidebar &&
-					sidebarRef.current &&
-					!sidebarRef.current.contains(event.target as Node) &&
-					menuButtonRef.current &&
-					!menuButtonRef.current.contains(event.target as Node)
-				) {
-					setShowSidebar(false);
-				}
-			}
-		};
-
-		document.addEventListener('click', handleClickOutside);
-		return () => {
-			document.removeEventListener('click', handleClickOutside);
-		};
-	}, [showSidebar, isWindowWidthMedium]);
 
 	const changeCurrentView = (newViewId: number): void => {
 		let newView: viewType;
@@ -563,10 +538,10 @@ export default function App(): React.JSX.Element {
 						todos={todos}
 						userInfo={userInfo}
 						addTodo={addTodo}
+						showSidebar={showSidebar}
 						setShowSidebar={setShowSidebar}
 						settings={settings}
 						editSetting={editSetting}
-						menuButtonRef={menuButtonRef}
 						isWindowWidthMedium={isWindowWidthMedium}
 					/>
 					<div className='relative flex w-[96%] justify-end md:mx-6 md:w-5/6'>
@@ -580,7 +555,6 @@ export default function App(): React.JSX.Element {
 							editList={editList}
 							showSidebar={showSidebar}
 							isLoadingLists={loadingLists}
-							sidebarRef={sidebarRef}
 						/>
 						<TaskView
 							userInfo={userInfo}
