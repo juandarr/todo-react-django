@@ -167,7 +167,7 @@ export default function SideBar({
 	return (
 		<div
 			ref={sidebarRef}
-			className={`absolute left-12 top-8 z-20 my-6 flex w-9/12 flex-col rounded-xl border-2 border-black bg-white p-5 pt-10 md:left-0 md:top-0 md:w-30% lg:p-10 ${
+			className={`absolute left-[12.5%] top-6 z-20 my-6 flex w-9/12 flex-col rounded-xl border-2 border-black bg-white p-5 pt-10 md:left-0 md:top-0 md:w-30% lg:p-10 ${
 				showSidebar
 					? 'animate-[sidebar-content-show_300ms]'
 					: 'animate-[sidebar-content-hide_300ms]'
@@ -223,70 +223,72 @@ export default function SideBar({
 					</>
 				)}
 			</div>
-			<div className='mt-4 flex flex-col'>
-				<div className='mb-2 flex justify-between'>
-					<div className='text-lg font-bold text-violet-600'>Lists</div>
-					<CreateModalList addList={addList} />
-				</div>
-				{activeLists.length === 0 ? (
-					<div className='inner'>
-						<div className={`p-1 pl-2 text-base text-gray-600`}>
-							🦕 No lists yet
-						</div>
+			<div className='max-h-[calc(100vh-24.75rem)] overflow-y-auto overflow-x-hidden'>
+				<div className='mt-4 flex flex-col'>
+					<div className='mb-2 flex justify-between'>
+						<div className='text-lg font-bold text-violet-600'>Lists</div>
+						<CreateModalList addList={addList} />
 					</div>
-				) : (
-					<DndContext
-						sensors={sensors}
-						collisionDetection={closestCenter}
-						onDragStart={handleDragStart}
-						onDragEnd={handleDragEnd}>
-						<SortableContext
-							items={activeLists.map((list) => list.id as number)}
-							strategy={verticalListSortingStrategy}>
-							{activeLists.map((list) => (
-								<SortableListItem
-									key={list.id}
-									list={list}
-									dispatchLists={dispatchLists}
-									currentView={currentView}
-									changeCurrentView={changeCurrentView}
-									deleteList={deleteList}
-									editList={editList}
-									draggingItemId={draggingItemId}
-								/>
-							))}
-						</SortableContext>
-					</DndContext>
-				)}
-			</div>
-			<div className='mt-4 flex flex-col'>
-				<div className='mb-2 flex justify-between'>
-					<div className='relative text-lg font-bold text-fuchsia-600'>
-						Archived
-						<span className='absolute bottom-0 left-[102%] text-xs font-semibold'>
-							({archivedLists.length})
-						</span>
-					</div>
-
-					<div className='flex items-center justify-center text-fuchsia-500 hover:text-fuchsia-600'>
-						<ChevronDown
-							className={`collapsible ${
-								archivedLists.length === 0 ? 'active' : ''
-							}`}
-							size='1.5rem'
-						/>
-					</div>
-				</div>
-				<div className='content ml-[0.7rem]'>
-					{archivedLists.length === 0 ? (
+					{activeLists.length === 0 ? (
 						<div className='inner'>
 							<div className={`p-1 pl-2 text-base text-gray-600`}>
-								🦖 No archived lists
+								�No lists yet
 							</div>
 						</div>
 					) : (
-						<div className='inner'>{archivedLists}</div>
+						<DndContext
+							sensors={sensors}
+							collisionDetection={closestCenter}
+							onDragStart={handleDragStart}
+							onDragEnd={handleDragEnd}>
+							<SortableContext
+								items={activeLists.map((list) => list.id as number)}
+								strategy={verticalListSortingStrategy}>
+								{activeLists.map((list) => (
+									<SortableListItem
+										key={list.id}
+										list={list}
+										dispatchLists={dispatchLists}
+										currentView={currentView}
+										changeCurrentView={changeCurrentView}
+										deleteList={deleteList}
+										editList={editList}
+										draggingItemId={draggingItemId}
+									/>
+								))}
+							</SortableContext>
+						</DndContext>
 					)}
+				</div>
+				<div className='mt-4 flex flex-col'>
+					<div className='mb-2 flex justify-between'>
+						<div className='relative text-lg font-bold text-fuchsia-600'>
+							Archived
+							<span className='absolute bottom-0 left-[102%] text-xs font-semibold'>
+								({archivedLists.length})
+							</span>
+						</div>
+
+						<div className='flex items-center justify-center text-fuchsia-500 hover:text-fuchsia-600'>
+							<ChevronDown
+								className={`collapsible ${
+									archivedLists.length === 0 ? 'active' : ''
+								}`}
+								size='1.5rem'
+							/>
+						</div>
+					</div>
+					<div className='content ml-[0.9rem]'>
+						{archivedLists.length === 0 ? (
+							<div className='inner'>
+								<div className={`p-1 pl-2 text-base text-gray-600`}>
+									🦖 No archived lists
+								</div>
+							</div>
+						) : (
+							<div className='inner'>{archivedLists}</div>
+						)}
+					</div>
 				</div>
 			</div>
 		</div>
