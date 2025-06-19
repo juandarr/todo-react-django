@@ -96,7 +96,7 @@ export interface TaskViewProps {
 	deleteTodo: (id: number) => Promise<void>;
 	editTodo: (id: number, title: string) => Promise<void>;
 	editTodoFull: (todo: todoType) => Promise<Todo>;
-	isLoadingTodos: boolean; // Add isLoading prop
+	isLoadingTodos: boolean;
 }
 
 export interface TaskFormProps {
