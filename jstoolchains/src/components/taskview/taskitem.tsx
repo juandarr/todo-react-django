@@ -187,7 +187,7 @@ export default function TaskItem({
 	return (
 		<>
 			<div className='parent flex'>
-				<div className='mt-3 flex w-2/12 items-start justify-center'>
+				<div className='mt-3 flex w-2/12 items-start justify-center pl-[2rem]'>
 					<Checkbox
 						id={'checkbox-' + todo.id}
 						checked={todo.complete}
@@ -196,7 +196,7 @@ export default function TaskItem({
 							s?.classList.toggle('fade-out');
 							toggleHandler(checked as boolean);
 						}}
-						className='border-2 border-black'
+						className='h-6 w-6 rounded-lg border-black md:h-7 md:w-7'
 					/>
 				</div>
 				<form className='relative flex w-8/12 flex-col' id='editTitle-form'>

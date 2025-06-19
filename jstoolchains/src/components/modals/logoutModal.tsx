@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import type { DeleteModalListProps } from '../../lib/customTypes';
-
 import {
 	Tooltip,
 	TooltipContent,
@@ -19,14 +17,12 @@ import {
 
 import { useToast } from '../ui/toast/use-toast';
 
-import { Trash, CloseSquare } from 'iconsax-reactjs';
+import { Logout, CloseSquare } from 'iconsax-reactjs';
+import { LogoutModalProps } from '../../lib/customTypes';
 
-export default function DeleteModalList({
-	deleteFunction,
-	deleteEntity,
-	id,
-	size
-}: DeleteModalListProps): React.JSX.Element {
+export default function LogoutModal({
+	isWindowWidthMedium
+}: LogoutModalProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
 	const [status, setStatus] = useState('viewing');
 	const { toast } = useToast();
@@ -39,19 +35,13 @@ export default function DeleteModalList({
 		setStatus('submitting');
 
 		try {
-			await deleteFunction(id);
-			toast({
-				title: `${
-					deleteEntity.charAt(0).toUpperCase() + deleteEntity.slice(1)
-				} was deleted!`,
-				description: ''
-			});
+			window.location.href = '/logout';
 			closePopover();
 		} catch (error) {
 			if (error instanceof Error) {
 				toast({
 					variant: 'destructive',
-					title: `There was an error deleting ${deleteEntity}: `,
+					title: 'There was an error logging out from the webapp',
 					description: error.message
 				});
 			}
@@ -68,7 +58,7 @@ export default function DeleteModalList({
 		setIsOpen(true);
 	};
 
-	console.log('Delete modal is rendered');
+	console.log('Logout modal is rendered');
 	return (
 		<Popover modal={true} open={isOpen} onOpenChange={setIsOpen}>
 			<TooltipProvider>
@@ -79,19 +69,21 @@ export default function DeleteModalList({
 							openPopover();
 						}}>
 						<TooltipTrigger>
-							<a className='flex cursor-pointer justify-center text-rose-500 hover:text-rose-600'>
-								<Trash size={`${size}rem`} />
-							</a>
+							<button className='mb-2 flex cursor-pointer items-center justify-start font-semibold text-violet-500 hover:text-violet-600'>
+								<Logout size='1.8rem' variant='Bulk' />
+								<p className='ml-4'>Log out</p>
+							</button>
 						</TooltipTrigger>
 					</PopoverTrigger>
-					<TooltipContent className='bg-rose-500'>
-						<p className='font-bold text-white'>Delete List</p>
+					<TooltipContent className='bg-violet-500'>
+						<p className='font-bold text-white'>Log out</p>
 					</TooltipContent>
 				</Tooltip>
 			</TooltipProvider>
 			<PopoverContent
 				align={'center'}
-				collisionPadding={{ top: 10, right: 10, left: 10 }}
+				side={isWindowWidthMedium ? 'bottom' : 'left'}
+				collisionPadding={{ top: 10, right: 20 }}
 				onOpenAutoFocus={(event) => {}}
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
@@ -102,25 +94,28 @@ export default function DeleteModalList({
 					className='flex flex-col'
 					onSubmit={(e) => {
 						handleSubmit(e).catch((error) => {
-							console.log('Error deleting entity: ', error);
+							console.log('Error logging out: ', error);
 						});
 					}}>
 					<div className='m-4 rounded-xl text-left text-gray-900'>
-						Are you sure you want to{' '}
-						<span className='font-medium text-rose-500'> delete</span> this{' '}
-						<span className='font-medium'> list</span>?
+						You are about to{' '}
+						<span className='font-medium text-violet-500'> leave </span> the{' '}
+						<span className='font-medium'>
+							{' '}
+							application. You can always log back in at any time.
+						</span>
 					</div>
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-end'>
 						<button
 							type='submit'
-							className='ml-4 flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-rose-500 p-3 text-lg text-black hover:bg-rose-600 focus-visible:ring  focus-visible:ring-cyan-300 disabled:bg-rose-100'
+							className='ml-4 flex h-9 w-fit items-center justify-center rounded-xl border-2 border-black bg-violet-500 p-3 text-lg text-black hover:bg-violet-600 focus-visible:ring  focus-visible:ring-cyan-300 disabled:bg-violet-100'
 							disabled={status === 'submitting'}>
 							<span
 								className={`loader ${
 									status === 'submitting' ? 'block' : 'invisible'
 								}`}></span>
 							<span className={status === 'submitting' ? 'invisible' : 'block'}>
-								Confirm Deletion
+								Log out
 							</span>
 						</button>
 						<PopoverClose
@@ -130,7 +125,7 @@ export default function DeleteModalList({
 						</PopoverClose>
 					</div>
 				</form>
-				<PopoverArrow className='fill-rose-500' />
+				<PopoverArrow className='fill-violet-500' />
 			</PopoverContent>
 		</Popover>
 	);

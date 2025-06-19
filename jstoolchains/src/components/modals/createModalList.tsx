@@ -105,6 +105,7 @@ export default function CreateModalList({
 			</TooltipProvider>
 			<PopoverContent
 				align={'center'}
+				collisionPadding={{ top: 10, right: 10 }}
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
 				}}

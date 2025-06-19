@@ -15,6 +15,7 @@ import {
 } from '../ui/tooltip';
 
 import SettingsModal from '../modals/settingsModal';
+import LogoutModal from './logoutModal';
 
 import { Logout, UserSquare } from 'iconsax-reactjs';
 import { ProfileModalProps } from '../../lib/customTypes';
@@ -22,6 +23,7 @@ import { useModal } from '../../contexts/ModalContext';
 import PasswordChangeModal from './PasswordChangeModal'; // Import the new modal
 
 export default function ProfileModal({
+	isWindowWidthMedium,
 	settings,
 	editSetting,
 	lists
@@ -58,23 +60,23 @@ export default function ProfileModal({
 			</TooltipProvider>
 			<PopoverContent
 				align={'center'}
+				collisionPadding={{ top: 10, right: 10 }}
 				className='w-fit data-[state=closed]:animate-[popover-content-hide_250ms] data-[state=open]:animate-[popover-content-show_250ms]'
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
 				}}>
 				<div className='flex flex-col'>
 					<SettingsModal
+						isWindowWidthMedium={isWindowWidthMedium}
 						lists={lists}
 						settings={settings}
 						editSetting={editSetting}
 					/>
-					<PasswordChangeModal onClose={closeProfileModal} />
-					<a
-						href='/logout'
-						className='mb-2 flex items-center justify-start font-semibold text-violet-500 hover:text-violet-600'>
-						<Logout size='1.8rem' variant='Bulk' />
-						<p className='ml-4'>Logout</p>
-					</a>
+					<PasswordChangeModal
+						isWindowWidthMedium={isWindowWidthMedium}
+						onClose={closeProfileModal}
+					/>
+					<LogoutModal isWindowWidthMedium={isWindowWidthMedium} />
 				</div>
 				<PopoverArrow className='fill-amber-500' />
 			</PopoverContent>

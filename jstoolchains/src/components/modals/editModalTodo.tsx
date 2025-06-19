@@ -189,6 +189,7 @@ export default function EditModalTodo({
 			<PopoverContent
 				align={'center'}
 				side={'left'}
+				collisionPadding={{ top: 10, right: 10 }}
 				onOpenAutoFocus={(event) => {}}
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();

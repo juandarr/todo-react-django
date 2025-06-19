@@ -217,15 +217,24 @@ export interface ArchiveModalListProps {
 	listData: { id: number; title: string; archived: boolean };
 }
 export interface SettingsModalProps {
+	isWindowWidthMedium: boolean;
 	lists: List[];
 	settings: Setting[];
 	editSetting: (id: number, value: string) => Promise<void>;
+}
+export interface PasswordChangeModalProps {
+	isWindowWidthMedium: boolean;
+	onClose: () => void;
+}
+export interface LogoutModalProps {
+	isWindowWidthMedium: boolean;
 }
 export interface GoalsModalProps {
 	todos: Todo[];
 }
 
 export interface ProfileModalProps {
+	isWindowWidthMedium: boolean;
 	settings: Setting[];
 	editSetting: (id: number, value: string) => Promise<void>;
 	lists: List[];
