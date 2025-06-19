@@ -260,8 +260,7 @@ export interface SideBarProps {
 	) => Promise<List>;
 	showSidebar: boolean;
 	dispatchLists: ActionDispatch<[action: actionType]>;
-	isLoadingLists: boolean; // Add isLoadingLists prop
-	sidebarRef: React.RefObject<HTMLDivElement | null>;
+	isLoadingLists: boolean;
 }
 
 export interface SortableListItemProps {
@@ -286,10 +285,10 @@ export interface NavBarProps {
 	todos: Todo[];
 	userInfo: userInfoType;
 	addTodo: addTodoType;
+	showSidebar: boolean;
 	setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
 	settings: Setting[];
 	editSetting: (id: number, value: string) => Promise<void>;
-	menuButtonRef: React.RefObject<HTMLDivElement | null>;
 	isWindowWidthMedium: boolean;
 }
 
