@@ -212,52 +212,55 @@ export default function TaskView({
 					(currentView.archived ? ' (Archived)' : '')}
 			</div>
 			<TaskForm addTodo={addTodo} key={currentView.id} />
-			<TaskListHeader
-				fieldDone={'Todo'}
-				fieldTask={'Task'}
-				fieldActions={'Actions'}
-				isComplete={true}
-				items={todosTodo.length}
-			/>
-			{isLoadingTodos ? (
-				<p className='text-center text-gray-500'>Loading todos...</p>
-			) : (
-				<TaskList
-					todos={todosTodo}
-					lists={lists}
-					editListHandler={editListHandler}
-					currentView={currentView}
-					userInfo={userInfo}
-					toggleTodo={toggleTodo}
-					deleteTodo={deleteTodo}
-					editTodo={editTodo}
-					editTodoFull={editTodoFull}
-					isComplete={false}
-				/>
-			)}
-			<TaskListHeader
-				fieldDone={`Completed`}
-				fieldTask={''}
-				fieldActions={''}
-				isComplete={false}
-				items={todosCompleted.length}
-			/>
-			{isLoadingTodos ? (
-				<p className='text-center text-gray-500'>Loading todos...</p>
-			) : (
-				<TaskList
-					todos={todosCompleted}
-					lists={lists}
-					editListHandler={editListHandler}
-					currentView={currentView}
-					userInfo={userInfo}
-					toggleTodo={toggleTodo}
-					deleteTodo={deleteTodo}
-					editTodo={editTodo}
-					editTodoFull={editTodoFull}
+
+			<div className='max-h-[calc(100vh-20rem)] overflow-y-auto overflow-x-hidden'>
+				<TaskListHeader
+					fieldDone={'Todo'}
+					fieldTask={'Task'}
+					fieldActions={'Actions'}
 					isComplete={true}
+					items={todosTodo.length}
 				/>
-			)}
+				{isLoadingTodos ? (
+					<p className='text-center text-gray-500'>Loading todos...</p>
+				) : (
+					<TaskList
+						todos={todosTodo}
+						lists={lists}
+						editListHandler={editListHandler}
+						currentView={currentView}
+						userInfo={userInfo}
+						toggleTodo={toggleTodo}
+						deleteTodo={deleteTodo}
+						editTodo={editTodo}
+						editTodoFull={editTodoFull}
+						isComplete={false}
+					/>
+				)}
+				<TaskListHeader
+					fieldDone={`Completed`}
+					fieldTask={''}
+					fieldActions={''}
+					isComplete={false}
+					items={todosCompleted.length}
+				/>
+				{isLoadingTodos ? (
+					<p className='text-center text-gray-500'>Loading todos...</p>
+				) : (
+					<TaskList
+						todos={todosCompleted}
+						lists={lists}
+						editListHandler={editListHandler}
+						currentView={currentView}
+						userInfo={userInfo}
+						toggleTodo={toggleTodo}
+						deleteTodo={deleteTodo}
+						editTodo={editTodo}
+						editTodoFull={editTodoFull}
+						isComplete={true}
+					/>
+				)}
+			</div>
 		</div>
 	);
 }

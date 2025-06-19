@@ -62,13 +62,22 @@ export default function App(): React.JSX.Element {
 	const [lists, dispatchLists] = useReducer(listsReducer, initialListsState);
 	const [loadingLists, setLoadingLists] = useState(true); // Add loading state for lists since Reducer is being used
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const sidebarRef = useRef<HTMLDivElement>(null);
-	const menuButtonRef = useRef<HTMLDivElement>(null);
 	const [isWindowWidthMedium, setIsWindowWidthMedium] = useState(
 		window.innerWidth < 768
 	);
+	// Used to detect when clicking outside the sidebar for small screen sizes (width < 768px)
+	const sidebarRef = useRef<HTMLDivElement>(null);
+	const menuButtonRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
+		// Effect to manage sidebar visibility based on screen width
+		if (isWindowWidthMedium) {
+			// On small screens, hide sidebar by default
+			setShowSidebar(false);
+		} else {
+			// On large screens, show sidebar by default
+			setShowSidebar(true);
+		}
 		const handleResize = () => {
 			// Tailwind's 'md' breakpoint is typically 768px
 			if (!isWindowWidthMedium && window.innerWidth < 768) {
@@ -83,17 +92,6 @@ export default function App(): React.JSX.Element {
 		return () => {
 			window.removeEventListener('resize', handleResize);
 		};
-	}, []);
-
-	// Effect to manage sidebar visibility based on screen width
-	useEffect(() => {
-		if (isWindowWidthMedium) {
-			// On small screens, hide sidebar by default
-			setShowSidebar(false);
-		} else {
-			// On large screens, show sidebar by default
-			setShowSidebar(true);
-		}
 	}, [isWindowWidthMedium]);
 
 	const initializationCompleted = useRef(false);

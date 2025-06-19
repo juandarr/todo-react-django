@@ -44,7 +44,7 @@ export default function SortableListItem({
 		<div
 			ref={setNodeRef}
 			style={style}
-			className={`ml-[-0.5rem] ${dynamicClasses}`}>
+			className={`ml-[-0.3rem] ${dynamicClasses}`}>
 			<div key={list.id} className={`parent flex items-center justify-between`}>
 				<button
 					className={`hidden-child cursor-grab`}
