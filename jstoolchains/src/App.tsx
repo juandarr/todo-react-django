@@ -569,7 +569,7 @@ export default function App(): React.JSX.Element {
 						menuButtonRef={menuButtonRef}
 						isWindowWidthMedium={isWindowWidthMedium}
 					/>
-					<div className='relative mx-6 flex w-5/6 justify-end'>
+					<div className='relative flex w-[96%] justify-end md:mx-6 md:w-5/6'>
 						<SideBar
 							lists={lists}
 							dispatchLists={dispatchLists}
