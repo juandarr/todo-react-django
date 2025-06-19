@@ -55,7 +55,7 @@ export default function NavBar({
 	}, [homeCallback]);
 
 	return (
-		<nav className='relative mx-6 mb-6 mt-12 flex w-5/6 justify-between rounded-lg border-2 border-black bg-white p-2'>
+		<nav className='relative mx-6 mb-1.5 mt-2.5 flex w-[96%] justify-between rounded-lg border-2 border-black bg-white p-2 md:mb-6 md:mt-12 md:w-5/6'>
 			<div
 				ref={menuButtonRef}
 				className='flex w-2/12 justify-start pl-3 text-2xl md:w-1/12'
