@@ -213,7 +213,7 @@ export default function TaskView({
 			</div>
 			<TaskForm addTodo={addTodo} key={currentView.id} />
 
-			<div className='max-h-[calc(100vh-20rem)] overflow-y-auto overflow-x-hidden'>
+			<div className='max-h-[calc(100vh-13rem)] overflow-y-auto overflow-x-hidden overscroll-contain md:max-h-[calc(100vh-20rem)]'>
 				<TaskListHeader
 					fieldDone={'Todo'}
 					fieldTask={'Task'}
