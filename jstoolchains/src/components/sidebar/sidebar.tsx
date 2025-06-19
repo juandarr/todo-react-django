@@ -35,7 +35,8 @@ export default function SideBar({
 	deleteList,
 	editList,
 	showSidebar,
-	isLoadingLists // Add isLoadingLists here
+	isLoadingLists,
+	sidebarRef
 }: SideBarProps): React.JSX.Element {
 	const [draggingItemId, setDraggingItemId] = useState<number | null>(null); // State to track the ID of the item being dragged
 	const user = useContext(UserContext);
@@ -165,6 +166,7 @@ export default function SideBar({
 
 	return (
 		<div
+			ref={sidebarRef}
 			className={`absolute left-12 top-8 z-20 my-6 flex w-9/12 flex-col rounded-xl border-2 border-black bg-white p-5 pt-10 md:left-0 md:top-0 md:w-30% lg:p-10 ${
 				showSidebar
 					? 'animate-[sidebar-content-show_300ms]'
