@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import { useModal } from '../../contexts/ModalContext';
 
@@ -11,7 +11,13 @@ import {
 
 import CreateModalTodo from '../modals/createModalTodo';
 
-import { SidebarLeft, House, Heart, HamburgerMenu } from 'iconsax-reactjs';
+import {
+	House,
+	Heart,
+	HamburgerMenu,
+	CloseSquare,
+	SidebarRight
+} from 'iconsax-reactjs';
 
 import type { NavBarProps } from '../../lib/customTypes';
 import { isDescendantOf } from '../../lib/utils';
@@ -25,10 +31,10 @@ export default function NavBar({
 	todos,
 	userInfo,
 	addTodo,
+	showSidebar,
 	setShowSidebar,
 	settings,
 	editSetting,
-	menuButtonRef,
 	isWindowWidthMedium
 }: NavBarProps): React.JSX.Element {
 	const isOnline = useOnlineStatus();
@@ -57,7 +63,6 @@ export default function NavBar({
 	return (
 		<nav className='relative mx-6 mb-1.5 mt-2.5 flex w-[96%] justify-between rounded-lg border-2 border-black bg-white p-2 md:mb-6 md:mt-12 md:w-5/6'>
 			<div
-				ref={menuButtonRef}
 				className='flex w-2/12 justify-start pl-3 text-2xl md:w-1/12'
 				onClick={() => {
 					setShowSidebar((old) => {
@@ -67,16 +72,22 @@ export default function NavBar({
 				<TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger asChild={true}>
-							<button className='text-violet-500 hover:text-violet-600'>
+							<button
+								className={`${showSidebar ? 'sidebar-open' : 'sidebar-close'} text-violet-500 hover:text-violet-600`}>
 								{isWindowWidthMedium ? (
-									<HamburgerMenu size='1.8rem' variant='Bold' />
+									showSidebar ? (
+										<CloseSquare size='1.8rem' variant='Bold' />
+									) : (
+										<HamburgerMenu size='1.8rem' variant='Bold' />
+									)
 								) : (
-									<SidebarLeft size='1.8rem' variant='Bold' />
+									<SidebarRight size='1.8rem' variant='Bold' />
 								)}
 							</button>
 						</TooltipTrigger>
 						<TooltipContent className='bg-violet-500'>
 							<p className='font-bold text-white'>
+								{showSidebar ? 'Close ' : ''}{' '}
 								{isWindowWidthMedium ? 'Menu' : 'Sidebar'}
 							</p>
 						</TooltipContent>
