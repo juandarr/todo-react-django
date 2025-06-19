@@ -27,31 +27,13 @@ export default function NavBar({
 	addTodo,
 	setShowSidebar,
 	settings,
-	editSetting
+	editSetting,
+	menuButtonRef,
+	isWindowWidthMedium
 }: NavBarProps): React.JSX.Element {
 	const isOnline = useOnlineStatus();
 	const user = useContext(UserContext);
 	const { isModalOpen } = useModal();
-	const [isWindowWidthMedium, setIsWindowWidthMedium] = useState(
-		window.innerWidth < 768 ? true : false
-	);
-
-	useEffect(() => {
-		const handleResize = () => {
-			// Tailwind's 'md' breakpoint is typically 768px
-			if (window.innerWidth < 768 && isWindowWidthMedium === false) {
-				setIsWindowWidthMedium(true);
-			} else if (window.innerWidth >= 768 && isWindowWidthMedium === true) {
-				setIsWindowWidthMedium(false);
-			}
-		};
-
-		window.addEventListener('resize', handleResize);
-
-		return () => {
-			window.removeEventListener('resize', handleResize);
-		};
-	}, []);
 
 	const homeCallback = (event: KeyboardEvent): void => {
 		if (isModalOpen) {
@@ -75,6 +57,7 @@ export default function NavBar({
 	return (
 		<nav className='relative mx-6 mb-6 mt-12 flex w-5/6 justify-between rounded-lg border-2 border-black bg-white p-2'>
 			<div
+				ref={menuButtonRef}
 				className='flex w-2/12 justify-start pl-3 text-2xl md:w-1/12'
 				onClick={() => {
 					setShowSidebar((old) => {
