@@ -1,12 +1,13 @@
 import React, { useMemo, useState } from 'react';
 
-import { Setting2 as Settings } from 'iconsax-reactjs';
+import { CloseSquare, Setting2 as Settings } from 'iconsax-reactjs';
 
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
-	PopoverArrow
+	PopoverArrow,
+	PopoverClose
 } from '../ui/popover';
 
 import {
@@ -68,7 +69,7 @@ export default function SettingsModal({
 	}
 	console.log('Modal settings opened');
 	return (
-		<Popover modal={false} open={isOpen} onOpenChange={setIsOpen}>
+		<Popover modal={true} open={isOpen} onOpenChange={setIsOpen}>
 			<PopoverTrigger asChild={true}>
 				<button className='mb-2 flex cursor-pointer items-center justify-start font-semibold text-cyan-500 hover:text-cyan-600'>
 					<Settings size='1.8rem' variant='Bulk' />
@@ -90,14 +91,12 @@ export default function SettingsModal({
 					onSubmit={(e) => {
 						e.preventDefault();
 					}}>
-					<div className='flex-col items-center justify-start'>
-						<h1 className='mb-3 ml-3 mr-3 mt-3 text-xl font-bold text-cyan-500'>
-							Settings
-						</h1>
-						<div className='mb-3 ml-3 text-sm'>
-							Customize the application settings
+					<div className='m-4 flex-col items-center justify-start rounded-xl text-left'>
+						<div className='font-medium text-gray-900'>
+							Customize the application{' '}
+							<span className=' text-cyan-500'>settings</span>
 						</div>
-						<div className='ml-3 mr-3 flex items-center justify-between'>
+						<div className='flex items-center justify-between'>
 							<h3>Home view</h3>
 							<Select
 								value={editSettings.home_view.value}
@@ -128,7 +127,7 @@ export default function SettingsModal({
 								</SelectContent>
 							</Select>
 						</div>
-						<div className='ml-3 mr-3 flex items-center justify-between'>
+						<div className='flex items-center justify-between'>
 							<h3>Time zone</h3>
 							<VirtualizedSelect
 								placeholder='Select time zone...'
@@ -149,6 +148,11 @@ export default function SettingsModal({
 								options={timeZonesTmp}
 							/>
 						</div>
+						<PopoverClose
+							className='absolute right-2 top-2 text-gray-400 hover:text-gray-500'
+							aria-label='Close'>
+							<CloseSquare />
+						</PopoverClose>
 					</div>
 				</form>
 				<PopoverArrow className='fill-sky-500' />
