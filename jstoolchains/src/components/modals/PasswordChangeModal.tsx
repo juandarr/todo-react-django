@@ -1,13 +1,14 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
-	PopoverArrow
+	PopoverArrow,
+	PopoverClose
 } from '../ui/popover';
 
-import { PasswordCheck } from 'iconsax-reactjs';
+import { CloseSquare, PasswordCheck } from 'iconsax-reactjs';
 import { useModal } from '../../contexts/ModalContext';
 import { changePasswordApi } from '../../lib/api'; // Import the new API function
 import { toast } from '../ui/toast/use-toast';
@@ -74,7 +75,7 @@ export default function PasswordChangeModal({
 	};
 
 	return (
-		<Popover open={isOpen} onOpenChange={setIsOpen}>
+		<Popover modal={true} open={isOpen} onOpenChange={setIsOpen}>
 			<PopoverTrigger
 				asChild={true}
 				className='flex cursor-pointer justify-center'>
@@ -91,13 +92,14 @@ export default function PasswordChangeModal({
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
 				}}>
-				<form className='flex flex-col p-3' onSubmit={handleSubmit}>
-					<h1 className='mb-3 text-xl font-bold text-orange-500'>
-						Change Password
-					</h1>
-					<div className='mb-3 text-balance text-sm'>
-						Please enter your old password and then enter your new password{' '}
-						<b>twice</b> so we can verify you typed it correctly
+				<form
+					className='m-4 flex flex-col rounded-xl text-justify'
+					onSubmit={handleSubmit}>
+					<div className='mb-3 text-left font-medium text-gray-900'>
+						Please enter your
+						<span className='text-orange-500'> current password</span>, then
+						enter your <span className='text-orange-500'>new password</span> and
+						repeat it for <span className='text-orange-500'>validation</span>
 					</div>
 					<div className='mb-3'>
 						<label className='mb-1 block text-base font-bold text-gray-700'>
@@ -153,6 +155,12 @@ export default function PasswordChangeModal({
 							{error}
 						</p>
 					)}
+
+					<PopoverClose
+						className='absolute right-2 top-2 text-gray-400 hover:text-gray-500'
+						aria-label='Close'>
+						<CloseSquare />
+					</PopoverClose>
 				</form>
 				<PopoverArrow className='fill-orange-500' />
 			</PopoverContent>

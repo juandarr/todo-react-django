@@ -212,7 +212,10 @@ export default function EditModalList({
 										{selectedEmoji}
 									</span>
 								</PopoverTrigger>
-								<PopoverContent className='w-fit p-0'>
+								<PopoverContent
+									className='w-fit p-0'
+									align={'center'}
+									collisionPadding={{ top: 10, right: 10, left: 10 }}>
 									<MyEmojiPicker onEmojiSelect={onEmojiSelect} />
 									<PopoverArrow className='fill-amber-500' />
 								</PopoverContent>

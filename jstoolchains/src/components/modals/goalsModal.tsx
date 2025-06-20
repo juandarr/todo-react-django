@@ -7,7 +7,8 @@ import {
 	CardEdit as Month,
 	Link21 as Chain,
 	MedalStar as GoalsIcon,
-	Sun1 as Today
+	Sun1 as Today,
+	CloseSquare
 } from 'iconsax-reactjs';
 
 import {
@@ -21,14 +22,16 @@ import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
-	PopoverArrow
+	PopoverArrow,
+	PopoverClose
 } from '../ui/popover';
 
 import type { GoalsModalProps } from '../../lib/customTypes';
 import { UserContext } from '../../contexts/UserContext';
 
 export default function GoalsModal({
-	todos
+	todos,
+	isWindowWidthMedium
 }: GoalsModalProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
 
@@ -200,13 +203,16 @@ export default function GoalsModal({
 
 	console.log('Modal goals opened', streakCounter.previousDays);
 	return (
-		<Popover modal={false} open={isOpen} onOpenChange={setIsOpen}>
+		<Popover modal={true} open={isOpen} onOpenChange={setIsOpen}>
 			<TooltipProvider>
 				<Tooltip>
 					<PopoverTrigger asChild={true}>
 						<TooltipTrigger asChild={true}>
 							<button className='text-fuchsia-500 hover:text-fuchsia-600'>
-								<GoalsIcon size='1.8rem' variant='Bulk' />
+								<GoalsIcon
+									size={isWindowWidthMedium ? '2.1rem' : '1.8rem'}
+									variant='Bulk'
+								/>
 							</button>
 						</TooltipTrigger>
 					</PopoverTrigger>
@@ -299,6 +305,12 @@ export default function GoalsModal({
 								))}
 							</div>
 						</div>
+
+						<PopoverClose
+							className='absolute right-2 top-2 text-gray-400 hover:text-gray-500'
+							aria-label='Close'>
+							<CloseSquare />
+						</PopoverClose>
 					</div>
 				</form>
 				<PopoverArrow className='fill-fuchsia-500' />

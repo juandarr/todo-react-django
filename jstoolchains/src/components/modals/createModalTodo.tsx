@@ -45,7 +45,8 @@ import { useModal } from '../../contexts/ModalContext';
 export default function CreateModalTodo({
 	lists,
 	userInfo,
-	addTodo
+	addTodo,
+	isWindowWidthMedium
 }: CreateModalTodoProps): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
 
@@ -167,7 +168,7 @@ export default function CreateModalTodo({
 									onClick={() => {
 										openPopover();
 									}}
-									size='1.8rem'
+									size={isWindowWidthMedium ? '2.1rem' : '1.8rem'}
 									className='cursor-pointer'
 									variant='Bulk'
 								/>

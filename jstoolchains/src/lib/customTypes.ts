@@ -96,7 +96,7 @@ export interface TaskViewProps {
 	deleteTodo: (id: number) => Promise<void>;
 	editTodo: (id: number, title: string) => Promise<void>;
 	editTodoFull: (todo: todoType) => Promise<Todo>;
-	isLoadingTodos: boolean; // Add isLoading prop
+	isLoadingTodos: boolean;
 }
 
 export interface TaskFormProps {
@@ -158,6 +158,7 @@ export interface CreateModalTodoProps {
 	lists: List[];
 	userInfo: userInfoType;
 	addTodo: addTodoType;
+	isWindowWidthMedium: boolean;
 }
 
 export interface TextEditorProps extends HTMLProps<HTMLDivElement> {
@@ -231,6 +232,7 @@ export interface LogoutModalProps {
 }
 export interface GoalsModalProps {
 	todos: Todo[];
+	isWindowWidthMedium: boolean;
 }
 
 export interface ProfileModalProps {
@@ -260,8 +262,7 @@ export interface SideBarProps {
 	) => Promise<List>;
 	showSidebar: boolean;
 	dispatchLists: ActionDispatch<[action: actionType]>;
-	isLoadingLists: boolean; // Add isLoadingLists prop
-	sidebarRef: React.RefObject<HTMLDivElement | null>;
+	isLoadingLists: boolean;
 }
 
 export interface SortableListItemProps {
@@ -286,10 +287,10 @@ export interface NavBarProps {
 	todos: Todo[];
 	userInfo: userInfoType;
 	addTodo: addTodoType;
+	showSidebar: boolean;
 	setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
 	settings: Setting[];
 	editSetting: (id: number, value: string) => Promise<void>;
-	menuButtonRef: React.RefObject<HTMLDivElement | null>;
 	isWindowWidthMedium: boolean;
 }
 

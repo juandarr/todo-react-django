@@ -35,8 +35,7 @@ export default function SideBar({
 	deleteList,
 	editList,
 	showSidebar,
-	isLoadingLists,
-	sidebarRef
+	isLoadingLists
 }: SideBarProps): React.JSX.Element {
 	const [draggingItemId, setDraggingItemId] = useState<number | null>(null); // State to track the ID of the item being dragged
 	const user = useContext(UserContext);
@@ -166,8 +165,7 @@ export default function SideBar({
 
 	return (
 		<div
-			ref={sidebarRef}
-			className={`absolute left-[12.5%] top-6 z-20 my-6 flex w-9/12 flex-col rounded-xl border-2 border-black bg-white p-5 pt-10 md:left-0 md:top-0 md:w-30% lg:p-10 ${
+			className={`absolute left-[8.33%] top-28 z-20 flex max-h-[calc(100vh-12rem)] w-10/12 flex-col rounded-xl border-2 border-black bg-white p-5 pt-10 md:left-0 md:top-0 md:my-6 md:max-h-[calc(100vh-10.75rem)] md:w-30% lg:p-10 ${
 				showSidebar
 					? 'animate-[sidebar-content-show_300ms]'
 					: 'animate-[sidebar-content-hide_300ms]'
@@ -176,54 +174,54 @@ export default function SideBar({
 			<div className='absolute left-3 top-2 text-sm font-bold text-violet-600'>
 				Welcome, {user.username} ;)
 			</div>
-			<div className='mb-1 flex flex-col'>
-				<div className='mb-2 flex flex-col text-cyan-600 lg:flex-row'>
-					<div className='font-Grape text-2xl font-bold'>Ikigai</div>
-					<div className='ml-4 mt-1 bg-gradient-to-r from-orange-300 via-green-400 to-violet-500 bg-clip-text font-Grape text-lg font-bold text-transparent lg:ml-2'>
-						( 生きがい )
+			<div className='max-h-[calc(100vh-10rem)] overflow-y-auto overflow-x-hidden overscroll-contain'>
+				<div className='mb-1 flex flex-col'>
+					<div className='mb-2 flex flex-col text-cyan-600 lg:flex-row'>
+						<div className='font-Grape text-2xl font-bold'>Ikigai</div>
+						<div className='ml-4 mt-1 bg-gradient-to-r from-orange-300 via-green-400 to-violet-500 bg-clip-text font-Grape text-lg font-bold text-transparent lg:ml-2'>
+							( 生きがい )
+						</div>
 					</div>
+					{isLoadingLists ? (
+						<p className='text-center text-gray-500'>Loading lists...</p>
+					) : (
+						<>
+							<button
+								className={`flex cursor-pointer justify-start ${
+									currentView.id === user.inboxListId
+										? 'rounded-md bg-cyan-200 font-semibold'
+										: ''
+								} rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-cyan-500 hover:decoration-2 hover:underline-offset-4`}
+								onClick={() => {
+									changeCurrentView(user.inboxListId);
+								}}>
+								{inbox !== undefined ? inbox.title : ''}
+							</button>
+							<button
+								className={`flex cursor-pointer justify-start ${
+									currentView.id === user.inboxListId + 1
+										? 'rounded-md bg-cyan-200 font-semibold'
+										: ''
+								} rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-cyan-500 hover:decoration-2 hover:underline-offset-4`}
+								onClick={() => {
+									changeCurrentView(user.inboxListId + 1);
+								}}>
+								{today !== undefined ? today.title : ''}
+							</button>
+							<button
+								className={`flex cursor-pointer justify-start ${
+									currentView.id === user.inboxListId + 2
+										? 'rounded-md bg-cyan-200 font-semibold'
+										: ''
+								} rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-cyan-500 hover:decoration-2 hover:underline-offset-4`}
+								onClick={() => {
+									changeCurrentView(user.inboxListId + 2);
+								}}>
+								{upcoming !== undefined ? upcoming.title : ''}
+							</button>
+						</>
+					)}
 				</div>
-				{isLoadingLists ? (
-					<p className='text-center text-gray-500'>Loading lists...</p>
-				) : (
-					<>
-						<button
-							className={`flex cursor-pointer justify-start ${
-								currentView.id === user.inboxListId
-									? 'rounded-md bg-cyan-200 font-semibold'
-									: ''
-							} rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-cyan-500 hover:decoration-2 hover:underline-offset-4`}
-							onClick={() => {
-								changeCurrentView(user.inboxListId);
-							}}>
-							{inbox !== undefined ? inbox.title : ''}
-						</button>
-						<button
-							className={`flex cursor-pointer justify-start ${
-								currentView.id === user.inboxListId + 1
-									? 'rounded-md bg-cyan-200 font-semibold'
-									: ''
-							} rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-cyan-500 hover:decoration-2 hover:underline-offset-4`}
-							onClick={() => {
-								changeCurrentView(user.inboxListId + 1);
-							}}>
-							{today !== undefined ? today.title : ''}
-						</button>
-						<button
-							className={`flex cursor-pointer justify-start ${
-								currentView.id === user.inboxListId + 2
-									? 'rounded-md bg-cyan-200 font-semibold'
-									: ''
-							} rounded-xl p-1 pl-2 text-base hover:underline hover:decoration-cyan-500 hover:decoration-2 hover:underline-offset-4`}
-							onClick={() => {
-								changeCurrentView(user.inboxListId + 2);
-							}}>
-							{upcoming !== undefined ? upcoming.title : ''}
-						</button>
-					</>
-				)}
-			</div>
-			<div className='max-h-[calc(100vh-24.75rem)] overflow-y-auto overflow-x-hidden'>
 				<div className='mt-4 flex flex-col'>
 					<div className='mb-2 flex justify-between'>
 						<div className='text-lg font-bold text-violet-600'>Lists</div>
@@ -232,7 +230,7 @@ export default function SideBar({
 					{activeLists.length === 0 ? (
 						<div className='inner'>
 							<div className={`p-1 pl-2 text-base text-gray-600`}>
-								�No lists yet
+								No lists yet
 							</div>
 						</div>
 					) : (
