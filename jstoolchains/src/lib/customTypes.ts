@@ -158,6 +158,7 @@ export interface CreateModalTodoProps {
 	lists: List[];
 	userInfo: userInfoType;
 	addTodo: addTodoType;
+	isWindowWidthMedium: boolean;
 }
 
 export interface TextEditorProps extends HTMLProps<HTMLDivElement> {
@@ -231,6 +232,7 @@ export interface LogoutModalProps {
 }
 export interface GoalsModalProps {
 	todos: Todo[];
+	isWindowWidthMedium: boolean;
 }
 
 export interface ProfileModalProps {
