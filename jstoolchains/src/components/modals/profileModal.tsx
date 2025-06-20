@@ -49,7 +49,10 @@ export default function ProfileModal({
 						className='flex cursor-pointer justify-center text-2xl'>
 						<TooltipTrigger asChild={true}>
 							<button className='text-amber-500 hover:text-amber-600'>
-								<UserSquare size='1.8rem' variant='Bulk' />
+								<UserSquare
+									size={isWindowWidthMedium ? '2.1rem' : '1.8rem'}
+									variant='Bulk'
+								/>
 							</button>
 						</TooltipTrigger>
 					</PopoverTrigger>
