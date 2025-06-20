@@ -97,13 +97,9 @@ export default function LogoutModal({
 							console.log('Error logging out: ', error);
 						});
 					}}>
-					<div className='m-4 rounded-xl text-left text-gray-900'>
-						You are about to{' '}
-						<span className='font-medium text-violet-500'> leave </span> the{' '}
-						<span className='font-medium'>
-							{' '}
-							application. You can always log back in at any time.
-						</span>
+					<div className='m-4 rounded-xl text-left font-medium text-gray-900'>
+						You are about to <span className=' text-violet-500'> leave </span>{' '}
+						the application. You can always log back in at any time.
 					</div>
 					<div className='mb-4 ml-4 mr-4 flex items-center justify-end'>
 						<button
