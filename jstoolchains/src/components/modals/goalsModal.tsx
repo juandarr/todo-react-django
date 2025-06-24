@@ -210,6 +210,11 @@ export default function GoalsModal({
 						<TooltipTrigger asChild={true}>
 							<button className='text-fuchsia-500 hover:text-fuchsia-600'>
 								<GoalsIcon
+									onClick={(event) => {
+										const b = event.target as any;
+										b.classList.add('click-gelatine');
+										setTimeout(() => b.classList.remove('click-gelatine'), 500);
+									}}
 									size={isWindowWidthMedium ? '2.1rem' : '1.8rem'}
 									variant='Bulk'
 								/>

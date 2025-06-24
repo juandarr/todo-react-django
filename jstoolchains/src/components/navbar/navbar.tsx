@@ -96,16 +96,25 @@ export default function NavBar({
 			</div>
 			<div
 				className='flex w-2/12 justify-start pl-3 text-2xl md:w-1/12'
-				onClick={() => {
+				onClick={(event) => {
+					const b = event.target as any;
+					b.classList.add('click-gelatine');
 					changeCurrentView(user.homeListId);
+					setTimeout(() => b.classList.remove('click-gelatine'), 500);
 				}}>
 				<TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger asChild={true}>
-							<button className='text-cyan-400 hover:text-cyan-500'>
+							<button className=' text-cyan-400 hover:text-cyan-500'>
 								<House
 									size={isWindowWidthMedium ? '2.1rem' : '1.8rem'}
 									variant='Bold'
+									onClick={(event) => {
+										const b = event.target as any;
+										b.classList.add('click-gelatine');
+										changeCurrentView(user.homeListId);
+										setTimeout(() => b.classList.remove('click-gelatine'), 500);
+									}}
 								/>
 							</button>
 						</TooltipTrigger>

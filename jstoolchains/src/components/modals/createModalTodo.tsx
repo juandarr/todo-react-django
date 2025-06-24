@@ -165,8 +165,11 @@ export default function CreateModalTodo({
 						<TooltipTrigger asChild={true}>
 							<button className='text-emerald-500 hover:text-emerald-600'>
 								<AddCircle
-									onClick={() => {
+									onClick={(event) => {
+										const b = event.target as any;
+										b.classList.add('click-gelatine');
 										openPopover();
+										setTimeout(() => b.classList.remove('click-gelatine'), 500);
 									}}
 									size={isWindowWidthMedium ? '2.1rem' : '1.8rem'}
 									className='cursor-pointer'
