@@ -1,177 +1,177 @@
 openapi: 3.0.3
 info:
-  title: ''
+  title: ""
   version: 0.0.0
 paths:
   /api/lists/:
     get:
       operationId: lists_list
       tags:
-      - lists
+        - lists
       security:
-      - cookieAuth: []
-      - {}
+        - cookieAuth: []
+        - {}
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/List'
-          description: ''
+                  $ref: "#/components/schemas/List"
+          description: ""
     post:
       operationId: lists_create
       tags:
-      - lists
+        - lists
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/List'
+              $ref: "#/components/schemas/List"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/List'
+              $ref: "#/components/schemas/List"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/List'
+              $ref: "#/components/schemas/List"
         required: true
       security:
-      - cookieAuth: []
+        - cookieAuth: []
       responses:
-        '201':
+        "201":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/List'
-          description: ''
+                $ref: "#/components/schemas/List"
+          description: ""
   /api/lists/{id}/:
     get:
       operationId: lists_retrieve
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        description: A unique integer value identifying this list.
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this list.
+          required: true
       tags:
-      - lists
+        - lists
       security:
-      - cookieAuth: []
-      - {}
+        - cookieAuth: []
+        - {}
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/List'
-          description: ''
+                $ref: "#/components/schemas/List"
+          description: ""
     put:
       operationId: lists_update
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        description: A unique integer value identifying this list.
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this list.
+          required: true
       tags:
-      - lists
+        - lists
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/List'
+              $ref: "#/components/schemas/List"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/List'
+              $ref: "#/components/schemas/List"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/List'
+              $ref: "#/components/schemas/List"
         required: true
       security:
-      - cookieAuth: []
+        - cookieAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/List'
-          description: ''
+                $ref: "#/components/schemas/List"
+          description: ""
     patch:
       operationId: lists_partial_update
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        description: A unique integer value identifying this list.
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this list.
+          required: true
       tags:
-      - lists
+        - lists
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedList'
+              $ref: "#/components/schemas/PatchedList"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedList'
+              $ref: "#/components/schemas/PatchedList"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedList'
+              $ref: "#/components/schemas/PatchedList"
       security:
-      - cookieAuth: []
+        - cookieAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/List'
-          description: ''
+                $ref: "#/components/schemas/List"
+          description: ""
     delete:
       operationId: lists_destroy
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        description: A unique integer value identifying this list.
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this list.
+          required: true
       tags:
-      - lists
+        - lists
       security:
-      - cookieAuth: []
+        - cookieAuth: []
       responses:
-        '204':
+        "204":
           description: No response body
   /api/password_change/:
     post:
       operationId: password_change_create
       tags:
-      - password_change
+        - password_change
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PasswordChange'
+              $ref: "#/components/schemas/PasswordChange"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PasswordChange'
+              $ref: "#/components/schemas/PasswordChange"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PasswordChange'
+              $ref: "#/components/schemas/PasswordChange"
         required: true
       security:
-      - cookieAuth: []
+        - cookieAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PasswordChange'
-          description: ''
+                $ref: "#/components/schemas/PasswordChange"
+          description: ""
   /api/schema/:
     get:
       operationId: schema_retrieve
@@ -181,124 +181,124 @@ paths:
         - YAML: application/vnd.oai.openapi
         - JSON: application/vnd.oai.openapi+json
       parameters:
-      - in: query
-        name: format
-        schema:
-          type: string
-          enum:
-          - json
-          - yaml
-      - in: query
-        name: lang
-        schema:
-          type: string
-          enum:
-          - af
-          - ar
-          - ar-dz
-          - ast
-          - az
-          - be
-          - bg
-          - bn
-          - br
-          - bs
-          - ca
-          - ckb
-          - cs
-          - cy
-          - da
-          - de
-          - dsb
-          - el
-          - en
-          - en-au
-          - en-gb
-          - eo
-          - es
-          - es-ar
-          - es-co
-          - es-mx
-          - es-ni
-          - es-ve
-          - et
-          - eu
-          - fa
-          - fi
-          - fr
-          - fy
-          - ga
-          - gd
-          - gl
-          - he
-          - hi
-          - hr
-          - hsb
-          - hu
-          - hy
-          - ia
-          - id
-          - ig
-          - io
-          - is
-          - it
-          - ja
-          - ka
-          - kab
-          - kk
-          - km
-          - kn
-          - ko
-          - ky
-          - lb
-          - lt
-          - lv
-          - mk
-          - ml
-          - mn
-          - mr
-          - ms
-          - my
-          - nb
-          - ne
-          - nl
-          - nn
-          - os
-          - pa
-          - pl
-          - pt
-          - pt-br
-          - ro
-          - ru
-          - sk
-          - sl
-          - sq
-          - sr
-          - sr-latn
-          - sv
-          - sw
-          - ta
-          - te
-          - tg
-          - th
-          - tk
-          - tr
-          - tt
-          - udm
-          - uk
-          - ur
-          - uz
-          - vi
-          - zh-hans
-          - zh-hant
+        - in: query
+          name: format
+          schema:
+            type: string
+            enum:
+              - json
+              - yaml
+        - in: query
+          name: lang
+          schema:
+            type: string
+            enum:
+              - af
+              - ar
+              - ar-dz
+              - ast
+              - az
+              - be
+              - bg
+              - bn
+              - br
+              - bs
+              - ca
+              - ckb
+              - cs
+              - cy
+              - da
+              - de
+              - dsb
+              - el
+              - en
+              - en-au
+              - en-gb
+              - eo
+              - es
+              - es-ar
+              - es-co
+              - es-mx
+              - es-ni
+              - es-ve
+              - et
+              - eu
+              - fa
+              - fi
+              - fr
+              - fy
+              - ga
+              - gd
+              - gl
+              - he
+              - hi
+              - hr
+              - hsb
+              - hu
+              - hy
+              - ia
+              - id
+              - ig
+              - io
+              - is
+              - it
+              - ja
+              - ka
+              - kab
+              - kk
+              - km
+              - kn
+              - ko
+              - ky
+              - lb
+              - lt
+              - lv
+              - mk
+              - ml
+              - mn
+              - mr
+              - ms
+              - my
+              - nb
+              - ne
+              - nl
+              - nn
+              - os
+              - pa
+              - pl
+              - pt
+              - pt-br
+              - ro
+              - ru
+              - sk
+              - sl
+              - sq
+              - sr
+              - sr-latn
+              - sv
+              - sw
+              - ta
+              - te
+              - tg
+              - th
+              - tk
+              - tr
+              - tt
+              - udm
+              - uk
+              - ur
+              - uz
+              - vi
+              - zh-hans
+              - zh-hant
       tags:
-      - schema
+        - schema
       security:
-      - cookieAuth: []
-      - basicAuth: []
-      - {}
+        - cookieAuth: []
+        - basicAuth: []
+        - {}
       responses:
-        '200':
+        "200":
           content:
             application/vnd.oai.openapi:
               schema:
@@ -316,435 +316,435 @@ paths:
               schema:
                 type: object
                 additionalProperties: {}
-          description: ''
+          description: ""
   /api/settings/:
     get:
       operationId: settings_list
       tags:
-      - settings
+        - settings
       security:
-      - cookieAuth: []
-      - {}
+        - cookieAuth: []
+        - {}
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Setting'
-          description: ''
+                  $ref: "#/components/schemas/Setting"
+          description: ""
     post:
       operationId: settings_create
       tags:
-      - settings
+        - settings
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Setting'
+              $ref: "#/components/schemas/Setting"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Setting'
+              $ref: "#/components/schemas/Setting"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Setting'
+              $ref: "#/components/schemas/Setting"
         required: true
       security:
-      - cookieAuth: []
+        - cookieAuth: []
       responses:
-        '201':
+        "201":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Setting'
-          description: ''
+                $ref: "#/components/schemas/Setting"
+          description: ""
   /api/settings/{id}/:
     get:
       operationId: settings_retrieve
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        description: A unique integer value identifying this setting.
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this setting.
+          required: true
       tags:
-      - settings
+        - settings
       security:
-      - cookieAuth: []
-      - {}
+        - cookieAuth: []
+        - {}
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Setting'
-          description: ''
+                $ref: "#/components/schemas/Setting"
+          description: ""
     put:
       operationId: settings_update
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        description: A unique integer value identifying this setting.
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this setting.
+          required: true
       tags:
-      - settings
+        - settings
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Setting'
+              $ref: "#/components/schemas/Setting"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Setting'
+              $ref: "#/components/schemas/Setting"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Setting'
+              $ref: "#/components/schemas/Setting"
         required: true
       security:
-      - cookieAuth: []
+        - cookieAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Setting'
-          description: ''
+                $ref: "#/components/schemas/Setting"
+          description: ""
     patch:
       operationId: settings_partial_update
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        description: A unique integer value identifying this setting.
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this setting.
+          required: true
       tags:
-      - settings
+        - settings
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedSetting'
+              $ref: "#/components/schemas/PatchedSetting"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedSetting'
+              $ref: "#/components/schemas/PatchedSetting"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedSetting'
+              $ref: "#/components/schemas/PatchedSetting"
       security:
-      - cookieAuth: []
+        - cookieAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Setting'
-          description: ''
+                $ref: "#/components/schemas/Setting"
+          description: ""
     delete:
       operationId: settings_destroy
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        description: A unique integer value identifying this setting.
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this setting.
+          required: true
       tags:
-      - settings
+        - settings
       security:
-      - cookieAuth: []
+        - cookieAuth: []
       responses:
-        '204':
+        "204":
           description: No response body
   /api/todos/:
     get:
       operationId: todos_list
       tags:
-      - todos
+        - todos
       security:
-      - cookieAuth: []
-      - {}
+        - cookieAuth: []
+        - {}
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Todo'
-          description: ''
+                  $ref: "#/components/schemas/Todo"
+          description: ""
     post:
       operationId: todos_create
       tags:
-      - todos
+        - todos
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Todo'
+              $ref: "#/components/schemas/Todo"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Todo'
+              $ref: "#/components/schemas/Todo"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Todo'
+              $ref: "#/components/schemas/Todo"
         required: true
       security:
-      - cookieAuth: []
+        - cookieAuth: []
       responses:
-        '201':
+        "201":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Todo'
-          description: ''
+                $ref: "#/components/schemas/Todo"
+          description: ""
   /api/todos/{id}/:
     get:
       operationId: todos_retrieve
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        description: A unique integer value identifying this todo.
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this todo.
+          required: true
       tags:
-      - todos
+        - todos
       security:
-      - cookieAuth: []
-      - {}
+        - cookieAuth: []
+        - {}
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Todo'
-          description: ''
+                $ref: "#/components/schemas/Todo"
+          description: ""
     put:
       operationId: todos_update
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        description: A unique integer value identifying this todo.
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this todo.
+          required: true
       tags:
-      - todos
+        - todos
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Todo'
+              $ref: "#/components/schemas/Todo"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Todo'
+              $ref: "#/components/schemas/Todo"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Todo'
+              $ref: "#/components/schemas/Todo"
         required: true
       security:
-      - cookieAuth: []
+        - cookieAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Todo'
-          description: ''
+                $ref: "#/components/schemas/Todo"
+          description: ""
     patch:
       operationId: todos_partial_update
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        description: A unique integer value identifying this todo.
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this todo.
+          required: true
       tags:
-      - todos
+        - todos
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedTodo'
+              $ref: "#/components/schemas/PatchedTodo"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedTodo'
+              $ref: "#/components/schemas/PatchedTodo"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedTodo'
+              $ref: "#/components/schemas/PatchedTodo"
       security:
-      - cookieAuth: []
+        - cookieAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Todo'
-          description: ''
+                $ref: "#/components/schemas/Todo"
+          description: ""
     delete:
       operationId: todos_destroy
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        description: A unique integer value identifying this todo.
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this todo.
+          required: true
       tags:
-      - todos
+        - todos
       security:
-      - cookieAuth: []
+        - cookieAuth: []
       responses:
-        '204':
+        "204":
           description: No response body
   /api/users/:
     get:
       operationId: users_list
       tags:
-      - users
+        - users
       security:
-      - cookieAuth: []
-      - {}
+        - cookieAuth: []
+        - {}
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/User'
-          description: ''
+                  $ref: "#/components/schemas/User"
+          description: ""
     post:
       operationId: users_create
       tags:
-      - users
+        - users
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: "#/components/schemas/User"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: "#/components/schemas/User"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: "#/components/schemas/User"
         required: true
       security:
-      - cookieAuth: []
+        - cookieAuth: []
       responses:
-        '201':
+        "201":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-          description: ''
+                $ref: "#/components/schemas/User"
+          description: ""
   /api/users/{id}/:
     get:
       operationId: users_retrieve
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        description: A unique integer value identifying this user.
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this user.
+          required: true
       tags:
-      - users
+        - users
       security:
-      - cookieAuth: []
-      - {}
+        - cookieAuth: []
+        - {}
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-          description: ''
+                $ref: "#/components/schemas/User"
+          description: ""
     put:
       operationId: users_update
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        description: A unique integer value identifying this user.
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this user.
+          required: true
       tags:
-      - users
+        - users
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: "#/components/schemas/User"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: "#/components/schemas/User"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: "#/components/schemas/User"
         required: true
       security:
-      - cookieAuth: []
+        - cookieAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-          description: ''
+                $ref: "#/components/schemas/User"
+          description: ""
     patch:
       operationId: users_partial_update
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        description: A unique integer value identifying this user.
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this user.
+          required: true
       tags:
-      - users
+        - users
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedUser'
+              $ref: "#/components/schemas/PatchedUser"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedUser'
+              $ref: "#/components/schemas/PatchedUser"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedUser'
+              $ref: "#/components/schemas/PatchedUser"
       security:
-      - cookieAuth: []
+        - cookieAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-          description: ''
+                $ref: "#/components/schemas/User"
+          description: ""
     delete:
       operationId: users_destroy
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        description: A unique integer value identifying this user.
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this user.
+          required: true
       tags:
-      - users
+        - users
       security:
-      - cookieAuth: []
+        - cookieAuth: []
       responses:
-        '204':
+        "204":
           description: No response body
 components:
   schemas:
@@ -768,9 +768,7 @@ components:
           type: integer
           readOnly: true
       required:
-      - id
-      - title
-      - user
+        - title
     PasswordChange:
       type: object
       properties:
@@ -781,9 +779,9 @@ components:
         new_password2:
           type: string
       required:
-      - new_password1
-      - new_password2
-      - old_password
+        - new_password1
+        - new_password2
+        - old_password
     PatchedList:
       type: object
       properties:
@@ -862,7 +860,8 @@ components:
           readOnly: true
         username:
           type: string
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+          description:
+            Required. 150 characters or fewer. Letters, digits and @/./+/-/_
             only.
           pattern: ^[\w.@+-]+$
           maxLength: 150
@@ -896,10 +895,10 @@ components:
           type: integer
           readOnly: true
       required:
-      - id
-      - parameter
-      - user
-      - value
+        - id
+        - parameter
+        - user
+        - value
     Todo:
       type: object
       properties:
@@ -937,10 +936,7 @@ components:
           type: integer
           readOnly: true
       required:
-      - created_at
-      - id
-      - title
-      - user
+        - title
     User:
       type: object
       properties:
@@ -949,7 +945,8 @@ components:
           readOnly: true
         username:
           type: string
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+          description:
+            Required. 150 characters or fewer. Letters, digits and @/./+/-/_
             only.
           pattern: ^[\w.@+-]+$
           maxLength: 150
@@ -968,8 +965,8 @@ components:
           type: integer
           nullable: true
       required:
-      - id
-      - username
+        - id
+        - username
   securitySchemes:
     basicAuth:
       type: http
