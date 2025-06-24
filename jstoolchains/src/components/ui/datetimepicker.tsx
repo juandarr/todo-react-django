@@ -242,15 +242,15 @@ export function DateTimePickerWithPresets({
 							id='checkbox-all-day'
 							checked={newTodo.allDay}
 							onCheckedChange={handleAllDayChange}
-							className='h-4 w-4 rounded-md border-2 border-fuchsia-500 text-sm data-[state=checked]:bg-white md:h-5 md:w-5'
+							className='h-5 w-5 rounded-md border-2 border-fuchsia-500 text-sm data-[state=checked]:bg-white'
 						/>
 						<span
-							className={`text-sm ${newTodo.allDay ? 'font-semibold' : ''}`}>
+							className={`text-sm ${newTodo.allDay ? 'font-semibold' : 'text-gray-600'}`}>
 							All day
 						</span>
 					</div>
 					{!newTodo.allDay && (
-						<div className='flex items-center'>
+						<div className='flex items-center justify-center'>
 							<Clock size='1.5rem' className='mr-2 text-fuchsia-500' />
 							<label className='flex items-center gap-2'>
 								<div className='text-sm'>
