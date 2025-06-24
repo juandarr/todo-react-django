@@ -12,7 +12,7 @@ class TodoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Todo
         fields = ('id','title','description', 'created_at','complete',
-                  'completed_at','priority','due_date','list','user')
+                  'completed_at','priority','due_date','all_day','list','user')
 
 class ListSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField( read_only=True,
@@ -27,3 +27,13 @@ class SettingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Setting
         fields = ('id','parameter','value', 'user')
+
+class PasswordChangeSerializer(serializers.Serializer):
+    old_password = serializers.CharField(required=True)
+    new_password1 = serializers.CharField(required=True)
+    new_password2 = serializers.CharField(required=True)
+
+    def validate(self, data):
+        if data['new_password1'] != data['new_password2']:
+            raise serializers.ValidationError("The two password fields didn't match.")
+        return data

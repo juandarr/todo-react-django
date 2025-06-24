@@ -8,7 +8,7 @@ admin.site.register(User, UserAdmin)
 @admin.register(Todo)
 class TodoAdmin(admin.ModelAdmin):
     list_display = ["id", "title", "description",
-                    "complete","created_at","completed_at","priority", "due_date",
+                    "complete","created_at","completed_at","priority", "due_date","all_day",
                     "list","user"]
 
 @admin.register(List)

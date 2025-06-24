@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.template import loader
 from rest_framework import viewsets
 from .models import Todo, List, User, Setting
-from .serializers import TodoSerializer, ListSerializer, UserSerializer, SettingSerializer
+from .serializers import PasswordChangeSerializer, TodoSerializer, ListSerializer, UserSerializer, SettingSerializer
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.views import APIView
@@ -73,6 +73,7 @@ class SettingApiView(viewsets.ModelViewSet):
 class PasswordChangeApiView(APIView):
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticated]
+    serializer_class = PasswordChangeSerializer
 
     def post(self, request, *args, **kwargs):
         user = request.user

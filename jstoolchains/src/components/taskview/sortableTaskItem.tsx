@@ -354,8 +354,7 @@ export default function SortableTaskItem({
 											: ''
 									} `}>
 									{todo.dueDate !== undefined
-										? todo.dueDate?.getHours() === 0 &&
-											todo.dueDate?.getMinutes() === 0
+										? todo.allDay
 											? (todo.dueDate as Date).toLocaleString(
 													'en-US',
 													optionsShort
