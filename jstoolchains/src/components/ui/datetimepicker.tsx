@@ -27,6 +27,7 @@ import { Calendar } from './calendar';
 import { Popover, PopoverContent, PopoverTrigger } from './popover';
 
 import { type DatePickerProps } from '../../lib/customTypes';
+import { Checkbox } from '../ui/checkbox';
 
 export function DateTimePickerWithPresets({
 	newTodo,
@@ -96,6 +97,24 @@ export function DateTimePickerWithPresets({
 		}
 	};
 
+	const handleAllDayChange = (checked: boolean): void => {
+		if (checked && newTodo.dueDate) {
+			// If all-day is checked, set the time to midnight.
+			const date = new Date(newTodo.dueDate);
+			date.setHours(0, 0, 0, 0);
+			setNewTodo((old) => ({
+				...old,
+				dueDate: date,
+				allDay: true
+			}));
+		} else {
+			setNewTodo((old) => ({
+				...old,
+				allDay: checked
+			}));
+		}
+	};
+
 	return (
 		<Popover modal={true} open={isOpen} onOpenChange={setIsOpen}>
 			<PopoverTrigger asChild>
@@ -108,7 +127,11 @@ export function DateTimePickerWithPresets({
 					disabled={isDisabled}>
 					<CalendarIcon className='mr-2 h-6 w-6' />
 					{newTodo.dueDate !== undefined ? (
-						format(newTodo.dueDate as Date, 'E, MMM do, hh:mm a')
+						newTodo.allDay ? (
+							format(newTodo.dueDate as Date, 'E, MMM do') + ', all day'
+						) : (
+							format(newTodo.dueDate as Date, 'E, MMM do, hh:mm a')
+						)
 					) : (
 						<span>Due date</span>
 					)}
@@ -213,19 +236,35 @@ export function DateTimePickerWithPresets({
 						onSelect={handleDateSelect}
 					/>
 				</div>
-				<div className='flex items-center justify-center p-2'>
-					<Clock size='1.5rem' className='mr-2 text-fuchsia-500' />
-					<label className='flex items-center gap-2'>
-						<div className='text-sm'>
-							Set <span className='mr-1 font-semibold'>time:</span>
-						</div>
-						<input
-							type='time'
-							value={timeInput}
-							onChange={handleTimeChange}
-							className='rounded-md border p-1 text-sm hover:cursor-pointer'
+				<div className='items-left flex flex-col justify-between p-2'>
+					<div className='mb-1 flex items-center gap-2'>
+						<Checkbox
+							id='checkbox-all-day'
+							checked={newTodo.allDay}
+							onCheckedChange={handleAllDayChange}
+							className='h-5 w-5 rounded-md border-2 border-fuchsia-500 text-sm data-[state=checked]:bg-white'
 						/>
-					</label>
+						<span
+							className={`text-sm ${newTodo.allDay ? 'font-semibold' : 'text-gray-600'}`}>
+							All day
+						</span>
+					</div>
+					{!newTodo.allDay && (
+						<div className='flex items-center justify-center'>
+							<Clock size='1.5rem' className='mr-2 text-fuchsia-500' />
+							<label className='flex items-center gap-2'>
+								<div className='text-sm'>
+									Set <span className='mr-1 font-semibold'>time:</span>
+								</div>
+								<input
+									type='time'
+									value={timeInput}
+									onChange={handleTimeChange}
+									className='rounded-md border p-1 text-sm hover:cursor-pointer'
+								/>
+							</label>
+						</div>
+					)}
 				</div>
 				<Button
 					onClick={closePopover}
