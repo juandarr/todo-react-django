@@ -50,6 +50,11 @@ export default function ProfileModal({
 						<TooltipTrigger asChild={true}>
 							<button className='text-amber-500 hover:text-amber-600'>
 								<UserSquare
+									onClick={(event) => {
+										const b = event.target as any;
+										b.classList.add('click-gelatine');
+										setTimeout(() => b.classList.remove('click-gelatine'), 500);
+									}}
 									size={isWindowWidthMedium ? '2.1rem' : '1.8rem'}
 									variant='Bulk'
 								/>
