@@ -18,6 +18,7 @@ export interface todoType {
 	priority?: string;
 	dueDate?: Date | null;
 	list?: string;
+	allDay?: boolean;
 }
 
 export type todosType = todoType[];
