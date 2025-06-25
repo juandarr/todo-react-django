@@ -237,7 +237,8 @@ export function DateTimePickerWithPresets({
 					/>
 				</div>
 				<div className='items-left flex flex-col justify-between p-2'>
-					<div className='mb-1 flex items-center gap-2'>
+					<div
+						className={`${newTodo.allDay ? '' : 'mb-2 '} flex items-center justify-end gap-2`}>
 						<Checkbox
 							id='checkbox-all-day'
 							checked={newTodo.allDay}
