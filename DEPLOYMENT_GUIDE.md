@@ -188,7 +188,7 @@ sudo systemctl status gunicorn # Check status
 Caddy's default configuration file is at `/etc/caddy/Caddyfile`. Replace its contents with the following:
 
 ```caddyfile
-# My tasker app
+# taskFlow app
 https://subdomain.domain.tld:443 {
   # Directory where your static files are collected
     root * /path/to/app/staticfiles
@@ -240,13 +240,13 @@ Ensure correct permissions, especially for the SQLite database and the Gunicorn 
 
 ```bash
 # Example: Give www-data ownership of the project dir
-sudo chown -R www-data:www-data /var/www/todo-app
+sudo chown -R www-data:www-data /path/to/app
 # Ensure staticfiles are readable by Caddy
-sudo chmod -R 755 /var/www/todo-app/staticfiles
+sudo chmod -R 755 /path/to/app/staticfiles
 # Ensure database directory is writable by Gunicorn user
-sudo chmod -R 775 /var/www/todo-app/database # Adjust if needed, 775 might be too permissive depending on setup
+sudo chmod -R 775 /path/to/app/database # Adjust if needed, 775 might be too permissive depending on setup
 # Ensure database file is writable by Gunicorn user
-sudo chmod 664 /var/www/todo-app/database/db.sqlite3 # Adjust if needed
+sudo chmod 664 /path/to/app/database/db.sqlite3 # Adjust if needed
 ```
 
 _(Permissions can be tricky. Start with these and adjust if you encounter permission errors in logs (`journalctl -u gunicorn`, `/var/log/caddy/access.log`))_
@@ -265,11 +265,11 @@ If Caddy logs show "permission denied" when trying to connect to the Gunicorn so
 2.  **Set Directory Permissions:** Ensure the directory containing the socket allows group access.
     ```bash
     # Example using guide paths/groups:
-    # sudo chown www-data:www-data /var/www/todo-app/run
-    # sudo chmod 775 /var/www/todo-app/run
+    # sudo chown www-data:www-data /path/to/app/run
+    # sudo chmod 775 /path/to/app/run
     # Example using your paths/groups:
-    sudo chown pi:ubuntu /var/www/todo-app/run
-    sudo chmod 775 /var/www/todo-app/run
+    sudo chown pi:ubuntu /path/to/app/run
+    sudo chmod 775 /path/to/app/run
     ```
 3.  **Restart Services:** Restart both Gunicorn and Caddy.
     ```bash
