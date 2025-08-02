@@ -111,7 +111,7 @@ _(This will create the `/var/www/todo-app/staticfiles` directory based on `STATI
 
 ### 2.8. Run Database Migrations
 
-This applies when start with a new database from scratch.
+This applies when starting with a new database from scratch.
 
 ```bash
 python manage.py migrate
