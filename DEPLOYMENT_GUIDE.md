@@ -6,6 +6,8 @@ This guide outlines the steps to deploy the Todo React Django application on an 
 
 ### 1.1. Update System
 
+First of all, start by getting your OS up to date.
+
 ```bash
 sudo apt update
 sudo apt upgrade -y
@@ -13,7 +15,7 @@ sudo apt upgrade -y
 
 ### 1.2. Install Dependencies
 
-Install Python, pip, venv, Node.js (e.g., v20.x), npm, and Caddy.
+Install Python, pip, venv, Node.js (e.g., v20.x, this one works with current dependencies), npm, and Caddy.
 
 ```bash
 # Python, pip, venv (usually pre-installed on Ubuntu 24.04, but good to ensure)
@@ -50,7 +52,11 @@ cd /path/to/app
 git clone <your-repository-url> . # Clone into the current directory
 ```
 
+Once the repository has been cloned, checkout to the `production` branch with `git checkout production`.
+
 ### 2.2. Create Python Virtual Environment
+
+Python 3.12.3 works with current dependencies. In case the installed Python is above/below it, install Python 3.12 via `sudo apt install python3.12 python3.12-venv` or using the `pyenv` package: `pyenv install 3.12.3`. Then use the correct version of Python you want to virtualize (Python3 in this case).
 
 ```bash
 python3 -m venv venv
