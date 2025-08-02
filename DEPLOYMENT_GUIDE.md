@@ -52,7 +52,7 @@ cd /path/to/app
 git clone <your-repository-url> . # Clone into the current directory
 ```
 
-Once the repository has been cloned, checkout to the `production` branch with `git checkout production`.
+Once the repository has been cloned, checkout to the `production` (or the one you are using for deployment) branch with `git checkout production`.
 
 ### 2.2. Create Python Virtual Environment
 
@@ -81,14 +81,14 @@ cd .. # Return to project root
 
 ### 2.5. Set Environment Variables
 
-Create a `.env` file in the project root (`/var/www/todo-app`) for environment variables. **Do not commit this file to Git.**
+Create a `.env` file in the project root (`/path/to/app/`) for environment variables. **Do not commit this file to Git.**
 
 ```bash
-# /var/www/todo-app/.env
+# /path/to/app/.env
 DJANGO_SECRET_KEY='your_strong_random_secret_key_here'
 # Add other environment variables if needed (e.g., EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
-# EMAIL_HOST_USER='your_email@gmail.com'
-# EMAIL_HOST_PASSWORD='your_gmail_app_password'
+EMAIL_HOST_USER='your_email@gmail.com'
+EMAIL_HOST_PASSWORD='your_gmail_app_password'
 ```
 
 _Generate a strong secret key. You can use Django's `get_random_secret_key()`:_
@@ -99,7 +99,15 @@ from django.core.management.utils import get_random_secret_key
 print(get_random_secret_key())
 ```
 
-### 2.6. Build Frontend Assets
+### 2.6. Generate or copy the openapi API code
+
+Copy a previously generated openapi API specification at the root folder. In case you don't have access to it, use the instructions in the next paragraphs.
+These instructions rely on the existence of an `schema.yml` file already describing the openapi API. For more information check out how to [Create API](https://www.saaspegasus.com/guides/modern-javascript-for-django-developers/apis/) from specification in file `schema.yml`.
+
+1. Make sure you install the `openapi generator cli`: `npm install @openapitools/openapi-generator-cli`. This package will allow you to create the API via `schema.yml`, which located at the root of the project.
+2. Once you have it installed, go to the folder `jstoolchains` and run: `npx @openapitools/openapi-generator-cli generate -i ../schema.yml -g typescript-fetch -o ../todo-api-client/`
+
+### 2.7. Build Frontend Assets
 
 ```bash
 cd jstoolchains
@@ -107,23 +115,25 @@ npm run build
 cd ..
 ```
 
-### 2.7. Collect Static Files
+### 2.8. Collect Static Files
 
 ```bash
 python manage.py collectstatic --noinput
 ```
 
-_(This will create the `/var/www/todo-app/staticfiles` directory based on `STATIC_ROOT` in settings.py)_
+_(This will create the `/path/to/app/staticfiles` directory based on `STATIC_ROOT` in settings.py)_
 
-### 2.8. Run Database Migrations
+### 2.9. Run Database Migrations
 
-This applies when starting with a new database from scratch.
+This applies when starting with a new database from scratch. In case you already have access to a previously created database you don't need to `migrate` it, just copy it to a `database` folder at the root of your project. Database should be called `db.sqlite3`.
+
+To `migrate`, first make sure you already have migrations defined and up to date (`python manage.py makemigrations`). Also create the `database` folder at the root of your project.
 
 ```bash
 python manage.py migrate
 ```
 
-### 2.9. Test Gunicorn
+### 2.10. Test Gunicorn
 
 Ensure Gunicorn can serve the application.
 
@@ -161,7 +171,7 @@ Restart=always
 WantedBy=multi-user.target
 ```
 
-- **User/Group:** Often `www-data` is used for web server processes. Ensure this user has necessary permissions for the project directory and database file. You might need to adjust ownership: `sudo chown -R www-data:www-data /var/www/todo-app`. Pay special attention to the SQLite database file (`database/db.sqlite3`) and its directory - `www-data` needs write access. Ensure the user also has write access to the `/var/www/todo-app/run` directory to create the socket.
+- **User/Group:** Often `www-data` is used for web server processes. Ensure this user has necessary permissions for the project directory and database file. You might need to adjust ownership: `sudo chown -R www-data:www-data /path/to/app`. Pay special attention to the SQLite database file (`database/db.sqlite3`) and its directory - `/path/to/app` needs write access. Ensure the user also has write access to the `/path/to/app/run` directory to create the socket.
 - **Workers:** Adjust the number of workers (e.g., `2 * num_cores + 1`). `3` is a reasonable starting point.
 - **Bind:** Using a Unix socket within the project directory (`unix:/path/to/app/run/gunicorn.sock`) avoids potential permission issues with `/run`. Ensure the directory exists (`mkdir /path/to/app/run`) and the Gunicorn user can write to it.
 
@@ -178,11 +188,9 @@ sudo systemctl status gunicorn # Check status
 Caddy's default configuration file is at `/etc/caddy/Caddyfile`. Replace its contents with the following:
 
 ```caddyfile
-# /etc/caddy/Caddyfile
-
-your_domain.com { # Or localhost if only accessing locally
-
-    # Directory where your static files are collected
+# My tasker app
+https://subdomain.domain.tld:443 {
+  # Directory where your static files are collected
     root * /path/to/app/staticfiles
 
     # Serve static files directly
@@ -213,42 +221,10 @@ your_domain.com { # Or localhost if only accessing locally
         output file /var/log/caddy/access.log
         format json
     }
-
-    # Optional: Add security headers
-    header {
-        # Enable HTTP Strict Transport Security (HSTS)
-        Strict-Transport-Security "max-age=31536000;"
-        # Prevent clickjacking
-        X-Frame-Options "DENY"
-        # Prevent content type sniffing
-        X-Content-Type-Options "nosniff"
-        # Enable cross-site scripting (XSS) filter
-        X-XSS-Protection "1; mode=block"
-        # Referrer policy
-        Referrer-Policy "strict-origin-when-cross-origin"
-        # Permissions policy (example, adjust as needed)
-        Permissions-Policy "geolocation=(), microphone=(), camera=()"
-    }
 }
-
-# If accessing via IP address or localhost without a domain:
-# localhost {
-#     root * /path/to/app/staticfiles
-#     file_server
-#     reverse_proxy /api/* unix//path/to/app/run/gunicorn.sock
-#     reverse_proxy /admin/* unix//path/to/app/run/gunicorn.sock
-#     reverse_proxy /accounts/* unix//path/to/app/run/gunicorn.sock
-#     # Add other Django URL paths here if needed
-#     reverse_proxy unix//path/to/app/run/gunicorn.sock # Fallback for root/other paths
-#     encode gzip zstd
-#     log {
-#         output file /var/log/caddy/access.log
-#         format json
-#     }
-# }
 ```
 
-- Replace `your_domain.com` with your actual domain or use `localhost` if accessing locally. Caddy will automatically provision HTTPS for public domains.
+- Replace `subdomain`, `domain` and `tld` with your actual values or use `localhost` if accessing locally. Caddy will automatically provision HTTPS for public domains.
 - The `handle` blocks ensure that requests for static files are served directly by Caddy, while other requests (API, admin, root for the React app) are proxied to Gunicorn via the socket in `/path/to/app/run/gunicorn.sock`. Adjust the paths in `handle` blocks if your Django URL structure is different.
 
 Reload Caddy to apply the changes:
