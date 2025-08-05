@@ -90,7 +90,7 @@ You also need to get a new `schema.yml` file, since the structure was changed. M
 > Temporary workaround
 > Once you get the new file, make sure that the schema for List and Todo only have `title` as required field
 
-Once you have your `schema.yml` file set, you can create your own API using `openapitools` according to the instruction at the beginning of the `development` section.
+Once you have your `schema.yml` file set, you can create your own API using `openapitools` according to the instructions at the start of the `development` section.
 
 ### Performance diagnostics
 
@@ -104,7 +104,9 @@ ANALYZER=true npm run build
 
 ## Design
 
-The app name is JoyFlow. The goal is to create a system the user will enjoy using as a companion while facing the challenges brought by the day. The user inferface is designed to be playful, clean and minimalistic. The flow part of the name is aspirational: the intention is for the system to help the user to induce and keep a state of flow while working on a project or mission.
+The app's name is JoyFlow. The goal is to create a workflow the user will enjoy using JoyFlow as a companion tool during the day at school, work or any other activity in life.
+
+The user inferface is designed to be playful, clean and minimalistic. The flow part of the name is aspirational: the intention is for the system to help the user to induce and keep a state of flow while working on a project or mission.
 
 ### Color palette
 
@@ -117,7 +119,7 @@ The hue `600` as defined by the TailwindCSS system.
 - Green:`rgb(5,150,105)` (`emerald-600`)
 - Yellow:`rgb(217,119,6)` (`amber-600`)
 
-The overal background of the app is `rbg(56,189,248)` (`sky-400`). The background of component is `white`. For input elements such TextArea, input or TextEditor the background is `rgb(17,24,39)` (`gray-900`).
+The overal background of the app is `rbg(56,189,248)` (`sky-400`). The background of components is `white`. For input elements such as TextArea, input or TextEditor the background is `rgb(17,24,39)` (`gray-900`).
 
 # License
 
