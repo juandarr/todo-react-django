@@ -6,16 +6,17 @@ This application is designed to help you organize and manage your personal proje
 
 ![Overview of Todo app](./images/todo-overview.png)
 
-## Improvements
-
-- [ ] Validate state management and storage procedure when the app goes offline or internet connection is lost. Find a way to manage state and have a unique source of truth. An alternative is to set the app only for online usage.
-- [x] Have a field to mark tasks set for all day instead of just defining it with a time (12AM as of right now). In progress.
-- [x] When the viewport width is below `md`, hide sidebar/menu when clicking in sidebar button. Change its icon and visual guidance.
-
 ## Planned features
 
 - [ ] Notifications
 - [ ] Pomodoro style timer for tasks
+
+## Archived features
+
+- [x] Validate state management and storage procedure when the app goes offline or internet connection is lost. Find a way to manage state and have a unique source of truth. An alternative is to set the app only for online usage. Update: online usage required in the mean time.
+- [x] Have a field to mark tasks set for all day instead of just defining it with a time (12AM as of right now). In progress.
+- [x] When the viewport width is below `md`, hide sidebar/menu when clicking in sidebar button. Change its icon and visual guidance.
+
 
 ## Stack
 
